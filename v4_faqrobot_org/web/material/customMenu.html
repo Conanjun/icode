@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>自定义菜单栏</title>
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style1.css">
+    <link href="css/selectpick.css" rel="stylesheet">
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet">
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+    <!--
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">-->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.mask.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="js/selectpick.js"></script>
+    <script src="js/jquery.qqFace.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../common/js/iframeTab.min.js"></script>
+    <script src="js/common.js"></script> 
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/jquery.scrollbar.js"></script>
+    <script src="../../assets/js/apps.min.js"></script>
+
+    <style>
+	*{
+		box-sizing: content-box;
+	}
+	 .gritter-item p {
+          color: #fff;
+        }
+		.conAns{
+			max-height:70px;
+			max-width: 380px;
+			overflow:auto;
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+		.modal-body {
+			padding-bottom: 0px!important;
+		}
+	.modal-content .modal-body div .pagination {
+		padding: 0!important;
+		margin: 0!important;
+		padding-bottom: 10px!important;
+	}
+	@media (min-width: 992px){
+		.container {
+		     width: auto; 
+		}
+	}	
+	@media (min-width: 768px){
+		.container {
+		     width: auto; 
+		}
+	}
+	@media (max-width: 1207px){
+		.body-ctn .context-ctn .context{
+			width: 930px;
+		}
+	}
+	</style>
+</head>
+<body>
+<!--答案开始-->
+ <div class="modal fade" id="modal-dialog-ans">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">选择答案</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal searchForm" novalidate="novalidate" style="margin-bottom:5px;">
+                    <fieldset>
+                       <div class="input-group">
+                            <input type="hidden" name="level">
+                            <input type="hidden" name="groupId" value="0">
+                            <input type="hidden" name="isLeaf" value="0">
+                            <input type="hidden" name="status" value="0">
+                            <input type="text" class="search-input-addSrc form-control search-ctx " name="answer" onKeyDown="if(event.keyCode==13){ansList();return false;}" placeholder="请输入您要搜索的答案" style="height:20px; width:200px;float:right;border-radius:3px 0 0 3px;" >
+                            <span class="search-addSrc input-group-btn">
+                                <button class="btn btn-primary" type="button" onClick="ansList(1);">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </fieldset>
+                </form>
+                <table class="table ansTab">
+                    <tbody></tbody>
+                </table>
+                <div id="ansPage"></div>
+                <div style="clear:both;"></div>
+            </div>
+            <div class="modal-footer foot" style="text-align:right;">
+                <a href="javascript:;" class="confirm-ans btn btn-sm btn-primary">确认</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--答案结束-->
+<!--语音开始-->
+<div class="modal fade" id="modal-dialog-audio">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">选择语音</h4>
+            </div>
+            <div class="modal-body">
+            	<table class="table ansTab">
+                	<thead>
+                    	<tr> 
+                        	<th></th>
+                            <th>文件名</th>
+                            <th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                
+                <div id="vedioPage"></div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="modal-footer foot" style="text-align:right;">
+                <a href="javascript:;" class="confirm-audio btn btn-sm btn-primary">确认</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--语音结束-->
+<!--图片开始-->
+<div class="modal fade" id="modal-dialog-pic">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" style="display: inline-block;">选择图片</h4>
+				<div style="margin-left: 10px;display: inline-block;">
+					<input type="hidden" name="groupId" class="selQueX" value="0">
+					<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+				</div>
+				<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 51px; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+					<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+						<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+					</div>
+				</div>
+            </div>
+            <div class="modal-body bodyMiddle-ctn">
+           		 <div class="bodyMiddle"></div> 
+                 <div id="picPage" style="padding-bottom:15px;"></div>
+                 <div style="clear:both"></div>
+            </div>
+            <div class="modal-footer foot" style="text-align:right;">
+                <a href="javascript:;" class="confirm-pic btn btn-sm btn-primary">确认</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--图片结束-->
+
+<!--素材开始-->
+<div class="modal fade" id="modal-dialog-msg">
+    <div class="modal-dialog msg-ctx" style="width:695px;">
+        <div class="modal-content body">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">选择素材</h4>
+            </div>
+            <div class="modal-body bodyMiddle-ctn">
+           		 <div class="bodyMiddle">
+                    <div class="showLeft">
+                    </div>
+                    <div class="showRight">
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+            	<div id="imgTextPage" style="padding-bottom:15px;"></div>
+            </div>
+            <div class="modal-footer foot" style="text-align:right;margin:0;">
+                <a href="javascript:;" class="confirm-msg btn btn-sm btn-primary">确认</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--素材结束-->
+
+	<div class="noty"></div>
+	<!------提示框开始------>
+	<div class="popup">
+		<div class="mask"></div>
+		<!--图文框开始-->
+		<div class="msg-ctx">
+			<div class="head">
+				<span>选择素材</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<!--<div class="bodyTop-ctn">
+					<div class="bodyTop">
+						<span class="search">
+							<input type="text" class="search-ctx" placeholder="标题/作者/摘要"><i class="search-btn"></i>
+						</span>
+						<a href="javascript:;">
+							<span class="newMsg" id="newCreateImgText">
+								<i></i>
+								<p>新建图文消息</p>
+							</span>
+						</a>
+					</div>
+				</div>-->
+				<div class="bodyMiddle-ctn">
+					<div class="bodyMiddle">
+						<div class="showLeft">
+						</div>
+						<div class="showRight">
+						</div>
+					</div>
+				</div>
+				<div id="imgTextPage">
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-msg">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--图文框结束-->
+
+		<!--图片框开始-->
+		<div class="pic-ctx">
+			<div class="head">
+				<span>选择图片</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<div class="bodyRight">
+					<div class="bodyMiddle-ctn">
+						<div class="bodyMiddle">
+							
+						</div>
+					</div>
+					<div id="picPage"></div>
+				</div>
+				
+			</div>
+			<div class="foot">
+				<span class="confirm-pic">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--图片框结束-->
+
+		<!--语音框开始-->
+		<div class="audio-ctx">
+			<div class="head">
+				<span>选择语音</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<div class="bodyMiddle-ctn" >
+					<div class="bodyMiddle">
+						
+					</div>
+				</div>
+				<div id="vedioPage">
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-audio">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--视频框开始-->
+		<div class="video-ctx">
+			<div class="head">
+				<span>选择视频</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<div class="bodyTop-ctn">
+					<div class="bodyTop">
+						<span class="tipWord">视频</span>
+						<a href="#">
+							<span class="newVideo">
+								<i></i>
+								<p>新建视频</p>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="bodyMiddle-ctn">
+					<div class="bodyMiddle">
+						<div class="showLeft">
+							<!--替换视频开始-->
+							<div class="show">
+								<p class="title">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+								<p class="time">昨天 23:37</p>
+								<div class="pic">
+									<img src="images/1.jpg" alt="">
+								</div>
+								<p class="desc">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+							</div>
+							<!--替换视频结束-->
+							<!--替换视频开始-->
+							<div class="show">
+								<p class="title">视频</p>
+								<p class="time">昨天 23:37</p>
+								<div class="pic">
+									<img src="images/1.jpg" alt="">
+								</div>
+								<p class="desc">一个视频。</p>
+							</div>
+							<!--替换视频结束-->
+						</div>
+
+						<div class="showRight">
+							<!--替换视频开始-->
+							<div class="show">
+								<p class="title">视频</p>
+								<p class="time">昨天 23:37</p>
+								<div class="pic">
+									<img src="images/1.jpg" alt="">
+								</div>
+								<p class="desc">一个视频。</p>
+							</div>
+							<!--替换视频结束--><!--替换视频开始-->
+							<div class="show">
+								<p class="title">视频</p>
+								<p class="time">昨天 23:37</p>
+								<div class="pic">
+									<img src="images/1.jpg" alt="">
+								</div>
+								<p class="desc">一个视频。</p>
+							</div>
+							<!--替换视频结束-->
+						</div>
+					</div>
+				</div>
+				<div class="pageNav-ctn">
+					<div class="pageNav">
+						<span class="pageChange">
+							<i class="prevPage"></i>
+						</span>
+						<span class=="pageNum">
+							<label>1</label>
+							<span>/</span>
+							<label>2</label>
+						</span>
+						<span class="pageChange">
+							<i class="nextPage"></i>
+						</span>
+						<input type="text">
+						<p class="pageGo">跳转</p>
+					</div>
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-video">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--视频框结束-->
+
+		<!--网页框开始-->
+		<div class="web-ctx">
+			<div class="head">
+				<span>选择图文消息</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<div class="bodyTop-ctn">
+					<div class="bodyTop">
+						<span class="srcBtn webBtn-focus">素材库</span><span class="historyBtn">历史消息</span>
+						<span class="search">
+							<input type="text" class="search-ctx" placeholder="标题/作者/摘要"><i class="search-btn"></i>
+						</span>
+					</div>
+				</div>
+				<div class="bodyMiddle-ctn">
+					<div class="bodyMiddle">
+						<div class="srcCtn">
+							
+						</div>
+						<div class="historyCtn">
+							<div class="historyLeft">
+								<img src="images/history.jpg" alt="">
+								<p>公众帐号历史消息列表示例</p>
+							</div>
+							<div class="historyRight">
+								<input id="goHistory" type="checkbox">
+								<label for="goHistory" data-link="http://www.qq.com/">跳转到历史消息列表</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pageNav-ctn">
+					<div class="pageNav">
+						<span class="pageChange">
+							<i class="prevPage"></i>
+						</span>
+						<span class=="pageNum">
+							<label>1</label>
+							<span>/</span>
+							<label>2</label>
+						</span>
+						<span class="pageChange">
+							<i class="nextPage"></i>
+						</span>
+						<input type="text">
+						<p class="pageGo">跳转</p>
+					</div>
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-web">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--网页框结束-->
+
+		<!--删除框开始-->
+		<div class="delete-ctx">
+			<div class="head">
+				<span>温馨提示</span>
+				<i class="hide"></i>
+			</div>
+			<div class="body">
+				<div class="msgCtn">
+					<i></i>
+					<span>
+						<p class="title">删除确认</p>
+						<p class="msg">删除后“子菜单名称”菜单下设置的内容将被删除,确认删除？</p>
+					</span>
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-delete">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--删除框结束-->
+
+		<!--发布框开始-->
+		<div class="release-ctx">
+			<div class="head">
+				<span>温馨提示</span>
+				<i></i>
+			</div>
+			<div class="body">
+				<div class="msgCtn">
+					<i></i>
+					<span>
+						<p class="title">发布确认</p>
+						<p class="msg">发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？</p>
+					</span>
+
+				</div>
+			</div>
+			<div class="foot">
+				<span class="confirm-release">确定</span>
+				<span class="cancel">取消</span>
+			</div>
+		</div>
+		<!--发布框结束-->
+
+		<!--预览框开始-->
+		<div class="view-ctx">
+			<div class="phoneView">
+				<div class="phoneTop">
+					<p>Faqrobot智能机器人</p>
+				</div>
+				<div class="phoneMiddle-ctn">
+					<div class="phoneMiddle">
+					</div>
+				</div>
+				<div class="phoneBottom">
+					<!--+v-->
+					<div class="menuBar-v">
+					
+					</div>
+				</div>
+				<div class="cancel endView">退出预览</div>
+			</div>
+		</div>
+		<!--预览框结束-->
+	</div>
+	<!------删除提示框结束------>
+	<!--头部开始-->
+    <div class="content" style="padding-bottom: 0">
+    	<!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">素材管理</a></li>
+            <li>自定义菜单</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <h1 class="page-header">自定义菜单</h1>
+        <!-- end page-header -->
+    </div>
+	<div class="container">
+		<div class="container-padding">
+			<!--<div class="head-ctn">
+				<div class="head">
+					<div class="headLeft">自定义菜单</div>
+					<div class="headRight">
+						<a href="#" target="_blank">
+							<span>使用说明</span>
+						</a>
+					</div>
+				</div>
+			</div>-->
+            
+			<div class="body-ctn">
+				<!--<div class="warning-ctn">
+					<div class="warning">
+						<i class="icon"></i>
+						<span class="descCtn">
+							<p title="title">菜单编辑中</p>
+							<span class="desc">菜单未发布，请确认菜单编辑完成后点击“保存并发布”同步到手机。若停用菜单，请<a href="#" target="_blank">点击这里</a></span>
+						</span>
+						
+					</div>
+				</div>-->
+                
+				<div class="context-ctn">
+					<div class="context">
+						<div class="top">
+                         <!--选择公众号-->
+                            <div class="selectGzh" style="line-height:25px; margin-bottom:10px; height:33px; ">
+                                <div style="float:left; width:100px; color:#348fe2;">请选择公众号：</div>
+                                <div id="zzhDiv" style="width:219px;  float:left;">
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+							<div class="topLeft">
+								<div class="phoneTop">
+									<p>Faqrobot智能机器人</p>
+								</div>
+								<div class="phoneBottom">
+                                	<form id="allData" style="height:100%;">
+                                        <div class="menuBar">
+                                            <!--一个菜单开始-->
+                                            <div class="menuBar1">
+                                                <i></i>
+                                                <span>添加菜单</span>
+                                            </div>
+                                        </div>
+                                    </form>
+								</div>
+								<div class="sortMenu-disabled" style="display:none;">菜单排序</div>
+							</div>
+							<div class="topRight-error">点击左侧新增菜单</div>
+							<div class="topRight" style="display:none;">
+								<div class="topRight-ctx">
+									<div class="topRight-top">
+										<span class="title">菜单名</span>
+										<span class="deleteMenu">删除菜单</span>
+									</div>
+									<div class="menuError">已添加子菜单，仅可设置菜单名称。</div>
+									<div class="topRight-middle">
+										<span class="title">菜单名称</span>
+										<span class="remainWord">
+											<input id="menuName" type="text" value="菜单名称" maxlength="8">
+											<p class="wordError">字数超过上限</p>
+											<p class="wordWarn">字符数不能超过8个</p>
+										</span>
+									</div>
+									<div class="topRight-bottom">
+										<span class="titleCtn">菜单内容</span>
+										<span class="btnChoose">
+											<a class="sendCtn" href="javascript:;" style="text-decoration: none;">
+												<input id="sendMsg" type="radio" name="btnStyle" value="0" checked>
+												<label for="sendMsg">发送消息</label>
+											</a>
+											<a class="jumbCtn" href="javascript:;" style="text-decoration: none;">
+												<input id="jumbPage" type="radio" name="btnStyle" value="1" >
+												<label for="jumbPage">跳转网页</label>
+											</a>
+										</span>
+										<div class="upSrcCtn">
+											<div class="upSrc-head">
+                                            	<a class="upSrc-ctn6" href="javascript:;" onClick="upSrcStyle(6)">
+													<i class="upSrc-icon6-off upSrc-icon6-on"></i>
+													<span class="upSrc-btn6 upSrc-btn-on">文本</span>
+												</a>
+												<a class="upSrc-ctn1" href="javascript:;" onClick="upSrcStyle(1)">
+													<i class="upSrc-icon1-off "></i>
+													<span class="upSrc-btn1">图文消息</span>
+												</a>
+												<a class="upSrc-ctn2" href="javascript:;" onClick="upSrcStyle(2)">
+													<i class="upSrc-icon2-off"></i>
+													<span class="upSrc-btn2">图片</span>
+												</a>
+												<a class="upSrc-ctn3" href="javascript:;" onClick="upSrcStyle(3)">
+													<i class="upSrc-icon3-off"></i>
+													<span class="upSrc-btn3">语音</span>
+												</a>
+												<!--<a class="upSrc-ctn4" href="javascript:;" onClick="upSrcStyle(4)">
+													<i class="upSrc-icon4-off"></i>
+													<span class="upSrc-btn4">视频</span>
+												</a>-->
+                                                <a class="upSrc-ctn5" href="javascript:;" onClick="upSrcStyle(5)">
+													<i class="upSrc-icon5-off"></i>
+													<span class="upSrc-btn5">答案</span>
+												</a>
+											</div>
+											<div class="upSrc-body">
+												<div class="upSrc-body-ctx" style="display:none;">
+													<span class="chooseSrc chooseSrc1" >
+														<i></i>
+														<p>从素材库选择</p>
+													</span>
+													<span class="newMsg" >
+														<i></i>
+														<p>新建图文消息</p>
+													</span>
+                                                  <!--  <textarea class="choooseText"></textarea>-->
+												</div>
+												<div class="upSrc-body-select" style="display:block;">
+                                                	<div class="selectCtn6">
+														<textarea class="choooseText" id="words"></textarea>
+                                                        <p><span class="emotion">表情</span></p>
+													</div>
+													<div class="selectCtn1" style="display:none;">
+														<div class="selectCtx"></div>
+														<span class="delete-select">删除</span>
+													</div>
+													<div class="selectCtn2" style="display:none;">
+														<div class="selectCtx"></div>
+														<span class="delete-select">删除</span>
+													</div>
+													<div class="selectCtn3" style="display:none;">
+														<div class="selectCtx"></div>
+														<span class="delete-select">删除</span>
+													</div>
+													<!--<div class="selectCtn4" style="display:none;">
+														<div class="selectCtx"></div>
+														<span class="delete-select">删除</span>
+													</div>-->
+                                                    <div class="selectCtn5" style="display:none;">
+														<div class="selectCtx"></div>
+														<span class="delete-select">删除</span>
+													</div>
+												</div>
+											</div>
+											<div class="jumpPage-body">
+												<p class="tip">订阅者点击该子菜单会跳到以下链接</p>
+												<div>
+													<span>页面地址</span>
+													<input id="inputLink" type="text" placeholder="认证后才可手动输入地址" >
+													<p class="source"></p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="bottom">
+							<button class="save btn btn-primary" type="button">保存并发布</button>
+							<button  type="button" class="preview btn btn-white">预览</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--头部结束-->
+</body>
+</html>
+<script>
+	$(function() {
+		// 点击td自动选中input
+		$('body').on('click', '.cosInput', function() {
+		    $(this).parents('tr').find('input').iCheck('check');
+		})
+	})
+
+	$(document).ready(function() {
+			App.init();			
+		});
+</script>

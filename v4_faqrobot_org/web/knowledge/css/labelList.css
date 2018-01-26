@@ -1,0 +1,259 @@
+.labelBody{
+			margin-top: 20px;
+			width: 99%;
+		}
+		.header{
+			margin: 15px 0px;
+		}
+		#labelHeader{
+		    width: 100%;
+		    font-weight: bold;
+		    font-size: 15px;
+		    border-bottom: 1px solid #CCCCCC;
+		    padding: 10px 20px;
+		}
+		#label{
+			width: 100%;
+			overflow: hidden;
+			border: 1px solid #CCCCCC;
+			float:left;
+			box-sizing: border-box;
+			border-radius: 5px;
+		}
+		.item{
+		    padding: 8px 20px;
+    		font-size: 12px;
+    		overflow: hidden;
+		}
+		.item:hover{
+			background-color: #dfdfdf;
+			cursor: pointer;
+		}
+		.edit{
+			float: right;
+			cursor: pointer;
+			color: #337ab7
+		}
+		.del{
+			float: right;
+	    	margin-left: 20px;
+	    	cursor: pointer;
+	    	color: #337ab7
+		}
+		#questionTxt{
+			width: 100%;
+			text-align: center;
+			font-weight: bold;
+		    font-size: 15px;
+		    padding-top: 10px;
+		}
+		#addbtn{
+			margin-left: 5px;
+		}
+		#delbtn{
+			margin-left: 3px;
+		}
+		input[type="text"]{
+			outline: none;
+			padding-left: 5px;
+		}
+		.item a{
+			vertical-align: middle;
+		}
+		.u-add{
+			margin-left: 20px;
+		}
+		.u-add1{
+			margin-left: 20px;
+		}
+		.itemTxt{
+			float: left;
+		}
+		.itemSpan{
+			float: right;
+		    margin-top: 3px;
+		    z-index: 2;
+		}
+		.labelCheck{
+			background-color: #E8F5F5!important;
+		}
+		#checkLabel{
+			border: 1px solid #3399FF;
+			border-radius:5px;
+			padding: 5px 10px;
+			width: 92px;
+		    font-size: 14px;
+		    color: #333;
+		}
+		.labelQuestionBody{
+    		padding: 0px 10px 10px 10px!important;
+    		overflow: hidden;
+    		border-radius: 5px;
+    		padding-top: 0;
+		}
+		#labelQuestion{
+		    margin-top: 10px;
+		    margin-bottom: 10px;
+		}
+		.questionItem{
+		    padding: 10px 0px;
+		    color: #333;
+		    font-size: 14px;
+		    overflow: hidden;
+	        width: 100%;
+            cursor: pointer;
+            border-bottom:1px solid #e2e7eb;
+		}
+		.questionItem:last-child{
+			border-bottom:none;
+		}
+		.questionItem:hover{
+			background-color: #E8F5F5;
+		}
+		.questionTxt{
+			float: left;
+		    position: relative;
+	        width: 95%;
+            padding-top: 2px;
+		}
+		
+		
+		
+		.m-del.showed {
+			display:block;
+		}
+		.wbbr {
+			word-wrap: break-word;
+    		word-break: break-all;
+		}
+		.imgContainer {
+			height: 100px;
+		    overflow: hidden;
+		    margin: 5px 0;
+		    padding: 3px;
+		    border: 1px solid #eee;
+		}
+		.qrcode img {
+			margin: 0 auto;
+		}
+		.imgTitle,.imgTime {
+			font-size: 18px;
+			text-align: center;
+		}
+		.imgUrl {
+			display: none;
+		}
+		.bootstrap-select.btn-group:not(.input-group-btn), .bootstrap-select.btn-group[class*="span"] {
+		    margin-bottom: 0px;
+		}
+		.dpd {
+			position: absolute;
+		    top: 100%;
+		    right: 0;
+		    z-index: 1000;
+		    display: none;
+		    min-width: 400px;
+		    padding: 5px 0;
+		    margin: 2px 0 0;
+		    text-align: left;
+		    list-style: none;
+		    background-color: #fff;
+		    -webkit-background-clip: padding-box;
+		    background-clip: padding-box;
+		    border: 0;
+		    border-radius: 4px;
+		    -webkit-box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+		    box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+		}
+		.dpd.see {
+			display: block;
+		}
+		.labelDiv {
+			display: inline-block;
+			padding: 8px;
+		}
+		/*#addlabelQuestion .modal-backdrop.fade.in {
+		    opacity: .1;
+		    filter: alpha(opacity=10);
+		}*/
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		#queManual .form-group {
+			margin-bottom: 0;
+		}
+		.QueContainer:not(:first-child) .form-group:nth-child(1) {
+			margin-top: 10px;
+		}
+		.QueContainer:not(:first-child) .form-group:nth-child(2) {
+			margin-top: 15px;
+		}
+		.QueContainer:first-child .form-group:nth-child(2) {
+			margin-top: 5px;
+		}
+		.imgBtn {
+			display: inline-block;
+			position: relative;
+		}
+		
+		
+		.questionInput{
+		    float: left;
+			width: 2.4%;
+			padding-left: 10px;
+		}
+		#labelQuestionHeader{
+	    	padding: 8px 10px;
+    		background-color: #E2E7EB;
+		}
+		.nav-pills {
+		    margin-bottom: 10px;
+		}
+		.nav>li>a {
+		    padding: 7px 15px;
+		}
+		#checkAllQuestion{
+			float: left;
+   			margin-top: -44px;
+		}
+		.panel{
+			padding: 15px;
+		}
+		#labelTxt{
+			max-height: 400px;
+		}
+		.checkb{
+			width: 5%
+
+		}
+		.questionTxt{
+			width: 90%;
+			text-indent: 24px;
+		}
+		.addlabelQuestion{
+			color: #949494;
+		    font-size: 12px;
+		    float: right;
+	        text-decoration: none;
+		}
+		.addlabelQuestion:hover{
+	        text-decoration: none;
+	        color: #949494;
+		}
+		.addlabelQuestion:visited{
+	        text-decoration: none;
+	        color: #949494;
+		}
+		#delAll{
+			color: #949494;
+		    font-size: 12px;
+		    float: right;
+	        cursor: pointer;
+            text-decoration: none;
+		}
+		.delLabel{
+			font-size: 13px;
+			margin-left: 30px;
+		}

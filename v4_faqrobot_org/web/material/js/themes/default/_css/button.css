@@ -1,0 +1,44 @@
+/*普通按钮样式及状态*/
+.edui-default .edui-toolbar .edui-button .edui-icon,
+.edui-default .edui-toolbar .edui-menubutton .edui-icon,
+.edui-default .edui-toolbar .edui-splitbutton .edui-icon {
+    height: 20px !important;
+    width: 20px !important;
+    background-image: url(../images/icons.png);
+    background-image: url(../images/icons.png) \9;
+}
+
+.edui-default .edui-toolbar .edui-button .edui-button-wrap {
+    padding: 1px;
+    position: relative;
+}
+
+.edui-default .edui-toolbar .edui-button .edui-state-hover .edui-button-wrap {
+    padding: 0;
+    border: 1px solid #e7e7eb;
+}
+
+.edui-default .edui-toolbar .edui-button .edui-state-checked .edui-button-wrap {
+    padding: 0;
+    border: 1px solid #e7e7eb;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+.edui-default .edui-toolbar .edui-button .edui-state-active .edui-button-wrap {
+    padding: 0;
+}
+.edui-default .edui-toolbar .edui-state-disabled .edui-label {
+    color: #ccc;
+}
+.edui-default .edui-toolbar .edui-state-disabled .edui-icon {
+    opacity: 0.3;
+    filter: alpha(opacity = 30);
+}
+
+/*自定义*/
+.edui-default .edui-toolbar .edui-for-indent .edui-icon {
+    background-image: url(../images/icon_edui_indent.png);
+    background-image: url(../images/icon_edui_indent.png) \9;
+}

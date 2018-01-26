@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>对接微信</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	<style>
+	.img-responsive {
+		border: 1px solid #E1E1E1;
+		border-radius: 5px;
+		margin-top: 25px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">对接微信</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">对接微信</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="row">
+							<h3 class="text-center">请根据微信公众号类型选择对接方式</h3>
+						</div>
+						<div class="col-md-offset-2 col-md-8">
+							<div class="col-md-4 text-center">
+								<a href="wechatListYun.html"><img src="images/button-3.png" class="img-responsive"></a>
+							</div>
+							<div class="col-md-4 text-center">
+								<a href="javascript:;" onclick="openWin('wechatChange.html',1024,768);"><img src="images/button-1.png" class="img-responsive"></a>
+							</div>
+							<div class="col-md-4 text-center">
+								<a href="wechatListCus.html"><img src="images/button-2.png" class="img-responsive"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+		});
+		function openWin(u, w, h) { 
+			var ua = navigator.userAgent.toLowerCase();
+			var s;
+			var Sys;
+			(s = ua.match(/msie ([\d]+)/)) ? Sys = s[1] : 0;
+			if(Sys<9){
+				location.href='wxChange.html';
+				return; 
+			}else{
+				var l = (screen.width - w) / 2; 
+				var t = (screen.height - h) / 2; 
+				var s = 'width=' + w + ', height=' + h + ', top=' + t + ', left=' + l; 
+				s += ', toolbar=no, scrollbars=no, menubar=no, location=no, resizable=no'; 
+				open(u, 'oWin', s); 
+			}
+		} 
+	</script>
+</body>
+</html>

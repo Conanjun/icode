@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+    .nano {
+    	height: 400px;
+    }
+    .nano .pane {
+    	width: 8px;
+    	right: 1px;
+    	margin: 5px;
+    }
+    .nano .slider {
+    	background: #f4f5f6;
+    }
+    </style>
+</head>
+<body>
+<section class="section">
+<div id="page-container" class="fade in">
+	<div id="content" class="content">
+		<!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">人员管理</a></li>
+            <li>资源管理</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <h1 class="page-header">资源管理</h1>
+        <!-- end page-header -->
+
+		<div class="box-body">
+			<div class="panel panel-inverse">
+				<div class="panel-body">
+					<div class="col-md-12">
+						<div class="col-md-3 toShow" style=" border-radius: 3px; padding: 5px; overflow: hidden">
+							<div>
+                                <span class="expandAll glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                                <span class="expandNot glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+                            </div>
+                            <div id="treeClasses" class="ztree" style="position: relative; overflow: auto; border: none;"></div>
+
+						</div>
+						<div class="col-md-9 toHide">
+							<div class="tabbable" id="tabs-115841">
+								<ul class="nav nav-pills">
+									<li class="active"><a href="#panel-605121" data-toggle="tab">添加资源</a></li>
+									<li><a href="#panel-349816" data-toggle="tab">修改资源</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="panel-605121">
+										<form id="addSource_form">
+											<div class="div1 form-group col-md-12">
+												<label class="col-md-2 control-label">添加资源名称</label>
+												<div class="col-md-6">
+													<input type="text" class="form-control" name="name">
+												</div>
+											</div>
+
+											<div class="div2 form-group col-md-12">
+												<label class="col-md-2 control-label">资源类型</label>
+												<div class="col-md-6">
+													<select name="type" class="form-control">
+														<option value="1" selected>子系统</option>
+														<option value="3">业务功能模块</option>
+														<option value="4">页面</option>
+														<option value="5">功能项</option>
+													</select>
+												</div>
+											</div>
+											<div class="div3 form-group col-md-12">
+												<label class="col-md-2 control-label">原页面地址</label>
+												<div class="col-md-6">
+													<input type="text" name="value" class="form-control">
+												</div>
+											</div>
+											<div class="div4 form-group col-md-12">
+												<label class="col-md-2 control-label">新页面地址</label>
+												<div class="col-md-6">
+													<input type="text" name="newValue" class="form-control">
+												</div>
+											</div>
+											<div class="div5 form-group col-md-12">
+												<label class="col-md-2 control-label">接口地址</label>
+												<div class="col-md-6">
+													<input type="text" name="interfaceUrl" class="form-control">
+												</div>
+											</div>
+											<div class="div6 form-group col-md-12">
+												<label class="col-md-2 control-label">所属子系统</label>
+												<div class="col-md-6">
+													<select name="systemId" class="form-control">
+														<option value="1" selected>知识库管理</option>
+														<option value="1" selected>素材管理</option>
+													</select>
+												</div>
+											</div>
+											<div class="div7 form-group col-md-12">
+												<label class="col-md-2 control-label">所属功能系统</label>
+												<div class="col-md-6">
+													<select name="parentId" class="form-control">
+														<option value="1" selected>添加问题</option>
+														<option value="1" selected>添加流程</option>
+													</select>
+												</div>
+											</div>
+											<div class="div8 form-group col-md-12">
+												<label class="col-md-2 control-label">所属权限系统</label>
+												<div class="col-md-6">
+													<select class="some form-control">
+														<option value="1" selected>用户权限</option>
+													</select>
+													<div class="div8_1"></div>
+												</div>
+											</div>
+											<div class="div9 form-group col-md-12">
+												<label class="col-md-2 control-label">所属页面</label>
+												<div class="col-md-6">
+													<select name="parentId" class="form-control">
+														<option value="1" selected>用户权限</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group col-md-12">
+												<label class="col-md-2 control-label"></label>
+												<div class="col-md-6">
+													<button type="button" class="save btn btn-primary label_margin"><i class="icon-share icon-white"></i>保存</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</section>
+<div class="modal hide " id="delpSModal">
+	<div class="modal-header">
+		<button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+		<h4>删除答案</h4>
+	</div>
+	<div class="modal-body">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<p>
+						确定删除该角色吗？
+					</p>
+					<form id="delSId">
+						<input type="hidden" name="Id">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="javascript:void(0)" class="btn btn-info">&nbsp;确&nbsp;定&nbsp;</a><a href="javascript:void(0)" data-dismiss="modal" class="btn">&nbsp;取&nbsp;消&nbsp;</a>
+	</div>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/base.js"></script>
+    <!-- 必加结束 -->
+
+    
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+<script>
+;
+$(function() {
+	// 收起
+	$('.closeIt').on('click', function() {
+	    $('.toShow').css('height', 26);
+	    $('.toHide').removeClass('col-md-10').addClass('col-md-12');
+	});
+	// 展开
+	$('.openIt').on('click', function() {
+	    $('.toShow').css('height', 'auto');
+	    $('.toHide').removeClass('col-md-12').addClass('col-md-10');
+	});
+	
+	//公用方法  
+	function _Base() {}
+
+	_Base.prototype = {
+		request: function(options) {
+			var This = this,
+				params = { //必须参数  
+					//  
+				},
+				defaults = {
+					prefix: '../../',
+					//接口路径前缀(不能写根路径)  
+					formId: '',
+					//被序列化的formId  
+					dataObj: {},
+					callback: function() {},
+					//回调函数  
+				},
+				options = $.extend({}, defaults, options);
+			formData = $.extend({}, This.formatSeriData(decodeURIComponent(($('#' + options.formId).serialize()))), options.dataObj); //中文乱码,使用decodeURIComponent解码即可  
+			$.ajax({
+				url: encodeURI(options.prefix + (options.url || '...')),
+				//...为基础地址  
+				type: 'get',
+				dataType: options.dataType || 'json',
+				data: $.extend({}, params, options.params, formData),
+				cache: false,
+				//IE下有用  
+				success: function(data) {
+					if (data) {
+						options.callback(data);
+					}
+				}
+			});
+		},
+		formatSeriData: function(data) {
+			if (!data) {
+				return;
+			}
+			var obj = '',
+				dot = ',',
+				arr = data.match(/[^&]+/g);
+
+			for (var i = 0; i < arr.length; i++) {
+				var str = arr[i].match(/([^=]+)=([^=]*)/);
+				if (i == arr.length - 1) {
+					dot = '';
+				}
+				obj += '"' + str[1] + '"' + ":" + '"' + str[2] + '"' + dot;
+			}
+			return JSON.parse('{' + obj + '}');
+		},
+		// 判断类型 array number string date function regexp object boolean null undefined  
+		isType: function(obj, type) {
+			return Object.prototype.toString.call(obj).toLowerCase() === '[object ' + type + ']';
+		}
+	}
+
+	function Tree(callback) {
+		_Base.call(this);
+		$.extend(Tree.prototype, _Base.prototype);
+		this.setting = {
+			data: {
+				simpleData: {
+					enable: true,
+				},
+			},
+			view: {
+				showIcon: false
+			},
+			callback: {
+				onClick: function (event, treeId, treeNode) {
+					callback && callback(treeNode);
+				},
+        beforeRemove: function (treeId, treeNode) {
+          var flag = false;
+          $.ajax({
+            type: 'get',
+            async: false,
+            datatype: 'json',
+            cache: false,
+            //不从缓存中去数据
+            url: encodeURI('../../AuthResource/deleteResource?resourceId=' + (treeNode.id-1)),
+            success: function(data) {
+              if (data.status == 0) {
+                flag = true;
+                yunNoty(data);
+              } else {
+                yunNoty(data);
+
+              }
+            }
+          });
+          return flag;
+        }
+			},
+      edit: {
+        enable: true,
+        showRenameBtn: false,
+        removeTitle: '删除资源'
+      }
+		};
+		this.init();
+	}
+
+	/*$('body').on('click', 'delM', function() {
+		console.log(1)
+	});*/
+
+	Tree.prototype = {
+		init: function() {
+			this.getList();
+		},
+		//获取问题分类
+		getList: function() {
+			var This = this;
+			This.request({
+				url: 'AuthResource/listAll',
+				params: {
+				},
+				callback: function(data) {
+					if(data.status) {
+						Base.gritter(data.message, false);
+					}else {
+						var html ='';
+						if(data.list[0]) {
+							var formatData = [],
+								len = data.list.length;
+
+							for(var key in data.list) {
+								formatData[key] = {};
+								formatData[key]['pId'] = data.list[key]['ParentId']+1;
+								formatData[key]['value'] = data.list[key]['Value'];
+								formatData[key]['systemId'] = data.list[key]['SystemId'];
+								formatData[key]['type'] = data.list[key]['Type'];
+								formatData[key]['newValue'] = data.list[key]['NewValue'];
+								formatData[key]['moduleId'] = data.list[key]['ModuleId'];
+								var suffix = '';
+								switch(data.list[key]['Type']) {
+									case 1:
+										suffix = '(子系统)';
+										break;
+									case 2:
+										suffix = '(功能模块)';
+										break;
+									case 3:
+										suffix = '(业务模块)';
+										break;
+									case 4:
+										suffix = '(页面)';
+										break;
+									case 5:
+										suffix = '(功能项)';
+										break;
+								}
+								formatData[key]['name'] = data.list[key]['Name'] + suffix;
+								formatData[key]['id'] = data.list[key]['Id']+1;
+							}
+
+							formatData[len] = {};
+							formatData[len]['name'] = '全部分类';
+							formatData[len]['pId'] = 0;
+							formatData[len]['id'] = 1;
+							formatData[len]['open'] = true;
+							$.fn.zTree.init($("#treeClasses"), This.setting, formatData);
+						}
+					}
+				}
+			});
+		}
+	}
+
+	function Resource() {
+		_Base.call(this);
+		$.extend(Resource.prototype, _Base.prototype);
+		this.type = 1;//资源类型
+		this.init();
+	}
+	Resource.prototype = {
+		init: function() {
+			//this.timePicker();
+			this.send();
+			this.hide();
+			this.findAllSystem();
+			this.findAllFunctionModule();
+			this.getAllModule();
+			this.findAllPage();
+		},
+		findAllSystem: function() {
+			this.request({
+				url: 'AuthResource/findAllSystem',
+				params: {
+				},
+				callback: function(data) {
+					if(data.status) {
+						Base.gritter(data.message, false);
+					}else {
+						if(data.listSystem) {
+							var html = '';
+							if(data.listSystem[0]) {
+								for(var i=0; i<data.listSystem.length; i++) {
+									html += '<option value="'+ data.listSystem[i].Id +'">'+ data.listSystem[i].Name +'</option>';
+								}
+							}
+							$('[name=systemId]').empty().append(html);
+						}
+					}
+				}
+			});
+		},
+		findAllFunctionModule: function() {
+			this.request({
+				url: 'AuthResource/findAllFunctionModule',
+				params: {
+				},
+				callback: function(data) {
+					if(data.status) {
+						Base.gritter(data.message, false);
+					}else {
+						if(data.listFunctionModule) {
+							var html = '';
+							if(data.listFunctionModule[0]) {
+								for(var i=0; i<data.listFunctionModule.length; i++) {
+									html += '<option value="'+ data.listFunctionModule[i].Id +'">'+ data.listFunctionModule[i].Name +'</option>';
+								}
+							}
+							$('.div7 [name=parentId]').empty().append(html);
+						}
+					}
+				}
+			});
+		},
+		findAllPage: function() {
+			this.request({
+				url: 'AuthResource/findAllPage',
+				params: {
+				},
+				callback: function(data) {
+					if(data.status) {
+						Base.gritter(data.message, false);
+					}else {
+						if(data.listPage) {
+							var html = '';
+							if(data.listPage[0]) {
+								for(var i=0; i<data.listPage.length; i++) {
+									html += '<option value="'+ data.listPage[i].Id +'">'+ data.listPage[i].Name +'</option>';
+								}
+							}
+							$('.div9 [name=parentId]').empty().append(html);
+						}
+					}
+				}
+			});
+		},
+		getAllModule: function() {
+			this.request({
+				url: 'AuthModule/getAllModule',
+				params: {
+				},
+				callback: function(data) {
+					if(data.status) {
+						Base.gritter(data.message, false);
+					}else {
+						if(data.listModule) {
+							$('.div8_1').empty();
+							var html = '';
+							if(data.listModule[0]) {
+								for(var i=0; i<data.listModule.length; i++) {
+									html += '<option value="'+ data.listModule[i].Id +'" index="'+ i +'">'+ data.listModule[i].Name +'</option>';
+									var ChildModule = data.listModule[i].ChildModule;
+									if(ChildModule) {
+										if(ChildModule[0]) {
+											var c_html = '';
+											for(var j=0; j<ChildModule.length; j++) {
+												c_html += '<option value="'+ ChildModule[j].Id +'">'+ ChildModule[j].Name +'</option>';
+											}
+											$('.div8_1').append('<select name="moduleId" index="'+ i +'" class="form-control">'+ c_html +'</select>');
+										} 
+									}
+								}
+							}
+							$('.some').empty().append(html);
+						}
+					}
+				}
+			});
+		},
+		//显隐切换
+		hide: function() {
+			var This = this;
+			$('.nav-pills a').on('click', function() {
+				$('[name=name').val('');
+				$('[name=type] option:first').prop('selected', true)
+				$('[name=type]').trigger('change');
+			});
+
+			$('.div3, .div4, .div5, .div6, .div7, .div8, .div9').hide().find('[name]').attr('disabled', 'disabled');
+			$('[name=type]').on('change', function() {
+				This.type = +$('[name=type] option:selected').val();
+				switch(This.type) {
+					case 1://子系统
+						$('.div3, .div4, .div5, .div6, .div7, .div8, .div9').hide().find('[name]').attr('disabled', 'disabled');
+						break;
+					case 3://业务功能模块
+						$('.div3, .div4, .div5, .div6, .div7, .div8, .div9').hide().find('[name]').attr('disabled');
+						$('.div6').show().find('[name]').removeAttr('disabled');
+						break;
+					case 4://页面
+						$('.div3, .div4, .div5, .div6, .div7, .div8, .div9').show().find('[name]').removeAttr('disabled');
+						$('.div5, .div9').hide().find('[name]').attr('disabled', 'disabled');
+						$('.div8_1 select:first').show().siblings().hide().prop('disabled', true);
+						break;
+					case 5://功能项
+						$('.div3, .div4, .div5, .div6, .div8, .div9').show().find('[name]').removeAttr('disabled');
+						/*setTimeout(function() {
+							$('select[index='+ 0 +']').show().removeAttr('disabled', 'disabled').siblings().hide().attr({'disabled': 'disabled', 'a':123});
+						}, 300);*/
+						$('.div3, .div4, .div7').hide().find('[name]').attr('disabled', 'disabled');
+						break;
+				}
+			});
+			$('.some').on('change', function() {
+				$('.div8_1 select').eq((+$('.some>option:selected').attr('index'))).show().removeAttr('disabled').siblings().hide().attr('disabled', 'disabled');
+			});
+		},
+		//提交请求
+		send: function() {
+			var This = this;
+			$('.save').on('click', function() {
+				switch(This.type) {
+					case 1:
+						This.parentId = 0;
+						This.systemId = 0;
+						break;
+					case 3:
+						This.parentId = $('[name=systemId] option:selected').val();
+						break;
+					case 4:
+						This.parentId = $('.div7 [name=parentId] option:selected').val();
+						break;
+					case 5:
+						This.parentId = $('.div9 [name=parentId] option:selected').val();
+						break;
+				}
+				var $li = $('.nav-pills li');
+				for(var i=0; i<$li.length; i++) {
+					if($li.eq(i).is('.active')) {
+						if(i) {//修改
+							$('.div5 input').attr('name', 'value')
+							This.request({
+								url: 'AuthResource/editResource',
+								params: {
+									parentId: This.parentId,
+									systemId: This.systemId,
+									resourceId: This.resourceId
+								},
+								formId: 'addSource_form',
+								callback: function(data) {
+									if(data.status) {
+										Base.gritter(data.message, false);
+									}else {
+										Base.gritter(data.message, true);
+										var i=0;
+										setInterval(function() {
+											i++;
+											if(i==50) {
+											//	location.reload();
+											}
+										}, 50);
+									}
+								}
+							});
+						}else {//添加
+							$('.div5 input').attr('name', 'value')
+							This.request({
+								url: 'AuthResource/editResource',
+								params: {
+									parentId: This.parentId,
+									systemId: This.systemId
+								},
+								formId: 'addSource_form',
+								callback: function(data) {
+									if(data.status) {
+										Base.gritter(data.message, false);
+									}else {
+										Base.gritter(data.message, true);
+										var i=0;
+										setInterval(function() {
+											i++;
+											if(i==50) {
+											//	location.reload();
+											}
+										}, 50);
+									}
+								}
+							});
+						}
+						break;
+					}
+				}
+			});
+		},
+		//日历
+		timePicker: function() {
+			$('.timePicker').datetimepicker({
+				language: 'zh-CN',
+				format: 'yyyy-mm-dd hh:ii',
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate: new Date()
+			});
+		}
+	}
+	var resource = new Resource();
+	new Tree(function(treeNode) {
+		$('.nav-pills li a').eq(1).tab('show');
+		$('[name=name]').val(treeNode.name.replace(/\([^\(]+\)$/, ''));
+		$('[name=value]').val(treeNode.value);
+		$('[name=newValue]').val(treeNode.newValue);
+		$('[name=interfaceUrl]').val(treeNode.value);
+		$('[name=systemId] option[value='+ treeNode.systemId +']').prop('selected', true).siblings().prop('selected', false);
+		$('[name=parentId] option[value='+ (treeNode.pId-1) +']').prop('selected', true).siblings().prop('selected', false);
+		var index = +$('[name=moduleId] option[value='+ (treeNode.moduleId) +']').parent().attr('index');
+		$('[name=moduleId] option[value='+ (treeNode.moduleId) +']').prop('selected', true).siblings().prop('selected', false);
+		setTimeout(function() {
+			$('select[index='+ index +']').show().removeAttr('disabled', 'disabled').siblings().hide().attr('disabled', 'disabled');
+		}, 300);
+		$('.some>option').eq(index).prop('selected', true).siblings().prop('selected', false);
+		$('[name=moduleId] option[value='+ (treeNode.moduleId) +']').prop('selected', true).siblings().prop('selected', false).parent().show().removeAttr('disabled').siblings().hide().attr('disabled', 'disabled');
+		resource.resourceId = treeNode.id-1;
+		switch(treeNode.type) {
+			case 1:
+				$('[name=type] option').eq(0).prop('selected', true).siblings().prop('selected', false);
+				break;
+			case 3:
+				$('[name=type] option').eq(1).prop('selected', true).siblings().prop('selected', false);
+				break;
+			case 4:
+				$('[name=type] option').eq(2).prop('selected', true).siblings().prop('selected', false);
+				break;
+			case 5:
+				$('[name=type] option').eq(3).prop('selected', true).siblings().prop('selected', false);
+				break;
+		}
+		$('[name=type]').trigger('change');
+	});
+
+});
+</script>
+</body>
+</html>

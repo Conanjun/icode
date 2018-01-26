@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>安全设置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">安全设置</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">安全设置</h1>
+				<div class="row" style="height:10px;"></div>
+						<ul class="nav nav-tabs"  id='cellTAB-Title' >
+							<li class="active"><a data-toggle="tab" href="#pwdTAB" aria-expanded="true">修改密码</a></li>
+							<!-- <li class=""><a data-toggle="tab" href="#cellTAB" aria-expanded="false">绑定手机号</a></li> -->
+							<li  class=""><a  data-toggle="tab" href="#cellTAB"  aria-expanded="false">绑定手机号</a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="pwdTAB" class="tab-pane fade active in">
+								<form method="POST" class="form-horizontal" id="setpwd">
+									<fieldset>
+										<legend>修改密码</legend>
+										<div class="form-group">
+											<label class="control-label col-md-1">旧密码</label>
+											<div class="col-md-2">
+												<input type="password" placeholder="请输入旧密码" class="form-control" name="oldPwd">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-1">新密码</label>
+											<div class="col-md-2">
+												<input type="password" placeholder="请输入新密码" class="form-control" name="newPwd" id="newPwd">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-1">确认密码</label>
+											<div class="col-md-2">
+												<input type="password" placeholder="请再次输入新密码" class="form-control" name="cpassword" id="cpassword">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-offset-1 col-md-2">
+												<button class="btn btn-primary m-r-1" type="submit">重置</button>
+												<button onclick="clearinput()" class="btn btn-default m-r-5" type="button">取消</button>
+											</div>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+							<div id="cellTAB" class="tab-pane fade">
+								<form method="POST" class="form-horizontal" id="edit_add_Tel" style="display:none;">
+									<fieldset>
+										<legend>修改手机号</legend>
+										<div class="form-group">
+											<label class="control-label col-md-1">旧手机号</label>
+											<div class="col-md-2 input-group">
+												<input type="text" placeholder="请输入旧手机号" class="form-control" name="telNum" disabled maxlength="11">
+												<div class="input-group-btn">
+													<button class="btn btn-primary sendSpan" style="cursor:pointer;" onclick="sendCode();">发送验证码</button>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-1">验证码</label>
+											<div class="col-md-2" style="padding-left:0;padding-right:0;">
+												<input type="text" placeholder="请输入验证码" class="form-control" name="telCode" maxlength="6">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-offset-1 col-md-2" style="padding-left:0;padding-right:0;">
+												<button class="btn btn-primary m-r-5" type="submit">验证</button>
+											</div>
+										</div>
+									</fieldset>
+								</form>
+								<form method="POST" class="form-horizontal" id="send_Code" style="display:none;">
+									<fieldset>
+										<legend>绑定手机号</legend>
+										<div class="form-group">
+											<label class="control-label col-md-1">新手机号</label>
+											<div class="col-md-2 input-group">
+												<input type="text" placeholder="请输入新手机号" class="form-control" name="telNum" maxlength="11">
+												<div class="input-group-btn">
+													<button class="btn btn-primary sendSpan" style="cursor:pointer;" type="submit">发送验证码</button>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+								</form>
+								<form method="POST" class="form-horizontal" id="add_Tel" style="display:none;">
+									<fieldset>
+										<input type="hidden" name="telNum">
+										<div class="form-group">
+											<label class="control-label col-md-1">验证码</label>
+											<div class="col-md-2" style="padding-left:0;padding-right:0;">
+												<input type="text" placeholder="请输入验证码" class="form-control" name="telCode" maxlength="6">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-offset-1 col-md-2" style="padding-left:0;padding-right:0;">
+												<button class="btn btn-primary m-r-5" type="submit">验证</button>
+											</div>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+						</div>
+			</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		var falg=false;
+		var countdown=120;
+		$(document).ready(function() {
+			App.init();
+			//验证用户账户类型 邮箱or手机
+			checkType();
+			//根据域名是否是v3.faqrobot.org,来隐藏和展示手机号
+			if(window.location.host.indexOf('v3.faqrobot.org')  ==  -1){
+				$('#cellTAB-Title').hide();
+			}
+            //增加regex正则表达式验证 
+            $.validator.addMethod("regex", function(value, element, regexpr) {            
+                return regexpr.test(value);  
+            }, "请输入正确的密码！");   
+			//修改密码表单验证
+			$('#setpwd').validate({
+				rules:{
+					oldPwd:{
+						required:true
+					},
+					newPwd:{
+						required:true,
+                        minlength:6,
+                        maxlength:20,
+                        regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z][0-9A-Za-z]{5,19}$/
+					},
+					cpassword:{
+						required:true,
+						equalTo:'#newPwd'
+					}
+				},
+				messages:{
+					oldPwd:{
+						required:"请输入原有密码！"
+					},
+					newPwd:{
+						required:"请输入新密码！",
+                        minlength:'密码不能少于6位！',
+                        maxlength:'密码不能多于20位字符！',
+                        regex:'密码必须是字母数字组合且首位为字母！'
+					},
+					cpassword:{
+						required:"请再次输入新密码！",
+						equalTo:"两次输入的密码不一致！"
+					}
+				},
+				submitHandler: setPwd
+			});
+			//绑定手机号表单验证
+			$('#send_Code').validate({
+				rules:{
+					telNum:{
+						isMobile:true
+					}
+				},
+				messages:{
+					telNum:{
+						isMobile:"请正确填写您的手机号码！"
+					}
+				},
+				submitHandler: sendNewCode
+			});
+			$('#add_Tel').validate({
+				rules:{
+					telCode:{
+						required:true
+					}
+				},
+				messages:{
+					telCode:{
+						required:'请输入正确的验证码！'
+					}
+				},
+				submitHandler: finallyEdit
+			});
+			//验证手机号表单验证
+			$('#edit_add_Tel').validate({
+				rules:{
+					telCode:{
+						required:true
+					}
+				},
+				messages:{
+					telCode:{
+						required:'请输入正确的验证码！'
+					}
+				},
+				submitHandler: checkOldTel
+			});
+		});
+
+		//修改密码表单提交
+		function setPwd(){
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../user/reSetPwd'),
+				data:$("#setpwd").serialize(),
+				success:
+				function(data){
+					if(data.status==0){
+						yunNoty(data);
+						$('#setpwd').find('input').val('');
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//清空修改密码表单
+		function clearinput(){
+			$('#setpwd').find('input').val('');
+		}
+
+		//一进页面判断他的注册类型
+		function checkType(){
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../User/checkUserType'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.checked==2){
+							$('#send_Code').hide();
+							$('#add_Tel').hide();
+							$('#edit_add_Tel').show();
+							$('#edit_add_Tel input[name=telNum]').val(data.telNum);
+						} else {
+							$('#send_Code').show();
+							$('#add_Tel').show();
+							$('#edit_add_Tel').hide();
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//倒计时
+		function settime(obj) {
+			if (countdown == 0) {
+				//obj.bind("click");
+				obj.removeAttr('disabled');
+				obj.html("再次发送验证码");
+				obj.addClass('btn-primary');
+				countdown = 120;
+				return;
+			} else {
+				//obj.unbind("click");
+				obj.attr('disabled','disabled');
+				obj.removeClass('btn-primary');
+				if(countdown<10){
+				countdown='0'+countdown;
+				}
+				obj.html("重新发送(" + countdown + ")");
+				countdown--;
+			}
+			setTimeout(function() {
+				settime(obj)
+			}
+			,1000)
+		}
+
+		//如果是手机认证，需要发送验证码验证
+		function sendCode(){
+			if(falg)return;
+			falg=true;
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../User/sendOldTelCode'),
+				success:
+				function(data){
+					falg=false;
+					if(data.status==0){
+						settime($('#edit_add_Tel .sendSpan'));
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//验证旧手机验证码是否正确
+		function checkOldTel(){
+			if(falg)return;
+			falg=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../User/verifyOldCode'),
+				data:$("#edit_add_Tel").serialize(),
+				success:
+				function(data){
+					falg=false;
+					if(data.status==0){
+						$('#send_Code').show();
+						$('#add_Tel').show();
+						$('#edit_add_Tel').hide();
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//发送新的手机验证码
+		function sendNewCode(){
+			if(falg)return;
+			falg=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../User/sendNewTelCode'),
+				data:$("#send_Code").serialize(),
+				success:
+				function(data){
+					falg=false;
+					if(data.status==0){
+						settime($('#send_Code .sendSpan'));
+						//将手机号填入修改手机号表单
+						$('#add_Tel input[name=telNum]').val($('#send_Code input[name=telNum]').val());
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//最后一步修改完成
+		function finallyEdit(){
+			if(falg)return;
+			falg=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../User/verifyNewCode'),
+				data:$("#add_Tel").serialize(),
+				success:
+				function(data){
+					falg=false;
+					if(data.status==0){
+						//清空修改手机号表单
+						$('#add_Tel input[name=telNum]').val('');
+						yunNoty(data);
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+
+
+	</script>
+</body>
+</html>

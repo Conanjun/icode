@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>登录日志</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		#log_Query .form-group {
+			margin-bottom:3px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">登录日志</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">登录日志</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="log_Query">
+
+							<div style="margin-bottom: 15px" class="form-group pull-right">
+								<div class="btn-group">
+									<button type="button" class="sortWord2 btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										默认排序 <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li> <a href="javascript:;" onClick="loginList(1,4);$('.sortWord2').html($(this).text() + '&nbsp;<span class=caret></span>');return false;">默认排序</a> </li>
+										<li> <a href="javascript:;" onClick="loginList(1,3);$('.sortWord2').html($(this).text() + '&nbsp;<span class=caret></span>');return false;">时间正序</a> </li>
+										<li> <a href="javascript:;" onClick="loginList(1,4);$('.sortWord2').html($(this).text() + '&nbsp;<span class=caret></span>');return false;">时间倒序</a> </li>
+										<li> <a href="javascript:;" onClick="loginList(1,33);$('.sortWord2').html($(this).text() + '&nbsp;<span class=caret></span>');return false;">登录次数正序</a> </li>
+										<li> <a href="javascript:;" onClick="loginList(1,34);$('.sortWord2').html($(this).text() + '&nbsp;<span class=caret></span>');return false;">登录次数倒序</a> </li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="btn-group pull-right m-r-4">
+								<button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;<span class="caret"></span></button>
+								<ul class="dropdown-menu" style="min-width: 275px;">
+									<li><a class="ttw0" data-p="" href="#">昨天</a></li>
+									<li><a class="ttw1" data-p="" href="#">今天</a></li>
+									<li><a class="ttw2" data-p="" href="#">最近七天</a></li>
+									<li><a class="ttw3" data-p="" href="#">最近一个月</a></li>
+									<li><a class="ttw4" data-p="" href="#">全部时间</a></li>
+									<li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+										<span style="margin-left: 15px">自定义时间范围：</span>
+										<div style="text-align: center">
+											<input id="tm1" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm" name="startT">
+											<input id="tm2" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm" name="endT">
+										</div>
+										<div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">
+											<button style="width:97%;" class="btn confirm btn-primary" type="button" >确认</button>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="input-group pull-right m-r-3" style="vertical-align: top;">
+								<input type="text" class="form-control" name="userName" id="selectOne" placeholder="请输入查询内容">
+								<input type="text" style='display:none'/>
+								<div class="input-group-btn">
+									<ul class="dropdown-menu pull-right">
+										<li><a class="queryA" href="#" data-va="userName">账号查询</a></li>
+										<li><a class="queryA" href="#" data-va="name">昵称查询</a></li>
+										<li><a class="queryA" href="#" data-va="ipAddress">IP地址查询</a></li>
+										<li><a class="queryA" href="#" data-va="address">地理位置查询</a></li>
+									</ul>
+									<button type="button" class="queryAbtn btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+										账号查询&nbsp;<span class="caret"></span>
+									</button>
+									<button style="border-bottom-left-radius: 3px;border-top-left-radius: 3px; margin-left: 4px;" onclick="loginList()" class="btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+
+						</form>
+						<table class="table" id="replayList">
+							<thead>
+								<tr>
+									<th>账号</th>
+									<th>昵称</th>
+									<th width="200">登录时间</th>
+									<th>IP地址</th>
+									<th>地理位置</th>
+									<th>分组</th>
+									<th width="120">登陆次数</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="userLoginPageList"></div>
+						<input type="hidden" name="orderType" value="4">
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/system.js"></script>
+	<script type="text/javascript">
+
+		//ENTER
+		$(document).on('keyup', function(e) {
+		  var $activeEl = $(document.activeElement);
+		  if ($activeEl.is('#selectOne') && (e.keyCode == 13 || e.keyCode == 108)) {
+		    loginList()
+		  }
+		});
+
+		$(document).ready(function() {
+			$('.confirm').click(function(){
+				$('#myDropdown').parent().removeClass('open');$('.btnSearch').trigger('click');
+				var time1 =$('#tm1').val();
+				var time1s = time1.split('-');
+				var time1s2 = time1s[2].split(' ');
+				var time2 =$('#tm2').val();
+				var time2s = time2.split('-');
+				var time2s2 = time2s[2].split(' ');
+				$('#myDropdown').parent().removeClass('open');$('.btnSearch').trigger('click')
+				$('#myDropdown').html(time1s[1]+'月'+time1s2[0]+'日'+'-'+time2s[1]+'月'+time2s2[0]+'日'+'  '+'<span class="caret"></span>');
+			})
+			//页面初始化 默认一周自动填充时间
+			//全局变量 获得当前时间
+			var myDate = new Date();
+			var myDateM = myDate.getMonth()+1;//月
+			var myDateD = myDate.getDate();//日
+			var myDateHou = myDate.getHours();//时
+            var myDateMin = myDate.getMinutes()+2;//分
+
+            function updateTime(){
+                myDate = new Date()
+                myDateM = myDate.getMonth() + 1//月
+                myDateD = myDate.getDate()//日
+                myDateHou = myDate.getHours()//时
+                myDateMin = myDate.getMinutes() + 2//分
+            }
+
+			if(myDateM<10){//判断现在月份格式
+				myDateM = "0"+myDateM;
+			}
+			if(myDateD<10){//判断现在日期格式
+				myDateD = "0"+myDateD;
+			}
+			if(myDateHou<10){//判断现在小时格式
+				myDateHou = "0"+myDateHou;
+			}
+			if(myDateMin<10){//判断现在分钟格式
+				myDateMin = "0"+myDateMin;
+			}
+			//页面初始化 默认一周自动填充时间
+			function  apply(){//获取一周前时间
+				var newDatew = new Date();
+				newDatew.setTime(newDatew.getTime()-7*24*60*60*1000);//此时newDatew变成了一周前的时间
+				var weekMon = newDatew.getMonth()+1;//一周前的月份
+				if(weekMon<10){weekMon='0'+newDatew.getMonth()};
+				var weekDay = newDatew.getDate();//一周前的日
+				if(weekDay<10){weekDay='0'+newDatew.getDate()};
+				var week = newDatew.getFullYear()+"-" + weekMon + "-" + weekDay;
+				$('#tm1').val(week+' '+myDateHou+':'+myDateMin);//一周前的现在
+				$('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//今天的时间
+				loginList();
+			}
+			apply();
+
+//获得上月今天的方法
+			function lastMonthDate(){
+				var vYear = myDate.getFullYear();
+				var vMon = myDate.getMonth() + 1;
+				var vDay = myDate.getDate();
+				//每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+				var daysInMonth = new Array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+				if(vMon==1){
+					vYear = myDate.getFullYear()-1;
+					vMon = 12;
+				}else{
+					vMon = vMon -1;
+				}
+				//若是闰年，二月最后一天是29号
+				if(vYear%4 == 0 && vYear%100 != 0){
+					daysInMonth[2]= 29;
+				}
+				if(daysInMonth[vMon] < vDay){
+					vDay = daysInMonth[vMon];
+				}
+				if(vDay<10){
+					vDay="0"+vDay;
+				}
+				if(vMon<10){
+					vMon="0"+vMon;
+				}
+				var LastMonthDate =vYear+"-"+ vMon +"-"+vDay;
+				return LastMonthDate;
+			}
+
+
+//点击弹出下拉菜单
+			$('#myDropdown').on('click', function () {
+				$(this).parent().toggleClass('open');
+			});
+
+			$('body').on('click', function (e) {
+				if(!$('#myDropdown').parent().find($(e.target)).length) {
+					$('#myDropdown').parent().removeClass('open');
+				}
+			});
+
+
+            $('.ttw0').on('click', function() { //昨天
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text()+'&nbsp;'+ '<span class="caret"></span>');
+				var newDate1 = new Date();//获取当前时间
+				newDate1.setTime(newDate1.getTime()-24*60*60*1000);//当前时间设置成昨天时间
+				var yestM = newDate1.getMonth()+1; //昨天的月
+				if(yestM<10){
+					yestM ="0"+yestM;
+				}
+				var yestD = newDate1.getDate();//昨天的日
+				if(yestD<10){
+					yestD="0"+yestD;
+				}
+				pageNo = 1;
+				var yesterday = newDate1.getFullYear()+"-" + yestM + "-" + yestD;
+				$('.ttw').html($(this).text()+'&nbsp;' + '<span class="caret"></span>');
+				$('#tm1').val(yesterday+' '+'00'+':'+'00');//昨天的时间
+				$('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//现在的时间
+				loginList();
+			});
+
+            $('.ttw1').on('click', function() { //今天
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text()+'&nbsp;' + '<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//今天零点
+				$('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+				loginList();
+			});
+
+            $('.ttw2').on('click', function() { //最近七天
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text()+'&nbsp;' + '<span class="caret"></span>');
+				apply();
+				loginList();
+			});
+            $('.ttw3').on('click', function() { //最近一个月
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text()+'&nbsp;' + '<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val(lastMonthDate()+' '+myDateHou+':'+myDateMin);//一月前的今天
+				$('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+				loginList();
+			});
+            $('.ttw4').on('click', function() { //全部
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val('');
+				$('#tm2').val('');
+				loginList();
+			});
+
+			$('.queryA').click(function(){
+				$('.queryAbtn').html($(this).text() + '&nbsp;'+'<span class="caret"></span>');
+				$('#selectOne').attr('name', $(this).data('va'));
+				loginList();
+			})
+
+			App.init();
+			//loginList(1);
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate:new Date()
+			});
+			$('#Choice_Query').on('change',function(){
+				$('#selectOne').attr('name', $(this).val());
+			})
+			$('.selectpicker').selectpicker({
+				style: 'btn-primary',
+				size: 4,
+				width: '100%',
+			});
+		});
+	</script>
+</body>
+</html>

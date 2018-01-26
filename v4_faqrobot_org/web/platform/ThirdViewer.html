@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>第三方客服</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">第三方客服</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">第三方客服</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加第三方客服</span>
+						</a>
+						<table class="table" id="listTable">
+							<thead>
+								<tr>
+									<th nowrap="">名称</th>
+									<th>Key</th>
+									<th nowrap="">实现类名称</th>
+									<th nowrap="">站点ID</th>
+									<th width="150">添加时间</th>
+									<th width="80">状态</th>
+									<th width="80">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加第三方客服</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="form_thirdWX" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">第三方客服名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入第三方客服名称" class="form-control" name="name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Key<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入Key" class="form-control" name="key" maxlength="50">
+										</div>
+										<a class="btn btn-sm" id="wx_form_gen">随机生成</a>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类名称" class="form-control" name="className">
+										</div>
+									</div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">状态</label>
+                                        <div class="col-md-7">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="status" value="0" checked="">
+                                                禁用
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="status" value="1">
+                                                启用
+                                            </label>
+                                        </div>
+                                    </div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#form_thirdWX').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改第三方客服</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">第三方客服名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入第三方客服名称" class="form-control" name="name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Key<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入Key" class="form-control" name="key" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类名称" class="form-control" name="className">
+										</div>
+									</div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">状态</label>
+                                        <div class="col-md-7">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="status" value="0" checked="">
+                                                禁用
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="status" value="1">
+                                                启用
+                                            </label>
+                                        </div>
+                                    </div>
+									<input type="hidden" name="id" id="hideid" />
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			listTable(1);
+
+			$('#form_thirdWX').validate({
+				rules:{
+					key:{
+						required:true
+					}
+				},
+				messages:{
+					key:{
+						required:'请输入key！'
+					}
+				},
+				submitHandler: doNewAdd
+			});
+
+			$('#save_form').validate({
+				submitHandler: editWeiBo
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#form_thirdWX')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#save_form')[0].reset();
+			})
+		});
+
+		$('#wx_form_gen').on('click',function(){
+			$('#form_thirdWX [name=key]').val(generateKey());
+		});
+
+		//修改
+		function editWeiBo(){
+			saveModal('../../ThirdViewer/edit','save_form','editModal',listTable);
+		}
+
+		var flag_add=false;
+		function doNewAdd(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../ThirdViewer/addViewer'),
+				data: $('#form_thirdWX').serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listTable(1);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function listTable(){
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../ThirdViewer/getViewerList?status=-1'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.listViewer.length>0){
+							var html = '';
+							for(var i=0;i<data.listViewer.length;i++){
+								html += '<tr>';
+								html += '<td>'+(data.listViewer[i].Name==null?'':data.listViewer[i].Name)+'</td>';
+								html += '<td>'+(data.listViewer[i].Key==null?'':data.listViewer[i].Key)+'</td>';
+								html += '<td>'+(data.listViewer[i].ClassName==null?'':data.listViewer[i].ClassName)+'</td>';
+								html += '<td>'+(data.listViewer[i].WebId==null?'':data.listViewer[i].WebId)+'</td>';
+								html += '<td>'+(data.listViewer[i].Time==null?'':data.listViewer[i].Time)+'</td>';
+                                if(data.listViewer[i].Status==null) {
+                                    html += '<td></td>';
+                                } else if(data.listViewer[i].Status==0) {
+                                    html += '<td>禁用</td>';
+                                } else if(data.listViewer[i].Status==1) {
+                                    html += '<td>启用</td>';
+                                }
+								html += '<td><a href="javascript:void(0);" class="sepV_a" rel="'+data.listViewer[i].Id+'" title="编辑" onclick="repModal(this)"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a href="javascript:void(0);" class="m-del" title="删除" rel="'+data.listViewer[i].Id+'"><i class="glyphicon glyphicon-trash"></i></a></td>';
+								html += "</tr>";
+							}
+							$('#listTable').find('tbody').html(html);
+							//单个删除
+		          $('.m-del').on('click',function(){
+		            var self = this;
+		            $(self).adcCreator(function() {
+									delById(self,'../../ThirdViewer/delete',listTable,'pageList');
+		            });
+		          });
+						}else{
+							$('#listTable').find('tbody').html('<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function repModal(obj){
+			var curObj=$(obj).parents('tr').children('td');
+			$('#save_form #hideid').val($(obj).attr('rel'));
+			$('#save_form [name=name]').val($(obj).parent().siblings().eq(0).html());
+			$('#save_form [name=key]').val($(obj).parent().siblings().eq(1).html());
+			$('#save_form [name=className]').val($(obj).parent().siblings().eq(2).html());
+			//$('#save_form [name=className]').val($(obj).parent().siblings().eq(3).html());
+            if($(obj).parent().siblings().eq(5).html() == "启用") {
+                $('#save_form [name=status]').eq(1).iCheck('check');
+            } else if($(obj).parent().siblings().eq(5).html() == "禁用") {
+                $('#save_form [name=status]').eq(0).iCheck('check');
+            }
+			$("#editModal").modal('show');
+		}
+
+		//用给定字母随机生成一串字符
+		function generateKey(len) {
+		　　len = len || 50;
+		　　var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		　　var maxPos = $chars.length;
+		　　var pwd = '';
+		　　for (i = 0; i < len; i++) {
+		　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+		　　}
+		　　return pwd;
+		}
+	</script>
+</body>
+</html>

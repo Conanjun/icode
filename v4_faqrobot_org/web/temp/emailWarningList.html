@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>报警列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">报警列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">报警列表</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+
+						<div style="text-align:right;">
+							<div id="dotype" style="display:inline-block;vertical-align: top;" class="f-s-14">
+								<select class="selectpicker ">
+									<option value="">全部</option>
+									<option value="1">已读</option>
+									<option value="2">未读</option>
+								</select>
+							</div>
+							<a href="javascript:;" id="searchWarnHistory" class="btn btn-primary">报警邮件的流水记录</a>
+							<a href="javascript:;" onclick="statusWarn(this)" class="btn btn-default" id="chectstyle">批量标记为已读</a>
+							<a href="ruleList.html" data-num="0" data-name="规则列表" class="btn btn-default">返回</a>
+						</div>
+						<table class="table" id="warningTabList">
+							<thead>
+								<tr>
+									<th width="60"><input type="checkbox" class="select_rows" name="select_rows" data-tableid="warningTabList"></th>
+									<th>问题 </th>
+									<th>浏览次数</th>
+									<th>起始时间 </th>
+									<th>结束时间 </th>
+									<th width="80">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="warningpageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		var dt = 6;
+		$(document).ready(function() {
+			App.init();
+			iframeTab.init({iframeBox: ''});
+			icheckBindInit();
+			//列出表格
+			warningList();
+			$("#dotype .selectpicker").selectpicker({
+				style:' btn-primary',
+				width:'100%'
+			});
+			//点击全部按钮时调用刷新数据的方法
+			$('#dotype .selectpicker').change(function() {
+				warningList();
+			});
+		});
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return unescape(r[2]); return null;
+		}
+		//警告列表
+		function warningList(pageNo,selectedval) {
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			if (!pageNo) pageNo = 1;
+			$('#warningTabList').tableAjaxLoader2(6);
+			//获取‘全部’选择框选中的值
+			if($('#dotype .selectpicker').children('option:selected').val()==1){
+				selectedval=$('#dotype .selectpicker').children('option:selected').val();
+			}
+			if($('#dotype .selectpicker').children('option:selected').val()==2){
+				selectedval=$('#dotype .selectpicker').children('option:selected').val();
+			}
+			var json1={};
+			if(!status){
+				json1={
+					'ruleId':((getUrlParam('ruleId')=='null')?'0':getUrlParam('ruleId')),
+					'status':selectedval
+				}
+
+			}else {
+				json1={
+					'ruleId':((getUrlParam('ruleId')=='null')?'0':getUrlParam('ruleId'))
+				}
+			}
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI('../../Alarm/listAlarmQues?pageSize=' + 5 + '&pageNo=' + pageNo),
+				data:json1,
+				success: function(data) {
+					var s = [];
+					if (data.status == 0) {
+						if (data.List.length > 0) {
+							var list = data.List;
+							for (var i = 0; i < list.length; i++) {
+								if (list[i].Status == 1) {
+									s.push('<tr>');
+								} else if (list[i].Status == 2) {
+									s.push('<tr class="notRead">');
+								}
+								s.push('<td><input type="checkbox" class="select_row" name="ckb" value="' + list[i].Id + '"></td>');
+								s.push('<td>' + list[i].Question + '</td>');
+								s.push('<td>' + list[i].Hits + '</td>');
+
+								var time = list[i].StartTime == null ? '': list[i].StartTime;
+								s.push('<td>' + time + '</td>');
+								s.push('<td>' + list[i].EndTime + '</td>');
+								if (list[i].Status == 1) {
+									s.push('<td><a href="javascript:void(0)" style="color:#666;">已读</a></td>');
+								} else {
+									s.push('<td rel="' + list[i].Id + '"><a href="javascript:void(0)" class="ingoreWarbing" style="color:#68b828">标记为已读</a></td>');
+								}
+								s.push('</tr>');
+							}
+							$('#warningTabList').find('tbody').html(s.join(''));
+							//复选框被选中时高亮标记为已读按钮
+							$("#chectstyle").removeClass("btn-primary");
+							$("#chectstyle").addClass("btn-default");
+							$(".select_rows,.select_row").on("ifChanged",function(){
+								if($("#warningTabList input[type=checkbox]:checked").length>0){
+									$("#chectstyle").removeClass("btn-default");
+									$("#chectstyle").addClass("btn-primary");
+								}else{
+									$("#chectstyle").removeClass("btn-primary");
+									$("#chectstyle").addClass("btn-default")
+								}
+							})
+
+							//标记已读
+							$('.ingoreWarbing').on('click', function() {
+								statusWarn(this);
+							});
+							icheckListInit();
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									warningList(page);
+								}
+							};
+							setPage('warningpageList', options);
+						} else {
+							$('#warningTabList').find('tbody').html('<tr><td colspan=\"6\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+
+		}
+		setInterval('warningList()',dt*10000);
+
+		function statusWarn(obj) {
+			var tempId = $(obj).parent().attr('rel');
+			if (typeof tempId == 'undefined') {
+				if (getSelectedIds() == '') {
+					yunNotyError('请选择需要被标记为已读的问题！');
+					return false;
+				} else {
+					var id = getSelectedIds();
+				}
+
+			} else {
+				var id = tempId;
+			}
+
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Alarm/doSetStatus'),
+				data: 'id=' + id + '&status=' + 1,
+				success: function(data) {
+					if (data.status == 0) {
+						warningList();
+						yunNoty(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//跳转到流水记录
+		$('#searchWarnHistory').click(function() {
+			if (top.topManager) {
+				top.topManager.openPage({
+					moduleId: '90',
+					id: '91',
+					href: 'historyEmail.html',
+					//如果打开是否刷新
+					reload: true,
+					//关闭当前页
+					isClose: false,
+				});
+			} else {
+				location.href = "../../web/temp/historyEmail.html";
+			}
+		})
+	</script>
+</body>
+</html>

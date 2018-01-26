@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        a,
+        a:hover {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .download,
+        .revise,
+        .delete {
+            color: #337ab7;
+            margin: 0 2px;
+        }
+
+        .download:hover,
+        .revise:hover,
+        .delete:hover {
+            text-decoration: underline;
+            color: #23527C;
+        }
+
+        .pull-right {
+            margin-right: 10px;
+        }
+
+        .form-horizontal .form-group {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .chooseFile {
+            height: auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chooseFile a {
+            font-size:12px;
+            display: block;
+            float: left;
+            width: 100%;
+            text-align: center;
+            line-height: 18px;
+        }
+
+        .chooseFile input[type='file'] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .fileName {
+            line-height: 30px;
+        }
+
+        .process {
+            position: relative;
+            width: 40%;
+            height: 22px;
+            display: inline-block;
+            text-align: center;
+            line-height: 22px;
+            border: 1px solid #ccc;
+        }
+
+        .upload-text {
+            position: absolute;
+            z-index: 99999;
+            color: red;
+            left: 0;
+        }
+
+        .uploaded {
+            position: absolute;
+            left: 0;
+            z-index: 9999;
+            width: 0%;
+            height: 100%;
+            background-color: #ccc;
+            color: #FFFFFF;
+        }
+
+        .lead_form .form-group .resType {
+            margin-right: 5px;
+            margin-left: 3px;
+            cursor: pointer;
+            vertical-align: -1px;
+        }
+
+        .rheTem_form .rheTemInfo,
+        .rheTem_form .failRheInfo,
+        .queRhe_form .x-queRheInfo,
+        .queRhe_form .y-queRheInfo {
+            max-width: 100%;
+            min-width: 100%;
+            height: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 120px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            line-height: 30px;
+            outline: none;
+            padding: 0 6px;
+        }
+
+        .form-horizontal .form-group .info1 {
+            width: auto;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            display: inline-block;
+            margin: 5px;
+            background: #fff;
+            cursor: default;
+            outline: none;
+            padding: 0;
+        }
+
+        .chooseFile .text-error {
+            float: left;
+            top: 30px;
+            left: 0;
+            position: absolute;
+        }
+
+        .iradio_flat-blue {
+            margin-right: 5px;
+        }
+
+        h4 {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        img {
+            resize: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .imgX,
+        .imgY,
+        .imgZ {
+            margin: 0 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="javascript:;">首页</a>
+                </li>
+                <li>
+                    <a href="javascript:;">知识库管理</a>
+                </li>
+                <li>表格查询问答</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">表格查询问答</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin col-12 -->
+                <div>
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body1 panel-body">
+                            <div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="alert alert-warning fade in m-b-15">
+                                            <strong>友情提示：</strong>
+                                            目前表格查询功能支持的浏览器有：IE，谷歌，360，百度，欧朋，猎豹，QQ !
+                                            <span class="close" data-dismiss="alert">×</span>
+                                        </div>
+                                        <div class="m-b-5">
+                                            <button id="leadInTab" class="sort1_1 btn btn-primary" href="" data-num="0" data-toggle="modal" data-target="#leadTabModal">
+                                                <i class="glyphicon glyphicon-plus"></i>&nbsp;导入表格查询</button>
+                                            <button type="button" class="pull-right btn btn-default m-r-4" id="mul-del">
+                                                <span class="glyphicon glyphicon-trash" style="display: inline-block;margin-top:2px"></span>&nbsp;批量删除</button>
+                                            <a href="javascript:;" id="downTab" class="btn btn-default m-r-4 pull-right">
+                                                <i class="glyphicon glyphicon-download" style="display: inline-block;margin-top:2px"></i>&nbsp;下载模板</a>
+                                            <div class="input-group m-r-4 pull-right" style="width:250px;">
+                                                <input type="text" class="search-input-addSrc form-control" placeholder="输入表格名称" id="sip">
+                                                <span class="search-addSrc input-group-btn" id="searchBtn" style="padding-bottom: 0;">
+                                                    <button class="btn btn-primary" type="button">搜索</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="listContainer" class="row">
+                                        <input type="hidden" name="orderType" id="orderType" value="" />
+                                        <input type="hidden" name="tabId" id="tabId" value="" />
+                                        <div id="answerFormat" style="display: none;"></div>
+
+                                        <table class="table" id="queryList">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50">
+                                                        <input id="ckAll" name="select_rows" class="select_rows" type="checkbox" data-tableid="queryList">
+                                                    </th>
+                                                    <th>表格名称</th>
+                                                    <th>说辞模板</th>
+                                                    <th width="80">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        <div id="pageList"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end panel -->
+                    </div>
+                    <!-- end col-12 -->
+                    <!-- end row -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- begin scroll to top btn -->
+            <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+            <!-- end scroll to top btn -->
+        </div>
+
+        <!--leadTabModal start-->
+        <div class="modal" id="leadTabModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="leadModalLabel">表格查询问答</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal lead_form" id="lead_form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">表格名称&nbsp;<span style="color:red;">*</span></label>
+                                        <div class="col-md-5">
+                                            <input class="form-control tabName" type="text" value="">
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">表格导入&nbsp;<span style="color:red;">*</span></label>
+                                        <div class="chooseFile col-md-3">
+                                            <a class="btn btn-primary">选择文件</a>
+                                            <input type="file" accept=".xls,.xlsx" name="file" class="form-control" id="leadFile" value="">
+                                            <input type="hidden" id="filename" value="" />
+                                        </div>
+                                        <div class="fileName col-md-4"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" style="padding-top:0;">结果类型<a data-toggle="modal" href="#helpModel4" class="helpa4">
+                                                <i class="fa fa-question-circle" style="font-size: 20px;"></i>
+                                            </a>
+                                        </label>
+                                        <div class="col-md-9">
+                                            <label><input type="radio" checked name="type" id="type1" class="type1">文本</label>
+                                            <label style="margin-left: 12px;"><input type="radio" name="type" id="type2" class="type2">数值</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" style="cursor: not-allowed;">上一步</button>
+                        <button type="submit" class="btn btn-primary" id="leadBtn" data-num="0" data-toggle="modal">下一步</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--leadTabModal end-->
+
+        <!--rheTemModal start-->
+        <div class="modal" id="rheTemModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="rheTemModalLabel">说辞模板
+                            <a data-toggle="modal" href="#helpModel3" class="helpa">
+                                <i class="fa fa-question-circle" style="font-size: 20px;"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal rheTem_form" id="rheTem_form">
+                                <fieldset>
+                                    <div class="form-group group1">
+                                        <button type="button" class="btn btn-primary x-Info info" id="rheInsert_X" contenteditable="false">+X(横轴信息)</button>
+                                        <button type="button" class="btn btn-primary y-Info info" id="rheInsert_Y" contenteditable="false">+Y(纵轴信息)</button>
+                                        <button type="button" class="btn btn-primary z-Info info" id="rheInsert_Z" contenteditable="false">+Z(查询结果)</button>
+                                        <div id="rheTemInfo" tabindex="0" class="rheTemInfo flag" contenteditable="true"></div>
+                                    </div>
+                                    <h4 class="modal-title" id="failRheModalLabel" style="line-height: 50px;">失败说辞</h4>
+                                    <div class="form-group group2">
+                                        <button type="button" class="btn btn-primary x-Info info" id="failInsert_X" contenteditable="false">+X(期限)</button>
+                                        <button type="button" class="btn btn-primary y-Info info" id="failInsert_Y" contenteditable="false">+Y(理财产品系列)</button>
+                                        <div id="failRheInfo" tabindex="0" class="failRheInfo" contenteditable="true">对不起，查询不到
+                                            <img src="images/X.png" class="imgX"/>
+                                            <img src="images/Y.png" class="imgY"/>的结果</div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary rhePrevBtn" data-dismiss="modal" data-num="0" data-toggle="modal" data-target="#leadTabModal">上一步</button>
+                        <button type="button" class="btn btn-primary" data-num="0" data-toggle="modal" id="rheTemBtn">下一步</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--rheTemModal end-->
+
+        <!--queRheModal start-->
+        <div class="modal" id="queRheModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="queRheModalLabel">反问说辞</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal queRhe_form" id="queRhe_form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <b class="red" style="color: red;">*反问用户X轴的属性</b>
+                                        <textarea id="x-queRheInfo" class="x-queRheInfo"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <b class="red" style="color: red;">*反问用户Y轴的属性</b>
+                                        <textarea id="y-queRheInfo" class="y-queRheInfo"></textarea>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary prevQue" data-dismiss="modal" data-num="0" data-toggle="modal" data-target="#rheTemModal">上一步</button>
+                        <button type="button" class="btn btn-primary" id="saveBtn" data-num="0" data-toggle="modal">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--queRheModal end-->
+
+        <!--helpModel3 start-->
+        <div class="modal" id="helpModel3" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="helpModalLabel">说辞模板说明</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal help_form" id="help_form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <img style="max-width: 100%;" src="images/rhetem.png" alt="说辞模板说明" title="说辞模板说明" />
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--helpModel3 end-->
+
+        <!--helpModel4 start-->
+        <div class="modal" id="helpModel4" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="helpModalLabel1">结果类型说明</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal resType_form" id="resType_form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <img style="max-width: 100%;" src="images/resType.png" alt="结果类型说明" title="结果类型说明" />
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--helpModel4 end-->
+
+        <!--delModal start-->
+        <div class="modal" id="delModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="delModalLabel">确定删除？</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal del_form" id="del_form1">
+                                <fieldset>
+                                    <div class="form-group">确定要删除您所选的内容？</div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="delButton">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--delModal end-->
+
+        <!--muiDelModal start-->
+        <div class="modal" id="muiDelModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="muiDelModalLabel">确定删除？</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal del_form" id="del_form">
+                                <fieldset>
+                                    <div class="form-group">确定要删除您所选的内容？</div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="muiDelButton">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--muiDelModal end-->
+
+        <!--queDelModal start-->
+        <div class="modal" id="queDelModal" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="queDelModalLabel">表格导入失败</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form method="POST" class="form-horizontal del_form" id="que_form">
+                                <fieldset>
+                                    <div class="form-group queDelTip"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="queDelButton">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--queDelModal end-->
+    </div>
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+    <script src="../../assets/js/apps.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- ================== END BASE JS ================== -->
+    <!-- 必加开始 -->
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/loadingMethod.js"></script>
+    <script src="js/queryTab.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+            icheckBindInit();
+            //列出表格
+            queryList(1);
+        });
+    </script>
+
+
+</body>
+
+</html>

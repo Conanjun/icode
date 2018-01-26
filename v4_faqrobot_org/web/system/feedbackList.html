@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>意见列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">意见列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">意见列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							添加意见列表
+						</a>
+						<a href="javascript:;" class="btn btn-primary" onclick="selectDel('','../../fadeback/doDels',listfadeBackPage,'pageList')">
+							<i class="glyphicon glyphicon-trash"></i>
+							批量删除
+						</a>
+						<table class="table" id="fadebackList">
+							<thead>
+								<tr>
+									<th class="table_checkbox" ><input type="checkbox" name="select_rows" class="select_rows" data-tableid="fadebackList"/></th>
+									<th>名称 </th>
+									<th>标题 </th>
+									<th>评价 </th>
+									<th>所属分类 </th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加意见列表</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="feedback" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">名称或昵称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入名称或昵称" class="form-control" name="name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">邮箱<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入邮箱" class="form-control" name="email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">QQ<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入QQ" class="form-control" name="qq">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">电话<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入电话" class="form-control" name="tel">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">标题<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入标题" class="form-control" name="title">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3">内容</label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入内容" class="" name="cont" id="cont"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">评价</label>
+										<div class="col-md-7">
+											<label class="radio">
+												<input type="radio" checked="" value="0" name="level">
+												未评价
+											</label>
+											<label class="radio">
+												<input type="radio" value="1" name="level">
+												非常满意
+											</label>
+											<label class="radio">
+												<input type="radio" value="2" name="level">
+												一般
+											</label>
+											<label class="radio">
+												<input type="radio" value="3" name="level">
+												很不满意
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">反馈类型</label>
+										<div class="col-md-7">
+											<label class="radio">
+												<input type="radio" checked="" value="0" name="type">
+												意见反馈	
+											</label>
+											<label class="radio">
+												<input type="radio" value="1" name="type">
+												问题内容反馈
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#feedback').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/system.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			icheckBindInit();
+			//列出表格
+			listfadeBackPage(1);
+			UE.getEditor('cont', {
+				toolbars: [
+					['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch']
+				],
+				initialFrameHeight: 120
+			});
+
+			$('#feedback').validate({
+				rules:{
+					name:{
+						required:true
+					},
+					email:{
+						required:true,
+						email:true
+					},
+					qq:{
+						required:true,
+						number:true
+					},
+					tel:{
+						required:true,
+						isTel:true
+					},
+					title:{
+						required:true
+					},
+					cont:{
+						required:true
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入您的名称或昵称！"
+					},
+					email:{
+						required:"请输入您的邮箱！",
+						email:"请输入有效的邮箱！"
+					},
+					qq:{
+						required:"请输入您的QQ！",
+						number:"请输入正确的QQ！"
+					},
+					tel:{
+						required:"请输入您的联系方式！",
+						isTel:"请输入正确的联系方式！"
+					},
+					title:{
+						required:"请输入意见标题！"
+					},
+					cont:{
+						required:"请输入内容！"
+					}
+				},
+				submitHandler: doNewAdd
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#feedback')[0].reset();
+				UE.getEditor('cont').setContent('');
+			})
+		});
+
+		var flag_add=false;
+		function doNewAdd(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../fadeback/doFadeBack'),
+				//data:encodeURI(tempcontent),
+				data: $("#feedback").serialize(),
+				success: function(data) {
+					flag_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listCurrentPage(listfadeBackPage,'pageList');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

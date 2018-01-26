@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>多客服</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/bootstrap-switch.min.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">多客服</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">多客服</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<h4 class="m-t-10">请选择微信账号:</h4>
+						<div id="wxh"></div>
+						<input type="hidden" class="wxId" value="1024">
+						<input type="hidden" class="kfBtn" value="1024">
+						<input type="hidden" class="kfrBtn" value="1024">
+						<h4 class="m-t-20">如何使用多客服</h4>
+						<p>多客服作为连接用户和人工客服的重要微信插件，请您在微信公众平台了解详细使用规则后，在本系统中进一步配置使用。</p>
+						<h4 class="m-t-20">多客服插件</h4>
+						<p>介绍：通过此插件可以实时查看用户与机器人的对话内容。</p>
+						<div class="highlight">
+							<pre style="font-family:'微软雅黑'">聊天地址插件：
+								<code style="background-color:#f9f2f4;color:#c7254e;padding:2px 4px;"><span id="sysNumSpan"></span></code>
+							</pre>
+						</div>
+						<p style="color:#c7254e">注：仅本系统多客服列表中的客服可以使用该插件。</p>
+
+						<h4 class="m-t-20">
+							多客服列表
+							<a href="javascript:;" class="pull-right" data-toggle="tooltip" data-placement="top" data-html="true" title="若需查看实时列表，请手动点击同步，<br>也可在下方配置里面设置自动同步。"><img src="../common/images/question1.png" style="margin-top:14px;"></a>
+							<a href="javascript:;" id="sysDkf" class="pull-right" style="font-size:14px; color:#333; line-height:50px; margin-right:10px;">
+								<span class="glyphicon glyphicon-repeat"></span>&nbsp;手动同步多客服
+							</a>
+						</h4>
+						<table class="table" id="dkfList">
+							<thead>
+								<tr>
+									<th>客服名称</th>
+									<th>时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="dkfpageList"></div>
+
+						<h4 class="m-t-20" style="clear:both;">
+							多客服工作量统计
+							<a href="javascript:;" class="pull-right" data-toggle="tooltip" data-placement="top" data-html="true" title="若需查看实时列表，请手动点击同步，<br>也可在下方配置里面设置自动同步。"><img src="../common/images/question1.png" style="margin-top:14px;"></a>
+							<a href="javascript:;" id="sysRecords" class="pull-right" style="font-size:14px; color:#333; line-height:50px;margin-right:10px;">
+								<span class="glyphicon glyphicon-repeat"></span>&nbsp;手动同步客服消息
+							</a>
+						</h4>
+						<table class="table" id="dkfChatTab">
+							<thead>
+								<tr>
+									<th>客服名称</th>
+									<th>客户标识</th>
+									<th>消息状态</th>
+									<th>消息内容</th>
+									<th>时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="dkfrecord"></div>
+
+						<h4 class="m-t-20" style="clear:both;">配置</h4>
+						<p style="color:#c7254e">注：开启按钮，系统后台将每24小时自动同步一次。</p>
+						<div class="row">
+							<div class="col-md-4">
+								<p>开启自动同步客服 <input id="switch-kf" name="turnOn" type="checkbox"  data-size="small" data-off-color="danger" data-on-color="success"></p>
+							</div>
+							<div class="col-md-4">
+								<p>开启自动同步客服消息 <input id="switch-kfmsg" type="checkbox" name="turnOn"  data-size="small" data-off-color="danger" data-on-color="success"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/bootstrap-switch.min.js"></script>
+	<script src="js/Multiservice.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			$('[data-toggle="tooltip"]').tooltip();
+			$('#switch-kf').bootstrapSwitch();
+			$('#switch-kfmsg').bootstrapSwitch();
+
+			$('#sysNumSpan').parent().html('http://'+(window.location.host+localStorage.getItem('Subdomain')||"")+'/web/dkf/chatlog.html?sysNum=<span id="sysNumSpan"></span>');
+			wxlist();
+		});
+	</script>
+</body>
+</html>

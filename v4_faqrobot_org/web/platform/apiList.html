@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>支付宝列表</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        .block{
+            display: block;
+            height: 180px;
+            width: 180px;
+            margin:10px auto;
+        }
+        .wangye{
+            background: url("images/wangye.png") no-repeat;
+        }
+        .wangye:hover{
+            background: url("images/wangye1.png") no-repeat;
+        }
+        .weixin{
+            background: url("images/weixin.png") no-repeat;
+        }
+        .weixin:hover{
+            background: url("images/weixin1.png") no-repeat;
+        }
+        .weibo{
+            background: url("images/weibo.png") no-repeat;
+        }
+        .weibo:hover{
+            background: url("images/weibo1.png") no-repeat;
+        }
+        .dingding{
+            background: url("images/dd.png") no-repeat;
+        }
+        .dingding:hover{
+            background: url("images/dd1.png") no-repeat;
+        }
+        .zhifubao{
+            background: url("images/zfb.png") no-repeat;
+        }
+        .zhifubao:hover{
+            background: url("images/zfb1.png") no-repeat;
+        }
+        /*.app{*/
+            /*background: url("images/APP.png") no-repeat;*/
+        /*}*/
+        /*.app:hover{*/
+            /*background: url("images/APP1.png") no-repeat;*/
+        /*}*/
+        .kefu{
+            background: url("images/kefu.png") no-repeat;
+        }
+        .kefu:hover{
+            background: url("images/kefu1.png") no-repeat;
+        }
+        .renzheng{
+            background: url("images/renzheng.png") no-repeat;
+        }
+        .renzheng:hover{
+            background: url("images/renzheng1.png") no-repeat;
+        }
+        .api{
+            background: url("images/api.png") no-repeat;
+        }
+        .api:hover{
+            background: url("images/api1.png") no-repeat;
+        }
+    </style>
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">系统管理</a></li>
+            <li class="active">接口列表</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">接口列表</h1>
+            <div class="panel">
+                <div class="panel-body container">
+                  <div class="row">
+                      <!-- <div class="col-md-3 col-sm-6"><a href="../../web/system/payCode.html" class="wangye block" data-num="0" data-name="网页接入"></a></div> -->
+                      <div class="col-md-3 col-xs-4"><a href="../../web/system/payCode.html" class="wangye block" data-num="0" data-name="网页接入"></a></div>
+                      <div class="col-md-3 col-xs-4"><a href="../../web/platform/weiboList.html" class="weibo block" data-num="0" data-name="微博接入"></a></div>
+                      <div class="col-md-3 col-xs-4"><a id="wechat" href="../../web/platform/wechatListCus.html" class="weixin block" data-num="0" data-name="微信接入"></a></div>
+                      <div class="col-md-3 col-xs-4"><a href="../../web/platform/dingchat.html" class="dingding block" data-num="0" data-name="钉钉接入"></a></div>
+                  <!-- </div>
+                  <div class="row"> -->
+                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/zhifubaoList.html" class="zhifubao block" data-num="0" data-name="支付宝接入"></a></div>
+                        <!-- <div id='kefu' class="col-md-3 col-xs-4"><a href="../../web/platform/ThirdViewer.html" class="kefu block" data-num="0" data-name="第三方客服"></a></div> -->
+                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/authList.html" class="renzheng block" data-num="0" data-name="认证列表"></a></div>
+                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/portList.html" class="api block" data-num="0" data-name="接口列表"></a></div>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+</div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+<script src="../common/js/iframeTab.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+			App.init();
+		});
+
+
+    iframeTab.init({iframeBox: ''});
+    if(window.location.host == 'v3.faqrobot.org') {// || window.location.host == 'v4.faqrobot.net') {
+        $('#wechat').attr('href','../../web/platform/wechatListYun.html');
+        $('#kefu').hide();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+@import "../../component/wxParse/wxParse.wxss";
+
+.wxTip-ctn {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.showModal-ctn {
+	background: rgba(0, 0, 0, .6);
+}
+.showToast-ctn {
+	background: rgba(255, 255, 255, 1);
+}
+
+.wxTip-outer {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 8rpx;	
+	overflow: hidden;
+}
+.showModal-outer {
+	background: #fff;
+	min-width: 320rpx;
+}
+.showToast-outer {
+	background: rgba(0, 0, 0, .6);
+	min-width: 220rpx;
+	padding: 20rpx;
+	color: #fff;
+	overflow: auto;
+	max-height: 800rpx;
+}
+
+.showModal-title {
+	text-align: center;
+	color: #222;
+	margin: 30rpx 0;
+}
+.showModal-inner {
+	padding: 0 35rpx;
+	margin-bottom: 90rpx;
+	overflow: auto;
+	min-height: 100rpx;
+	max-height: 800rpx;
+}
+.showModal-btn {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 90rpx;
+	line-height: 90rpx;
+}
+.showModal-btn view {
+	display: inline-block;
+	width: 50%;
+	height: 100%;
+	box-sizing: border-box;
+	border: 1px solid #eee;
+	border-right: none;
+	border-bottom: none;
+	text-align: center;
+	background: #fff;
+}
+.showModal-btn view:active {
+	background: #eee;
+}
+.showModal-btn .showModal-cancle {
+}
+.showModal-btn .showModal-ensure {
+	color: #09BB07;
+}

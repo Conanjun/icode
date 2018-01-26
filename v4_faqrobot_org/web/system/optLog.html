@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>操作日志</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">操作日志</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">操作日志</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="sortForm">
+							<div class="btn-group pull-right m-b-15">
+								<button type="button" class="wayName btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									默认排序 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-left">
+									<li> <a class="way" href="javascript:;" onClick="logList(1,4);return false;">默认排序</a> </li>
+									<li> <a class="way" href="javascript:;" onClick="logList(1,3);return false;">时间正序</a> </li>
+									<li> <a class="way" href="javascript:;" onClick="logList(1,4);return false;">时间倒序</a> </li>
+									<li> <a class="way" href="javascript:;" onClick="logList(1,5);return false;">点击次数正序</a> </li>
+									<li> <a class="way" href="javascript:;" onClick="logList(1,6);return false;">点击次数倒序</a> </li>
+								</ul>
+							</div>
+						</form>
+						<table class="table" id="log_list">
+							<thead>
+								<tr>
+									<th>操作简介</th>
+									<th width="100">操作类型</th>
+									<th width="100">操作人</th>
+									<th width="150">时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/system.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			logList(1);
+		});
+$('.way').on('click', function() {
+    $('.wayName').html($(this).text() + '<span class="caret"></span>');
+  });
+	</script>
+</body>
+</html>

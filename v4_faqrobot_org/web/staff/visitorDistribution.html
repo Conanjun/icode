@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>接待组</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/bootstrap-switch.min.css" rel="stylesheet">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		#editGroupModal select {
+			width: 100%;
+			height: 250px;
+		}
+		.timf {
+			min-height: 250px;
+			position: relative;
+			border: 1px solid #e4e4e4;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+		.timf .imgTitle {
+			background-color: #F4F4F4;
+		}
+		.spmf {
+			display: inline-block;
+			padding: 10px;
+		}
+		.imgbt {
+			width: 100%;
+			position: absolute;
+			bottom: 8px;
+			right: 8px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">接待组</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">接待组</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="col-md-12">
+							<a data-toggle="modal" class="btn btn-primary m-r-4" href="#addModal">
+								<span>新增接待组</span>
+							</a><a data-toggle="modal" class="btn btn-primary m-r-4" href="#gModal">
+								<span>访客转人工分配</span>
+							</a>
+						</div>
+						<div id="groupList">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <div class="modal fade" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">新增接待组</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" novalidate="novalidate" id="addForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">分组名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入分组名称" class="form-control" name="groupName" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">接待组说明<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入接待组说明" class="form-control" name="key" maxlength="100">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="$('#addForm').submit()">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">修改接待组</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" novalidate="novalidate" id="editForm">
+                        <fieldset>
+							<input name="id" id="editFormid" type="hidden" />
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">分组名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入分组名称" class="form-control" name="groupName" id="editFormgroupName" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">接待组说明<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入接待组说明" class="form-control" name="key" id="editFormKey" maxlength="100">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="$('#editForm').submit()">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editGroupModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">编辑组员</h4>
+                </div>
+                <div class="modal-body">
+					<input id="edgid" type="hidden" />
+					<div class="row m-b-10">
+						<div class="col-md-6">
+							<input placeholder="搜索组员" id="seratgroup" class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<select id="gp1" style="border:1px solid #ccd0d4;border-radius: 3px;" multiple>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<select id="gp2" style="border:1px solid #ccd0d4;border-radius: 3px;" multiple>
+							</select>
+						</div>
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="editgroupconfirm();">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="gModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">访客转人工分配</h4>
+                </div>
+                <div class="modal-body">
+					<div class="alert alert-warning fade in m-b-15">
+						<strong>友情提示:</strong>
+						开启访客分配，你可以将访客按照设定的规则分配给特定的接待组<br>（选择单个接待组时前端不用生成接待组入口）<br>不使用指定分配则默认分配给所有客服
+						<span class="close" data-dismiss="alert">×</span>
+					</div>
+					<input type="checkbox" name="my-checkbox" data-render="switchery">
+					<div id="smpel" style="display:inline-block;position:relative;">
+						<button type="button" class="btn btn-white m-t-5 m-b-5">示例</button>
+						<img src="images/sample.png" alt="示例" style="display:none;position:absolute;top: 0px;left: 60px;width: 480px;" id="smimg">
+					</div>
+					<div id="fdisdiv" class="row">
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="fidisconfirm();">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/bootstrap-switch.min.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script id="list-template" type="text/x-handlebars-template">
+		{{#each list}}
+			<div class="col-md-4 p-15">
+				<div class="timf" rel="{{ Id }}" rname="{{ ModelName }}">
+					<div class="imgTitle p-10">
+						<span class="p-l-3" style="vertical-align:middle;">{{ ModelName }}</span>
+						<span class="p-l-2 mnamez" style="vertical-align:middle;"></span>
+						<span class="aduotp pull-right"><a class="u-edit" rel="{{ Id }}" mrel="{{ ModelName }}" krel="{{ ThirdKey }}" title="编辑" style="cursor:pointer;"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a class="u-del" title="删除" rel="{{ Id }}" style="cursor:pointer; "><i class="glyphicon glyphicon-trash"></i></a></span>
+					</div>
+					<div class="imgContainer">
+						{{#unless UserList}}
+							<div class="m-t-10 text-center"><a class="u-editp" rel="{{ Id }}" href="javascript:;">+  添加组员</a></div>
+						{{/unless}}
+						{{#each UserList}}
+							<div class="spmf">{{ UserName }}</div>
+						{{/each}}
+					</div>
+					{{#if UserList}}
+						<div class="text-right imgbt">
+								<a class="u-editp btn btn-white btn-sm" rel="{{ Id }}" title="编辑组员" style="cursor:pointer;">编辑组员</a>
+						</div>
+					{{/if}}
+				</div>
+			</div>
+		{{/each}}
+	</script>
+	<script id="check-template" type="text/x-handlebars-template">
+		{{#each list}}
+			<div class="col-md-12 m-t-10 p-l-5">
+				{{#if State}}
+					<input class="ickc" id="{{ Id }}" type="checkbox" checked><label for="{{ Id }}" class="control-label m-l-5">{{ ModelName }}</label>
+				{{/if}}
+				{{#unless State}}
+					<input class="ickc" id="{{ Id }}" type="checkbox"><label for="{{ Id }}" class="control-label m-l-5">{{ ModelName }}</label>
+				{{/unless}}
+			</div>
+		{{/each}}
+	</script>
+	<script type="text/javascript">
+		//左侧客户数据
+		var leftitems = null;
+		var rlist = [];
+		$(document).ready(function() {
+			App.init();
+			//列出分组
+			getInfo();
+			$('#smpel').on('mouseover mouseout', function(event) {
+				if (event.type == "mouseover") {
+					//鼠标悬浮
+					$('#smimg').show();
+				} else if (event.type == "mouseout") {
+					//鼠标离开
+					$('#smimg').hide();
+				}
+			});
+			$(document).on('click', '.timf', function(e){
+				if($(e.target).hasClass('p-l-3') || $(e.target).hasClass('glyphicon') || $(e.target).hasClass('u-editp')){
+					return;
+				} else {
+
+					var url =window.location.protocol + "//" + (window.location.host+ localStorage.getItem('Subdomain')||"")+'/web/staff/visitorDList.html?groupId='+$(this).attr('rel')+'&groupName='+$(this).attr('rname')+'&number='+$(this).attr('rnum');
+					var shortUrl = '/web/staff/visitorDList.html?groupId='+$(this).attr('rel')+'&groupName='+$(this).attr('rname')+'&number='+$(this).attr('rnum');
+					if(iframeTab) {
+						if(window.top.location.href != window.location.href) {
+							var ift = iframeTab.init({iframeBox: ''});
+							ift.refreshTab(shortUrl, '接待组');
+						} else {
+							location.href=url;
+						}
+					} else {
+						location.href=url;
+					}
+				}
+			});
+			$('#gModal').on('show.bs.modal', function(){
+				$('#fdisdiv').empty();
+				$.ajax({
+					type:'get',
+					datatype:'json',
+					cache:false,//不从缓存中去数据
+					url:encodeURI('../../TurnPeopleGuideConfig/findVisitorConfig'),
+					success:
+					function(data){
+						if(data.status === 0){
+							if(data.state==1){
+								$.getJSON('../../TurnPeopleGuideConfig/listGroups', function(data){
+									if(data.status==0){
+										if(data.list==undefined){
+											return;
+										}
+										if (data.list.length > 0) {
+											// 开启
+											$('input[name="my-checkbox"]').bootstrapSwitch('state', true, true);
+											var source = $("#check-template").html();
+											var template = Handlebars.compile(source);
+											var html = template(data);
+											$('#fdisdiv').html(html);
+											$('input.ickc').iCheck({
+												checkboxClass: 'icheckbox_flat-blue',
+												radioClass: 'iradio_flat-blue',
+												cursor: true
+											});
+										}
+									}
+								});
+							} else {
+								// 关闭
+								$('input[name="my-checkbox"]').bootstrapSwitch('state', false, true);
+							}
+							//yunNoty(data);
+						}else{
+							yunNoty(data);
+						}
+					}
+				});
+			});
+			$("[name='my-checkbox']").bootstrapSwitch({
+				onText: '开启',
+				offText: '关闭',
+				onSwitchChange: function(event, opened) {
+					if(opened!=0 && opened!=1){
+						return;
+					}
+					if(opened == true){
+						opened = 1;
+					}
+					if(opened == false){
+						opened = 0;
+					}
+					$.ajax({
+						type:'get',
+						datatype:'json',
+						cache:false,//不从缓存中去数据
+						url:encodeURI('../../TurnPeopleGuideConfig/updateVisitorConfig'),
+						data:'state='+opened,
+						success:
+						function(data){
+							if(data.status === 0){
+								$('#fdisdiv').empty();
+								if(opened==1){
+									// 开启
+									$.getJSON('../../TurnPeopleGuideConfig/listGroups', function(data){
+										if(data.status==0){
+											if(data.list==undefined){
+												return;
+											}
+											if (data.list.length > 0) {
+												// 开启
+												$('input[name="my-checkbox"]').bootstrapSwitch('state', true, true);
+												var source = $("#check-template").html();
+												var template = Handlebars.compile(source);
+												var html = template(data);
+												$('#fdisdiv').html(html);
+												$('input.ickc').iCheck({
+													checkboxClass: 'icheckbox_flat-blue',
+													radioClass: 'iradio_flat-blue',
+													cursor: true
+												});
+											}
+										}
+									});
+								} else {
+									// 关闭
+								}
+								yunNoty(data);
+							}else{
+								yunNoty(data);
+							}
+						}
+					});
+				}
+			});
+			$(document).on('click', '.u-edit', function(){
+				$('#editFormid').val($(this).attr('rel'));
+				$('#editFormgroupName').val($(this).attr('mrel'));
+				$('#editFormKey').val($(this).attr('krel'));
+				$('#editModal').modal('show');
+			});
+			$(document).on('click', '.u-del', function(){
+				var self = this;
+				$(self).adcCreator(function() {
+					$.ajax({
+						type:'get',
+						datatype:'json',
+						cache:false,
+						url:encodeURI('../../TurnPeopleGuideConfig/updateGroup'),
+						data:{
+							id: $(self).attr('rel'),
+							del: 1
+						},
+						success:
+						function(data){
+							if(data.status===0){
+								yunNoty(data);
+								getInfo();
+							}else{
+								yunNoty(data);
+							}
+						}
+					});
+				});
+			});
+			//编辑组员
+			$(document).on('click', '.u-editp', function(){
+				//rlist赋值,先拿index
+				var iid = $(this).attr('rel');
+				$('#edgid').val(iid);
+				var edglist = rlist.filter(function(el){
+					return el.Id == iid
+				});
+				if(edglist.length > 0 && edglist[0].UserList && edglist[0].UserList.length > 0) {
+					$('#gp2').empty();
+					edglist[0].UserList.forEach(function(el){
+						$('#gp2').append('<option value="'+el.Id+'">'+el.UserName+'</option>');
+					});
+				} else {
+					$('#gp2').empty();
+				}
+				$.getJSON('../../TurnPeopleGuideConfig/userList', function(data){
+					if(data.status==0){
+						if (data.list.length > 0) {
+							$('#gp1').empty();
+							data.list.forEach(function(el){
+								$('#gp1').append('<option value="'+el.Id+'">'+el.UserName+'</option>');
+							});
+						} else {
+							$('#gp1').empty();
+						}
+						leftitems = data.list;
+					} else {
+						yunNoty(data);
+					}
+				});
+				$('#editGroupModal').modal('show');
+			});
+			//搜索组员
+			$('#seratgroup').on('input', function() {
+				var self = this;
+				var templ = leftitems.filter(function(el){
+					return el.UserName.indexOf($(self).val()) !== -1;
+				})
+				$('#gp1').empty();
+				templ.forEach(function(el){
+					$('#gp1').append('<option value="'+el.Id+'">'+el.UserName+'</option>');
+				});
+			});
+			//左侧点击
+			$('#gp1').on('change', function() {
+				var selectedValues = [];    
+				$("#gp1 :selected").each(function(){
+					selectedValues.push({
+						name: $(this).text(),
+						value: $(this).val()
+					});
+					$(this).remove();
+					//查询leftitems是否包含item，有去除
+					var i0 = -1;
+					for(var i=0; i<leftitems.length; i++){
+						if(leftitems[i].Id == $(this).val()) {
+							i0 = i
+						}
+					}
+					if(i0 >= 0) {
+						leftitems.splice(i0, 1);
+					}
+				});
+				selectedValues.forEach(function(el){
+					$('#gp2').append('<option value="'+el.value+'">'+el.name+'</option>');
+				});
+			});
+			//右侧点击
+			$('#gp2').on('change', function() {
+				var selectedValues = [];    
+				$("#gp2 :selected").each(function(){
+					selectedValues.push({
+						name: $(this).text(),
+						value: $(this).val()
+					});
+					$(this).remove();
+					leftitems.push({
+						Id: $(this).val(),
+						UserName: $(this).text()
+					});
+				});
+				selectedValues.forEach(function(el){
+					$('#gp1').append('<option value="'+el.value+'">'+el.name+'</option>');
+				});
+			});
+			//添加分组
+			$('#addForm').validate({
+				rules:{
+					groupName:{
+						required:true
+					},
+					key:{
+						required:true
+					}
+				},
+				messages:{
+					groupName:{
+						required:"请输入分组名称！"
+					},
+					key:{
+						required:"请输入接待组说明！"
+					}
+				},
+				submitHandler: addWW
+			});
+			var flag_ww_add=false;
+			function addWW(){
+				if(flag_ww_add){
+					return;
+				}
+				flag_ww_add=true;
+				$.ajax({
+					type:'post',
+					datatype:'json',
+					cache:false,
+					url:encodeURI('../../TurnPeopleGuideConfig/addGroup'),
+					data:$("#addForm").serialize(),
+					success:
+					function(data){
+						flag_ww_add=false;
+						if(data.status===0){
+							yunNoty(data);
+							$('#addModal').modal('hide');
+							document.getElementById('addForm').reset();
+							getInfo();
+						}else{
+							yunNoty(data);
+						}
+					}
+				});
+			}
+			//修改分组
+			$('#editForm').validate({
+				rules:{
+					groupName:{
+						required:true
+					},
+					key:{
+						required:true
+					}
+				},
+				messages:{
+					groupName:{
+						required:"请输入分组名称！"
+					},
+					key:{
+						required:"请输入接待组说明！"
+					}
+				},
+				submitHandler: editWW
+			});
+			var flag_ww_edit=false;
+			function editWW(){
+				if(flag_ww_edit){
+					return;
+				}
+				flag_ww_edit=true;
+				$.ajax({
+					type:'post',
+					datatype:'json',
+					cache:false,
+					url:encodeURI('../../TurnPeopleGuideConfig/updateGroup'),
+					data:$("#editForm").serialize(),
+					success:
+					function(data){
+						flag_ww_edit=false;
+						if(data.status===0){
+							yunNoty(data);
+							$('#editModal').modal('hide');
+							document.getElementById('editForm').reset();
+							getInfo();
+						}else{
+							yunNoty(data);
+						}
+					}
+				});
+			}
+		});
+		//保存分组
+		function editgroupconfirm () {
+			var selectedIds = [];    
+			$("#gp2 option").each(function(){
+				selectedIds.push($(this).val());
+			});
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../TurnPeopleGuideConfig/andUsersById'),
+				data:{
+					id: $('#edgid').val(),
+					userIds: selectedIds.join(',')
+				},
+				success:
+				function(data){
+					if(data.status===0){
+						yunNoty(data);
+						$('#editGroupModal').modal('hide');
+						getInfo();
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//保存访客转人工分配
+		function fidisconfirm() {
+		if($('.bootstrap-switch-on').length) {
+			var selectedIds = [];    
+			$(".ickc:checked").each(function(){
+				selectedIds.push($(this).attr('id'));
+			});
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../TurnPeopleGuideConfig/chooseGroups'),
+				data:{
+					ids: selectedIds.join(',')
+				},
+				success:
+				function(data){
+					if(data.status===0){
+						yunNoty(data);
+						$('#gModal').modal('hide');
+						getInfo();
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		} else {
+			yunNoty({
+				status:0,
+				message:'保存成功!'
+			});
+			$('#gModal').modal('hide');
+		}
+		}
+		//获取分组
+		function getInfo(){
+			$.getJSON('../../TurnPeopleGuideConfig/listGroups', function(data){
+				if(data.status==0){
+					if(data.list==undefined){
+						$('#groupList').html('<div class="row text-center"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+						return;
+					}
+					if (data.list.length > 0) {
+						rlist = data.list;
+						var source = $("#list-template").html();
+						var template = Handlebars.compile(source);
+						var html = template(data);
+						$('#groupList').html(html);
+						rlist.forEach(function(el, i){
+							$('.mnamez').eq(i).html('（'+rlist[i].UserList.length+'人）');
+							$('.timf').eq(i).attr('rnum', rlist[i].UserList.length);
+						});
+					} else {
+						$('#groupList').html('<div class="row text-center"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+					}
+				} else {
+					yunNoty(data);
+					$('#groupList').html('<div class="row text-center"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+				}
+			});
+		}
+	</script>
+</body>
+</html>

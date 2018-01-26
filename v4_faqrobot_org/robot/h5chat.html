@@ -1,0 +1,484 @@
+﻿<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="images/send.png" type="/image/x-icon">  
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>  
+    <title>FaqRobot智能问答机器人</title>
+
+    <link rel="stylesheet" href="css/minichat.css?dev=2">
+    <link rel="stylesheet" href="skin/h5chat/css/app.css?dev=1">
+    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../web/common/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet prefetch" href="skin/h5chat/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="skin/h5chat/css/default-skin.css">
+    <link href="../web/common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.hide{
+			display:none !important;
+		}
+        .clearfix::before, .clearfix::after {
+            display: block;
+            content: '';
+            visibility: hidden;
+            height: 100%;
+            clear: both;
+        }
+        .my-gallery figure{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        #leaveMsgForm .form-group{
+            padding:0 7px;
+            position:relative;
+        }
+        #leaveMsgForm .form-group>img{
+            color:gray;
+            /* font-size: 0.06rem; */
+            width:0.06rem;
+            position: absolute;
+            left: 0.04rem;
+            top: 0.03rem;
+        }
+        #leaveMsgForm .form-group>input{
+            border:1px solid lightgray; 
+            padding-left:0.1rem; 
+        }
+        #leaveMsgCtn{
+            border:1px solid lightgray;
+            border-radius:2px;
+            height:0.5rem;
+        }
+        #successMessage{
+            z-index:19891020
+        }
+        #successMessage .modal-dialog{
+            margin-top:40%;
+        }
+        #successMessage .modal-body>div{
+            text-align: center;
+            margin:0.02rem 0;
+        }
+        #successMessage .modal-footer{
+            text-align:center;
+            color:#2090b4  
+        }
+        #filebtn{
+            position:relative;
+            padding:0rem;
+            border:1px solid lightgray;
+        }
+        #filebtn>.webuploader-pick{
+            padding: 0.02rem 0.04rem;
+        }
+        #filebtn input{
+            opacity: 0;
+        }
+        #imgsDiv{
+            margin:0 auto;
+        }
+        .imgdivs>img{
+            width:0.25rem;
+            height:0.25rem;
+            border-radius:5%;
+        }
+        .imgdivs{
+            margin:0 0.034rem;
+            display:inline-block;
+            text-align: center;
+        }
+	</style>
+    <script src="skin/h5chat/js/minichat.js?time=1513"></script>
+    <script src="../web/common/js/jquery.validate.js"></script>
+    <script src="skin/h5chat/js/app.js?dev=2"></script>
+    <script src="../web/common/js/webuploader.min.js"></script>
+    <script src="skin/h5chat/js/photoswipe.js"></script>
+    <script src="skin/h5chat/js/photoswipe-ui-default.min.js"></script>
+
+</head>
+<body>  
+    <div class="view">
+    	<!-- 常见问题开始 -->
+        <div class="commonQueLayer" id="commonQueLayer"></div>
+    	<!-- 常见问题结束 -->
+
+    	<!-- 意见反馈开始 -->
+		<div class="feedbackLayer">
+			<form id="feedbackForm">
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="1" checked> 满意</label>
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="0"> 不满意</label>
+				<div class="noSatiCtn">
+					<p class="MN_marginCtn">您不满意的原因?</p>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+				</div>
+				<div class="MN_commentTipCtn">
+					<textarea class="MN_commentCtn" id="commentCtn" name="content"></textarea>
+				</div>
+				<div class="MN_commentBtn" id="commentBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 意见反馈结束 -->
+        <!-- taskid=403 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 -->
+    	<!-- 留言开始 -->
+		<div class="leaveMsgLayer">
+			<form class="leaveMsgForm" id="leaveMsgForm">
+                <div class="form-group">
+                    <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
+                    <img src="./css/icon/two/name.png" style="width:0.05rem;top:0.02rem">
+                    <input type="text" class="form-control" name="name" placeholder="姓名">
+                </div>
+                <div class="form-group">
+                    <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
+                    <img src="./css/icon/two/call.png">
+				    <input type="text" class="form-control" name="telNum" placeholder="手机号码">                    
+                </div>
+                <div class="form-group">
+                    <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
+                    <img src="./css/icon/two/qq.png">
+                    <input type="text" class="form-control" name="qq" placeholder="QQ">
+                </div>
+                <div class="form-group">
+                    <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i>    -->
+                    <img src="./css/icon/two/email.png">
+                    <input type="text" class="form-control" name="email" placeholder="邮箱">
+                </div>
+                <div class="form-group"> 
+                    <textarea class="MN_commentCtn" id="leaveMsgCtn" maxlength="200" name="content"></textarea>
+                </div>
+                <div class="form-group">
+                    <div id="imgsDiv">
+                    </div>
+                </div>
+                    <p style="text-align:center"><span id="filebtn" class=" btn btn-white">上传图片</span></p> 
+				<div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn" onclick="$('#leaveMsgForm').submit()">提交</div>
+			</form>
+		</div>
+        <!-- 留言结束 -->
+        
+        <!-- 提交成功模态框开始 -->
+         <div class="modal" aria-hidden="true" id="successMessage" style="display:none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div>
+                            <i class="fa fa-check-circle-o" style="font-size:60px;color:lightblue;"></i>                        
+                        </div>
+                        <div>
+                        您的留言已经提交,我们会尽快处理!                        
+                        </div>
+                    </div>      
+                    <div class="modal-footer">
+                        <div>
+                            <span id="messageAgain" style="margin-right:0.05rem">继续留言>></span>
+                            <span id="backMessage">返回聊天页>></span>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 提交成功模态框结束 -->
+
+    	<!-- <div class="back">
+    		<img class="logo" id="logo">
+    		<p>网页由云问前端开发人员提供</p>
+    	</div> -->
+    	<div class="front">
+			<div class="header">
+				<!-- <span class="backQuit"><img src="skin/h5chat/images/back2@2x.png"/></span> -->
+				<span class="headName"></span>
+			</div>
+    		<div class="chatScroll">
+    			<div class="chatCtn my-gallery" id="chatCtn" data-pswp-uid="1">
+    				
+                </div>
+    		</div>
+    		<div class="editCtn">
+    			<div class="editShow">
+    				<div class="cosInput cosSome">
+    					<div class="textareaCtn">
+    						<textarea class="textarea" id="textarea"></textarea>
+    					</div>
+						<!--<div class="sendBtn sendMsg" id="sendBtn">发送</div>-->
+						<div id="a" class="inputBtn hide">按住 说话</div>
+    				</div>
+    				<div class="cosBtn cosSome">
+    					<div class="addbtn hide"></div>
+    					<div class="sendMsg" id="sendBtn">发送</div>
+    				</div>
+    			</div>
+    			<div class="editHide">
+                    <div class="sendPicCtn editCtn_com">
+                        <span id="sendPic" class="sendPic"></span>
+                    </div>
+					<!--<div class="sendVoiceCtn editCtn_com">
+						<span id="sendVoice" class="sendVoice"></span>
+						&lt;!&ndash;<p>发送语音</p>&ndash;&gt;
+					</div>
+					<div class="sendCameraCtn editCtn_com">
+						<span id="sendCamera" class="sendCamera"></span>
+					</div>-->
+					<div class="sendFaceCtn editCtn_com">
+						<span id="sendFace" class="sendFace faceBtn"></span>
+					</div>
+					<!--<div class="sendFileCtn editCtn_com">
+						<span id="sendFile" class="sendFile"></span>
+						&lt;!&ndash;<p>发送文件</p>&ndash;&gt;
+					</div>
+    				<div class="takePhotoCtn editCtn_com">
+    					<span class="takePhoto"></span>
+    					&lt;!&ndash;<p>拍照发送</p>&ndash;&gt;
+    				</div>-->
+    				<div class="commonQueCtn editCtn_com">
+    					<span id="sendCommonQue" class="commonQue"></span>
+    					<!--<p>常见问题</p>-->
+    				</div>
+    				<div class="feedbackCtn editCtn_com">
+    					<span id="sendFeedBack" class="feedback"></span>
+    					<!--<p>意见反馈</p>-->
+    				</div>
+    				<div class="leaveMsgCtn editCtn_com">
+    					<span id="sendLeaveMsg" class="leaveMsg"></span>
+    					<!--<p>留言</p>-->
+    				</div>
+    			</div>
+            </div>
+        </div>
+    </div>
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                </button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                </button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+var tmpsourceId=3;
+var initPhotoSwipeFromDOM = function(gallerySelector) {
+        // 解析来自DOM元素幻灯片数据（URL，标题，大小...）
+        var parseThumbnailElements = function(el) {
+            var thumbElements = $(el).find('figure'),
+                    numNodes = thumbElements.length,
+                    items = [],
+                    figureEl,
+                    linkEl,
+                    size,
+                    item,
+                    divEl,
+                    nature;
+            for(var i = 0; i < numNodes; i++) {
+                figureEl = thumbElements[i]; // <figure> element
+                // 仅包括元素节点
+                if(figureEl.nodeType !== 1) {
+                    continue;
+                }
+                divEl = figureEl.children[0];
+                linkEl = divEl.children[0]; // <a> element
+                nature = linkEl.children[0].naturalWidth+'x'+linkEl.children[0].naturalHeight;
+                //size = linkEl.getAttribute('data-size').split('x');
+                size = nature.split('x');
+                // 创建幻灯片对象
+                item = {
+                    src: linkEl.getAttribute('href'),
+                    w: parseInt(size[0], 10),
+                    h: parseInt(size[1], 10)
+                };
+                if(figureEl.children.length > 1) {
+                    item.title = figureEl.children[1].innerHTML;
+                }
+                if(linkEl.children.length > 0) {
+                    // <img> 缩略图节点, 检索缩略图网址
+                    item.msrc = linkEl.children[0].getAttribute('src');
+                    item.src = linkEl.children[0].getAttribute('src');
+                }
+                item.el = figureEl; // 保存链接元素 for getThumbBoundsFn
+                items.push(item);
+            }
+            return items;
+        };
+
+        // 查找最近的父节点
+        var closest = function closest(el, fn) {
+            return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+        };
+
+        // 当用户点击缩略图触发
+        var onThumbnailsClick = function(e) {
+            e = e || window.event;
+            //e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            var eTarget = e.target || e.srcElement;
+            var clickedListItem = closest(eTarget, function(el) {
+                return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+            });
+            if(!clickedListItem) {
+                return;
+            }
+            var clickedGallery = clickedListItem.parentNode,
+                    childNodes = clickedListItem.parentNode.childNodes,
+                    numChildNodes = childNodes.length,
+                    nodeIndex = 0,
+                    index;
+            for (var i = 0; i < numChildNodes; i++) {
+                if(childNodes[i].nodeType !== 1) {
+                    continue;
+                }
+                if(childNodes[i] === clickedListItem) {
+                    index = nodeIndex;
+                    break;
+                }
+                nodeIndex++;
+            }
+            if(index >= 0) {
+                openPhotoSwipe( index, clickedGallery );
+            }
+            return false;
+        };
+
+        var photoswipeParseHash = function() {
+            var hash = window.location.hash.substring(1),
+                    params = {};
+            if(hash.length < 5) {
+                return params;
+            }
+            var vars = hash.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                if(!vars[i]) {
+                    continue;
+                }
+                var pair = vars[i].split('=');
+                if(pair.length < 2) {
+                    continue;
+                }
+                params[pair[0]] = pair[1];
+            }
+            if(params.gid) {
+                params.gid = parseInt(params.gid, 10);
+            }
+            return params;
+        };
+
+        var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
+            var pswpElement = document.querySelectorAll('.pswp')[0],
+                    gallery,
+                    options,
+                    items;
+            items = parseThumbnailElements(galleryElement);
+            // 这里可以定义参数
+            options = {
+                barsSize: {
+                    top: 100,
+                    bottom: 100
+                },
+                fullscreenEl : false,
+                shareButtons: [
+                    {id:'wechat', label:'分享微信', url:'#'},
+                    {id:'weibo', label:'新浪微博', url:'#'},
+                    {id:'download', label:'保存图片', url:'{{raw_image_url}}', download:true}
+                ],
+                galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+                getThumbBoundsFn: function(index) {
+                    var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+                            pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                            rect = thumbnail.getBoundingClientRect();
+                    return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+                }
+            };
+            if(fromURL) {
+                if(options.galleryPIDs) {
+                    for(var j = 0; j < items.length; j++) {
+                        if(items[j].pid == index) {
+                            options.index = j;
+                            break;
+                        }
+                    }
+                } else {
+                    options.index = parseInt(index, 10) - 1;
+                }
+            } else {
+                options.index = parseInt(index, 10);
+            }
+            if( isNaN(options.index) ) {
+                return;
+            }
+            if(disableAnimation) {
+                options.showAnimationDuration = 0;
+            }
+            gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        };
+
+        var galleryElements = document.querySelectorAll( gallerySelector );
+        for(var i = 0, l = galleryElements.length; i < l; i++) {
+            galleryElements[i].setAttribute('data-pswp-uid', i+1);
+            galleryElements[i].onclick = onThumbnailsClick;
+        }
+        var hashData = photoswipeParseHash();
+        if(hashData.pid && hashData.gid) {
+            openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
+        }
+    };
+
+    initPhotoSwipeFromDOM('.my-gallery');
+    /**
+      * taskId=370;赵永平
+      * 原因：在ios上键盘会遮住input输入框
+      * 修改：点击后触发延迟100ms 后调用scrollIntoView解决
+      */
+      // $('#textarea').on('click',function() {
+      //   var self = this;
+      //   setTimeout(function() {
+      //     self.scrollIntoView(true);
+      //   },100)
+      // });
+
+    var timer1;  
+    $('#textarea').on('focus',function() {
+      var self = this;
+      timer1 = setTimeout(function() {
+        self.scrollIntoView(false);
+      },100)
+    });
+
+    $('#textarea').on('blur',function() {
+      if(timer1){
+        clearInterval(timer1);  
+      }
+    });
+    
+</script> 
+</html>

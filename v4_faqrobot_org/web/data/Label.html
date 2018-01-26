@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>未知问题标签占比统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">未知问题标签占比统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">未知问题标签占比统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="此图数据展示各各类别下面所有未知问题的标签占比"
+                   class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        未知问题标签占比统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveStartTime" value=""/>
+                    <input type="hidden" id="saveEndTime" value=""/>
+                    <div class="text-right">
+                        <div class="btn-group m-r-4" style="margin-bottom:10px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryc('1')">确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" onclick="OutExcel()" class="btn btn-primary m-r-5 pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-5">
+                        <div class="col-md-3"
+                             style="border: 1px solid #D9E0E7;border-radius: 3px;padding: 5px;overflow: hidden;margin-bottom: 0;">
+                            <div id="tree">
+                                <div class="treeDivOfquery">
+                                    <ul id="treeClasses" class="ztree"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="">
+                            <table class="table">
+                                <thead>
+                                <tr id="tableHead">
+                                    <th>时间</th>
+                                    <th>标签</th>
+                                    <th>次数</th>
+                                    <th>占比</th>
+                                </tr>
+                                </thead>
+                                <tbody id="visitDataTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script src="js/label.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        $('#TimeQuery').hide()
+        $('#option1').on('click', function () {
+            $('#byTimePiece').show()
+            $('#TimeQuery').hide()
+            //清空精确时间的表单和存储值
+            $('#TimeQuery')[0].reset()
+            $('#saveStartTime').val('')
+            $('#saveEndTime').val('')
+            $('#chartHead').text('未知问题标签占比统计')
+            queryc()
+        })
+        $('#option2').on('click', function () {
+            $('#byTimePiece').hide()
+            $('#TimeQuery').show()
+        })
+        $('#byTimePiece .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#byTimePiece .selectpicker').on('change', function () {
+            queryc()
+        })
+        formatDateTime()
+        //ztree滚动条
+        $('.treeDivOfquery').slimScroll({
+            height: '400px'
+        })
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        $('#myDropdown').on('click', function () {
+            $(this).parent().addClass('open')
+        })
+        $('body').on('click', function (e) {
+            if (!$('#myDropdown').parent().find($(e.target)).length) {
+                $('#myDropdown').parent().removeClass('open')
+            }
+        })
+        //全局变量 获得当前时间
+        var myDate = new Date()
+        var myDateM = myDate.getMonth() + 1//月
+        var myDateD = myDate.getDate()//日
+        var myDateHou = myDate.getHours()//时
+        var myDateMin = myDate.getMinutes()//分
+
+        function updateTime(){
+            myDate = new Date()
+            myDateM = myDate.getMonth() + 1//月
+            myDateD = myDate.getDate()//日
+            myDateHou = myDate.getHours()//时
+            myDateMin = myDate.getMinutes() + 2//分
+        }
+        if (myDateM < 10) {//判断现在月份格式
+            myDateM = '0' + myDateM
+        }
+        if (myDateD < 10) {//判断现在日期格式
+            myDateD = '0' + myDateD
+        }
+        if (myDateHou < 10) {//判断现在小时格式
+            myDateHou = '0' + myDateHou
+        }
+        if (myDateMin < 10) {//判断现在分钟格式
+            myDateMin = '0' + myDateMin
+        }
+
+        //页面初始化 默认一周自动填充时间
+        function apply () {//获取一周前时间
+            var newDatew = new Date()
+            newDatew.setTime(newDatew.getTime() - 7 * 24 * 60 * 60 * 1000)//此时newDatew变成了一周前的时间
+            var weekMon = newDatew.getMonth() + 1//一周前的月份
+            if (weekMon < 10) {weekMon = '0' + (newDatew.getMonth() + 1)}
+
+            var weekDay = newDatew.getDate()//一周前的日
+            if (weekDay < 10) {weekDay = '0' + newDatew.getDate()}
+
+            var week = newDatew.getFullYear() + '-' + weekMon + '-' + weekDay
+            $('#tm1').val(week + ' ' + myDateHou + ':' + myDateMin)//一周前的现在
+            $('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//今天的时间
+            queryc()
+        }
+
+        apply()
+
+        //获得上月今天的方法
+        function lastMonthDate () {
+            var vYear = myDate.getFullYear()
+            var vMon = myDate.getMonth() + 1
+            var vDay = myDate.getDate()
+            //每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+            var daysInMonth = new Array(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+            if (vMon == 1) {
+                vYear = myDate.getFullYear() - 1
+                vMon = 12
+            } else {
+                vMon = vMon - 1
+            }
+            //若是闰年，二月最后一天是29号
+            if (vYear % 4 == 0 && vYear % 100 != 0) {
+                daysInMonth[2] = 29
+            }
+            if (daysInMonth[vMon] < vDay) {
+                vDay = daysInMonth[vMon]
+            }
+            if (vDay < 10) {
+                vDay = '0' + vDay
+            }
+            if (vMon < 10) {
+                vMon = '0' + vMon
+            }
+            var LastMonthDate = vYear + '-' + vMon + '-' + vDay
+            return LastMonthDate
+        }
+
+        $('.ttw0').on('click', function () { //昨天
+            updateTime();
+            $('#myDropdown').parent().removeClass('open')
+            $(this).addClass('open').siblings().removeClass('open')
+            var newDate1 = new Date()//获取当前时间
+            newDate1.setTime(newDate1.getTime() - 24 * 60 * 60 * 1000)//当前时间设置成昨天时间
+            var yestM = newDate1.getMonth() + 1 //昨天的月
+            if (yestM < 10) {
+                yestM = '0' + yestM
+            }
+            var yestD = newDate1.getDate()//昨天的日
+            if (yestD < 10) {
+                yestD = '0' + yestD
+            }
+            var yesterday = newDate1.getFullYear() + '-' + yestM + '-' + yestD
+            $('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+            $('#tm1').val(yesterday + ' ' + '00' + ':' + '00')//昨天的时间
+            $('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00')//现在的时间
+            queryc()
+        })
+
+        $('.ttw1').on('click', function () { //今天
+            updateTime();
+            $('#myDropdown').parent().removeClass('open')
+            $(this).addClass('open').siblings().removeClass('open')
+            $('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+            $('#tm1').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00')//今天零点
+            $('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//现在时间
+            queryc()
+        })
+
+        $('.ttw2').on('click', function () { //最近七天
+            updateTime();
+            $('#myDropdown').parent().removeClass('open')
+            $(this).addClass('open').siblings().removeClass('open')
+            $('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+            apply()
+            queryc()
+        })
+        $('.ttw3').on('click', function () { //最近一个月
+            updateTime();
+            $('#myDropdown').parent().removeClass('open')
+            $(this).addClass('open').siblings().removeClass('open')
+            $('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+            $('#tm1').val(lastMonthDate() + ' ' + myDateHou + ':' + myDateMin)//一月前的今天
+            $('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//现在时间
+            queryc()
+        })
+        $('.ttw4').on('click', function () { //全部
+            updateTime();
+            $('#myDropdown').parent().removeClass('open')
+            $(this).addClass('open').siblings().removeClass('open')
+            $('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+            pageNo = 1
+            $('#tm1').val('')
+            $('#tm2').val('')
+            queryc()
+        })
+    })
+</script>
+</body>
+</html>

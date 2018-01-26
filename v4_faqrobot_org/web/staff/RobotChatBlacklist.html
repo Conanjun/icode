@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>机器人聊天黑名单</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/customChatLog.css" rel="stylesheet">
+
+	<style>
+		.panel-body{
+			padding:0;
+		}
+	  *{
+		  font-family:'微软雅黑';
+	  }
+	  .bootstrap-select.btn-group .btn .caret {
+		  position: absolute;
+		  top: 53%;
+		  right: 16px;
+		  margin-top: -2px;
+		  vertical-align: middle;
+	  }
+	  td{
+		 word-break: break-all;
+	  }
+    #chatModal .chats img {
+      max-width: 100%;
+    }
+	#logpageList .pagination li a[title=最后一页],#logpageList .pagination li:last-child {
+			display:none;
+	  }
+	  @media (max-width:1217px){
+			.form-horizontal .hideForm{
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+		@media (max-width: 991px) {
+			#qualityForm .col-md-3{
+				padding-right: 0;
+				padding-left: 0;
+			}
+			#qualityForm .col-md-6{
+				padding-left: 0;
+			}
+		}
+
+  </style>
+</head>
+<body class="pace-done">
+	<!--模态框-->
+	<div id="makeSure" class="modal" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">确定删除该黑名单</h4>
+				</div>
+				<div class="modal-body">
+					提示：是否确定删除？
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" id="ok">确认</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">访客黑名单</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">机器人聊天黑名单</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<!-- <ul class="nav nav-tabs tabType">
+							<li class="active"><a data-toggle="tab" href="#default-tab-1" aria-expanded="true" tabType="-2">机器人聊天黑名单</a></li>
+							<li class=""><a data-toggle="tab" href="#default-tab-2" aria-expanded="false" tabType="-1">转人工黑名单</a></li>
+						</ul> -->
+						<div class="tab-content">
+							<form method="POST" class="form-inline text-right" id="visiterLog_Query">
+								<div class="input-group">
+									<input class="hide" type="text">
+									<input id="ABC" name="address" type="text" class="form-control">
+									<div class="input-group-btn">
+										<button type="button" class="chooseWay btn btn-primary dropdown-toggle" data-toggle="dropdown">地域</button>
+										<button id="searchBtn" onclick="vistorBlacklist()"  style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;margin-left: 4px" type="button" class="m-r-1 btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</div>
+
+								<div id="DataSource" style="display: inline-block;" class="m-b-5">
+									<select class="selectpicker" id="Choice_Query" name="sourceId">
+										<option value="-1">全部访客</option>
+										<option value="1">微信访客</option>
+										<option value="0">网页访客</option>
+									</select>
+								</div>
+
+								<div class="btn-group">
+									<button id="biandong" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										默认排序&nbsp;<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li> <a href="javascript:;" onclick="vistorBlacklist(1,4);return false;">默认排序</a> </li>
+										<li> <a href="javascript:;" onclick="vistorBlacklist(1,3);return false;">时间升序</a> </li>
+										<li> <a href="javascript:;" onclick="vistorBlacklist(1,4);return false;">时间降序</a> </li>
+									</ul>
+								</div>
+								<!-- 页面表格-->
+							</form>
+							<!-- <div id="default-tab-1" class="tab-pane fade active in"></div>
+							<div id="default-tab-2" class="tab-pane fade"></div> -->
+							<table class="table" id="visiterlogList" tableType="-2">
+								<thead>
+								<tr>
+									<th>访客名称</th>
+									<th style="width: 150px">黑名单原因</th>
+									<th>渠道详细</th>
+									<th>访客地址</th>
+									<th>加入黑名单时间</th>
+									<th>聊天记录</th>
+									<th>操作</th>
+								</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="logpageList"></div>
+						<input type="hidden" name="orderType" value="4">
+					</div>
+				</div>
+			</div>
+
+
+			<div class="modal" style="display: none;" aria-hidden="true" id="chatModal">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">查看记录</h4>
+						</div>
+						<div class="modal-body p-b-0 p-t-5">
+							<div class="row-fluid sendCheck" style="display: none;">
+								<div class="row">
+									<form id="qualityForm">
+										<input type="hidden" name="uuid">
+										<input type="hidden" name="chatVersion">
+										<input type="hidden" name="chatlogId">
+										<label class="bold">问题</label>
+										<input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue" style="margin-bottom: 10px;">
+										<div  style="padding-left: 0;" class="col-md-3">
+											质检类型 <b class="red">*</b><select name="qualityModeId" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
+											<input type="hidden" name="recheckModeId">
+										</div>
+										<div class="col-md-3">
+											质检评分<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score" style="margin-bottom: 10px;">
+										</div>
+										<div class="col-md-6" style="padding-right:0px;">
+											质检评语<input type="text" placeholder="质检评语" class="col-md-12 form-control" name="qualityContent" style="resize: none; height: 34px;margin-bottom: 10px;">
+										</div>
+									</form>
+								</div>
+
+
+								<div class="row">
+									<ul class="nav nav-pills nav-pills-chg">
+										<li status="1" class="active"><a href="#navChatLogOne" data-toggle="tab" aria-expanded="true">已有答案回答</a></li>
+										<li status="2"><a href="#navChatLogTwo" data-toggle="tab" aria-expanded="false">编辑答案回答</a></li>
+									</ul>
+									<!--切换的内容-->
+									<div style="padding: 0" class="tab-content">
+
+										<!-- 点击切换2-->
+										<div class="tab-pane active" id="navChatLogOne">
+											<form id="nav-pills-tab-2-form">
+												<input type="hidden" name="pageNo" value="1">
+												<input type="hidden" name="isLeaf" value="1">
+												<input type="hidden" name="status" value="0">
+												<input type="hidden" name="level" value="1">
+												<input type="hidden" name="pageSize" value="5">
+												<input type="hidden" id="tab2quetype" name="queryType" value="1">
+												<div class="row">
+                                            <span class="col-md-5">选择分类：
+                                                <a href="#" class="ztreeName2">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+
+													<div class="ztree tanchu" id="tanchutree2" style="display: none;margin-top: 15px"></div>
+													<div class="input-group col-md-4 pull-right">
+														<input type="text" class="form-control" id="tab2que" name="question">
+														<div class="input-group-btn">
+															<ul class="dropdown-menu pull-right">
+																<li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'question');$('#tab2quetype').val('1');">问题</a></li>
+																<li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'answer');$('#tab2quetype').val('2');">答案</a></li>
+															</ul>
+															<button type="button" class="btn-toggle btn btn-primary dropdown-toggle curHtml" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">问题<span class="caret"></span>
+															</button>
+															<button type="button" class="btn btn-primary searchHasAns">
+																<i class="glyphicon glyphicon-search"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</form>
+											<div class="max370">
+												<table class="table" style="width:100%;margin: 10px 0">
+													<thead>
+													<tr>
+														<td width="50"></td>
+														<th>问题</th>
+														<th id="gggggggg">答案</th>
+														<th width="160">时间</th>
+													</tr>
+													</thead>
+													<tbody class="tbody2"></tbody>
+												</table>
+											</div>
+											<div id="itemContainer2" style="margin-bottom: -20px;"></div>
+										</div>
+
+										<!-- 点击切换3-->
+										<div class="tab-pane " id="navChatLogTwo">
+											<div class="col-md-12">
+												<div class="row mb10">
+                                            <span class="col-md-2" style="padding-left: 0;">问题分类<b class="red">*</b>：
+                                                <a class="ztreeName3" href="javascript:;">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+													<div class="ztree tanchu" id="tanchutree3" style="display: none;margin-top: 15px"></div>
+												</div>
+
+												<div class="row mb10" id="warpRoles">
+													<span>生效角色：</span>&nbsp;&nbsp;
+													<a id="juese" href="#QuestionClassModel" data-toggle="modal" >来访者角色</a>
+												</div>
+												<div class="row mb10" id="warpRules">
+													<div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
+														<span>生效渠道：</span>&nbsp;
+													</div>
+													<div class="col-md-10" style="margin-left:-20px;">
+														<div id="chooseAll"></div>
+													</div>
+												</div>
+												<div class="row">
+													<span>输入答案<b class="red">*</b>：</span>
+												</div>
+												<div style="padding: 0" class="row">
+													<textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5"  name="title"></textarea>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<!-- 底部3按钮-->
+									<div style="position: absolute;bottom: 15px;right:30px" class="row">
+										<a href="javascript:;" class="cancel btn btn-sm btn-white">取消</a>
+										<a href="javascript:;"  class="testOnly btn btn-sm btn-primary" >仅质检</a>
+										<button  class="testAndlearn btn btn-sm btn-white btn-primary">质检并学习</button>
+									</div>
+								</div>
+							</div>
+							<form method="POST" id="visiterForm" class="form-horizontal">
+								<fieldset>
+									<div class="form-group m-b-5">
+										<label class="col-md-2 control-label">访客信息</label>
+										<div class="col-md-9" style="padding-left:15px;padding-right:15px;padding-top:7px;">
+											<span class="visiterInfo"></span>
+											<button type="button" class="btn btn-primary btn-xs" onclick="$('.hideForm').toggle();">高级查询</button>
+										</div>
+									</div>
+									<div class="form-group hideForm m-b-5" style="display: none;">
+										<label class="col-md-2 control-label">起始时间</label>
+										<div class="col-md-3" style="padding-left:0;padding-right:0;">
+											<input size="16" type="text" readonly class="form-control form_datetime input-sm" name="startTime">
+										</div>
+										<label class="col-md-2 control-label">结束时间</label>
+										<div class="col-md-3" style="padding-left:0;padding-right:0;">
+											<input size="16" type="text" readonly class="form-control form_datetime input-sm" name="endTime">
+										</div>
+									</div>
+									<div class="form-group hideForm m-b-5" style="display: none;">
+										<label class="col-md-2 control-label">内容</label>
+										<div class="col-md-8" style="padding-left:0;padding-right:0;">
+											<input type="text" class="form-control input-sm" name="content">
+										</div>
+									</div>
+									<div class="form-group hideForm" style="display: none;">
+										<label class="col-md-2 control-label"></label>
+										<div class="col-md-8" style="padding-left:0;padding-right:0;">
+											<a href="javascript:void(0);" title="本次记录" class="bcjl btn btn-primary btn-xs">本次记录</a>
+											<a href="javascript:void(0);" title="全部记录" class="qbjl btn btn-primary btn-xs">全部记录</a>
+											<button type="button" class="btn btn-primary btn-xs" id="searchChatRe">搜索</button>
+											<button type="button" class="btn btn-primary btn-xs" onclick="searchClear()">清空</button>
+										</div>
+									</div>
+									<input type="hidden" class="recordsChatUserId" name="chatUserId">
+									<input type="hidden" class="tempValue">
+									<input type="hidden" class="chatV" name="chtvs">
+								</fieldset>
+							</form>
+							<div id="chatCon">
+								<div id="chatLogList">
+									<ul class="chats"></ul>
+								</div>
+							</div>
+							<div id="chatpageList" style="margin-top:10px; margin-bottom:0px;"></div>
+						</div>
+						<div class="modal-footer">
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/customChatLog.js"></script>
+	<script src="js/staff.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/base.js"></script>
+	<script type="text/javascript">
+		var ids ;
+		//ENTER按键搜索
+		$(document).on('keyup', function(e) {
+			var $activeEl = $(document.activeElement);
+			if($activeEl.is('#ABC')&& (e.keyCode==13||e.keyCode==108)){
+				$('#searchBtn').trigger('click');
+			}
+		});
+		$(".form_datetime").datetimepicker({
+			language: "zh-CN",
+			format: "yyyy-mm-dd hh:ii",
+			autoclose: true,
+			todayBtn: true,
+			minuteStep: 10,
+			initialDate:new Date(),
+			zIndex: 1500
+		});
+
+		$(document).ready(function() {
+			vistorBlacklist(1,4);
+			$('.chooseArea').click(function(){
+				$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+				$('#ABC').attr('name','address');
+			});
+//			$('.chooseQue').click(function(){
+//				$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//				$('#ABC').attr('name','keywords');
+//			});
+			App.init();
+
+
+//点击弹出下拉菜单
+			$('#myDropdown').on('click', function () {
+				$(this).parent().toggleClass('open');
+			});
+
+			$('body').on('click', function (e) {
+				if(!$('#myDropdown').parent().find($(e.target)).length) {
+					$('#myDropdown').parent().removeClass('open');
+				}
+			});
+
+			$('body').on('change', '#Choice_Query', function(){
+				vistorBlacklist(1);
+			});
+			$('body').on('change', '#LogItems_Query', function(){
+				vistorBlacklist(1);
+			});
+			$('body').on('change', '#Level_Query', function(){
+				vistorBlacklist(1);
+			});
+			$('body').on('change', '#vType_Query', function(){
+				vistorBlacklist(1);
+			});
+
+			$('.selectpicker').selectpicker({
+				style: 'btn-primary',
+				size: 4,
+				width: '100%'
+			});
+
+            switchTab();   //切换标签
+		});
+		//判断时间大于7天的
+		function diy_time(time1,time2){
+			time1 = Date.parse(new Date(time1));
+			time2 = Date.parse(new Date(time2));
+			return time3 = Math.abs(parseInt((time2 - time1)/1000/3600/24));
+		}
+
+		//获取到要删除的当前行的id
+		$('.table').undelegate('.delRow','click').delegate('.delRow','click',function(e){
+            ids = $(e.target).parents("tr").attr('id');//拿到当前行的Id
+		});
+
+	//模态框 确定删除黑名单
+    $('#ok').click(function(){
+		$.ajax({
+			type: "post",
+			url: "../../ChatUser/deleteBalckByIds",
+			data: {ids:ids} ,
+			success: function (data) {
+				if(data.status==0){
+					yunNoty(data);
+					vistorBlacklist();
+				}else{
+					yunNotyError(data.message)
+				}
+			}
+		})
+	$('#makeSure').modal('hide');
+	});
+
+        /*==========标签切换，修改拉黑类型==========
+		* type:1     机器人拉黑
+		* type:2     人工拉黑*/
+        function switchTab(){
+            $('.tabType li>a').unbind('click').bind('click', function(){
+                vistorBlacklist(1);
+            });
+        }
+
+	</script>
+</body>
+</html>

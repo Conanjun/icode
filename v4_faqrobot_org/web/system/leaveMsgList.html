@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>留言列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		 
+		#replyModal{
+			font-size:16px;
+		}
+		#replyModal .form-group>div{
+			padding-top:8px;
+			font-size:14px;
+		}
+		#replyModal .form-group>div>a{
+			margin:4px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">留言列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">留言列表</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<table class="table" id="leaveMsgTabList">
+							<thead>
+								<tr>
+									<th width="80px">名称</th>
+									<th>QQ</th>
+									<th>电话</th>
+									<!-- taskid=403 任务：转人工留言 修改人：顾荣  去掉网址列 添加邮箱列 -->
+									<!-- <th width="80px">网址</th> -->
+									<th>邮箱</th>
+									<th width="400px">内容</th>
+									<th>渠道</th>
+									<th>留言时间</th>
+									<th width="80px">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="leaveMsgpageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- tskid=  顾荣 添加留言回复功能 -->
+		<!-- 此处添加一个回复模态框 -->
+		<!--留言详情模态框开始-->
+		<div class="modal fade" id="replyModal">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+						<h4 class="modal-title" id="tipTitle">留言详情</h4>
+						<input name="replyId" type="hidden">
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" id="MessageBoardForm">
+							<div class="form-group">
+								<label class="col-xs-2 control-label">访客姓名：</label>
+								<div class="col-xs-4" id="msgName"></div>
+								<label class="col-xs-2 control-label">Q Q：</label>
+								<div class="col-xs-4"  id="msgQQ"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-2 control-label">手机号码：</label>
+								<div class="col-xs-4"  id="msgPhone"></div>
+								<label class="col-xs-2 control-label">邮箱：</label>
+								<div class="col-xs-4"  id="msgEmail"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-2 control-label">留言内容：</label>
+								<div class="col-xs-4" id="msgCon"></div>
+								<label class="col-xs-2 control-label">来源：</label>
+								<div class="col-xs-4"  id="msgSource"></div>
+							</div>
+							<div class="form-group" id="imgGroup">
+								<label class="col-xs-2 control-label">图片：</label>
+								<div class="col-xs-8" style="padding-top:8px;font-size:14px;">
+									<!-- <a href="../../upload/web/1476067342641247/20171215/65181513329793710.jpg" data-lightbox="image-1"><img style="width:50px;height:50px"  src="../../upload/web/1476067342641247/20171215/65181513329793710.jpg"/></a>
+									<a href="../../upload/web/1476067342641247/20171215/20421513327448597.jpg" data-lightbox="image-1"><img style="width:50px;height:50px"  src="../../upload/web/1476067342641247/20171215/20421513327448597.jpg" alt="xiaxue.jpg" title="xiaxue.jpg" width="120"></a>	 -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-2 control-label">回复：</label>
+								<div class="col-xs-8" style="padding-top:8px;font-size:14px;">
+									<textarea name="ans_text" class="form-control" id="ansText" style="height:200px"  maxlength="200"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="replyBtn">回复</button>
+						<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--留言详情模态框结束-->
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			listMsg(1);
+		});
+		var msgList=[]//留言列表
+		function listMsg(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$('#leaveMsgTabList').tableAjaxLoader2(7);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../LeaveMsg/list?pageSize=' + 20 + '&pageNo=' + pageNo),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#leaveMsgTabList').find('tbody').html('<tr><td colspan=\"7\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-sign\"></i>当前纪录为空！</td></tr>');
+							$('#leaveMsgpageList').html('');
+							return;
+						}
+						if (data.List.length > 0) {
+							msgList=data.List;
+							var html = "";
+							for (var i = 0; i < data.List.length; i++) {
+								switch (data.List[i].SourceId){//添加渠道列表
+									case 0:
+										data.List[i].SourceId = '网页';
+										break;
+									case 1:
+										data.List[i].SourceId="微信"
+										break;
+									case 2:
+									data.List[i].SourceId = 'API';
+										break;
+									case 3:
+									data.List[i].SourceId = 'APP';
+										break;
+									case 4:
+									data.List[i].SourceId = '微博';
+										break;
+									case 5:
+									data.List[i].SourceId = '支付宝';
+										break;
+									case 6:
+									data.List[i].SourceId = '手机端';
+										break;
+									case 7:
+									data.List[i].SourceId = 'Ios端';
+										break;
+									case 8:
+									data.List[i].SourceId = '安卓端';
+										break;
+									case 9:
+									data.List[i].SourceId = '大屏端';
+										break;
+									case 10:
+									data.List[i].SourceId = '云问网页'
+										break;
+								}	
+								html += "<tr id=\"list-tr-" + data.List[i].Id + "\">";
+								html += "<td>";
+								html += data.List[i].Name == null ? '&nbsp;': data.List[i].Name;
+								html += "</td>";
+								html += "<td>";
+								html += data.List[i].Qq == null ? '&nbsp;': data.List[i].Qq;
+								html += "</td>";
+								html += "<td>";
+								html += data.List[i].TelNum == null ? '&nbsp;': data.List[i].TelNum;
+								html += "</td>";
+								html += "<td>";
+								html += data.List[i].Email == null ? '&nbsp;': data.List[i].Email;
+								html += "</td>";
+								html += "<td>";
+								html += data.List[i].Content == null ? '&nbsp;': data.List[i].Content;
+								html += "</td>";
+								html +="<td>";
+								html += data.List[i].SourceId == null ? '&nbsp;': data.List[i].SourceId;
+								html +="</td>";
+								html += "<td>";
+								html += data.List[i].AddTime == null ? '&nbsp;': data.List[i].AddTime;
+								html += "</td>";
+								// 添加留言回复图标
+								html +="<td><a class=\"m-rep\" rel=\"" + data.List[i].Id + "\" style=\"cursor:pointer;\" title='回复'><i class=\"glyphicon glyphicon-pencil\" onclick='replyMsg("+i+")'></i></a>&nbsp&nbsp";								
+								html += "<a class=\"m-del\" rel=\"" + data.List[i].Id + "\" style=\"cursor:pointer;\"  title='删除'><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+
+							}
+
+							$('#leaveMsgTabList').find('tbody').html(html);
+							//单个删除
+		          $('.m-del').on('click',function(){
+		            var self = this;
+		            $(self).adcCreator(function() {
+									delById(self,'../../LeaveMsg/delById',listMsg,'leaveMsgpageList');
+		            });
+		          });
+							//下面开始处理分页
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									listMsg(page);
+								}
+							};
+							setPage('leaveMsgpageList', options);
+						} else {
+							$('#leaveMsgTabList').find('tbody').html('<tr><td colspan=\"7\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-sign\"></i>当前纪录为空！</td></tr>');
+							$('#leaveMsgpageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+		// tskid=  顾荣 添加留言回复功能
+		function replyMsg(index){
+			$("#replyModal").modal('show');
+			// 模态框信息回填
+			if(msgList[index].ImgUrls){//有图片则显示图片
+				$("#imgGroup").show()
+				var imgStr=""
+				var imgArr=msgList[index].ImgUrls.split(",");
+				for(var i=0;i<imgArr.length;i++){
+					imgStr+='<a href="'+imgArr[i]+'" data-lightbox="image-1"><img style="width:50px;height:50px"  src="'+imgArr[i]+'"/></a>'
+				}
+				$("#imgGroup>div").html(imgStr)
+			}else{
+				$("#imgGroup").hide();
+			}
+			$("#replyModal #msgName").html(msgList[index].Name||"");
+			$("#replyModal #msgQQ").html(msgList[index].Qq||"");
+			$("#replyModal #msgPhone").html(msgList[index].TelNum||"");
+			$("#replyModal #msgEmail").html(msgList[index].Email||"");	
+			$("#replyModal #msgCon").html(msgList[index].Content||"");
+			$("#replyModal #msgSource").html(msgList[index].SourceId||"")
+			$("#replyModal input[name=replyId]").val(msgList[index].Id)
+			
+		}
+		// 回复框关闭后清空回复内容
+		$("#replyModal").on('hide.bs.modal',function(){
+			$("#replyModal #msgName").html("");
+			$("#replyModal #msgQQ").html("");
+			$("#replyModal #msgPhone").html("");
+			$("#replyModal #msgEmail").html("");	
+			$("#replyModal #msgCon").html("");
+			$("#replyModal #msgSource").html("")
+			$("#replyModal input[name=replyId]").val("")
+			$("#replyModal #ansText").val("")
+		});
+		// 回复留言
+		$("#replyBtn").click(function(){
+			if($('#ansText').val().trim().length<1){
+				yunNotyError("回复内容不能为空！");
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../leaveMsg/saveLeaveMsgAnswer?'),
+				data:{
+					id:$("input[name=replyId]").val(),
+					answer:$('#ansText').val()
+				},
+				success: function(data) {
+					if(!data.status){
+						$("#replyModal").modal('hide')						
+						yunNoty(data)
+						listMsg(1)
+					}else{
+						yunNoty(data)
+					}
+				}
+			})
+		})
+		
+	</script>
+</body>
+</html>

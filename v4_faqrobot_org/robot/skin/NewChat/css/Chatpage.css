@@ -1,0 +1,39 @@
+/*rest*/
+body{margin: 0;padding: 0;font-family: "微软雅黑";}
+textarea{resize: none;border: none;outline: none;overflow: hidden;box-sizing: border-box;}
+a{text-decoration: none;}
+p,h1,ul,li,h2,h3,section,html,a,div,header,ol{margin: 0;padding: 0;}
+li{list-style: none;}
+em,i,span{font-style: normal;}
+.clear{zoom: 1;}
+.clear:after{content: "";display: block;clear: both;}
+.fl{float: left;}
+.fr{float: right;}
+
+
+/**/
+.chatScroll{background: #EFEEF4;}
+.chatCtn{width:100%;}
+.edit-send{height: 100px;width: 100%;position: relative;}
+
+.text-in{height:54px;padding:8px;left:0;top:0;width:100%;overflow: hidden;}
+
+.send{height: 30px;text-align: center;line-height: 30px;background: red;color: #fff;cursor: pointer;}
+.MN_kfCtn, .MN_khCtn {
+    border-radius: 6px;
+}
+/*.face-look{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/expression@2x.png) no-repeat center;
+    background-size: contain;
+}
+.more-should{display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/add@2x.png) no-repeat center;
+    background-size: contain;}*/

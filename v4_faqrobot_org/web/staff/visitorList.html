@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>访客列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+	  DataSource .caret{right:16px}
+	  #VpageList .pagination li a[title=最后一页],#VpageList .pagination li:last-child {
+			display:none;
+	  }
+	
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">访客列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">访客列表</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="tableHead" style="height:34px;">
+							<a id='selectDelBtn' data-toggle="#delQue" href="javascript:void(0);" class="btn pull-right btn-default m-l-4 m-b-10"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+							<div id="DataSource"  class="pull-right " style="display: inline-block;">
+								<div class="btn-group m-b-10">
+									<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										访客类型 <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li> <a onclick="listPage();" href="javascript:void(0);">全部访客</a> </li>
+										<li> <a onclick="listPage(1,1);" href="javascript:void(0);">微信访客</a> </li>
+										<li> <a onclick="listPage(1,0);" href="javascript:void(0);">网页访客</a> </li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+						<table class="table" id="visiterList">
+							<thead>
+								<tr>
+									<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="visiterList"/></th>
+									<!-- 
+										Taskid=431,黄世鹏
+										系统型号不能完全展示，修改系统长度 
+									-->
+									<th width="200">系统</th>
+									<th width="120">IP地址</th>
+									<th nowrap="">访客类型</th>
+									<th width="80">登陆次数</th>
+									<th>地理位置</th>
+									<th width="150">最后来访时间</th>
+									<th width="60">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="VpageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<!--确认删除模态框-->
+	<div class="modal fade" id="delQue">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title" id="tipTitle"></h4>
+				</div>
+				<div class="modal-body">
+					<p id="tipWord"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delYes">是</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			icheckBindInit();
+			listPage(1);
+		});
+
+		var selectSourceFlag = true;
+		function listPage(pageNo,sourceId){
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			if(!pageNo)pageNo=1;
+			if(typeof sourceId=="undefined") sourceId='-1';
+			$('#visiterList').tableAjaxLoader2(8);
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../chatUser/getList?pageSize='+20+'&pageNo='+pageNo+'&sourceId='+sourceId),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.sourceList) {
+							if(data.sourceList[0]) {
+								if(selectSourceFlag) {
+									var html = '<select class="selectpicker">';
+									html += '<option value="-1">全部渠道</option>';
+									for(var m in data.sourceList) {
+										html += '<option value="'+data.sourceList[m].DicCode+'">'+data.sourceList[m].DicDesc+'</option>';
+									}
+									html += '</select>';
+									$('#DataSource').empty().append(html);
+									$('#DataSource .selectpicker').selectpicker({
+										style: 'btn-primary',
+										width: '100%'
+									});
+									$('#DataSource .selectpicker').on('change',function(){
+										listPage(1, $(this).val());
+									});
+									selectSourceFlag = false;
+								}
+							}
+						}
+						if(data.list.length>0){
+							var html = '';
+							for(var i=0;i<data.list.length;i++){
+								html += '<tr id="list-tr-'+data.list[i].Id+'">';
+								html += '<td><input type="checkbox" name="ckb" class="select_row" value="'+data.list[i].Id+'" /></td>';
+								html += '<td>'+(data.list[i].SysInfo || '')+'</td>';
+								if(data.list[i].HostIp==null){
+									html += '<td></td>';
+								} else {
+									html += '<td>'+data.list[i].HostIp+'</td>';
+								}
+								html += '<td>'+getSourceName(data.list[i].SourceId);
+								if(data.list[i].Name){
+									html +='(&nbsp;<span class="bold" style="color:#5bb75b;">&nbsp;'+data.list[i].Name+'&nbsp;</span>&nbsp;)</td>';
+								} else {
+									html +='(&nbsp;Id='+data.list[i].Id+'&nbsp;)</td>';
+								}
+								html += '<td>'+data.list[i].LoadTimes+'</td>';
+								if(data.list[i].Address==null){
+									html += '<td></td>';
+								} else {
+									html += '<td>'+data.list[i].Address+'</td>';
+								}
+								html += '<td>'+data.list[i].LastLoginTime+'</td>';
+								html += '<td><a class="handPutIn del_a" href="javascript:void(0);" rel="'+data.list[i].Id+'" title="删除" ><i class="glyphicon glyphicon-trash" ></i></a></td>';
+								html += '</tr>';
+							}
+							$('#visiterList').find('tbody').html(html);
+							$('.del_a').on('click',function(){
+								var that=this;
+								$(this).adcCreator(function() {
+									delById(that,'../../chatUser/deleteByIds',listPage,'VpageList');
+								})
+							});
+							//列表ickeck初始化
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'list', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function (event, originalEvent, type, page) {
+									listPage(page,sourceId);
+								}
+							};
+							setPage('VpageList',options);
+							//查询配置项 隐藏删除图标
+							delHide();
+							//删除按钮是否可用
+							delBtn();
+							//删除按钮绑定删除事件
+							$('#selectDelBtn').unbind('click').bind('click',function(){
+								$(this).adcCreator(function(){
+									selectDel('','../../chatUser/deleteByIds',listPage,'VpageList');
+								})
+							})
+						}else{
+							$('.select_rows').iCheck('uncheck');
+							$('#visiterList').find('tbody').html('<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>  当前纪录为空！</td></tr>');
+							$('#VpageList').html('');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+		//参数配置 访客列表删除按钮显示或者隐藏
+		function delHide(){
+			if(sessionStorage.getItem("chatUserDeleteShow")==0){
+				$('#selectDelBtn').hide();
+				$('#visiterList tr>:first-child,#visiterList tr>:last-child').hide();
+			}else{
+				$('#selectDelBtn').show();
+				$('#visiterList tr>:last-child').show();
+				$('#visiterList tr>:first-child,#visiterList tr>:last-child').show();
+			}
+		}
+		//批量删除
+		function delBtn(){
+			$('#selectDelBtn').removeClass("btn-primary").addClass("btn-default").attr("disabled",true);
+			$(".select_row,.select_rows").on("ifChanged",function(){
+				if($(".select_row:checked").length>0){
+					$("#selectDelBtn").removeClass("btn-default").addClass("btn-primary").attr("disabled",false)
+				}else{
+					$("#selectDelBtn").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+				}
+			});
+		}
+
+
+
+	</script>
+</body>
+</html>

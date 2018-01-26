@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	<title>后台管理系统</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="./assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="./assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="./assets/css/animate.min.css" rel="stylesheet" />
+	<link href="./assets/css/style.min.css" rel="stylesheet" />
+	<link href="./assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="./assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+	<link href="./assets/plugins/jquery-jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" />
+	<link href="./assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+	<link href="./assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
+	<link href="./assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END PAGE LEVEL STYLE ================== -->
+	<!-- <script src="http://v35new.faqrobot.org/robot/js/_minichat.js" sysNum="3000000"></script> -->
+
+	<style>
+		#userName {
+			margin: 0 5px;
+		}
+
+		.acBorder {
+			margin: 5px 5px 0 5px;
+			border: 1px solid #e0e0e0;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		.acBorder:hover {
+			border: 1px solid #348fe2;
+			color: #348fe2;
+		}
+
+		.dayUsed {
+			color: #348fe2;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		.dayUnUsed {
+			color: #333;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		#tradeKnowledge .modal-body {
+			position: relative;
+		}
+
+		#tradeKnowledge .mask {
+			display: inline-block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		fieldset .col-md-7 {
+			margin-top: 8px;
+		}
+
+		.pace .pace-activity {
+			right: 32px;
+			top: 87px;
+		}
+
+		body {
+			font-family: 'microsoft yahei';
+		}
+
+		#sidebarLeftInner li>a {
+			transition: 200ms ease-in-out;
+		}
+
+		#sidebarLeftInner h5 {
+			font-size: 16px;
+			color: #7F848A;
+		}
+		.tooltip-inner {
+			min-width: 82px;
+		}
+
+		.page-sidebar-minified #sidebarLeft .nav>li>a {
+			padding: 4px 10px 4px 22px;
+		}
+
+		#sidebarLeft .nav>li>a {
+			padding: 4px 10px 4px 22px;
+		}
+	</style>
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="./assets/plugins/pace/pace.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
+</head>
+
+<body>
+	<!-- 公告 -->
+	<div class="modal fade" id="noticeModal">
+		<div class="modal-video-addSrc modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">系统公告</h4>
+				</div>
+				<!---->
+				<div class="modal-body">
+					<form method="POST" class="form-horizontal">
+						<fieldset>
+							<h4 class="n-title" style="text-align: center;"></h4>
+							<div style="text-align: center;">
+								<span>时间：</span>
+								<span class="n-startTime"></span>
+								<span> ~ </span>
+								<span class="n-endTime"></span>
+							</div>
+							<div class="n-content" style="text-indent: 20px; word-wrap: break-word; word-break: break-all; padding: 10px 0"></div>
+							<div style="text-align: right;">云问运营团队</div>
+							<!-- <div class="form-group">
+								<label class="col-md-3 control-label">标题</label>
+								<div class="col-md-7">
+									<div class="n-title"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">关键字</label>
+								<div class="col-md-7">
+									<div class="n-keyWords"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">内容</label>
+								<div class="col-md-7">
+									<div class="n-content"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">开始时间</label>
+								<div class="col-md-7">
+									<div class="n-startTime"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">结束时间</label>
+								<div class="col-md-7">
+									<div class="n-endTime"></div>
+								</div>
+							</div> -->
+						</fieldset>
+					</form>
+				</div>
+
+				<!---->
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 选择行业 -->
+	<div class="modal fade" id="tradeKnowledge">
+		<div class="modal-video-addSrc modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">选择行业</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="ensureImport btn btn-sm btn-primary">确认并导入行业知识</a>
+					<a href="javascript:;" class="ensureOnly btn btn-sm btn-primary">仅确认</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+	<div id="page-container" class="fade page-sidebar-fixed page-header-fixed-nav in">
+		<div id="header" class="header navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a href="javascript:;" class="navbar-brand"><img src="web/common/images/logo.jpg" class="navbar-logo">FAQ Robot</a>
+					<a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><img id="dedentg" src="web/common/images/fa-dedent.png" alt="<-" /></a>
+
+					<button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+
+				<a class="telli" style="text-decoration:none;cursor: pointer;display: none;color:#585663;margin: 20px 0 0 20px;opacity: 0.5;"><span class="hidden-xs">使用及付费请拨打电话：025-66048806转 2</span></a>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown navbar-user import-trade hide">
+						<a data-toggle="modal" href="#tradeKnowledge">
+							<span class="fa-mortar-board"></span> <span class="hidden-xs">行业知识</span>
+						</a>
+					</li>
+					<li class="dropdown sysNotice systemAnnouncement hide">
+						<a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14" aria-expanded="false">
+							<i class="fa fa-bell-o"></i>
+							<span class="label redDot" style="width: 0; height: 14px; top: 10px; right: 6px;"> </span>
+						</a>
+						<ul class="dropdown-menu media-list pull-right animated fadeInDown">
+							<li class="dropdown-header">系统公告</li>
+						</ul>
+					</li>
+					<li class="dropdown navbar-user monitor hide">
+						<a href="onlineMonitor/monitor/index.html" target="_blank">
+							<span class="hidden-xs">
+									<i class="fa fa-user"></i>
+									人工客服
+								</span>
+						</a>
+					</li>
+					<li class="dropdown navbar-user kfknplat hide">
+						<a href="web/kf/index.html?sysNum=1000000" target="_blank" id="kfLink">
+							<span class="hidden-xs">
+									<i class="fa fa-group"></i>
+									客服知识平台
+								</span>
+						</a>
+					</li>
+					<li class="dropdown navbar-user faqrobot hide">
+						<a href="../../robot/chat2.html?sysNum=1000000" target="_blank" id="robotLink">
+							<span class="hidden-xs">
+									<i class="fa fa-android"></i>
+									我的机器人
+								</span>
+						</a>
+					</li>
+					<li class="dropdown navbar-user myAccountWrap hide">
+						<a href="javascript:;" class="dropdown-toggle">
+							<i class="fa fa-tasks"></i>
+							<span class="hidden-xs" id="userName">我的账户</span> <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu animated fadeInDown myAccount">
+							<li class="arrow hide"></li>
+							<li class="hide"><a data-toggle="modal" href="#accountModal"><i class="fa fa-b"></i>账户信息</a></li>
+							<!--li><a data-toggle="modal" href="#payModal"><i class="fa fa-dollar"></i>购买记录</a></li-->
+							<!--li><a href="javascript:;" id="btnSimple"><i class="fa fa-c"></i>切换到简洁版</a></li-->
+
+							<li><a  href="web/system/editPwd.html"  data-parent="3"  data-me="02"  data-num="0"  data-name="安全设置"  data-reload="ja"  class="active"><i  class="fa  fa-d"></i>修改密码</a></a></li>
+							<li><a href="javascript:;" id="logout"><i class="fa fa-d"></i>退出</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="sidebar" class="sidebar">
+			<div data-scrollbar="true" data-height="100%">
+				<ul class="allLi nav">
+				</ul>
+			</div>
+			<div id="sidebarLeft" class="sidebarLeftMin" style="position: absolute; left: 100%; top: 0;bottom: 0; background: #eaedf1; width: 8px; padding-bottom: 10px; padding-top: 64px;">
+				<a href="javascript:;" class="sidebar-minify-left-btn" data-click="sidebar-minify-left"><i class="fa fa-angle-left"></i></a>
+				<div id="sidebarLeftInner" style="height:100%; width: 100%; padding: 0 10px; display: none;">
+				</div>
+			</div>
+		</div>
+		<!--div class="sidebar-bg"></div-->
+
+		<div id="contentNav">
+			<div class="tabs-header" id="tabHeader">
+				<i id="toLeft" class="fa fa-angle-double-left pointer" style="left:0;"></i>
+				<ul id="tabs-ul"></ul>
+				<i id="toRight" class="fa fa-angle-double-right pointer" style="right:0;"></i>
+			</div>
+			<div class="tabs-body" id="tabBody" style="height: 100%">
+				<div class="tab-panel active"></div>
+			</div>
+		</div>
+
+		<!-- 账户信息 -->
+		<div class="modal fade" style="display: none;" aria-hidden="true" id="accountModal">
+			<div class="modal-dialog" style="width: 350px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+						<h4 class="modal-title" style="text-align: center;">账户信息</h4>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<img src="web/common/images/icon_account.png" alt="账户信息">
+						<p style="margin-top: 24px; font-size: 16px;">尊敬的<span id="account_name" style="font-weight:  bold;">用户</span></p>
+						<p style="display: none;">您目前使用<span id="account_type_free">免费版本</span>&nbsp;&nbsp;<span id="account_time_free" class="dayUsed">1</span>&nbsp;&nbsp;天</p>
+						<p style="display: none;">您目前体验<span id="account_type_try">试用</span><br>版本&nbsp;&nbsp;<span id="account_time_try" class="dayUsed">1</span>&nbsp;&nbsp;天,&nbsp;&nbsp;<span id="account_time_tryL" class="dayUnUsed">1</span>&nbsp;&nbsp;天后到期。</p>
+						<p style="display: none;">您目前使用<span id="account_type_paid">付费</span><br>版本&nbsp;&nbsp;<span id="account_time_paid" class="dayUsed">1</span>&nbsp;&nbsp;天,&nbsp;&nbsp;<span id="account_time_paidL" class="dayUnUsed">1</span>&nbsp;&nbsp;天后到期。</p>
+						<a href="javascript:;" class="btn btn-primary" id="btnBuy" style="display: none;">购买</a>
+						<a href="javascript:;" class="btn btn-primary" id="btnRenew" style="display: none;">续费</a>
+						<a href="javascript:;" class="btn btn-primary" id="btnUpdate" style="display: none;">升级</a>
+						<a href="javascript:;" class="btn btn-info" id="btnPay" style="display: none;">购买记录</a>
+						<button class="btn btn-white" id="btnExp" style="display: none;">体验付费版本</button>
+						<div id="account_exp" style="display: none;">
+							<p style="margin-top: 24px;">体验说明：单个账户仅能选择适合自己的账户体验7日</p>
+							<p>7天后将会降回原版本继续使用，体验过程中产生的所有数据将会保留</p>
+							<div class="row">
+								<div class="col-md-4 m-t-10">
+									<div class="acBorder p-t-10" id="div_bus">
+										<img src="web/common/images/icon_bus.png" alt="商用版" id="img_bus">
+										<p class="m-t-15">商用版</p>
+										<p>￥188/月</p>
+									</div>
+								</div>
+								<div class="col-md-4 m-t-10">
+									<div class="acBorder p-t-10" id="div_gaoji">
+										<img src="web/common/images/icon_gaoji.png" alt="高级版" id="img_gaoji">
+										<p class="m-t-15">高级版</p>
+										<p>￥488/月</p>
+									</div>
+								</div>
+								<div class="col-md-4 m-t-10">
+									<div class="acBorder p-t-10" id="div_profession">
+										<img src="web/common/images/icon_profession.png" alt="专业版" id="img_profession">
+										<p class="m-t-15">专业版</p>
+										<p>￥888/月</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" style="display: none;" aria-hidden="true" id="payModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+						<h4 class="modal-title" style="text-align: center;">购买记录</h4>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<table class="table" id="buyTable">
+							<thead>
+								<tr>
+									<th>版本</th>
+									<th>金额</th>
+									<th>有效期限(月数)</th>
+									<th>日期</th>
+								</tr>
+							</thead>
+							<tbody id="payDataTable">
+							</tbody>
+						</table>
+						<a href="javascript:;" class="btn btn-white" id="btnAccount">返回账户信息</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end page container -->
+
+
+	<div class="modal" id="wModal" aria-hidden="false" style="display: none;">
+		<div class="modal-backdrop fade in" style="height: 5000px" id="ADCBackDrop"></div>
+		<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">未知问题过多</h4></div>
+		<div class="modal-body">
+			<p>未知问题过多已达到报警值，请及时处理！</p>
+			<div id="jljiu"></div>
+		</div><div class="modal-footer">
+			<a href="javascript:;" class="btn btn-sm btn-primary" id="m-ok-ensure">立即处理</a>
+			<a href="javascript:;" class="btn btn-sm btn-white" id="m-cancel-ensure">不再提醒</a>
+			</div></div></div></div>
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="./assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="./assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="./assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="./assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="./assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="./assets/crossbrowserjs/respond.min.js"></script>
+		<script src="./assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<script src="./assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="./assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+	<!-- ================== END BASE JS ================== -->
+
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="./assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="./assets/plugins/flot/jquery.flot.min.js"></script>
+	<script src="./assets/plugins/flot/jquery.flot.time.min.js"></script>
+	<script src="./assets/plugins/flot/jquery.flot.resize.min.js"></script>
+	<script src="./assets/plugins/flot/jquery.flot.pie.min.js"></script>
+	<script src="./assets/plugins/sparkline/jquery.sparkline.js"></script>
+	<script src="./assets/plugins/jquery-jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+	<script src="./assets/plugins/jquery-jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="./assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script src="./assets/js/apps.min.js"></script>
+
+	<link href="web/common/css/style.css" rel="stylesheet" />
+	<link href="web/common/css/iframeTab.min.css" rel="stylesheet" />
+	<script src="web/common/js/customMethod.js"></script>
+	<script src="web/common/js/base.js"></script>
+	<script src="web/common/js/iframeTab.min.js"></script>
+	<script src="web/common/js/main.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+
+	<script>
+		$(document).ready(function() {
+			App.init();
+			$(document).keydown(function(event){
+		　　　　if(event.keyCode == 116){
+		　　　　　　event.preventDefault();
+					var iframeSrc = $("iframe",".tab-panel.active").attr("src");
+					$("iframe",".tab-panel.active").attr("src",iframeSrc);
+		　　　　}
+		　　});
+			$('.navbar-user:last').hover(function(){
+				$('.myAccount').show();
+			},function(){
+				$('.myAccount').hide();
+			})
+		});
+	</script>
+
+</body>
+
+</html>

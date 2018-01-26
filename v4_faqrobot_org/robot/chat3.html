@@ -1,0 +1,90 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="images/logo_min.png" type="/image/x-icon">  
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>智能机器人</title>
+
+    <link rel="stylesheet" href="css/minichat.css?time=1513">
+	<link rel="stylesheet" href="skin/chat3/css/app.css?time=1513">
+
+    <script src="js/minichat.js?time=1513"></script>
+    <script src="skin/chat3/js/app.js?time=1513"></script>
+</head>  
+<body>  
+    <div class="whole">
+        <div class="head">
+            <div class="headLeft">
+                <img id="logo" class="logo" src="skin/chat3/images/close.png" alt="logo">
+                <div class="titleCtn">
+                    <p id="title" class="title">云问科技</p>
+                    <p class="intro">唯一的不同是处处不同</p>
+                </div>
+            </div>
+            <div class="headRight">
+                <span id="close" class="close head_icon"></span>
+            </div>
+        </div>
+        <div class="body">
+            <div class="bodyLeft">
+                <div class="bodyLeftTop">
+                    <div id="chatCtn" class="chatCtn"></div>
+                </div>
+                <div class="bodyLeftBottom">
+                    <div class="inputCtn">
+                        <p id="inputTip" class="inputTip">请输入</p>
+                        <textarea id="input" class="input" autocomplete="off"></textarea>
+                    </div>
+                    <div class="sendCtn">
+                        <span id="clearMsg" class="clearMsg">清空记录</span>
+                        <a id="power" target="_blank" href="javascript:void(0);" style="cursor: default;"><span class="power" style="cursor: default;">Powered By YunWen</span></a>
+                        <span id="sendBtn" class="sendBtn">发送</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyRight">
+                <div class="bodyRightCtx">
+                    <div class="commonQue itemCtn">
+                        <div class="itemHead1 itemHead">常见问题</div>
+                        <div id="commonQue" class="itemCtx"></div>
+                    </div>
+                    <div class="quickLink itemCtn">
+                        <div class="itemHead2 itemHead">快捷服务</div>
+                        <div id="quickLink"  class="itemCtx"></div>
+                    </div>
+                    <div class="feedBack itemCtn">
+                        <div class="itemHead3 itemHead">意见反馈</div>
+                        <form id="feedBackForm" class="itemCtx" autocomplete="off">
+                            <div>
+                                <p>您对本次的服务满意吗？</p>
+                                <span class="servYes_hover servCos servYes">满意</span>
+                                <input class="servYesInput" type="radio" name="level" value="1" checked="">
+                                <span class="servCos servNo">不满意</span>
+                                <input class="servNoInput" type="radio" name="level" value="0">
+                                <div class="servNoReason">
+                                    <p>不满意的原因？</p>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+                                </div>
+                                <div class="feedBackWordCtn">
+                                    <p id="feedBackTip" class="feedBackTip">您的意见</p>
+                                    <textarea id="feedBackInput" class="feedBackInput" name="content"></textarea>
+                                    <span id="feedBackBtn" class="feedBackBtn">提交</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+	
+  
+
+</body>  
+</html>

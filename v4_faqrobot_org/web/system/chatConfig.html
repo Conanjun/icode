@@ -1,0 +1,764 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>聊天窗口配置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/gradX.css" rel="stylesheet">
+	<link href="css/colorpicker.css" rel="stylesheet">
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+	<style>
+		.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+		    padding-right: 0;
+		    padding-left: 0;
+		}
+		.dot {
+			color: #f00;
+		}
+		.quickServ {
+			position: relative;
+		}
+		.quickServCtn {
+			border: 1px solid #ddd;
+		    border-radius: 5px 5px 0 0;
+		    padding-bottom: 5px;
+		}
+		.quickServ-item {
+			text-align: center;
+			padding: 0 2px;
+			height: 100px;
+		}
+		.quickServ-item .imgCtn {
+			width: 100px;
+			height: 60px;
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.quickServ-item img {
+			max-width: 100%;
+		}
+		.drag {
+			display: inline-block;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			cursor: move;
+		}
+		.drag:hover, .noDrag:hover {
+			outline: 1px dashed #b1b1b1;
+		}
+		.noDrag {
+			display: inline-block;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			cursor: pointer;
+		}
+		.pickerColor {
+			display: none;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			outline: 1px dashed #b1b1b1;
+		}
+		/* .over {
+			display: inline-block;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			cursor: pointer;
+			opacity: .1;
+			filter: alpha(opacity=10);
+		}
+		.over:hover {
+			background: #0074de;
+		} */
+		.bg-info {
+		    padding: 10px;
+		    font-weight: 700;
+		    background: #242A30;
+		    color: #fff;
+		    border-radius: 5px 5px 0 0;
+		}
+		.chat-head {
+			height: 60px;
+		}
+		.chat-foot {
+			height: 600px;
+		}
+		.chat-left {
+			height: 100%;
+			position: relative;
+		}
+		.chatShowCtn {
+			height: 480px;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			top: 0;
+			border: 1px solid #ccc;
+			border-right: none;
+		}
+		.inputCtn {
+			height: 120px;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			bottom: 0;
+			border: 1px solid #ccc;
+			border-top: none;
+			border-right: none;
+		}
+		.chat-right {
+			height: 100%;
+			border: 1px solid #ccc;
+		}
+		.chat-head {
+			position: relative;
+			border: 1px solid #ccc;
+			border-bottom: none;
+		}
+		.logoCtn, .quickCtn, .closeCtn {
+			position: relative;
+			height: 60px;
+			display: table-cell;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.titleCtn {
+			width: 150px;
+			position: absolute;
+			top: 0;
+			left: 140px;
+			margin-top: 10px;
+		}
+		.titleCtn img {
+			margin-bottom: 5px;
+		}
+		.quickChildCtn {
+			width: 100%;
+			height: 60px;
+			text-align: right;
+		}
+		.quickCtn {
+			min-width: 300px;
+			top: 0;
+			right: 25px;
+			position: absolute;
+		}
+		.closeCtn {
+			width: 20px;
+			top: 0;
+			right: 0;
+			position: absolute;
+		}
+		.parentBtnCtn {
+			height: 40px;
+			text-align: center;
+			position: relative;
+		}
+		
+		
+		.childBtnCtn {
+			display: none;
+			position: absolute;
+			left: 0;
+			width: 100%;
+			height: 560px;
+			box-shadow: 0 0 5px #b1b1b1;
+		}
+		.parentBtn-item {
+			position: relative;
+			display: inline-block;
+			width: 60px;
+			height: 40px;
+			line-height: 40px;
+			outline: 1px solid #ccc;
+		}
+		.quickBtn-item {
+			position: relative;
+			display: inline-block;
+			width: 60px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.childScrollCtn {
+			height: 100%;
+		}
+		.parentBtn-item p, .quickBtn-item p {
+			margin: 0;
+		}
+		
+		.childBtnCtn-item {
+			display: none;
+			height: 100%;
+			position: relative;
+		}
+		/*  */
+		.width1 {
+			width: 100%;
+		}
+		.width2 {
+			width: 50%;
+		}
+		.width3 {
+			width: 33.33%;
+		}
+		.width4 {
+			width: 25%;
+		}
+		.height1 {
+			height: 560px;
+		}
+		.height2 {
+			height: 520px;
+		}
+		.height3 {
+			height: 480px;
+		}
+		.height4 {
+			height: 440px;
+		}
+		.top1 {
+			top: 40px;
+		}
+		.top2 {
+			top: 80px;
+		}
+		.top3 {
+			top: 120px;
+		}
+		.top4 {
+			top: 160px;
+		}
+		.btn-group-vertical {
+			z-index: 9;
+			display: none;
+			position: absolute;
+			top: 0;
+			width: 75px;
+		}
+		.logoCtn .btn-group-vertical {
+			left: -75px;
+		}
+		.quickCtn .btn-group-vertical {
+			left: -75px;
+		}
+		.quickBtn-item .btn-group-vertical {
+			left: auto;
+			right: -75px;
+		}
+		.parentBtnCtn .btn-group-vertical {
+			left: -75px;
+		}
+		.parentBtn-item .btn-group-vertical {
+			left: auto;
+			right: -75px;
+		}
+		.childBtnCtn-item .btn-group-vertical {
+			left: -75px;
+		}
+		.winNameCtn .btn-group-vertical {
+			left: -75px;
+		}
+		.serv-item {
+			display: inline-block;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			position: relative;
+			outline: 1px solid #ccc;
+			vertical-align: middle;
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+		.serv-item-left {
+			text-align: left;
+			text-indent: 10px;
+		}
+		.serv-item-editor {
+			height: auto;
+			line-height: 20px;
+		}
+		.serv-item .btn-group-vertical {
+			left: auto;
+			right: -75px;
+		}
+		.serv-item-h .btn-group-vertical {
+			left: auto;
+			right: 0;
+		}
+		.logoCtn >.btn-group-vertical, .quickCtn >.btn-group-vertical, .quickBtn-item:hover >.btn-group-vertical, .parentBtnCtn >.btn-group-vertical, .parentBtn-item:hover >.btn-group-vertical, .childBtnCtn-item:hover >.btn-group-vertical, .serv-item:hover >.btn-group-vertical, .winNameCtn >.btn-group-vertical {
+			display: block;
+		}
+		.editorText {
+		    height: 100%;
+		    overflow: hidden;
+		}
+		/*  */
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+		    background: #fff;
+		    border: #2A72B5 1px solid;
+		    color: #2a72b5;
+		}
+		/*  */
+		#gradX {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 9999;
+		}
+		.gradx_panel, .gradx_start_sliders {
+			width: 100%;
+			margin-left: 0;
+		}
+		#gradx_add_slider {
+			width: 60px;
+		}
+		#gradx_show_code {
+			display: none;
+		}
+		.dragMove {
+			position: absolute;
+			top: 0;
+			left: auto;
+			right: 0;
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
+			cursor: move;
+			text-align: center;
+		}
+
+		.modal-backdrop {
+			position: fixed;
+		}
+
+		.img_col {
+			width: 40px;
+			height: 40px;
+		}
+		.p_col {
+			vertical-align: middle;
+			display: inline-block;
+			margin: 0;
+		}
+		.img_row {
+			margin-top: 3px;
+			width: 40px;
+			height: 40px;
+	    	text-align: center;
+		}
+		.p_row {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			height: 20px;
+			line-height: 20px;
+			width: 60px;
+			overflow: hidden;
+			margin: 0;
+		}
+
+		.link_img {
+			height: 40px;
+		}
+		.link_p {
+			line-height: 20px;
+		}
+		.link_p_60 {
+			line-height: 60px;
+		}
+
+		table {
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+
+		.imgGallery {
+		    display: inline-block;
+		    width: 33.3%;
+		    font-size: 0;
+		    overflow: hidden;
+		    padding: 2px;
+		}
+		.imgGallery img {
+		    width: 100%;
+		    max-height: 150px;
+		    cursor: pointer;
+		}
+		#listChatTable img {
+			max-height: 60px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div id="gradX"  DR_drag="1"></div>
+	<!-- 选择图片 -->
+	<div class="modal " id="modal-dialog" style="z-index: 9999;">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">选择图标</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- begin col-12 -->
+                    <div class="col-md-12">
+                        <!-- begin panel -->
+                        <div class="panel-body" style="padding-bottom: 0;">
+                            <div class="loadImg-payCode"></div>
+                            <div id="itemContainer3" style="float: right; margin-bottom: 0;"></div>
+                        </div>
+                        <!-- end panel -->
+                                                                
+                    </div>
+                    <!-- end col-12 -->
+                </div>
+                <div class="modal-footer modal-footer1">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- 初始化配置窗口模态框 -->
+	<div class="modal" style="display: none;" aria-hidden="true" id="winModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title" id="tipTitle">请先设置聊天窗口名称</h4>
+                </div>
+                <div class="modal-body">
+                	<form class="form-horizontal">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"><em class="dot">*</em> 聊天窗口名称</label>
+                                <div class="col-md-8 col-md-offset-1">
+                                    <input type="text" class="winNameInput form-control" name="" maxlength="20">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ensureName btn btn-sm btn-primary" href="javascript:;">确定</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- 编辑频道模态框 -->
+	<div class="modal" style="display: none;" aria-hidden="true" id="editP">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title" id="tipTitle">编辑频道</h4>
+                </div>
+                <div class="modal-body">
+                	<form class="form-horizontal">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"><em class="dot">*</em> 频道名称</label>
+                                <div class="col-md-8 col-md-offset-1">
+                                    <input type="text" class="form-control" name="" maxlength="4">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ensure btn btn-sm btn-primary" href="javascript:;">确定</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑服务模态框 -->
+	<div class="modal" style="display: none;" aria-hidden="true" id="editC">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title" id="tipTitle">编辑</h4>
+                </div>
+                <div class="modal-body">
+	                <ul class="nav nav-pills" role="tablist">
+	                	<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">文字或图片</a></li>
+	                	<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">知识库</a></li>
+	                	<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab">自定义</a></li>
+	                </ul>
+	                <div class="tab-content" style="margin: 0; padding-bottom: 0;">
+	                	<div role="tabpanel" class="tab-pane active" id="tab1">
+                			<form class="form0 form-horizontal">
+                		        <fieldset>
+                		            <div class="form-group">
+                		                <label class="col-md-2 control-label">名称</label>
+                		                <div class="col-md-8 col-md-offset-1">
+                		                    <input type="text" class="c_name form-control" name="text">
+                		                </div>
+                		            </div>
+                		            <div class="form-group">
+                		                <label class="col-md-2 control-label">图片</label>
+                		                <div class="col-md-6 col-md-offset-1">
+                		                    <input type="text" class="c_img form-control" name="pic">
+                		                </div>
+                    					<button class="cosLogo2 cosLogo btn btn-primary col-md-2" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 选择图片</button>
+                		            </div>
+                		            <div class="form-group">
+                		                <label class="col-md-2 control-label"><em class="dot">*</em> 链接</label>
+                		                <div class="col-md-8 col-md-offset-1">
+                		                    <input type="text" class="c_link form-control" name="link">
+                		                </div>
+                		            </div>
+                		            <div class="form-group">
+                		                <label class="col-md-2 control-label"></label>
+                		                <div class="col-md-8 col-md-offset-1">
+                		                    <p>名称和图片至少填写一项</p>
+                		                </div>
+                		            </div>
+                		        </fieldset>
+                		    </form>
+	                	</div>
+	                	<div role="tabpanel" class="tab-pane" id="tab2">
+	                		<div class="hideCtn tableCtn">
+		                		<form class="form1">
+		                            <table class="table">
+		                                <thead>
+		                                    <tr>
+		                                        <th style="white-space: nowrap;">单选按钮</th>
+		                                        <th>问题</th>
+		                                    </tr>
+		                                </thead>
+		                                <tbody class="tbody2"></tbody>
+		                            </table>
+		                            <div id="itemContainer2" style="margin: 0;"></div>
+		                        </form>
+	                        </div>
+	                	</div>
+	                	<div role="tabpanel" class="tab-pane" id="tab3">
+	                		<form class="form2">
+	                			<div id="servEditor"></div>
+	                		</form>
+	                	</div>
+	                </div>
+	                
+                	
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ensure btn btn-sm btn-primary" href="javascript:;">确定</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class="in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="page-header-fixed page-sidebar-fixed in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">聊天窗口配置</li>
+			</ol>
+			<div class="row" style="height:10px;">
+				<h1 class="page-header">聊天窗口配置</h1>
+				<ul class="bigNav nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#editChat" aria-expanded="true">新增</a></li>
+					<li class=""><a data-toggle="tab" href="#listChat" aria-expanded="false">列表</a></li>
+				</ul>
+				<div class="tab-content row">
+					<div id="editChat" class="tab-pane active">
+						<div class="left col-md-2">
+							<div class="quickServCtn row">
+								<p class="bg-info">快捷服务</p>
+								<div class="quickServ">
+									<!-- <div class="quickServ-item col-md-3">
+										<div class="imgCtn">
+											<img src="images/holder.png"/>
+										</div>
+										<p>查</p>
+										<i class="drag"></i>
+									</div>
+									<div class="quickServ-item col-md-3">
+										<div class="imgCtn">
+											<img src="images/holder.png"/>
+										</div>
+										<p>询</p>
+										<i class="drag"></i>
+									</div>
+									<div class="quickServ-item col-md-3">
+										<div class="imgCtn">
+											<img src="images/holder.png"/>
+										</div>
+										<p>天</p>
+										<i class="drag"></i>
+									</div> -->
+								</div>
+							</div>
+						</div>
+						<div class="middle col-md-8 col-md-offset-1">
+							<div class="winNameCtn">
+								<p class="winName bg-info"></p>
+								<div class="btn-group-vertical">
+									<button class="editWinName btn btn-xs btn-primary" data-toggle="modal" data-target="#winModal"><span class="glyphicon glyphicon-plus"></span> 修改名称</button>
+								</div>
+							</div>
+							<div class="chatCtn">
+								<div class="chat-head">
+									<div class="logoCtn">
+										<div class="btn-group-vertical">
+											<button class="cosLogo1 cosLogo btn btn-xs btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 选择图片</button>
+										</div>				
+										<img src="images/p_logo.png" style="max-height: 60px; width: 130px; margin-left: 5px;"/>
+									</div>
+									<div class="titleCtn">
+										<p style="font-size: 16px; margin: 0;">公司名称</p>
+										<div>
+											<span>
+												<input id="weather" type="checkbox" checked/>
+												<label for="weather">显示天气</label>
+											</span>
+											<span>
+												<input id="city" type="checkbox" checked/>
+												<label for="city">显示城市</label>
+											</span>
+										</div>
+									</div>
+									<div class="quickCtn pull-right">
+										<div class="btn-group-vertical">
+											<button class="addLink btn btn-xs btn-primary"><span class="glyphicon glyphicon-plus"></span> 添加跳转</button>
+										</div>
+										<div class="quickChildCtn"></div>
+									</div>
+									<div class="closeCtn pull-right">
+										<p style="font-size: 16px;">x</p>
+									</div>
+									<div class="pickerColor1 pickerColor">
+										<span class="label label-warning">块1</span>
+									</div>
+								</div>
+								<div class="chat-foot">
+									<div class="chat-left col-md-8">
+										<div class="chatShowCtn">
+											<div class="pickerColor2 pickerColor">
+												<span class="label label-warning">块2</span>
+											</div>
+										</div>
+										<div class="inputCtn">
+											<div class="pickerColor3 pickerColor">
+												<span class="label label-warning">块3</span>
+											</div>
+										</div>
+									</div>
+									<div class="chat-right col-md-4">
+										<div class="parentBtnCtn">
+											<div class="btn-group-vertical">
+												<button class="addParent btn btn-xs btn-primary" data-toggle="modal" data-target="#editP"><span class="glyphicon glyphicon-plus"></span> 添加频道</button>
+												<button class="changeParent btn btn-xs btn-primary"><span class="glyphicon glyphicon-retweet"></span> 切换方式</button>
+											</div>
+										</div>
+										<div class="childBtnCtn top1">
+											
+										</div>
+										<div class="pickerColor4 pickerColor">
+											<span class="label label-warning">块4</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="right col-md-2" style="display: none;">
+							
+						</div>
+					</div>
+					<div id="listChat" class="tab-pane">
+						<table id="listChatTable" class="table">
+							<thead>
+								<tr>
+									<th class="col-md-2">窗口名称</th>
+									<th>创建时间</th>
+									<th>最后操作时间</th>
+									<th>窗口图标</th>
+									<th>频道展示方式</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody class="tbody"></tbody>
+						</table>
+						<div id="itemContainer" style="margin: 0;"></div> 
+					</div>
+				</div>
+			</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;" style="padding:6px;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<!-- <script src="http://v3.faqrobot.org/hvb/com/js/jquery-1.11.3.min.js"></script> -->
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script src="../common/js/base.js"></script>
+	<script type="text/javascript" src="js/colorpicker.min.js"></script>
+	<script type="text/javascript" src="js/dom-drag.js"></script>
+	<script type="text/javascript" src="js/gradX.js"></script>
+	<script type="text/javascript" src="js/chatConfig.js"></script>
+	<script>
+	    $(document).ready(function() {
+	        App.init();
+	    });
+	</script>
+</body>
+</html>

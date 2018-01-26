@@ -1,0 +1,212 @@
+
+.staff-msg .msg-status.msg-faild, .client-msg .msg-status.msg-faild {
+	background-color: #d45d51;
+	color: #fff
+}
+.staff-msg .picture .mask .cover, .client-msg .picture .mask .cover {
+	background-color: #f0f0f0
+}
+.staff-msg .picture img, .client-msg .picture img {
+	background-color: #f5f5f5
+}
+.staff-msg .name {
+	color: #777
+}
+.staff-msg .msg {
+	background-color: #fff
+}
+
+.staff-msg .picture .mask .cover:after {
+	border-left-color: #f0f0f0;
+	border-top-color: transparent
+}
+.client-msg .msg {
+	background-color: #90c0ed
+}
+
+.client-msg .picture .mask .cover:after {
+	border-right-color: #f0f0f0;
+	border-bottom-color: transparent
+}
+.robot_help {
+	float: right;
+	width: 52px;
+}
+.robot_help_yes {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	float: right;
+	margin: 0px 3px;
+	background: url(http://v3.faqrobot.org/robot/skin/mobileFees1/images/good-m.png) no-repeat;
+}
+.robot_help_no {
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	float: right;
+	margin: 0px 3px;
+	background: url(http://v3.faqrobot.org/robot/skin/mobileFees1/images/bad-m.png) no-repeat;
+}
+.helper {
+	color: #ccc;
+	text-align: right;
+}
+.content ol {
+	padding-left: 20px;
+	color: #2873b7;
+}
+.content a {
+	color: #2873b7;
+}
+.showWaring {
+	color: #cd2c68;
+	font: 12px/35px "微软雅黑";
+	height: 30px;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	display: none;
+	margin-left: 1px;
+	bottom: 40px;
+}
+.img_hover {
+	border: 3px solid #FFF;
+	position: relative;
+	float: left;
+	width: 347px;
+}
+.msg-col {
+	font-size: 14px;
+	width: 350px;
+}
+.msg-item-wrapper {
+	background-color: #f4f4f4;
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	margin-bottom: 26px;
+	position: relative;
+	width: 350px;
+}
+.msg-item {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	padding: 2px 0;
+}
+.multi-msg .msg-meta {
+	line-height: 28px;
+	margin: 0 14px;
+}
+.msg-meta {
+	font-size: 13px;
+}
+.cover {
+	font-size: 0;
+	height: 160px;
+	margin: 0 14px 12px;
+	overflow: hidden;
+	position: relative;
+}
+.cover .msg-t {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+	bottom: 0;
+	color: #fff;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.msg-t {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	line-height: 28px;
+	margin: 6px 14px 0;
+	max-height: 56px;
+	overflow: hidden;
+}
+.cover .i-title {
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.cover img {
+	width: 100%;
+}
+img {
+	border: 0 none;
+	height: auto;
+	max-width: 100%;
+	vertical-align: middle;
+}
+.sub-msg-item {
+	border-top: 1px solid #c6c6c6;
+	overflow: hidden;
+	padding: 12px 14px;
+	background-color: #fff;
+}
+.rel {
+	position: relative;
+}
+.thumb {
+	float: right;
+	font-size: 0;
+}
+.thumb img {
+	border: 1px solid #b2b8bd;
+	height: 70px;
+	width: 70px;
+}
+.sub-msg-item .msg-t {
+	font-size: 14px;
+	line-height: 24px;
+	margin-left: 0;
+	margin-right: 85px;
+	margin-top: 0;
+	max-height: 48px;
+	overflow: hidden;
+	padding-left: 4px;
+	padding-top: 12px;
+}
+.defultImg {
+	border: 1px solid #b2b8bd;
+	color: #c0c0c0;
+	font-size: 14px;
+	line-height: 70px;
+	width: 70px;
+	display: block;
+	text-align: center;
+	text-shadow: 0 1px 0 #fff;
+	margin-left: 120px;
+}
+.codeIcon {
+	width: 160px;
+	float: left;
+	height: 160px;
+	margin: 10px;
+	overflow: hidden;
+	position: relative;
+}
+.i_margin-top {
+	margin-top: 3px;
+}
+.logoSize {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+}
+.logoSize img {
+	width: 40px;
+	height: 40px;
+}
+.logoMsg {
+	position: absolute;
+	left: 40px;
+}
+.rightLogo {
+	position: absolute;
+	right: 40px;
+}

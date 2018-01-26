@@ -1,0 +1,55 @@
+<template name="robotsMsg">
+  <view class="MN_answer">
+    <view class="MN_kfName">{{robotName}}</view>
+    <view class="MN_kfCtn">
+      <image src="{{img}}" class="MN_kfImg"></image>
+      <view class="MN_kfTriangle1 MN_triangle"></view>
+      <view class="MN_kfTriangle2 MN_triangle"></view>
+      <view>{{msg}}</view>
+      <view wx:if="{{leaveQueList}}">
+        <view class="MN_leaveQueTop">这里有您的留言，<view bindtap="leaveQueClick" style="display:inline-block;cursor:pointer;">点击查看</view></view>
+        <block wx:if="{{leaveQueFlag}}">
+          <view wx:for="{{ leaveQueList }}" wx:key="" wx:for-item="leaveQueItem" class="MN_leaveQueItem">
+            <view class="MN_leaveQueItemQue">问题：{{leaveQueItem.question}}</view>
+            <view class="MN_leaveQueItemAns">答案：{{leaveQueItem.answer}}</view>
+          </view>
+        </block>
+      </view>
+      <view wx:if="{{guessWord}}">
+        <view>{{guessWord}}</view>
+				<block wx:for="{{ guessList }}" wx:key="" wx:for-item="guessListItem">
+          <view class="MN_relateList" bindtap="guessWordClick" data-question="{{guessListItem.question}}" data-solutionid="{{guessListItem.solutionId}}">{{index+1}}、{{guessListItem.question}}</view>
+				</block>
+        <view wx:if="{{afterWord}}">{{afterWord}}</view>
+      </view>
+      <view class="MN_helpful" wx:if="{{aId==0}}">
+        <block wx:if="{{queCommentFlag==0}}">
+          <button class="MN_yes" bindtap="queCommentClick" data-cluid="{{cluid}}" data-aid="{{aId}}" data-rank="{{rank}}" data-addtype="addufc">满意</button>
+          <button class="MN_no" bindtap="queCommentClick" data-cluid="{{cluid}}" data-aid="{{aId}}" data-rank="{{rank}}" data-addtype="addulc">不满意</button>
+        </block>
+        <block wx:elif="{{queCommentFlag==1}}">
+          <view class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</view>
+          <form class="MN_reasonForm" bindsubmit="reasonSubmit" data-rank="{{rank}}">
+            <view>
+              <radio-group class="MN_reasonItem" name="radio-group" data-rank="{{rank}}" bindchange="reasonChange">
+                <block wx:for="{{uselessReasonItems}}" wx:key="tId">
+                  <label style="display:block;"><radio value="{{item.tId}}"/>{{item.reason}}</label>
+                </block>
+              </radio-group>
+            </view>
+            <view class="MN_reasonContent">
+              <textarea bindinput="reasonInput" placeholder="您的意见" data-rank="{{rank}}" />
+            </view>
+            <view class="btn-area">
+              <button class="MN_reasonSend" formType="submit">提交</button>
+            </view>
+          </form>
+        </block>
+        <block wx:elif="{{queCommentFlag==2}}">
+          <view style="font-size:12px;">{{queComment}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="MN_kftime">{{time}}</view>
+  </view>
+</template>

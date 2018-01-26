@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>站点详情</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.webD{
+			color:#0088cc;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">站点详情</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">站点详情</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<label><span>该站点的分类数量：</span>&nbsp;&nbsp;<span class="classCount webD"></span></label><br>
+						<label><span>该站点的访问量：</span>&nbsp;&nbsp;<span class="VisitCount webD"></span></label><br>
+						<label><span>该站点的问题总数:</span>&nbsp;&nbsp;<span class="TotalQues webD"></span></label><br>
+						<label><span>该站点的标准问题总数：</span>&nbsp;&nbsp;<span class="StandardQues webD"></span></label><br>
+						<label><span>该站点的欢迎语：</span>&nbsp;&nbsp;<span class="HelloWord webD"></span></label><br>
+						<label><span>该站点的网址:</span>&nbsp;&nbsp;<span class="WebSite webD"></span></label><br>
+						<label><span>该站点的站名：</span>&nbsp;&nbsp;<span class="WebName webD"></span></label><br>
+						<label><span>该站点的联系QQ：</span>&nbsp;&nbsp;<span class="ServiceQq webD"></span></label><br>
+						<label><span>该站点的网站类型:</span>&nbsp;&nbsp;<span class="WebType webD"></span></label><br>
+						<label><span>该站点的机器人名称：</span>&nbsp;&nbsp;<span class="RobotName webD"></span></label><br>
+						<label><span>该站点的SysNum：</span>&nbsp;&nbsp;<span class="SysNum webD"></span></label><br>
+						<label><span>该站点的注册时间:</span>&nbsp;&nbsp;<span class="DateTime webD"></span></label><br>
+						<label><span>该站点的联系电话：</span>&nbsp;&nbsp;<span class="ServiceTel webD"></span></label><br>
+						<label><span>该站点的logoUrl：</span>&nbsp;&nbsp;<span class="LogoUrl webD"></span></label><br>
+						<label><span>该站点的网站简介:</span>&nbsp;&nbsp;<span class="Info webD"></span></label><br>
+						<label><span>该站点的未知回复:</span>&nbsp;&nbsp;<span class="UnknownWord webD"></span></label><br>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var fromurl  = location.href;
+			if(!fromurl || fromurl==""){}
+			urlId=fromurl.substring(fromurl.indexOf("=")+1,fromurl.length).split("&"); 
+			initWeb(urlId);
+		});
+
+		function initWeb(webId){
+				$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../Register/findBywebId?webId='+webId),
+				success:
+				function(data){
+					if (data.status==0){
+						$('.classCount').html(data.ClassesCount);
+						$('.VisitCount').html(data.VisitCount);
+						$('.TotalQues').html(data.TotalQues);
+						$('.StandardQues').html(data.StandardQues);
+						$('.ChatCount').html(data.ChatCount);
+						$('.HelloWord').html(data.WebConfig.HelloWord);
+						$('.WebSite').html(data.WebConfig.WebSite);
+						$('.WebName').html(data.WebConfig.WebName);
+						$('.ServiceQq').html(data.WebConfig.ServiceQq);
+						$('.WebType').html(data.WebConfig.WebType);
+						$('.RobotName').html(data.WebConfig.RobotName);
+						$('.SysNum').html(data.WebConfig.SysNum);
+						$('.DateTime').html(data.WebConfig.DateTime);
+						$('.ServiceTel').html(data.WebConfig.ServiceTel);
+						$('.LogoUrl').html(data.WebConfig.LogoUrl);
+						$('.Info').html(data.WebConfig.Info);
+						$('.UnknownWord').html(data.WebConfig.UnknownWord);
+					}else{
+						 yunNoty(data);
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>

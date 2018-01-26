@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" href="skin/NewChat/css/minichat.css?dev=32">
+    <script src="js/minichat.js"></script>
+    <style>
+        /*rest*/
+        body{margin: 0;padding: 0;font-family: "微软雅黑";position: relative;}
+        textarea{resize: none;border: none;outline: none;overflow: hidden;box-sizing: border-box;}
+        a{text-decoration: none;}
+        p,h1,ul,li,h2,h3,section,html,a,div,header,ol{margin: 0;padding: 0;}
+        li{list-style: none;}
+        em,i,span{font-style: normal;}
+        .clear{zoom: 1;}
+        .clear:after{content: "";display: block;clear: both;}
+        .fl{float: left;}
+        .fr{float: right;}
+
+
+        /**/
+        .container{position: absolute;right:0;top:0;width:100%;}
+        .chatScroll{background: #EFEEF4;}
+        .chatCtn{width: 100%;}
+        .edit-send{height: 100px;width: 100%;position: relative;}
+
+        .text-in{height:70px;padding:8px;left:0;top:0;width:100%;overflow: hidden;}
+
+        .send{height: 30px;text-align: center;line-height: 30px;background: #008CEE;color: #fff;cursor: pointer;position: absolute;width: 100%;bottom: 0;}
+        .send:hover{background-color: #2828ff;}
+        .MN_kfCtn, .MN_khCtn {
+            border-radius: 6px;
+        }
+        /*.MN_ask{
+            animation:fadeIn 0.9s;
+            -webkit-animation:fadeIn 0.9s;
+            -o-animation:fadeIn 0.9s;
+            -moz-animation:fadeIn 0.9s;
+            -ms-animation:fadeIn 0.9s;
+        }
+        .MN_answer{
+            animation:fadeIn 1s;
+            -webkit-animation:fadeIn 1s;
+            -o-animation:fadeIn 1s;
+            -moz-animation:fadeIn 1s;
+            -ms-animation:fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            0%{margin-top: 50px;opacity: 0;}
+            100%{margin-top: 0;opacity: 1;}
+        }
+        @-webkit-keyframes fadeIn {
+                    0%{margin-top: 50px;opacity: 0;}
+                    100%{margin-top: 0;opacity: 1;}
+        }
+        @-moz-keyframes fadeIn {
+                 0%{margin-top: 50px;opacity: 0;}
+                 100%{margin-top: 0;opacity: 1;}
+        }
+        @-o-keyframes fadeIn {
+               0%{margin-top: 50px;opacity: 0;}
+               100%{margin-top: 0;opacity: 1;}
+        }
+        @-ms-keyframes fadeIn {
+                0%{margin-top: 50px;opacity: 0;}
+                100%{margin-top: 0;opacity: 1;}
+        }*/
+    </style>
+    <script>
+
+    </script>
+    <script type="text/javascript">
+         window.onload=function(){
+             Chatheight();
+              function Chatheight(){ //函数：获取尺寸
+
+              //获取浏览器窗口高度
+              var winHeight=0;
+              if (window.innerHeight)
+              winHeight = window.innerHeight;
+              else if ((document.body) && (document.body.clientHeight))
+              winHeight = document.body.clientHeight;
+              //通过深入Document内部对body进行检测，获取浏览器窗口高度
+              if (document.documentElement && document.documentElement.clientHeight)
+              winHeight = document.documentElement.clientHeight;
+              //chatScroll高度计算
+              document.getElementById("chatScroll").style.height = winHeight -document.getElementById("edit-send").clientHeight+ "px";
+              }
+
+              window.onresize = Chatheight;//浏览器窗口发生变化时同时变化DIV高度*/
+
+
+             /*var Face = $('.textarea').face({
+                 src: 'src/yun/',//表情路径
+                 rowNum: 7,//每行最多显示数量，此属性不适用于常用语
+                 ctnAttr: ['0px', '0px', '40px', '40px'],//[left bottom width height] 表情框相对targetEl位置和里面的表情格子宽高  要写单位
+                 triggerEl: $('.chatCtn'),//触发按钮(不存在则自己生成，不要由a包裹)
+                 targetEl: $('.edit-send'),//父级参照物(用于appendTo和定位)
+                 hideAdv: true,//是否隐藏广告
+                 callback: function() {
+                     $('.editHide').hide();
+                     $('.sendBtn').show().siblings().hide();
+                     setTimeout(function(){
+                         $('.textarea').focus();
+                     }, 50);
+                 },
+             });*/
+             $('.textarea').autocomplete({
+                 url: '../../servlet/AQ?s=ig',//[string]
+                 targetEl: $('.edit-send'),//参照物(用于appendTo和定位)
+                 posAttr: ['0px', '100px'],//外边框的定位[left bottom]
+                 itemNum: 5,//[int] 默认全部显示
+                 callback: function(data) {//获取文本后的回调函数
+                     $('.sendBtn').trigger('click');
+                 }
+             });
+             //faqrobot
+             var FAQ = new Faqrobot({
+                 sysNum: 1000000,//客户唯一标识
+                 //jid: 0,//自定义客服客户图标
+                 //robotName: 'FaqRobot',//机器人名称
+                 logoUrl: 'robot/skin/h5chat/images/logo@2x.png',//logo地址 ----------
+                 logoId: 'logo',// ----------
+                 webNameId: 'MN_logoWord',//公司名称Id
+                 intelTitleChange: true,// 智能聊天是否修改标题
+                 intelTitle: '',// 智能聊天时的标题
+                 artiTitleChange: true,// 人工时是否修改标题
+                 artiTitle: '人工客服',// 人工时的标题
+                 titleInsteadId: 'title',// 代替标题Id
+                 //userInfoId: 'userInfoId',//用户信息Id
+                 kfPic: 'robot/skin/h5chat/images/robot.png',  //客服图标
+                 khPic: 'robot/skin/h5chat/images/user.png', //客户图标
+                 formatDate: '%month%月%date%日 %hour%:%minute%:%second%',//配置时间格式(默认10:42:52 2016-06-24)
+                 topQueId: 'commonQueLayer',//热门、常见问题Id --------
+                 //newQueId: 'newQueId',//新增问题Id
+                 //recommendQueId: 'recommendQueId',//推荐问题Id
+                 //quickServId: 'MN_quickServer',//快捷服务Id
+                 //recommendLinkId: 'recommendLinkId',//推荐咨询Id
+                 //maxQueNum: 100,//最多展示问题条数
+                 //maxQueLen: 100,//最多展示问题字数
+                 //showMsgId: 'showMsgId',//展示信息Id
+                 chatCtnId: 'chatCtn',//聊天展示Id y   --------------
+                 inputCtnId: 'textarea',//输入框Id y   --------
+                 sendBtnId: 'send',//发送按钮Id y   ------
+                 //tipWordId: 'tipWord',//输入框提示语Id ----
+                 //tipWord: '请输入您要咨询的问题',//输入框提示语
+                 //remainWordId: 'MN_remainWordNum',
+                 //remainWordNum: '100',
+                 upFileModule: {//上传文件模块
+                     open: true,//是否启用功能
+                     maxNum: 2,//最大上传数量，0为不限制
+                     triggerId: 'sendPic',//触发上传按钮
+                     startcall: function() {//上传文件前的回调
+                         set_chatScroll_height();
+                     },
+                     callback: function() {//上传文件后的回调
+                     },
+                 },
+                 commentFormId: 'feedbackForm',//评论框formId -------
+                 commentInputCtnId: 'commentCtn',//评论输入框Id ----
+                 commentSendBtnId: 'commentBtn',//评论发送按钮Id ---------
+                 //commentTipWordId: 'MN_commentTip',//评论输入框提示语Id
+                 //commentTipWord: '描述您的意见和建议，以便我们提升服务水平和质量，谢谢您',//评论输入框提示语
+                 leaveMsgFormId: 'leaveMsgForm',//留言框formId ---------
+                 leaveMsgInputCtnId: 'leaveMsgCtn',//留言输入框Id ---------
+                 leaveMsgSendBtnId: 'leaveMsgBtn',//留言发送按钮Id --------
+                 //leaveMsgTipWordId: 'leaveMsgTipWordId',//留言输入框提示语Id
+                 //leaveMsgTipWord: '输入您的建议，我们会尽快为您处理！',//留言输入框提示语
+
+                 //clearBtnId: 'MN_clearBtn',//清除按钮Id
+                 //closeBtnId: 'closeBtnId',//关闭聊天页面
+                 //poweredCtnId: 'poweredCtnId',//技术支持Id
+                 //thirdUrl: '',//未登录第三方账户，跳转至此链接
+                 sourceId: 3,//客户来源
+                 //ajaxType: 'get',
+                 leaveQue: {// 未知问题已回复
+                     open: true,//是否启用功能
+                 },
+                 autoOffline: false,//是否会自动下线
+                 noView: ['.MN_kfImg', '.MN_khImg', '.FA_upFileNoImg', '.msg-item-wrapper img'],
+                 /*faceModule: {//表情模块
+                     open: true,//是否启用功能
+                     faceObj: Face,//表情插件实例
+                 },*/
+                 helpfulModule: {//答案满意度模块
+                     open: true,//是否启用功能
+                     yesCallback: function($obj, msg) {//满意的回调
+                         $obj.text(msg || '感谢您的评价！');
+                     },
+                     noCallback: function($obj, msg) {//不满意的回调
+                         if(window.uselessReasonItems) {
+                             if(window.uselessReasonItems[0]) {
+                                 $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
+
+                                 var html = '';
+                                 for(var i=0; i<window.uselessReasonItems.length; i++) {
+                                     var checked = '';
+                                     if(!i) {
+                                         checked = 'checked';
+                                     }
+                                     html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
+                                 }
+                                 $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
+                             }else {
+                                 $obj.text(msg || '感谢您的评价！');
+                             }
+                         }else {
+                             $obj.text(msg || '感谢您的评价！');
+                         }
+                     }
+                 },
+                 initCallback: function(data) {//初始化基本信息的回调
+                     window.uselessReasonItems = data.uselessReasonItems;
+                 },
+                 sendCallback: function() {//点击发送按钮的回调
+                     $('.addbtn').show().siblings().hide();
+                     !FAQ.robot._html && $('.textarea').focus();// 防止键盘拉起
+                 },
+                 commentCallback: function() {//评论后的回调
+                     layer.close(layerCtn);
+                 },
+                 leaveMsgCallback: function() {//留言后的回调
+                     layer.close(layerCtn);
+                 },
+             });
+         };
+
+    </script>
+</head>
+<body>
+    <!--主题内容部分-->
+    <div class="container" id="container">
+        <!--聊天部分-->
+        <div class="chatScroll" id="chatScroll">
+        <div class="chatCtn" id="chatCtn">
+            <div class="YW_lists"></div>
+            <div class="customer_lists"></div>
+        </div>
+        </div>
+        <!--底部发送-->
+        <div class="edit-send" id="edit-send">
+            <textarea class="text-in textarea" id="textarea" placeholder="您好！有什么可以帮助到您。"></textarea>
+            <div class="send" id="send">发送</div>
+        </div>
+    </div>
+    <div class="Button"></div>
+</body>
+</html>

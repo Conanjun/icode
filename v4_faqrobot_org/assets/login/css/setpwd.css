@@ -1,0 +1,103 @@
+/*
+ * variables
+ */
+button.btn-primary:focus {
+  outline: 0;
+}
+button.btn-white:focus {
+  outline: 0;
+}
+html {
+  width: 100%;
+  height: 100%;
+}
+html body {
+  width: 100%;
+  height: 100%;
+}
+html body .first-wrapper {
+  width: 100%;
+  height: 94px;
+  background-color: #fff;
+  overflow: hidden;
+}
+html body .headnav .container {
+  width: 100%;
+}
+html body .headnav .container .row div.l0 {
+  padding: 0;
+  width: 100%;
+  height: 10px;
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(#009FE9), to(#8ACBE7));
+  background: gradient(linear, 0 0, 100% 0, from(#009FE9), to(#8ACBE7));
+  background: #009FE9\9;
+}
+html body #formC {
+  width: 100%;
+  padding: 0;
+  background: url('../images/bg.jpg') no-repeat top center;
+}
+html body #findPwd {
+  max-width: 430px;
+  padding: 40px;
+  margin: 100px auto;
+  border-radius: 40px;
+  background-color: white;
+}
+html body #findPwd .form-signin-heading {
+  text-align: center;
+  font-size: 22px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+html body #findPwd button.btn-block {
+  margin-top: 15px;
+}
+html body #findPwd button:hover {
+  transform: none;
+}
+html body #findPwd button:focus {
+  transform: none;
+  outline: 0;
+}
+html body #findPwd input.form-control {
+  border-radius: 30px;
+  margin: 15px 0;
+  text-align: center;
+}
+html body #findPwd .vcodeImg {
+  margin-left: 10px;
+  margin-top: 15px;
+  height: 30px;
+}
+html body #findPwd .checkbox {
+  text-align: right;
+  display: none;
+}
+html body #findPwd .plus {
+  margin-top: 10px;
+  height: 20px;
+  width: 100%;
+}
+ul.list{
+    list-style:none;
+    width:100%;
+    top: 40px;
+    position: absolute;
+    background: white;
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+}
+ul.list li{
+    border:1px solid #EEE;
+    width:100%;
+    padding:5px 10px;
+    margin:0px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    cursor: pointer;
+}
+.lilight{
+    background-color:#fafafa;
+}

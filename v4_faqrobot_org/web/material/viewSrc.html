@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+    <!-- #modal-dialog -->
+    <div class="modal fade" id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">素材预览</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="jp_container_1" class="jp-video jp-video-270p" role="application" aria-label="media player">
+                        <div class="jp-type-playlist">
+                            <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+                            <div class="jp-gui">
+                                <div class="jp-video-play">
+                                    <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
+                                </div>
+                                <div class="jp-interface">
+                                    <div class="jp-progress">
+                                        <div class="jp-seek-bar">
+                                            <div class="jp-play-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                                    <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                                    <div class="jp-controls-holder">
+                                        <div class="jp-controls">
+                                            <button class="jp-previous" role="button" tabindex="0">previous</button>
+                                            <button class="jp-play" role="button" tabindex="0">play</button>
+                                            <button class="jp-next" role="button" tabindex="0">next</button>
+                                            <button class="jp-stop" role="button" tabindex="0">stop</button>
+                                        </div>
+                                        <div class="jp-volume-controls">
+                                            <button class="jp-mute" role="button" tabindex="0">mute</button>
+                                            <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                                            <div class="jp-volume-bar">
+                                                <div class="jp-volume-bar-value"></div>
+                                            </div>
+                                        </div>
+                                        <div class="jp-toggles">
+                                            <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                            <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
+                                            <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
+                                        </div>
+                                    </div>
+                                    <div class="jp-details">
+                                        <div class="jp-title" aria-label="title">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jp-playlist">
+                                <ul>
+                                    <!-- The method Playlist.displayPlaylist() uses this unordered list -->
+                                    <li>&nbsp;</li>
+                                </ul>
+                            </div>
+                            <div class="jp-no-solution">
+                                <span>Update Required</span>
+                                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>                       
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade in page-sidebar-fixed page-header-fixed">
+        <!-- begin #content -->
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">素材管理</a></li>
+                <li>素材预览</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">素材预览</h1>
+            <!-- end page-header -->
+            
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin col-6 -->
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active pic"><a class="tabClick-addSrc" href="#default-tab-1" data-toggle="tab">图片</a></li>
+                        <li class="audio"><a class="tabClick-addSrc" href="#default-tab-2" data-toggle="tab">语音</a></li>
+                        <li class="video"><a class="tabClick-addSrc" href="#default-tab-3" data-toggle="tab">视频</a></li>
+                        <!-- <li class="doc"><a class="tabClick-addSrc" href="#default-tab-4" data-toggle="tab">文档</a></li>
+                        <li class="etc"><a class="tabClick-addSrc" href="#default-tab-5" data-toggle="tab">其他</a></li> -->
+                    </ul>
+                </div>
+                <!-- end col-6 -->
+                <!-- begin col-12 -->
+                <div class="col-md-12">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <div class="panel-body" style="padding: 0 15px;">
+                                    <div class="gallery-viewSrc"></div>
+                                    <div id="itemContainer"></div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                                                            
+                </div>
+                <!-- end col-12 -->
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end #content -->
+        
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- end page container -->
+    
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/webuploader.css">
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="../../assets/plugins/isotope/isotope.css" rel="stylesheet" />
+    <link href="../common/css/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../../assets/plugins/isotope/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="../common/js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="../common/js/jplayer.playlist.min.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/webuploader.min.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/main.js"></script>
+    <!-- 必加结束 -->
+    
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+ 
+</body>
+</html>

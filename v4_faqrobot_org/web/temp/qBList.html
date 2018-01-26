@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>题库满意度反馈</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="../common/css/customChatLog.css" rel="stylesheet">
+	<style>
+		#questionBankList img{
+			max-width: 70%;
+		}
+		#questionBankList video{
+			width: 270px !important;
+		}
+		@media (max-width:1217px){
+			.form-horizontal .hideForm{
+				margin-left: 0;
+				margin-right: 0;
+			}
+			
+		}
+		@media (max-width: 991px) {
+			#qualityForm .col-md-3{
+				padding-right: 0;
+				padding-left: 0;
+			}
+			#qualityForm .col-md-6{
+				padding-left: 0;
+			}
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">题库满意度反馈列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">题库满意度反馈列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="fadebackForm">
+							<input type="hidden" name="reasonId">
+							<div class="form-group pull-right m-r-10 p-t-5" id="fadeback_Query" style="margin-top:-5px; margin-right:1px!important">
+							</div>
+							<!--div class="form-group m-r-10">
+								<label class="control-label pagination-right">起始时间：</label>
+								<input size="16" type="text" readonly class="form-control form_datetime" name="startTime" id="sTime" >
+							</div>
+							<div class="form-group pull-right">
+								<label class="control-label pagination-right">结束时间：</label>
+								<input size="16" type="text" readonly class="form-control form_datetime" name="endTime" id="eTime" >
+							</div -->
+							<div class="btn-group pull-right m-b-15 m-r-4" style="margin-right:4px!important;">
+							  <button id="myDropdown" type="button" class="btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;<span class="caret"></span></button>
+							  <ul class="dropdown-menu" style="min-width: 305px;">
+								<li><a  href="#" onclick="countTimes(this,'myDropdown',1,'startTime','endTime',qbList)">昨天&nbsp;</a></li>
+								<li><a  href="#" onclick="countTimes(this,'myDropdown',2,'startTime','endTime',qbList)">今天&nbsp;</a></li>
+								<li><a  href="#" onclick="countTimes(this,'myDropdown',3,'startTime','endTime',qbList)">最近七天&nbsp;</a></li>
+								<li><a  href="#" onclick="countTimes(this,'myDropdown',4,'startTime','endTime',qbList)">最近一个月&nbsp;</a></li>
+								<li><a  href="#" onclick="countTimes(this,'myDropdown',5,'startTime','endTime',qbList)">全部时间&nbsp;</a></li>
+								<li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div style="text-align: center">
+                                        <input id="tm1" size="17" type="text" readonly class="form-control form_datetime m-2 input-sm" name="startTime">
+                                        <input id="tm2" size="18" type="text" readonly class="form-control form_datetime m-2 input-sm" name="endTime">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">
+                                        <button style="width:92%;" class="confirm btn btn-primary" type="button" >确认</button>
+                                    </div>
+                                </li>
+ 
+                                
+                                <!--
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+									<span style="margin-left: 15px">自定义时间范围：</span>
+								  <div class="form-inline text-center">
+									<input id="tm1" size="15" readonly="" class="form-control form_datetime m-2 input-sm" name="startTime" type="text">
+									<input id="tm2" size="15" readonly="" class="form-control form_datetime m-2 input-sm" name="endTime" type="text">
+								  </div>
+								  <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center">
+									<button class="btn btn-primary m-2" style="width:88%;" type="button" onclick="$('#myDropdown').parent().removeClass('open');queryAll();">确认</button>
+								  </div>
+								</li>-->
+							  </ul>
+							</div>
+						</form>
+						<table class="table" id="questionBankList">
+							<thead>
+								<tr>
+									<th style="width:150px;">问题</th>
+									<th>答案</th>
+									<th style="width:150px;">未解决原因</th>
+									<th style="width:150px;">其他意见</th>
+									<th style="width:115px;">聊天记录</th>
+									<th style="width:150px;">时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="bankpageList"></div>
+						<input type="hidden" name="orderType" value="4">
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="chatModal">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">查看记录</h4>
+						</div>
+						<div class="modal-body p-b-0 p-t-5">
+					<div class="row-fluid sendCheck" style="display: none;">
+						<div class="row">
+							<form id="qualityForm">
+                                <input type="hidden" name="uuid">
+                                <input type="hidden" name="chatVersion">
+                                <input type="hidden" name="chatlogId">
+                                <label class="bold">问题</label>
+                                <input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue" style="margin-bottom: 10px;">
+                                <div  style="padding-left: 0;" class="col-md-3">
+                                    质检类型 <b class="red">*</b><select name="qualityModeId" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
+                                    <input type="hidden" name="recheckModeId">
+                                </div>
+                                <div class="col-md-3">
+                                    质检评分<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score" style="margin-bottom: 10px;">
+                                </div>
+                                <div class="col-md-6" style="padding-right:0px">
+                                    质检评语<input type="text" placeholder="质检评语" class="col-md-12 form-control" name="qualityContent" style="resize: none; height: 34px;margin-bottom: 10px;">
+                                </div>
+                             </form>
+						</div>
+
+
+						<div class="row">
+							<ul class="nav nav-pills nav-pills-chg">
+							  <li status="1" class="active"><a href="#navChatLogOne" data-toggle="tab" aria-expanded="true">已有答案回答</a></li>
+							  <li status="2"><a href="#navChatLogTwo" data-toggle="tab" aria-expanded="false">编辑答案回答</a></li>
+							</ul>
+							<!--切换的内容-->
+							<div style="padding: 0" class="tab-content">
+
+								<!-- 点击切换2-->
+								<div class="tab-pane active" id="navChatLogOne">
+									<form id="nav-pills-tab-2-form">
+                                    	<input type="hidden" name="pageNo" value="1">
+                                        <input type="hidden" name="isLeaf" value="1">
+                                        <input type="hidden" name="status" value="0">
+                                        <input type="hidden" name="level" value="1">
+                                        <input type="hidden" name="pageSize" value="5">
+                                        <input type="hidden" id="tab2quetype" name="queryType" value="1">
+                                        <div class="row">
+                                            <span class="col-md-5">选择分类：
+                                                <a href="#" class="ztreeName2">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+    
+                                            <div class="ztree tanchu" id="tanchutree2" style="display: none;margin-top: 15px"></div>
+                                            <div class="input-group col-md-4 pull-right">
+                                                <input type="text" class="form-control" id="tab2que" name="question">
+                                                <div class="input-group-btn">
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'question');$('#tab2quetype').val('1');">问题</a></li>
+                                                        <li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'answer');$('#tab2quetype').val('2');">答案</a></li>
+                                                    </ul>
+                                                    <button type="button" class="btn-toggle btn btn-primary dropdown-toggle curHtml" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">问题<span class="caret"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary searchHasAns">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="max370">
+                                        <table class="table" style="width:100%;margin: 10px 0">
+                                            <thead>
+												<tr>
+													<td width="50"></td>
+													<th>问题</th>
+													<th id="gggggggg">答案</th>
+													<th width="160">时间</th>
+												</tr>
+                                            </thead>
+                                            <tbody class="tbody2"></tbody>
+                                        </table>
+                                    </div>
+									<div id="itemContainer2" style="margin-bottom: -20px;"></div>
+								</div>
+
+								<!-- 点击切换3-->
+								<div class="tab-pane " id="navChatLogTwo">
+									<div class="col-md-12">
+                                    	<div class="row mb10">
+                                            <span class="col-md-12" style="padding-left: 0;">问题分类<b class="red">*</b>：
+                                                <a class="ztreeName3" href="javascript:;">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+                                            <div class="ztree tanchu" id="tanchutree3" style="display: none;margin-top: 15px"></div>
+                                        </div>
+    
+                                        <div class="row mb10" id="warpRoles">
+                                            <span>生效角色：</span>&nbsp;&nbsp;
+                                            <a id="juese" href="#QuestionClassModel" data-toggle="modal" >来访者角色</a>
+                                        </div>
+                                        <div class="row mb10" id="warpRules">
+                                            <div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
+                                            	<span>生效渠道：</span>&nbsp;
+                                            </div>
+                                            <div class="col-md-10" style="margin-left:-20px;">
+                                            	<div id="chooseAll"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <span>输入答案<b class="red">*</b>：</span>
+                                        </div>
+                                        <div style="padding: 0" class="row">
+                                                <textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5"  name="title"></textarea>
+                                        </div>
+                                    </div>
+								</div>
+
+							</div>
+
+							<!-- 底部3按钮-->
+							<div style="position: absolute;bottom: 15px;right:30px" class="row">
+								<a href="javascript:;" class="cancel btn btn-sm btn-white">取消</a>
+								<a href="javascript:;"  class="testOnly btn btn-sm btn-primary" >仅质检</a>
+								<button class="testAndlearn btn btn-sm btn-white btn-primary">质检并学习</button>
+							</div>
+						</div>
+					</div>
+							<form method="POST" id="visiterForm" class="form-horizontal">
+								<fieldset>
+									<div class="form-group m-b-5">
+										<label class="col-md-2 control-label">访客信息</label>
+										<div class="col-md-9" style="padding-left:15px;padding-right:15px;padding-top:7px;">
+											<span class="visiterInfo"></span>
+											<button type="button" class="btn btn-primary btn-xs" onclick="$('.hideForm').toggle();">高级查询</button>
+										</div>
+									</div>
+									<div class="form-group hideForm m-b-5" style="display: none;">
+										<label class="col-md-2 control-label">起始时间</label>
+										<div class="col-md-3" style="padding-left:0;padding-right:0;">
+											<input size="16" type="text" readonly class="form-control form_datetime input-sm" name="startTime">
+										</div>
+										<label class="col-md-2 control-label">结束时间</label>
+										<div class="col-md-3" style="padding-left:0;padding-right:0;">
+											<input size="16" type="text" readonly class="form-control form_datetime input-sm" name="endTime">
+										</div>
+									</div>
+									<div class="form-group hideForm m-b-5" style="display: none;">
+										<label class="col-md-2 control-label">内容</label>
+										<div class="col-md-8" style="padding-left:0;padding-right:0;">
+											<input type="text" class="form-control input-sm" name="content">
+										</div>
+									</div>
+									<div class="form-group hideForm" style="display: none;">
+										<label class="col-md-2 control-label"></label>
+										<div class="col-md-8" style="padding-left:0;padding-right:0;">
+											<a href="javascript:void(0);" title="本次记录" class="bcjl btn btn-primary btn-xs">本次记录</a>
+											<a href="javascript:void(0);" title="全部记录" class="qbjl btn btn-primary btn-xs">全部记录</a>
+											<button type="button" class="btn btn-primary btn-xs" id="searchChatRe">搜索</button>
+											<button type="button" class="btn btn-primary btn-xs" onclick="searchClear()">清空</button>
+										</div>
+									</div>
+									<input type="hidden" class="recordsChatUserId" name="chatUserId">
+									<input type="hidden" class="tempValue">
+									<input type="hidden" class="chatV" name="chtvs">
+									<input type="hidden" class="locateContent" name="locateContent">
+								</fieldset>
+							</form>
+							<div id="chatCon">
+								<div id="chatLogList">
+									<ul class="chats"></ul>
+								</div>
+							</div>
+							<div id="chatpageList" style="margin-top:10px; margin-bottom:0px;"></div>
+						</div>
+						<div class="modal-footer">
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/base.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/customChatLog.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			getItem();
+			countTimes($('#fadebackForm .dropdown-menu li').eq(2),'myDropdown',3,'startTime','endTime',qbList)
+			$('#fadebackForm .dropdown-menu li').eq(2).trigger('click');
+			$('#fadebackForm input[name=reasonId]').val('');
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate:new Date()
+			});
+		});
+		/*
+		时间框
+		*/
+		$('.confirm').click(function(){
+			var time1 =$('#tm1').val();
+			var time1s = time1.split('-');
+			var time1s2 = time1s[2].split(' ');
+			var time2 =$('#tm2').val();
+			var time2s = time2.split('-');
+			var time2s2 = time2s[2].split(' ');
+			$('#myDropdown').parent().removeClass('open');$('.btnSearch').trigger('click')
+			$('#myDropdown').html(time1s[1]+'月'+time1s2[0]+'日'+'-'+time2s[1]+'月'+time2s2[0]+'日'+'  '+'<span class="caret"></span>');
+		});
+
+
+		$('#myDropdown').on('click', function () {
+			$(this).parent().toggleClass('open');
+		});
+		$('body').on('click', function (e) {
+			if(!$('#myDropdown').parent().find($(e.target)).length) {
+			  $('#myDropdown').parent().removeClass('open');
+			}
+		})
+
+		var myDate = new Date(),
+			myYear=myDate.getFullYear(),
+			myMonth=(myDate.getMonth()<9?('0'+(myDate.getMonth()+1)):(myDate.getMonth()+1)),
+			myCurDate=myDate.getDate()<10?('0'+myDate.getDate()):myDate.getDate(),
+			myHours=myDate.getHours()<10?('0'+myDate.getHours()):myDate.getHours(),
+            myMinute=myDate.getMinutes()<10?('0'+(myDate.getMinutes()+2)):(myDate.getMinutes()+2);//获取当前时间
+            
+        function updateTime(){
+            myDate = new Date();
+            myYear=myDate.getFullYear();
+            myMonth=(myDate.getMonth()<9?('0'+(myDate.getMonth()+1)):(myDate.getMonth()+1));
+            myCurDate=myDate.getDate()<10?('0'+myDate.getDate()):myDate.getDate();
+            myHours=myDate.getHours()<10?('0'+myDate.getHours()):myDate.getHours();
+            myMinute=myDate.getMinutes()<10?('0'+(myDate.getMinutes()+2)):(myDate.getMinutes()+2);//获取当前时间
+        }
+
+		function countTimes(obj,btnId,day,sTime,eTime,fun){    //btnId 下拉框id   day  1 昨天 2今天 3最近7天 4最近一个月  5全部
+			var newDate=new Date();
+			var bigObj=$('#'+btnId).parent();
+			var sObj=bigObj.find('input[name='+sTime+']'),
+				eObj=bigObj.find('input[name='+eTime+']');;
+			bigObj.removeClass('open');
+			$('#'+btnId).html($(obj).text() + '<span class="caret"></span>');
+            pageNo = 1;
+            updateTime();
+			if(day==1){
+				newDate.setTime(newDate.getTime()-24*60*60*1000);
+				var yesterday = newDate.getFullYear()+"-" + ((newDate.getMonth()+1)<10?('0'+(newDate.getMonth()+1)):(newDate.getMonth()+1)) + "-" + (newDate.getDate()<10?('0'+newDate.getDate()):newDate.getDate());
+				var Mont = new Date().getMonth()+1;
+				Mont=Mont<10?('0'+Mont):Mont
+				sObj.val(yesterday+' '+'00'+':'+'00');
+				eObj.val(new Date().getFullYear()+'-'+Mont+'-'+new Date().getDate()+' '+'00'+':'+'00');
+			}
+			if(day==2){
+				sObj.val(myYear+'-'+myMonth+'-'+myCurDate+' '+(myHours-myHours+'0')+':'+(myMinute-myMinute+'0'));
+				eObj.val(myYear+'-'+myMonth+'-'+myCurDate+' '+myHours+':'+myMinute);
+			}
+			if(day==3){
+				newDate.setTime(newDate.getTime()-7*24*60*60*1000);
+				var week = newDate.getFullYear()+"-" + ((newDate.getMonth()+1)<10?('0'+(newDate.getMonth()+1)): newDate.getMonth()+1)+ "-" + (newDate.getDate()<10?('0'+newDate.getDate()):newDate.getDate());
+				var Hou = myHours;
+				var Min = myMinute;
+				sObj.val(week+' '+(newDate.getHours()<10?('0'+newDate.getHours()):newDate.getHours())+':'+(newDate.getMinutes()<10?('0'+newDate.getMinutes()):newDate.getMinutes()));
+				eObj.val(myYear+'-'+myMonth+'-'+myCurDate+' '+Hou+':'+Min);
+			}
+			if(day==4){
+				pageNo = 1;
+				var Hou = myHours;
+				var Min = myMinute;
+				sObj.val(lastMonthDate()+' '+myHours+':'+myMinute);
+				eObj.val(new Date().getFullYear()+'-'+((new Date().getMonth()+1)<10?('0'+(new Date().getMonth()+1)):(new Date().getMonth()+1))+'-'+(new Date().getDate()<10?('0'+new Date().getDate()):new Date().getDate())+' '+Hou+':'+Min);
+			}
+			if(day==5){
+				sObj.val('');
+				eObj.val('');
+			}
+			if(typeof fun=='function'){
+				fun();
+			}
+		}
+		
+		//获得上月今天的方法
+		function lastMonthDate(){
+			var vYear = myYear;
+			var vMon = myMonth;
+			var vDay = myCurDate;
+			//每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+			var daysInMonth = new Array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+			if(vMon==1){
+			  vYear = myYear-1;
+			  vMon = 12;
+			}else{
+			  vMon = vMon -1;
+			}
+			//若是闰年，二月最后一天是29号
+			if(vYear%4 == 0 && vYear%100 != 0){
+			  daysInMonth[2]= 29;
+			}
+			if(daysInMonth[vMon] < vDay){
+			  vDay = daysInMonth[vMon];
+			}
+			vMon=vMon<10?('0'+vMon):vMon;
+			var LastMonthDate =vYear+"-"+ vMon +"-"+vDay;
+			return LastMonthDate;
+		}
+		function qbList(pageNo) {
+			var gST = $('#fadebackForm input[name=startTime]').val();
+			var gEt = $('#fadebackForm input[name=endTime]').val();
+			if (gST == '' && gEt != '') {
+				yunNotyError('请输入起始时间！');
+				return;
+			}
+			if (gST != '' && gEt == '') {
+				yunNotyError('请输入结束时间！');
+				return;
+			}
+			var startgST = new Date(gST.replace("-", "/").replace("-", "/"));
+			var endgEt = new Date(gEt.replace("-", "/").replace("-", "/"));
+			if (endgEt < startgST) {
+				yunNotyError('起始时间不能小于结束时间！！');
+				return;
+			}
+			if (!pageNo) pageNo = 1;
+			$('#questionBankList').tableAjaxLoader2(6);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/getReasonContent?pageSize=' + 20 + '&pageNo=' + pageNo + '&orderType=' + 4),
+				data: $('#fadebackForm').serialize(),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#questionBankList').find('tbody').html('<tr><td colspan="6" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#bankpageList').html('');
+							return;
+						}
+						var s = []; //暂时存储html代码
+						if (data.List.length > 0) {
+							for (var i = 0; i < data.List.length; i++) {
+								s.push('<tr>');
+								s.push('<td>' + data.List[i].Question + '</td>');
+								var tmpAnswer = data.List[i].Answer == null ? '': data.List[i].Answer;
+								s.push('<td>' + tmpAnswer + '</td>');
+								var tmpName = data.List[i].ReasonName == null ? '': data.List[i].ReasonName;
+								s.push('<td>' + tmpName + '</td>');
+								var tmpReason = data.List[i].Reason == null ? '': data.List[i].Reason;
+								s.push('<td>' + tmpReason + '</td>');
+					if(data.List[i].watched===false) {
+					  s.push('<td><a href="javascript:;" title="查看聊天记录" rel="'+data.List[i].ChatUserId+'" cv="'+data.List[i].ChatVersion+'" onclick="lookChat(this, \''+data.List[i].Question+'\');return false;">查看聊天记录</a></td>');
+					} else {
+					  s.push('<td><a href="javascript:;" style="color:#999;" title="查看聊天记录" rel="'+data.List[i].ChatUserId+'" cv="'+data.List[i].ChatVersion+'" onclick="lookChat(this, \''+data.List[i].Question+'\');return false;">查看聊天记录&nbsp;<span>已读</span></a></td>');
+					}
+								s.push('<td>' + data.List[i].DateTime + '</td>');
+								s.push('</tr>');
+							}
+							$('#questionBankList').find('tbody').html(s.join(''));
+							//下面开始处理分页
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									qbList(page);
+								}
+							};
+							setPage('bankpageList', options);
+						} else {
+							$('#questionBankList').find('tbody').html('<tr><td colspan="6" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#bankpageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+		//获取条目内容
+		function getItem() {
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/list?orderType=' + 4+'&type=0'),
+				success: function(data) {
+					if (data.status == 0) {
+						var s = []; //暂时存储html代码
+						if (data.List.length > 0) {
+							s.push('<select class="selectpicker">');
+							s.push('<option value="" selected>请选择未解决的原因</option>');
+							for (var i = 0; i < data.List.length; i++) {
+								s.push('<option value="' + data.List[i].Id + '">' + data.List[i].Reason + '</option>');
+							}
+							s.push('</select>');
+							$('#fadeback_Query').html(s.join(''));
+							//根据条目查询当前反馈内容
+							$('#fadeback_Query').on('change', '.selectpicker',
+							function() {
+								var curValue = $(this).val();
+								$('#fadebackForm input[name=reasonId]').val(curValue);
+								qbList();
+							});
+							//下拉列表
+							$('.selectpicker').selectpicker({
+								style: 'btn-primary',
+								size: 4,
+								width: '100%',
+							});
+
+						} else {
+							$('#fadeback_Query').html('<select class="selectpicker"><option value="">当前无条目</option></select>');
+							//下拉列表
+							$('.selectpicker').selectpicker({
+								style: 'btn-primary',
+								size: 4,
+								width: '100%',
+							});
+						}
+					} else if (data.status == -1) {} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+	</script>
+</body>
+</html>

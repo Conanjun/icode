@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>对接留言与论坛系统</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.ctn {
+			text-align: center;
+		}
+		.timeline-body div p img{
+		}
+		.timeline-header .username{
+			color:#707478;
+		}
+		.timeline-header .username a{
+			color:#00acac;
+		}
+		.boldTitle{
+			font-weight:500;
+		}
+		.smallImg{
+			max-height:300px;width:169px;
+		}
+		.indent2,.indent2 img{
+			text-indent:2em;
+		}
+		.indent4{
+			text-indent:4em;
+		}
+		.indent2 span{
+			display:block;
+		}
+		
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div class="row">
+			    <!-- begin col-6 -->
+			  <div id="content" class="content">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">对接留言与论坛系统</li>
+			</ol>
+			<h1 class="page-header">对接留言与论坛系统</h1>
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<ul class="timeline">
+			    
+				 <li>
+			        
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">1</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">对接说明</span>
+			            </div>
+						<div class="timeline-content">
+							<p>（1）目前留言与论坛系统是一个独立的项目，需要有独立的服务器部署</p>
+							<p>（2）商家需提供微信企业号，最好是认证的，企业号需要对接我们机器人，对接系统还需提供：</p>
+							<div class="indent2">
+								<p class="boldTitle"> 1、留言需提供：</p>
+								<p class="indent2 indent4">
+									<span>  A. 企业号的cropId</span>
+									<span>	B. 应用服务的secret</span>
+									<span>	C. 消息服务的secret</span>
+									<span>	D. 机器人对接的应用id</span>
+									<span>	E. 开通一个消息型应用作为专家组，提供应用id</span>
+								</p>
+								<p class="boldTitle"> 2、论坛需提供：</p>
+								<p class="indent2 indent4">
+									<span>  A. 企业号的cropId</span>
+									<span>	B. 应用服务的secret</span>
+									<span>	C. 机器人对接的应用id</span>
+									<span>	D. 开通一个主页型应用作为论坛首页，需要自行配置我们给的页面地址</span>
+								</p>
+							</div>
+							<p>（3）需要在机器人后台设置对接微信的未知回复，具体回复的url需根据服务器域名而定</p>
+						</div>
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+				 <li>
+			        
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">2</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">对接操作图文详解</span>
+			            </div>
+						<div class="timeline-content">
+							<div class="indent2">
+								<p class="boldTitle"> 1、管理员登陆企业号，点击设置即可看见自己企业号的cropId，如下图</p>
+								<p><a href="../common/images/forum/1.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/1.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 2、点击设置里的权限管理，找到设置的大如应用，下面的secret就是应用服务的secret，如下图所示</p>
+								<p><a href="../common/images/forum/2.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/2.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 3、点击服务中心——企业会话，消息发送接口下面的secret就是消息服务的secret，如下图</p>
+								<p><a href="../common/images/forum/3.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/3.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 4、点击应用中心，找到对接机器人的应用，点开后有应用Id，就是机器人对接的应用id，如下图</p>
+								<p><a href="../common/images/forum/4.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/4.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 5、在应用中心新建一个消息型应用作为专家组，查看应用信息，应用id即为专家组应用id，如下图</p>
+								<p><a href="../common/images/forum/5.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/5.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 6、相同方法建立一个主页型应用，作为论坛。如若大如项目部署在云问方，部署完毕由云问方提供该应用的主页链接，否则企业方需提供部署项目的域名，再由云问方提供完整的链接，修改主页链接地址如下图所示：</p>
+								<p><a href="../common/images/forum/6.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/6.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 7、进入云问后台页面，在平台对接，微信列表里找到已对接机器人的微信列表，点击修改编辑未知说词，具体链接地址如上一步说述，提供域名由云问方提供地址。</p>
+								<p><a href="../common/images/forum/7.png" data-lightbox="gallery-group-1"><img src="../common/images/forum/7.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+							</div>
+						</div>
+						
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+				<!--<li >
+			        <div class="timeline-icon">
+			            <a href="javascript:;">3</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">留言系统使用操作图文详解</span>
+			            </div>
+						<div class="timeline-content">
+							<div class="indent2">
+								<p class="boldTitle"> 1、与机器人聊天，出现未知回复时，会提示点击留言或者去论坛提问，如下图所示：</p>
+								<p><a href="../common/images/forum/8.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/8.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 2、点击留言，进入留言页面，此时可以添加留言，如下图</p>
+								<p><a href="../common/images/forum/9.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/9.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 3、点击提交后专家组会收到留言提醒，如下图：</p>
+								<p><a href="../common/images/forum/10.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/10.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 4、点击抢答后，可以看见具体的留言内容，决定是否抢答，如下图：</p>
+								<p><a href="../common/images/forum/11.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/11.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 5、点击抢答后可回复留言，如下图所示：</p>
+								<p><a href="../common/images/forum/12.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/12.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 6、回复后提问人会收到机器人推送的回复内容，如下图：</p>
+								<p><a href="../common/images/forum/13.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/13.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+							</div>
+						</div>
+			        </div>
+			        
+			    </li>-->
+				 <!-- <li>
+			        <div class="timeline-icon">
+			            <a href="javascript:;">4</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">论坛系统使用说明</span>
+			            </div>
+						<div class="timeline-content">
+							<div class="indent2">
+								<p class="boldTitle"> 1、点击去论坛后会进入论坛，如图所示:</p>
+								<p><a href="../common/images/forum/14.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/14.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 2、点击发贴可以发布新帖，如图所示：</p>
+								<p><a href="../common/images/forum/15.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/15.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 3、贴子都可以评论，如图所示：</p>
+								<p><a href="../common/images/forum/16.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/16.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 4、用户可以点赞和举报贴子，管理员可以加精置顶和删除贴子</p>
+								<p><a href="../common/images/forum/17.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/17.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 5、管理员可以添加板块，发贴需选择板块，查看贴子可以根据板块筛选</p>
+								<p><a href="../common/images/forum/18.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/18.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 6、精品贴区可以查看所有精品贴</p>
+								<p><a href="../common/images/forum/19.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/19.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 7、首页和贴子详情可以分享给微信好友或者朋友圈</p>
+								<p><a href="../common/images/forum/20.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/20.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+								<p class="boldTitle"> 8、个人信息页面可以进行签到操作，可以查看我的发贴，可以查看签到记录，管理员可以添加板块。</p>
+								<p><a href="../common/images/forum/21.png" data-lightbox="gallery-group-1"><img class="smallImg" src="../common/images/forum/21.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+							</div>
+						</div>
+			        </div>
+			        
+			    </li>-->
+				<li>
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">4</a>
+			        </div>
+			        <!-- end timeline-icon -->
+			        <!-- begin timeline-body -->
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">对接成功</span>
+			            </div>
+						<div class="timeline-content">
+							<p>至此，您已经能使用留言和论坛系统了。</p>
+							<div class="indent2">
+								<p><a href="../common/images/forum/9.png" data-lightbox="gallery-group-1" style="float:left;margin-right:20px;"><img class="smallImg" src="../common/images/forum/9.png" alt="3" data-lightbox="gallery-group-1"></a><a href="../common/images/forum/14.png" data-lightbox="gallery-group-1" ><img class="smallImg" src="../common/images/forum/14.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+							</div>
+						</div>
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+			</ul>
+			</div>
+			<div class="col-md-1"></div>
+			<!-- begin timeline -->
+			
+			<!-- end timeline -->
+		</div>
+			    <!-- end col-6 -->
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+	<script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script>
+		$(function() {
+			App.init();
+		});
+	</script>
+</body>
+</html>

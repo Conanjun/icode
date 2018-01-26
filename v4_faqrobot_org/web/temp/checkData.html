@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+        a .timeTip {
+            margin: 0 3px;
+            cursor: pointer;
+        }
+        .cosType2 {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">系统管理</a></li>
+                <li>信息收集</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">信息收集</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+				<!-- begin panel -->
+				<div class="panel panel-inverse" data-sortable-id="table-basic-7">
+					<div class="panel-body">
+						<div class="table-responsive">
+							<form class="form-inline" style="margin: 5px 0;">
+								<!--<div class="btn-group">-->
+									<!--<button type="button" class="sortWord2 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;<span class="caret"></span>-->
+									<!--</button>-->
+									<!--<ul class="dropdownList dropdown-menu" style="min-width: 105px;">-->
+									<!--&lt;!&ndash; <li><a class="sortQue" href="#">问题</a></li> &ndash;&gt;-->
+									<!--</ul>-->
+								<!--</div>-->
+
+                                <div class="form-group">
+                                    <button type="button" class="excel btn btn-primary"><i class="glyphicon glyphicon-download"></i> 导出Excel</button>
+                                </div>
+                                <a href="formList.html" class="btn btn-link"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;返回列表</a>
+
+
+                                <!--此时间筛选功能暂时不需要 先隐藏 要用的话下面JS也要解开-->
+                                <!--<div style="display:none;" class="btn-group pull-left m-r-4">-->
+                                    <!--<button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;<span class="caret"></span></button>-->
+                                    <!--<ul class="dropdown-menu" style="min-width: 275px;border: 1px solid #f3f3f3">-->
+                                        <!--<li><a class="ttw0" data-p="" href="#">昨天</a></li>-->
+                                        <!--<li><a class="ttw1" data-p="" href="#">今天</a></li>-->
+                                        <!--<li><a class="ttw2" data-p="" href="#">最近七天</a></li>-->
+                                        <!--<li><a class="ttw3" data-p="" href="#">最近一个月</a></li>-->
+                                        <!--<li><a class="ttw4" data-p="" href="#">全部时间</a></li>-->
+                                        <!--<li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">-->
+                                            <!--<span style="margin-left: 15px">自定义时间范围：</span>-->
+                                            <!--<div style="text-align: center">-->
+                                                <!--<input id="tm1" size="16" type="text" readonly="" class="form-control form_datetime m-2 input-sm" name="startT">-->
+                                                <!--<input id="tm2" size="16" type="text" readonly="" class="form-control form_datetime m-2 input-sm" name="endT">-->
+                                            <!--</div>-->
+                                            <!--<div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">-->
+                                                <!--<button style="width:92%;" class="btn btn-primary" type="button" onclick="$('#myDropdown').parent().removeClass('open');$('.btnSearch').trigger('click');">确认</button>-->
+                                            <!--</div>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+
+
+
+
+							</form>
+							<table class="table" id="mytable">
+								<thead>
+									<tr>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="itemContainer"></div>
+						</div>
+					</div>
+				</div>
+				<!-- end panel -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/commonCSS.css">
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/checkData.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+            //全局变量 获得当前时间
+//            var myDate = new Date();
+//            var myDateM = myDate.getMonth()+1;//月
+//            var myDateD = myDate.getDate();//日
+//            var myDateHou = myDate.getHours();//时
+//            var myDateMin = myDate.getMinutes();//分
+//            if(myDateM<10){//判断现在月份格式
+//                myDateM = "0"+myDateM;
+//            }
+//            if(myDateD<10){//判断现在日期格式
+//                myDateD = "0"+myDateD;
+//            }
+//            if(myDateHou<10){//判断现在小时格式
+//                myDateHou = "0"+myDateHou;
+//            }
+//            if(myDateMin<10){//判断现在分钟格式
+//                myDateMin = "0"+myDateMin;
+//            }
+//            //页面初始化 默认一周自动填充时间
+//            function  apply(){//获取一周前时间
+//                var newDatew = new Date();
+//                newDatew.setTime(newDatew.getTime()-7*24*60*60*1000);//此时newDatew变成了一周前的时间
+//                var weekMon = newDatew.getMonth()+1;//一周前的月份
+//                if(weekMon<10){weekMon='0'+newDatew.getMonth()};
+//                var weekDay = newDatew.getDate();//一周前的日
+//                if(weekDay<10){weekDay='0'+newDatew.getDate()};
+//                var week = newDatew.getFullYear()+"-" + weekMon + "-" + weekDay;
+//                $('#tm1').val(week+' '+myDateHou+':'+myDateMin);//一周前的现在
+//                $('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//今天的时间
+//                App.init();
+//            }
+//            apply();
+//
+////获得上月今天的方法
+//            function lastMonthDate(){
+//                var vYear = myDate.getFullYear();
+//                var vMon = myDate.getMonth() + 1;
+//                var vDay = myDate.getDate();
+//                //每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+//                var daysInMonth = new Array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+//                if(vMon==1){
+//                    vYear = myDate.getFullYear()-1;
+//                    vMon = 12;
+//                }else{
+//                    vMon = vMon -1;
+//                }
+//                //若是闰年，二月最后一天是29号
+//                if(vYear%4 == 0 && vYear%100 != 0){
+//                    daysInMonth[2]= 29;
+//                }
+//                if(daysInMonth[vMon] < vDay){
+//                    vDay = daysInMonth[vMon];
+//                }
+//                if(vDay<10){
+//                    vDay="0"+vDay;
+//                }
+//                if(vMon<10){
+//                    vMon="0"+vMon;
+//                }
+//                var LastMonthDate =vYear+"-"+ vMon +"-"+vDay;
+//                return LastMonthDate;
+//            }
+//
+//
+////点击弹出下拉菜单
+//            $('#myDropdown').on('click', function () {
+//                $(this).parent().toggleClass('open');
+//            });
+//
+//            $('body').on('click', function (e) {
+//                if(!$('#myDropdown').parent().find($(e.target)).length) {
+//                    $('#myDropdown').parent().removeClass('open');
+//                }
+//            });
+//
+//
+//            $('.ttw0').on('click', function() { //昨天
+//                $('#myDropdown').parent().removeClass('open');
+//                $('.ttw').html($(this).text() + '<span class="caret"></span>');
+//                var newDate1 = new Date();//获取当前时间
+//                newDate1.setTime(newDate1.getTime()-24*60*60*1000);//当前时间设置成昨天时间
+//                var yestM = newDate1.getMonth()+1; //昨天的月
+//                if(yestM<10){
+//                    yestM ="0"+yestM;
+//                }
+//                var yestD = newDate1.getDate();//昨天的日
+//                if(yestD<10){
+//                    yestD="0"+yestD;
+//                }
+//                pageNo = 1;
+//                var yesterday = newDate1.getFullYear()+"-" + yestM + "-" + yestD;
+//                $('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//                $('#tm1').val(yesterday+' '+'00'+':'+'00');//昨天的时间
+//                $('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//现在的时间
+//                App.init();
+//            });
+//
+//            $('.ttw1').on('click', function() { //今天
+//                $('#myDropdown').parent().removeClass('open');
+//                $('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//                pageNo = 1;
+//                $('#tm1').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//今天零点
+//                $('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+//                App.init();
+//            });
+//
+//            $('.ttw2').on('click', function() { //最近七天
+//                $('#myDropdown').parent().removeClass('open');
+//                $('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//                apply();
+//                App.init();
+//            });
+//            $('.ttw3').on('click', function() { //最近一个月
+//                $('#myDropdown').parent().removeClass('open');
+//                $('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//                pageNo = 1;
+//                $('#tm1').val(lastMonthDate()+' '+myDateHou+':'+myDateMin);//一月前的今天
+//                $('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+//                App.init();
+//            });
+//            $('.ttw4').on('click', function() { //全部
+//                $('#myDropdown').parent().removeClass('open');
+//                $('.ttw').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+//                pageNo = 1;
+//                $('#tm1').val('');
+//                $('#tm2').val('');
+//                App.init();
+//            });
+
+        });
+    </script>
+
+</body>
+</html>

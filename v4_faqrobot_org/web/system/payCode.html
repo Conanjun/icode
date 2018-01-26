@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>网页对接</title>
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <link rel="stylesheet" href="../common/css/introjs.css">
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+
+<style>
+    .iyunwen_js_class {
+        z-index: 9999;
+    }
+
+    .nav-pills>li.active>a,
+    .nav-pills>li.active>a:focus,
+    .nav-pills>li.active>a:hover {
+        background: #fff;
+        border: #2A72B5 1px solid;
+        color: #2a72b5;
+    }
+
+    .iconImgSel {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="modal fade" id="modal-getCode">
+        <div class="modal-silm modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">获取代码</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control getCodeInput" placeholder="请右键复制此处代码" rows="5" style="resize:none;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">系统管理</a></li>
+                <li>网页对接</li>
+            </ol>
+            <h1 class="page-header">网页对接</h1>
+
+            <div class="tab-content">
+				<div style="text-align: right;">
+					<a href="../../web/system/payCodeList.html" data-num="0" data-name="添加网页对接" class="btn btn-primary pull-left">添加网页对接</a>
+					<div class="btn-group">
+						<button type="button" class="sortWord btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">默认排序<span class="caret"></span></button>
+						<ul class="dropdown-menu dropdown-menu-right" style="min-width: 100px;">
+							<li class="simSort1"> <a href="javascript:;">图标来源正序</a> </li>
+							<li class="simSort2"> <a href="javascript:;">图标来源倒序</a> </li>
+							<li class="simSort3"> <a href="javascript:;">显示方式正序</a> </li>
+							<li class="simSort4"> <a href="javascript:;">显示方式倒序</a> </li>
+						</ul>
+					</div>
+				</div>
+                <div class="panel-body" style="padding:0;">
+                    <div class="table-responsive col-md-12" style="padding:0;">
+                        <div class="panel-body" style="padding:0;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>图标内容</th>
+                                        <th width="100">图标样式</th>
+                                        <th width="100">显示方式</th>
+                                        <th>图标名称</th>
+                                        <th style="width: 100px;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="itemContainer1" style="float: right;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+    </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="delete">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">确定要删除？</h4>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除次数据吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deleteSave">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <script src="../../assets/js/apps.min.js"></script>
+    <script src="../common/js/intro.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/base.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+    <script src="js/payCode.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+			iframeTab.init({
+				iframeBox: ''
+			});
+            initSrc1();
+        });
+    </script>
+
+</body>
+
+</html>

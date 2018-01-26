@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+.word-nav {
+	font-size: 0;
+	margin-top: 10px;
+}
+.word-content {
+	font-size: 0;
+	border: 1px solid #666666;
+	border-top: none;
+	padding:12px;
+}
+.b-g-b {
+	border: 1px solid #666666;
+	padding: 12px!important;
+	background: #797979;
+	color: #fff;
+}
+.b-1-6 {
+	border: 1px solid #666666;
+	padding:12px;
+}
+.word-father {
+	border: 1px solid #666666;
+	cursor: pointer;
+	border-radius: 3px;
+	text-align: center;
+	margin: 5px 20px 5px 0;
+	padding: 3px 10px;
+	display: inline-block;
+	position: relative;
+}
+.word-father label {
+	margin-bottom: 0;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+.word-selected {
+	padding: 8px 10px;
+	display: block;
+}
+.word-container {
+	border: 1px solid #e2e7eb;
+	cursor: pointer;
+	border-radius: 3px;
+	text-align: center;
+	margin: 5px 20px 5px 0;
+	padding: 3px 10px;
+	display: inline-block;
+	position: relative;
+}
+.lexicon-edit .word-container .del-span {
+	width: 20px;
+	height: 20px;
+	background-image: url('../../common/images/close.png');
+	position: absolute;
+	right: -10px;
+	top: -10px;
+	cursor: pointer;
+	display: none;
+}
+.lexicon-edit .word-container:hover .del-span {
+	display: block;
+}
+.word-container .w {
+	margin-bottom: 0;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+.word-container.active {
+	background: #73ACEC;
+	border-color: #74b6ea;
+}
+.word-container.active .w{
+	color: #fff;
+}
+.add-container {
+	text-align: center;
+	margin: 5px 20px 5px 0;
+	padding: 3px 10px;
+	display: inline-block;
+	position: relative;
+}
+.lexicon-line {
+	position: absolute;
+	border-left: 1px solid #74b6ea;
+	border-bottom: 1px solid #74b6ea;
+	width: 17px;
+	height: 40px;
+	top: -25px;
+	left: -17px;
+	background: transparent;
+}
+.add-word-input {
+	width: 100px;
+	border: none;
+    border-bottom: 1px solid #999;
+    padding: 3px;
+    background: rgba(255,255,255,0.5);
+}
+.btn.lexicon-head {
+	background: #FBFBFB;
+	border-color: #348FE2;
+    padding: 4px 8px;
+	color: #707478;
+	display:block;
+	z-index:2;
+	position:relative;
+}
+.btn.lexicon-head.lexicon-head-focus {
+	background: #73ACEC;
+	border-color: #74b6ea;
+	color: #FFF;
+}
+.btn.lexicon-left-son {
+	background: #fff;
+	border-color: #74b6ea;
+    padding: 4px 8px;
+	display:block;
+	position:relative;
+}

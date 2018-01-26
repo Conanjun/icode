@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>自定义查询</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		@media (max-width:1200px){
+			.col-md-4{
+				width: 25%;
+				float: left;
+			}
+			.col-md-8{
+				width: 75%;
+				float: left;
+			}
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">自定义查询</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">自定义查询<i data-toggle="tooltip" data-placement="right" title="" class="fa fa-question-circle" data-original-title="自定义查询"></i></h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="tableHead" style="height: 34px;">
+							<a class="btn btn-primary fileinput-button m-b-5" id="addBigData">
+								<i class="glyphicon glyphicon-plus"></i>
+								<span>添加数据</span>
+								<input type="hidden" class="tempId">
+							</a>
+							<a class="btn btn-primary fileinput-button m-r-1 m-b-5">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>导入数据</span>
+								<input id="exlfileupload" type="file" name="file">
+							</a>
+							<a class="btn btn-primary m-b-5" href="javascript:;" onclick="downExecl()">
+								<i class="glyphicon glyphicon-download"></i>
+								<span>导出Excel</span>
+							</a>
+							<a class="btn btn-default pull-right" href="../../wordDocExcel/exportTemplate?mode=2">
+								<i class="glyphicon glyphicon-download"></i>
+								<span>下载模板</span>
+							</a>
+						</div>
+						<div class="col-md-4" style="position:relative;">
+							<table class="table" id="keyWordsSearch">
+								<tbody></tbody>
+							</table>
+						</div>
+						<div class="col-md-8" id="rightDiv">
+							<input type="hidden" id="addDataBtn">
+							<input type="hidden" name="orderType" value="4">
+							<input type="hidden" name="pageNo" value="1">
+							<!--<div class="tableHead" style="height: 34px;">
+								<a class="btn btn-default pull-right" href="/wordDocExcel/exportTemplate?mode=2">
+									<i class="glyphicon glyphicon-download"></i>
+									<span>下载模板</span>
+								</a>
+							</div>-->
+							<table class="table" id="keyValueSearch" >
+								<thead></thead>
+								<tbody></tbody>
+							</table>
+							<div id="keyValuePage"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addDataModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加数据</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" class="flag">
+							<form method="POST" id="addData" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">查询的关键词</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入查询的关键词" class="form-control" name="queryKey" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">关键词对应结果</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入关键词对应结果" class="form-control" name="value" maxlength="250">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addData').submit();">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--//修改左侧table表格-->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editDataModalleft">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改数据</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editDataleft" class="form-horizontal">
+								<input type="hidden" name="id">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">修改的关键词</label>
+										<div class="col-md-7">
+											<input type="text"  class="form-control" name="queryKey" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">修改关键词对应的结果</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" name="value" maxlength="250">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" id="aa"class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editDataleft').submit();">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editDataModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改数据</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editData" class="form-horizontal">
+								<input type="hidden" name="id">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">查询的关键词</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入查询的关键词" class="form-control" name="queryKey" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">关键词对应结果</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入关键词对应结果" class="form-control" name="value" maxlength="250">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editData').submit();">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="confirmModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除数据</h4>
+						</div>
+						<div class="modal-body">
+							<p>删除该分类，该分类下的所有数据将一并删除，您确定删除吗？</p>
+							<input type="hidden" name="id">
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="delParentData()">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="econfirmModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editConfirmData" class="form-horizontal">
+								<input type="hidden" name="id">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">查询的关键词</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入查询的关键词" class="form-control" name="queryKey" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">关键词对应结果</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入关键词对应结果" class="form-control" name="value" maxlength="250">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="editBig()">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			keySarchList();
+		});
+		//添加数据
+		$('#addData').validate({
+			rules:{
+				queryKey:{
+					required:true
+				},
+				value:{
+					required:true
+				}
+			},
+			messages:{
+				queryKey:{
+					required:'查询的关键词不能为空！'
+				},
+				value:{
+					required:'关键词对应结果不能为空！'
+				}
+			},
+			submitHandler:addDataFun
+		});
+		//编辑左侧table数据
+		$('#editDataleft').validate({
+			rules:{
+				queryKey:{
+					required:true
+				},
+				value:{
+					required:true
+				}
+			},
+			messages:{
+				queryKey:{
+					required:'查询的关键词不能为空！'
+				},
+				value:{
+					required:'关键词对应结果不能为空！'
+				}
+			},
+			submitHandler:editleftDataFun
+		});
+		//编辑右侧table数据
+		$('#editData').validate({
+			rules:{
+				queryKey:{
+					required:true
+				},
+				value:{
+					required:true
+				}
+			},
+			messages:{
+				queryKey:{
+					required:'修改的关键词不能为空！'
+				},
+				value:{
+					required:'修改关键词对应的结果不能为空！'
+				}
+			},
+			submitHandler:editDataFun
+		});
+		//添加数据
+		$('#addBigData').click(function() {
+			$('#addDataModal').modal('show');
+			$('#addData input[name=id]').val('');
+			$('#addDataModal .flag').val(1);
+		});
+//
+		$('#keyWordsSearch').on('click', '.addSpan', function() {
+			$('#addDataModal').modal('show');
+			$('#addData input[name=id]').val($(this).parents('td').attr('rel'));
+			$('#addDataModal .flag').val(2);
+		});
+
+
+		function addDataFun() {
+			if($('#addDataModal .flag').val() == 1){
+				tempId = '';
+			}else{
+				var tempId = $('#addDataBtn').val();
+			}
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../CustomQuery/addNew'),
+				data:{
+					'queryKey':$('#addData [name="queryKey"]').val(),
+					'value':$('#addData [name="value"]').val(),
+					'id':tempId
+				},
+				success: function(data) {
+					if (data.status == 0) {
+						$('#addDataModal').modal('hide');
+						var flag = $('#addDataModal .flag').val();
+						if (flag == 1) { //大分类
+							keySarchList(1);
+						} else {
+							keySarchList(1, tempId);
+						}
+						$('#addData')[0].reset();
+						yunNoty(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//修改左侧table的接口
+		function editleftDataFun() {
+			var tempId = $('#addDataBtn').val();
+			$.ajax({
+				type: 'get',
+				dataType: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../CustomQuery/editQuery'),
+				data:{
+					'queryKey':$('#editDataleft [name="queryKey"]').val(),
+					'value':$('#editDataleft [name="value"]').val(),
+					'id':$('#editDataleft input[name=id]').val()
+				},
+				success: function(data) {
+					if (data.status == 0) {
+						$('#editDataModalleft').modal('hide');
+//						keySarchList(1, tempId);
+						yunNoty(data);
+						window.location.reload();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//修改数据提交表单
+		function editDataFun() {
+			var tempId = $('#addDataBtn').val();
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../CustomQuery/upDate'),
+				data:{
+					'queryKey':$('#editData [name="queryKey"]').val(),
+					'value':$('#editData [name="value"]').val(),
+					'id':$('#editData input[name=id]').val()
+				},
+				success: function(data) {
+					if (data.status == 0) {
+						$('#editDataModal').modal('hide');
+						keySarchList(1, tempId);
+						yunNoty(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		function editBig() {
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../CustomQuery/upDate'),
+				data: $('#editConfirmData').serialize(),
+				success: function(data) {
+					if (data.status == 0) {
+		            $('.someBig').each(function(ind, el){
+		              if($(el).attr('rel') == $('#econfirmModal input[name=id]').val()) {
+		                $(el).find('.someSmall').html($('#econfirmModal input[name=queryKey]').val() + '——' + $('#econfirmModal input[name=value]').val());
+		              }
+		            });
+					$('#econfirmModal').modal('hide');
+					yunNoty(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//导入数据
+		//上传
+		$(function() {
+			'use strict';
+			$('#exlfileupload').fileupload({
+				url: '../../CustomQuery/importQuery',
+				dataType: 'json',
+				change: function(e, data) {
+					var flag = true;
+					$.each(data.files,
+					function(index, file) {
+						var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+						if (str == "xls" || str == "xlsx") {
+							flag = true;
+						} else {
+							flag = false;
+							yunNotyError("请上传xls或xlsx格式的文件！");
+						}
+					});
+					return flag;
+				},
+				done: function(e, data) {
+					if (data.result.status == 0) {
+						yunNoty(data.result);
+						keySarchList(1);
+					} else {
+						yunNoty(data.result);
+					}
+				}
+			})
+		});
+
+		//查询数据列表
+		function keySarchList(pageNo, id) {
+			var url = '';
+			if (!pageNo) {
+				pageNo = 1;
+			}
+			if (typeof id == 'undefined' || id == '') {
+				url = '../../CustomQuery/list';
+			} else {
+				url = '../../CustomQuery/list?id=' + id + '&pageSize=' + 15 + '&pageNo=' + pageNo;
+				$('#rightDiv').show();
+			}
+			$('#keyValueSearch').tableAjaxLoader2(3);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI(url),
+				success: function(data) {
+					if (data.status == 0) {
+						if (id) {
+//							对右边table表格操作
+							if (data.List && data.List.length > 0) {
+								var temp = [];
+								for (var i = 0; i < data.List.length; i++) {
+									temp.push('<tr>');
+									temp.push('<td>' + data.List[i].QueryKey + '</td>');
+									temp.push('<td>' + data.List[i].Value + '</td>');
+									temp.push('<td><a href="javascript:;" title="编辑" class="m-edit"  rel="' + data.List[i].Id + '"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a href="javascript:;" title="删除" rel="' + data.List[i].Id + '" class="m-del"><i class="glyphicon glyphicon-trash"></i></a></td>');
+									temp.push('</tr>');
+								}
+								$('#keyValueSearch').find('tbody').html(temp.join(''));
+								var options = {
+									data: [data, 'List', 'total'],
+									currentPage: data.currentPage,
+									totalPages: data.totlePages,
+									alignment: 'right',
+									onPageClicked: function(event, originalEvent, type, page) {
+										keySarchList(page, id);
+									}
+								};
+								setPage('keyValuePage', options);
+								return;
+							}
+							$('#keyValueSearch').find('tbody').html('<tr><td colspan="3" style="text-align:center;">当前记录为空</td></tr>');
+							$('#keyValuePage').html('');
+						} else {
+							//对左边内容操作
+							if (data.list && data.list.length > 0) {
+								var temp = [];
+								for (var i = 0; i < data.list.length; i++) {
+									temp.push('<tr class="dataParent">');
+									temp.push('<td onclick="tdClick(this)" rel="' + data.list[i].Id + '" class="someBig"><a href="javascript:;"  rel="' + data.list[i].Id + '" class="someSmall">' + data.list[i].QueryKey + '——' + data.list[i].Value + '</a><p class="caozuo"><a class="ediSpan" title="修改" href="javascript:;" data-querykey="'+data.list[i].QueryKey+'" data-value="'+data.list[i].Value+'" style="display:none;"><i class="glyphicon glyphicon-pencil"></i></a><a class="delSpan" title="删除" href="javascript:;"><i class="glyphicon glyphicon-trash"></i></a>&nbsp;&nbsp;<a class="addSpan" href="javascript:;"><i class="glyphicon glyphicon-plus"></i></a>&nbsp;&nbsp;<a href="javascript:;" title="编辑" class="m-edit" ><i class="glyphicon glyphicon-pencil"></i></a></p></td>');
+									temp.push('</tr>');
+								}
+								$('#keyWordsSearch').find('tbody').html(temp.join(''));
+								//初始化数据
+								$('#keyWordsSearch tbody').children('tr').eq(0).find('td').trigger('click');
+							}else{
+								$('#keyWordsSearch').find('tbody').html('<tr><td colspan="3" style="text-align:center;">当前记录为空</td></tr>');
+								$('#keyValueSearch').find('thead').html('');
+								$('#keyValueSearch').find('tbody').html('<tr><td colspan="3" style="text-align:center;">当前记录为空</td></tr>');
+								$('#keyValuePage').html('');
+							}		
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//点击数据查询的结果
+		function tdClick(obj) {
+			$(obj).parent().addClass('clickBg').siblings().removeClass('clickBg');
+			var id = $(obj).attr('rel');
+			//将id 传给添加时候的隐藏表单
+			$('#addDataBtn').val(id);
+			var con = $(obj).find('a').html().split('——');
+			if (!con[0]) {
+				con[0] = '关键字';
+			}
+			if (!con[1]) {
+				con[1] = '关键字结果';
+			}
+			$('#keyValueSearch').find('thead').html('<tr><th>' + con[0] + '</th><th>' + con[1] + '</th><th>操作</th></tr>');
+			keySarchList(1, id);
+		}
+		//删除查询的数据
+		$('#keyValueSearch').on('click', '.m-del',
+		function() {
+			delById(this, '../../CustomQuery/delete',
+			function() {
+				keySarchList(1, $('#addDataBtn').val());
+			},
+			'keyValuePage');
+		})
+		//编辑查询的数据
+		$('#keyValueSearch').on('click', '.m-edit',
+		function() {
+			$('#editDataModal').modal('show');
+			var tepObj = $(this).parents('tr').children('td');
+			$('#editData input[name=id]').val($(this).attr('rel'));
+			$('#editData input[name=queryKey]').val(tepObj.eq(0).html());
+			$('#editData input[name=value]').val(tepObj.eq(1).html());
+		});
+		//编辑左侧表格的数据
+		$('#keyWordsSearch').on('click', '.m-edit',
+		function() {
+			$('#editDataModalleft').modal('show');
+			var spls = $(this).parents('tr').children('td').children('a').text();
+			var splsi = $(this).parents('tr').children('td');
+			var tepObj=spls.split('——');
+			$('#editDataleft input[name=id]').val($(splsi).attr('rel'));
+			$('#editDataleft input[name=queryKey]').val(tepObj[0]);
+			$('#editDataleft input[name=value]').val(tepObj[1]);
+		});
+		//删除大分类下的数据
+		$('#keyWordsSearch').on('click', '.delSpan',
+		function() {
+			$('#confirmModal').modal('show');
+			$('#confirmModal input[name=id]').val($(this).parents('td').attr('rel'));
+		});
+		//删除大分类下的数据
+		$('#keyWordsSearch').on('click', '.ediSpan',
+		function() {
+			$('#econfirmModal').modal('show');
+			$('#econfirmModal input[name=id]').val($(this).parents('td').attr('rel'));
+			$('#econfirmModal input[name=queryKey]').val($(this).data('querykey'));
+			$('#econfirmModal input[name=value]').val($(this).data('value'));
+		});
+		function delParentData() {
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../CustomQuery/delete?id=' + $('#confirmModal input[name=id]').val()),
+				success: function(data) {
+					if (data.status == 0) {
+						$('#confirmModal').modal('hide');
+						// keySarchList(1);
+						keySarchList();
+						yunNoty(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//导出exl
+		function downExecl() {
+			location.href = "../../CustomQuery/export?id=" + $('#addDataBtn').val();
+        }
+        // 进度条函数
+    loadingfn('#exlfileupload','../../CustomQuery/importQuery?mode=5','../../WordDocExcel/getStatus','keySarchList',10)
+	</script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>关联词列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">关联词列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">关联词</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="alert alert-warning fade in m-b-15">
+                            <strong>友情提示：</strong> 关联词作用于检索前词泛化阶段，关联词的相识度比同义词低的词，用于在检索中对原词进行扩展；相识度越高，设置的关联度越高。（1-100）。
+                            <span class="close" data-dismiss="alert">×</span>
+                        </div>
+            <a data-toggle="modal" class="btn btn-primary m-r-4" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加关联词</span>
+						</a><span class="btn btn-primary fileinput-button m-r-4">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>批量导入关联词</span>
+							<input type="file" accept=".xls,.xlsx" name="file" id="exlfileupload">
+						</span><span class="btn btn-primary m-r-4 fileUpLoadingSign" style="display:none;">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>上传中</span>
+						</span><a class="btn btn-primary" target="_blank" href="../../WordDocExcel/exportWords?mode=6">
+						  <i class="glyphicon glyphicon-download"></i>
+						  <span>导出Excel</span>
+						</a>
+						<a href="javascript:;" class="btn btn-default pull-right m-l-4" id="mul-del"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+						<a class="btn btn-default pull-right m-l-4" target="_blank" href="../../wordDocExcel/exportTemplate?mode=4">
+							<i class="glyphicon glyphicon-download"></i>
+							<span>下载模板</span>
+						</a>
+						<div class="input-group pull-right" style="width:250px;">
+							<input type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词">
+							<span class="search-addSrc input-group-btn" style="padding-bottom: 0;">
+								<button class="btn btn-primary" type="button">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+						<table class="table" id="wordweightList">
+							<thead>
+								<tr>
+									<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="wordweightList"/></th>
+									<th>关联词</th>
+									<th>关联度</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <div class="modal fade" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">添加关联词</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" novalidate="novalidate" id="addForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">关联词<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">关联度<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="相识度越高，关联度越高（1-100）" class="form-control" name="score" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="col-offset-md-3 col-md-7 control-label">每组关联词为两个，两个词之间用逗号","分隔</p>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="$('#addForm').submit()">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">修改关联词</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" novalidate="novalidate" id="save_form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">关联词<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">关联度<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="相识度越高，关联度越高（1-100）" class="form-control" name="score" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="col-offset-md-3 col-md-7 control-label">每组关联词为两个，两个词之间用逗号","分隔</p>
+                            </div>
+							<input type="hidden" name="id">
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="$('#save_form').submit()">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<!--script src="../common/js/icheck.js"></script-->
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/loadingMethod.js"></script>
+	<script type="text/javascript">
+		var listWordWeightData = null;
+		// var INTERVAL;
+		$(document).ready(function() {
+			App.init();
+			icheckBindInit();
+			$('#mul-del').on('click',function(){
+				$(this).adcCreator(function() {
+					selectDel('','../../WordDoc/deleteBatchWord',listWordWeight,'pageList')
+				});
+			});
+			//搜索
+			$('.search-addSrc').on('click', function() {
+				listWordWeight();
+			});
+			$('.search-input-addSrc').on('click', function() {
+				return false;
+			});
+
+			//ENTER
+			$(document).on('keyup', function(e) {
+				var $activeEl = $(document.activeElement);
+
+				if($activeEl.is('.search-input-addSrc') && (e.keyCode==13||e.keyCode==108)) {
+					$('.search-addSrc').trigger('click');
+				}
+			});
+			//列出表格
+			listWordWeight();
+			jQuery.validator.addMethod("isRelationWord", function(value, element) {
+				var flag = true;
+				var q1 = value.split(',');
+				var c1 = 0;
+				q1.forEach(function(el, i) {
+					if(el.length > 0) {
+						c1++;
+					}
+				})
+				if(q1.length>0 && c1>1) {
+					return true;
+				}
+				var q2 = value.split('，');
+				var c2 = 0;
+				q2.forEach(function(el, i) {
+					if(el.length > 0) {
+						c2++;
+					}
+				})
+				if(q2.length>0 && c2>1) {
+					return true;
+				}
+			  return false;
+			}, "关联词至少需要两个！");
+			$('#addForm').validate({
+				rules:{
+					word:{
+						required:true,
+						isRelationWord:true
+					},
+					score:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					word:{
+						required:"请输入关联词！"
+					},
+					score:{
+						required:"请输入关联度！",
+						number:"请输入数字！"
+					}
+				},
+				submitHandler: addWW
+			});
+			$('#save_form').validate({
+				rules:{
+					word:{
+						required:true,
+						isRelationWord:true
+					},
+					score:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					word:{
+						required:"请输入关联词！"
+					},
+					score:{
+						required:"请输入关联度！",
+						number:"请输入数字！"
+					}
+				},
+				submitHandler: editWW
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#addForm')[0].reset();
+			})
+		});
+
+		function listWordWeight(pageNo) {
+			//不勾选全选
+			//$('.select_rows').iCheck('uncheck');
+			if (!pageNo) pageNo = 1;
+			$('#wordweightList').tableAjaxLoader2(3);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../WordDoc/listRelationWord?pageSize=' + 10 + '&pageNum=' + pageNo + '&word=' + $('.search-input-addSrc').val()),
+				//data:encodeURI(tempcontent),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.list==undefined){
+							$('#wordweightList').find('tbody').html('<tr><td colspan=\"3\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+							return;
+						}
+						if (data.list.length > 0) {
+							listWordWeightData = data.list;
+							var html = "";
+							for (var i = 0; i < data.list.length; i++) {
+								html += "<tr id=\"list-tr-" + data.list[i].Id + "\">";
+								html += "<td><input type=\"checkbox\" name=\"ckb\" class=\"select_row\" value=\"" + data.list[i].Id + "\" /></td>";
+								html += "<td>";
+								html += data.list[i].Tyc == null ? '&nbsp;': data.list[i].Tyc;
+								html += "</td>";
+								html += "<td>";
+								html += data.list[i].Score == null ? '&nbsp;': data.list[i].Score;
+								html += "</td>";
+								html += "<td><a href='javascript:;' class='edit' title='编辑' rel='"+data.list[i].Id+"' style='cursor:pointer'><i class='glyphicon glyphicon-pencil'></i></a>&nbsp;&nbsp;<a class=\"m-del\" rel=\"" + data.list[i].Id + "\" style=\"cursor:pointer;\" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+							}
+							$('#wordweightList').find('tbody').html(html);
+							// 批量删除按钮
+							$("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+							$(".select_rows,.select_row").on("ifChanged",function(){
+							    if($(".select_row:checked").length>0){
+							    	$("#mul-del").removeClass("btn-default").addClass("btn-primary").attr("disabled",false)
+							    }else{
+							      	$("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+							    }
+							  })
+							//填充模态窗
+							$('.edit').click(function(){
+								var index = $(this).parents('tr').index();
+								$('#save_form input[name=word]').val(listWordWeightData[index].Tyc);
+								$('#save_form input[name=score]').val(listWordWeightData[index].Score);
+								$('#save_form input[name=id]').val(listWordWeightData[index].Id);
+								$('#editModal').modal('show');
+							});
+							//单个删除
+							$('.m-del').on('click',function(){
+								var self = this;
+	              $(self).adcCreator(function() {
+									delById(self,'../../WordDoc/deleteRelationWord',listWordWeight,'pageList');
+								});
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'list', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									listWordWeight(page);
+								}
+							};
+							setPage('pageList', options);
+						} else {
+							$('#wordweightList').find('tbody').html('<tr><td colspan=\"3\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		var flag_ww_add=false;
+		function addWW(){
+			if(flag_ww_add){
+				return;
+			}
+			flag_ww_add=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../WordDoc/addRelationWord'),
+				data:$("#addForm").serialize(),
+				success:
+				function(data){
+					flag_ww_add=false;
+					if(data.status===0){
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listCurrentPage(listWordWeight,'pageList');
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		// 清除表单错误信息
+		$('.modal').on('hidden.bs.modal', function () {
+				$('.modal input[type=text]').removeClass("text-error helper-font-small")
+				$('label[generated=true]').text('')
+		})
+
+
+		function editWW(){
+			saveModal('../../WordDoc/updateRelationWord','save_form','editModal',listWordWeight,'pageList');
+		}
+
+		// 进度条函数
+    	loadingfn('#exlfileupload','../../WordDocExcel/importFile?mode=6','../../WordDocExcel/getStatus','listWordWeight',400)
+	</script>
+</body>
+</html>

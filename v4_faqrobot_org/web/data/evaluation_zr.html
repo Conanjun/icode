@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>会话满意度统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">会话满意度统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">会话满意度统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计客户对服务满意或不满意的次数"
+                   class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        会话满意度统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/Evaluation/doShow"/>
+                    <!--taskId:418  自如定制报表 如果为自如报表，则增加字段customerType-->
+                    <input type="hidden" id="evalZR" value="1">
+                    <div class="text-right">
+                        <div class="btn-group m-r-4" style="margin-bottom:10px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="DataSource" style="display:inline-block;" class="m-r-4">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="alert alert-warning fade in m-t-15">
+                        <strong>提示: </strong>
+                        会话满意度统计可显示系统所有相关数据。
+                        <span data-dismiss="alert" class="close">×</span>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table" style="text-align: left;">
+                        <thead>
+                        <tr>
+                            <!--taskId:418  自如定制报表-->
+                            <!--说明 ：增加为5个服务评价等级-->
+                            <th>日期</th>
+                            <th>交互平台&nbsp;<i data-toggle="tooltip" data-placement="right" title="数据来源渠道"
+                                             class="fa fa-question-circle"></i></th>
+                            <th>非常不满意&nbsp;<i data-toggle="tooltip" data-placement="right" title="客户对服务不满意的总次数"
+                                              class="fa fa-question-circle"></i></th>
+                            <th>不满意&nbsp;<i data-toggle="tooltip" data-placement="right" title="客户对服务不满意的总次数"
+                                            class="fa fa-question-circle"></i></th>
+                            <th>一般&nbsp;<i data-toggle="tooltip" data-placement="right" title="客户对服务一般满意的总次数"
+                                           class="fa fa-question-circle"></i></th>
+                            <th>满意&nbsp;<i data-toggle="tooltip" data-placement="right" title="客户对服务满意的总次数"
+                                            class="fa fa-question-circle"></i></th>
+                            <th>非常满意&nbsp;<i data-toggle="tooltip" data-placement="right" title="客户对服务非常满意的总次数"
+                                             class="fa fa-question-circle"></i></th>
+
+
+
+
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script type="text/javascript">
+    /*taskId:418  自如定制报表
+     * 说明 ：显示统计图
+     * */
+    function showData (json) {
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var len = json.List.length
+        /*taskId:  自如定制报表
+         * 说明 ：satAList- satEList存储5个满意度等级的数据
+         * */
+        var satAList = [];
+        var satBList = [];
+        var satCList = [];
+        var satDList = [];
+        var satEList = [];
+        var dateList = [];
+        var value = json.IntervalDays;
+
+
+        /*taskId:418 自如定制报表
+         * 说明 ：一个月以内数据为空，横坐标显示选择的日期范围（按日显示），数据自动填充0
+         * */
+        function EmptyLessMonth(){
+            //获取起止时间间隔
+            var startT=new Date($('[name=startT]').val());
+            var endT=new Date($('[name=endT]').val());
+            var start=startT.getTime();//开始时间转为毫秒数
+            var oneDay=24 * 60 * 60 * 1000;//一天
+            //获得间隔时间
+            var during=parseInt((endT-startT)/oneDay);
+            for(var i=0;i<=during;i++){
+                var day=new Date(start+oneDay*i);
+                day=day.toLocaleDateString();
+                dateList.push(day);
+
+                satAList.push(0);
+                satBList.push(0);
+                satCList.push(0);
+                satDList.push(0);
+                satEList.push(0);
+            }
+        }
+
+        /*taskId:418  自如定制报表
+         * 说明 ：多于一个月数据为空，横坐标显示选择的日期范围（按月显示），数据自动填充0
+         * */
+        function EmpthMonth(){
+            var startT=new Date($('[name=startT]').val()),
+                    endT=new Date($('[name=endT]').val()),
+                    endMonth=endT.getMonth(),//结束的月份
+            //开始时间的年份和月份
+                    year=startT.getFullYear(),
+                    nextMonth=startT.getMonth(),
+                    date=year+'-'+(nextMonth+1);
+            //将开始时间存入时间数组
+            dateList.push(date);
+            satAList.push(0);
+            satBList.push(0);
+            satCList.push(0);
+            satDList.push(0);
+            satEList.push(0);
+            //从开始时间到结束结束时间的月份存入时间数组
+            while(nextMonth!=endMonth){
+                var start=new Date(startT.setMonth(startT.getMonth()+1));
+                nextMonth=start.getMonth();
+                year=start.getFullYear();
+                date=year+'-'+(nextMonth+1);
+                dateList.push(date);
+                satAList.push(0);
+                satBList.push(0);
+                satCList.push(0);
+                satDList.push(0);
+                satEList.push(0);
+            };
+        }
+
+        if (len == 0) {
+            if(value<=1){
+                dateList.push('00:00','02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00');
+                satAList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0);
+                satBList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0);
+                satCList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0);
+                satDList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0);
+                satEList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0);
+            }else if(value<=30){
+                EmptyLessMonth();
+            }else{
+                EmpthMonth();
+            }
+        }
+
+        /*taskId:418  自如定制报表
+         * 说明 ：获取满意度数据，1天以内按小时显示，1月以内按天显示，其余按月显示
+         * 字段：非常满意Level_VeryGood 满意Level_Good  一般Level_Normal 不满意Level_Bad 非常不满意Level_VeryBad
+         * */
+        if (len > 0) {
+            if (value >3) {
+                for (var i = 0; i < len; i++) {
+                    satAList.push(json.List[i].Level_VeryGood);
+                    satBList.push(json.List[i].Level_Good);
+                    satCList.push(json.List[i].Level_Normal);
+                    satDList.push(json.List[i].Level_Bad);
+                    satEList.push(json.List[i].Level_VeryBad);
+
+                    dateList.push(json.List[i].Day)
+                }
+            } else {
+                for (var i = 0; i < len; i++) {
+                    satAList.push(json.List[i].Level_VeryGood);
+                    satBList.push(json.List[i].Level_Good);
+                    satCList.push(json.List[i].Level_Normal);
+                    satDList.push(json.List[i].Level_Bad);
+                    satEList.push(json.List[i].Level_VeryBad);
+
+                    var date = ''
+                    if (json.List[i].Hour < 10) {
+                        date = '0' + json.List[i].Hour + ':00'
+                    } else {
+                        date = json.List[i].Hour + ':00'
+                    }
+                    dateList.push(date)
+                }
+            }
+        }
+        // 初始 option1
+        option1 = {
+            title: {
+                text: '会话满意度统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['非常满意','满意','一般','不满意','非常不满意']
+            },
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: dateList,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 45,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value} 次'
+                }
+            }],
+            series: [{
+                name: '非常满意',
+                type: 'line',
+                data: satAList
+            },
+                {
+                    name: '满意',
+                    type: 'line',
+                    data: satBList
+                },
+                {
+                    name: '一般',
+                    type: 'line',
+                    data: satCList
+                },
+                {
+                    name: '不满意',
+                    type: 'line',
+                    data: satDList
+                },
+                {
+                    name: '非常不满意',
+                    type: 'line',
+                    data: satEList
+                }]
+        }
+
+        myChart1.hideLoading()
+        myChart1.setOption(option1)
+        window.onresize = myChart1.resize
+    }
+
+    /*taskId:418  自如定制报表
+     * 说明 ：显示统计表
+     * */
+    function showtable (json) {
+        var table = '';
+        var Nlen = json.List.length;
+        var value = json.IntervalDays;
+        if (Nlen == 0) {
+            table += '<tr >'
+            table += '<td colspan=7 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+        }
+        if (value > 3) {
+            for (var t = Nlen - 1; t > -1; t--) {
+                /**日期降序排列*/
+                table += '<tr >'
+                table += '<td class="tab_tr_bg">' + json.List[t].Day + '</td>'
+                table += '<td class="tab_tr_bg">' + getSourceName(json.List[t].SourceId) + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_VeryBad + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Bad + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Normal + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Good + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_VeryGood + '</td>'
+                table += '</tr>'
+            }
+        } else {
+            for (var t = Nlen - 1; t > -1; t--) {
+                /**日期降序排列*/
+                var date = ''
+                if (json.List[t].Hour < 10) {
+                    date = json.List[t].Day + ' 0' + json.List[t].Hour + ':00'
+                } else {
+                    date = json.List[t].Day + ' ' + json.List[t].Hour + ':00'
+                }
+                table += '<tr >'
+                table += '<td class="tab_tr_bg">' + date + '</td>'
+                table += '<td class="tab_tr_bg">' + getSourceName(json.List[t].SourceId) + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_VeryBad + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Bad + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Normal + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_Good + '</td>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Level_VeryGood + '</td>'
+                table += '</tr>'
+            }
+        }
+
+        $('#visitDataTable').html(table)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        showData(json)
+        showtable(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        //列出图表
+        queryAll()
+    })
+</script>
+</body>
+</html>

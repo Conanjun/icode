@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta name="keywords" content="FAQ客服机器人,微信智能客服,智能客服机器人,智能问答,微信机器人,智能机器人,FAQ机器人,FAQ Robot,机器客服,智能问答机器人">
+		<meta name="description" content="中国领先的智能问答机器人系统，为企业、政府机构网站、微信、APP等提供先进的智能客服机器人云服务与智能问答系统解决方案。">
+		<link rel="shortcut icon" href="assets/login/images/logo_min.png" type="/image/x-icon">
+		<title>注册</title>
+		<link href="assets/login/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="assets/login/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+		<link href="assets/login/css/common.css" rel="stylesheet">
+		<link href="assets/login/css/register.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="header">
+			<div class="navbar navbar-custom navbar-white">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img alt="Brand" src="assets/login/images/logo.png">
+						</a>
+					</div>
+					<div class="collapse navbar-collapse" id="navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="under"><a href="http://www.iyunwen.com/index.html">首页</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/chanpin.html">产品</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/cases.html">客户案例</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/about.html">关于我们</a></li>
+							<!--li class="under"><a href="#">云问之家</a></li-->
+							<li><button type="button" class="btn btn-primary navbar-btn m-l-5" onclick="location.href='login.html'">登录</button></li>
+							<li><button type="button" class="btn btn-white navbar-btn m-l-5" onclick="location.href='register.html'">注册</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="first-wrapper">
+			<div class="page-header-bg-image"></div>
+		</div>
+		<div class="headnav">
+			<div class="container">
+				<div class="row">
+					<div class="l0"></div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="formC">
+		<div class="form">
+			<!-- 右上角点击弹出二维码-->
+			<div class="topRight">
+				<img src="assets/login/images/rightTopIcon2.png"/>
+			</div>
+			<!-- 二维码出现-->
+			<div class="Scan">
+				<div class="computerIcon">
+					<img src="assets/login/images/login.png"/>
+				</div>
+				<h2 class="word1">钉钉版注册</h2>
+				<div id="QR_code" class="center">
+					<img src="assets/login/images/QR_Code.png"/>
+				</div>
+				<h5 class="word2">请使用钉钉扫描二维码注册</h5>
+				<div class="click">
+					<span>还没有开通钉钉版？</span><a href="https://h5.dingtalk.com/orgreg/isvIndex.html?qrCode=E7DB6709D3328D8DA05D9A5D9BC9D33CE5137E585AFC0E7FC3CBBE05806CB19DD01483DB34FA940949DB5E42A824C6CC3842286A5958D662B7C5296ADAF855CF7AF1FD0530BEB3F776FDA4EB6E3C5A0B96BB1DBF549ED26544D04C8E8370AB1D069B1E301FAEC198&signature=0572a3c608234cb40be86727ba7ec3df435a4423">戳这里开通</a>
+				</div>
+			</div>
+			<!-- 二维码结束-->
+			<div class="row" style="text-align: center;">
+					<div class="REG_circle REG_circle_1 BG_Blue">
+						<div class="icon"></div>
+						<div class="REG_word REG_word_1 Color_Blue">创建用户</div>
+					</div>
+					<div class="REG_circle REG_circle_2 BG_Grey">
+						<div class="icon"></div>
+						<div class="REG_word REG_word_2 Color_Grey">注册信息</div>
+					</div>
+					<div class="REG_circle REG_circle_3 BG_Grey">
+						<div class="icon"></div>
+						<div class="REG_word REG_word_3 Color_Grey">成功</div>
+					</div>
+			</div>
+			<form id="register">
+				<div class="row REG_container3">
+					<div class="col-md-6" style="position:relative;">
+						<img src="assets/login/images/s4.png" alt="step1">
+						<p class="s1 Color_Blue">第一步，填写用户名。字母或数字，记得不可以是中文哦。</p>
+						<p class="s1 Color_Blue" style="display:none;">第二步，填写密码。长度至少5位，需包含大小写字母和数字。</p>
+						<p class="s1 Color_Blue" style="display:none;">第三步，请再次填写密码。</p>
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="userName" id="userName" class="form-control" maxlength="15" placeholder="请输入用户名" autofocus="">
+						<input type="password" name="passWord" id="passWord" class="form-control" maxlength="25" placeholder="请输入密码">
+						<input type="password" name="passWordagain" id="passWordagain" class="form-control" maxlength="25" placeholder="请再次输入密码">
+            <div>
+						<input type="checkbox" name="agreement" id="agreement">
+						<label for="agreement" style="cursor:pointer; font-size:12px;">同意并接受<a href="http://v3.faqrobot.org/law.html" target="_blank">《云问科技服务条款》</a></label>
+            </div>
+						<button type="button" class="next btn btn-primary btn-block disabled" style="background-color:#aaa;border-color:#aaa;" id="gogogo">下一步</button>
+					</div>
+				</div>
+				<div class="row REG_container4" style="display:none;">
+					<div class="col-md-6" style="position:relative;">
+						<img src="assets/login/images/s4.png" alt="step2">
+						<p class="s2 Color_Blue">在这里输入主人您的常用邮箱哦。</p>
+						<p class="s2 Color_Blue" style="display:none;">在这里输入主人您的公司名称哦。</p>
+						<p class="s2 Color_Blue" style="display:none;">在这里输入主人您的手机号并点击发送验证码按钮哦。</p>
+						<p class="s2 Color_Blue" style="display:none;">在这里输入主人您的收到的短信验证码哦。</p>
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="email" id="email" class="form-control" placeholder="请输入邮箱">
+						<input type="text" name="company" id="company" class="form-control" placeholder="请输入公司名称">
+						<input type="text" name="telNum" id="telNum" class="form-control" maxlength="25" placeholder="请输入手机号">
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-md-6">
+								<input type="text" name="telVerifyCode" id="telVerifyCode" class="form-control" maxlength="6" placeholder="手机验证码" style="margin:0;">
+							</div>
+							<div class="col-md-6">
+								<button class="btn btn-primary btn-block getcode" type="button" id="getcode_by_Tel" onclick="getTelCode(this)" style="margin-top:0;">获取验证码</button>
+							</div>
+						</div>
+						<button type="button" class="next btn btn-primary btn-block" onclick="$('#register').submit()">完成</button>
+						<button type="button" class="REGing" style="display:none;">注册中</button>
+            <div style="text-align: right;margin-top: 10px;"><span onclick="clickOne();" style="color:#00A0E9;cursor:pointer;">返回上一页</span></div>
+					</div>
+				</div>
+			</form>
+			<form id="loginForm">
+				<div class="row REG_container5" style="display:none;">
+					<div class="col-md-6" style="position:relative;">
+						<img src="./assets/login/images/s3.png" alt="step3">
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="un" id="userNamel" class="form-control" maxlength="60" placeholder="请输入用户名">
+						<input type="password" name="pwd" id="passWordl" class="form-control" maxlength="25" placeholder="请输入密码">
+						<input type="text" name="code" id="code" class="form-control hide" maxlength="4" placeholder="请输入图形验证码">
+						<img class="vcodeImg hide" src="./ImageCode" >
+						<div class="checkbox">
+							<label for="autoLogin" class="forChk">
+								<input id="autoLogin" type="checkbox" name="saveFlag" value="saveFlag" class="chk" checked=""> 七天内自动登录
+							</label>
+						</div>
+						<button class="btn btn-primary btn-block" type="button" onclick="$('#loginForm').submit()">登录</button>
+						<div class="plus">
+							<a href="register.html" style="float: left; text-decoration: none; color: #1F98FF;">注册新账号</a>
+							<a href="retrievePwd.html" style="float: right; text-decoration: none; color: #1F98FF;">忘记密码?</a>
+						</div>
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>关于我们</h5>
+							<p>南京云问网络技术有限公司是目前中国领先的互联网人工智能技术服务提供商之一。</p>
+							<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=630406961&amp;site=qq&amp;menu=yes" class="btn btn-default" target="_blank">在线客服</a>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>联系我们</h5>
+							<ul>
+								<li><p>南京市江宁区</p></li>
+								<li><p><i class="glyphicon glyphicon-home"></i>胜利路89号紫金研发创业中心3号楼4层</p></li>
+								<li><p><i class="glyphicon glyphicon-envelope"></i>market@FaqRobot.org</p></li>
+								<li><p><i class="glyphicon glyphicon-earphone"></i>025-52208363</p></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>付费版本</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">商用版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">高级版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">专业版本</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>帮助中心</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">新手引入</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">接入网站</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">对接微信</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<div class="yunwen p-t-40 p-b-40">
+					Copyright © 2012 - 2016 南京云问网络技术有限公司 版权所有<br>
+					<a href="http://www.miitbeian.gov.cn" target="_blank">网站备案编号：苏ICP备10216663号</a>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="assets/login/jquery/jquery.min.js"></script>
+		<script>
+			$('.topRight').click(function(){
+				$('.Scan').css({'display':'block','z-index':'99'})
+			})
+			$('.computerIcon').click(function(){
+				$('.Scan').css({'display':'none','z-index':'0'})
+			})
+		</script>
+		<script type="text/javascript" src="assets/login/jquery/jquery.placeholder.min.js"></script>
+		<script type="text/javascript" src="assets/login/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.validate.js"></script>
+		<script type="text/javascript" src="assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+		<script type="text/javascript" src="assets/plugins/gritter/js/jquery.gritter.js"></script>
+		<script type="text/javascript" src="web/common/js/security.js"></script>
+		<script type="text/javascript" src="web/common/js/customMethod.js"></script>
+		<!--[if lt IE 9]>
+			<script src="assets/crossbrowserjs/html5shiv.js"></script>
+			<script src="assets/crossbrowserjs/respond.min.js"></script>
+			<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="assets/login/js/register.js"></script>
+	</body>
+</html>

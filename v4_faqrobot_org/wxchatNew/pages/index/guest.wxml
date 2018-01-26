@@ -1,0 +1,12 @@
+<template name="guestsMsg">
+  <view class="MN_ask">
+    <view class="MN_khName">我</view>
+    <view class="MN_khCtn">
+      <image src="{{img}}" class="MN_khImg"></image>
+      <view class="MN_khTriangle1 MN_triangle"></view>
+      <view class="MN_khTriangle2 MN_triangle"></view>
+      <view>{{msg}}</view>
+    </view>
+    <view class="MN_khtime">{{time}}</view>
+  </view>
+</template>

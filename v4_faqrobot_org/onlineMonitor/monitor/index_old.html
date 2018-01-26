@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>人工监控</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/webuploader.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/jBox.css">
+    <link rel="stylesheet" href="css/introjs.min.css">
+    <link rel="stylesheet" href="css/scrollbar.css">
+    <link rel="stylesheet" href="css/face.css">
+    <link rel="stylesheet" href="css/style.css?dev=3">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery-migrate-1.2.1.js"></script>
+    <script src="js/webuploader.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/intro.min.js"></script>
+    <script src="js/jBox.min.js"></script>
+    <script src="js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="js/niuniucapture.js"></script>
+    <script type="text/javascript" src="js/jquery.json-2.3.min.js"></script>
+    <script src="js/base.js?dev=3"></script>
+    <script src="js/scrollbar.js?dev=3"></script>
+    <script src="js/face.js?dev=3"></script>
+    <script src="js/main.js?dev=3"></script>
+</head>
+
+<body>
+<!-- 进度条 begin -->
+<div class="loading">
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<!-- 进度条 end -->
+<div class="cosSrcCtn">
+    <div class="cosPicCtn">
+        <i>
+        </i>
+        <div class="cosPicBtn">上传图片</div></div>
+    <div class="cosExlCtn">
+        <i>
+        </i>
+        <div class="cosExlBtn">上传文件</div></div>
+</div>
+<!--jplayer开始-->
+<div id="div" class="jp-jplayer"></div>
+<div id="jp_container_1">
+    <button class="jp-play">播放</button>
+    <button class="jp-stop">停止</button></div>
+<!--jplayer结束-->
+<!--新手引导开始-->
+<div class="helpTip"></div>
+<!--新手引导结束-->
+<!--排序菜单jBox开始-->
+<div class="sortTip">
+    <p class="defaultSort sortFocus">默认排序</p>
+    <p class="stateSort">状态排序</p>
+    <p class="msgSort">消息排序</p></div>
+<div class="body">
+    <!--左边开始-->
+    <div class="leftCtn">
+        <div class="leftHeadCtn">
+            <div class="itemCtn">
+                <div class="item">
+                    <div class="imgCtn">
+                        <a class="webSite" href="" target="_blank">
+                            <img class="logoPic" src="images/person.png"></a>
+                    </div>
+                    <div class="custMsgCtn">
+                        <p class="custName">访客</p>
+                        <p class="custQue">等待用户输入...</p></div>
+                    <span class="queNum" style="display: none;"></span>
+                </div>
+            </div>
+            <div style="display: none;">
+                <span>当前排队人数</span>
+                <span class="queueNum"></span>
+            </div>
+        </div>
+        <div class="leftBodyCtn">
+            <!--菜单栏开始-->
+            <div class="items">
+                <div class="itemTitle itemTitleFocus" style="display: none;">
+                    <i class="icon1"></i>
+                    <span>进行中对话</span></div>
+                <!--右边开始-->
+                <div class="rightCtn">
+                    <div class="rightHeadCtn" style="display: none;">
+                        <div class="peoCtn">
+                            <i class="peoIcon"></i>
+                            <span>在线用户</span>
+                            <i class="peoTri"></i>
+                        </div>
+                    </div>
+                    <div class="rightBodyCtn">
+                        <div class="groupCtn1 groupCtn itemCtn" sortIndex="1">
+                            <div class="onlineMask" flashnum="0"></div>
+                            <div class="item">
+                                <div class="queTipLeft">
+                                    <div class="imgCtn">
+                                        <i class="groupTri groupTriToB"></i>
+                                    </div>
+                                    <div class="userTxtCtn">智能聊天</div>
+                                </div>
+                                <div class="queTipRight">
+                                    <div class="queNum">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="groupCtn2 groupCtn itemCtn" sortIndex="2">
+                            <div class="onlineMask" flashnum="0"></div>
+                            <div class="item">
+                                <div class="queTipLeft">
+                                    <div class="imgCtn">
+                                        <i class="groupTri groupTriToB"></i>
+                                    </div>
+                                    <div class="userTxtCtn">被监控　</div>
+                                </div>
+                                <div class="queTipRight">
+                                    <div class="queNum">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="groupCtn3 groupCtn itemCtn" sortIndex="3">
+                            <div class="onlineMask" flashnum="0"></div>
+                            <div class="item">
+                                <div class="queTipLeft">
+                                    <div class="imgCtn">
+                                        <i class="groupTri groupTriToB"></i>
+                                    </div>
+                                    <div class="userTxtCtn">被接管　</div>
+                                </div>
+                                <div class="queTipRight">
+                                    <div class="queNum">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="groupCtn4 groupCtn itemCtn" sortIndex="4">
+                            <div class="onlineMask" flashnum="0"></div>
+                            <div class="item">
+                                <div class="queTipLeft">
+                                    <div class="imgCtn">
+                                        <i class="groupTri groupTriToB"></i>
+                                    </div>
+                                    <div class="userTxtCtn">已挂起　</div>
+                                </div>
+                                <div class="queTipRight">
+                                    <div class="queNum">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右边结束-->
+                <!-- <div class="onlineTalk itemBody"></div> -->
+            </div>
+            <!--菜单栏结束--></div>
+    </div>
+    <!--左边结束-->
+    <!--中间开始-->
+    <div class="midCtn">
+        <div class="midHeadCtn">
+            <div class="midHeadLeftCtn" style="display: none;">
+                <i class="leftClose" isClose="0"></i>
+                <span>在线监控</span></div>
+            <div class="midHeadRightCtn">
+                <div class="longDiv"></div>
+            </div>
+        </div>
+        <div class="midBodyCtn">
+            <div class="midBodyLeftCtn"></div>
+            <div class="midBodyRightCtn">
+                <span class="toDir toRight"></span>
+                <div class="knowHeadCtn">
+                    <span class="knowToolBtn knowBtnFocus">知识库</span>
+                    <span class="quickAskBtn">快捷回复</span>
+                    <span class="userMsgBtn">访客信息</span></div>
+                <div class="knowBodyCtn">
+                    <div class="queShowCtn">
+                        <div class="knowToolCtn">
+                            <p class="knowToolTxt">手动搜索</p>
+                            <div class="knowToolHead">
+                                <input type="text" placeholder="输入要搜索的问题">
+                                <i class="search"></i>
+                            </div>
+                            <div class="knowToolBody"></div>
+                            <p class="knowToolTxt">智能回复</p>
+                            <div class="knowFootCtn">
+                                <!---------->
+                                <div class="queShowCtn">
+                                    <div class="knowToolCtn">
+                                        <div class="knowToolBody">
+                                            <!-- <div class="noResult">当前无结果</div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quickAskCtn">
+                            <div class="quickWordCtn"></div>
+                            <div class="addAskCtn">
+                                <p>新增回复</p>
+                            </div>
+                            <div class="editAskCtn">
+                                <textarea class="editAskArea" placeholder="输入要添加的回复"></textarea>
+                                <div class="editBtnCtn">
+                                    <span class="editCancle">取消</span>
+                                    <span class="editSave">保存</span></div>
+                            </div>
+                        </div>
+                        <div class="userMsgCtn">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--中间结束--></div>
+</body>
+
+</html>

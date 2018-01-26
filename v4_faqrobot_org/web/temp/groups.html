@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+	<title>微信群列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="../common/css/bootstrap-switch.min.css" rel="stylesheet">
+	<style type="text/css">
+		.dropdown-toggle{
+			background-color: white;
+		}
+		.dropdown-toggle:focus{
+			background-color: white!important;
+		}
+		.btn-primary{
+			width: 99px;
+			background-color: #3399FF!important;
+		}
+		.dropdown{
+			float: right;
+		}
+		.dropdown-menu{
+			min-width: 97px!important;
+		}
+		.dropdown-menu:hover{
+			min-width: 97px!important;
+			background-color: #EDF0F5;
+		}
+		.dropdown{
+			background-color: white!important;
+			float: right;
+		    display: none;
+		}
+		#check{
+			float: right;
+    		margin-bottom: 10px;
+    		overflow: hidden;
+		}
+		#checkTxt{
+		    float: left;
+		    margin-top: 6px;
+		    font-weight: bold;
+		    margin-right: 7px;
+		    font-size: 15px;
+		}
+		#chek{
+			float: left;
+		}
+		.see{
+			cursor: pointer;
+		}
+		#confirmEmailBtn{
+			width: 55px;
+		}
+		#confirmEmail{
+			font-size: 18px;
+    		text-align: center;
+		}
+	</style>
+  </head>
+  
+ <body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">微信群列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">微信群列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary pull-left m-r-4" href="../../web/temp/addCrux.html">
+							<span>关键词列表</span>
+						</a>
+						<a data-toggle="modal" class="btn btn-primary pull-left m-r-4" href="../../web/temp/addEmail.html">
+							<span>邮箱列表</span>
+						</a>
+						<a data-toggle="modal" class="btn btn-primary" id="update">
+							<span>刷新群列表</span>
+						</a>
+						
+						<a data-toggle="modal" class="btn btn-primary" id="send">
+							<span>发送邮件</span>
+						</a>
+						
+						<a data-toggle="modal" class="btn btn-primary" id="clearLogin" style="width: 110px;">
+							<span>清除登录信息  </span>
+						</a>
+						
+						<div class="dropdown">
+					    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+								faqrobot
+					        <span class="caret"></span>
+					    </button>
+					    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					        <li role="presentation">
+					            <a role="menuitem" tabindex="-1" href="#">退出</a>
+					    </ul>
+						</div>
+						
+						<div id="check">
+						<div id="checkTxt">监控开关</div>
+							<div id="chek">
+								<!-- <input type="checkbox" data-render="switchery" data-theme="blue" id="Initialization1" /> -->
+								<div class="switch switch-large">
+								    <input type="checkbox" checked />
+								</div>
+							</div>
+						</div>
+						
+						<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                <h4 class="modal-title" id="myModalLabel">确认发送</h4>
+						            </div>
+						            <div class="modal-body">
+						            	<div id="confirmEmail">是否确认发送邮件？</div>
+						            </div>
+						            <div class="modal-footer">
+						            	<button type="button" class="btn btn-primary" id="confirmEmailBtn">确定</button>
+						                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						            </div>
+						        </div><!-- /.modal-content -->
+						    </div><!-- /.modal -->
+						</div>				
+						
+						<table class="table" id="weiXinTabList">
+							<thead>
+								<tr>
+									<th style="width:33.3%;">微信群名</th>
+									<th style="width:33.3%;">成员人数</th>
+									<th style="width:33.3%;text-align: right;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="weiXinbody">
+							</tbody>
+						</table>
+						<div id="groupspageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/bootstrap-switch.min.js"></script>
+	<script type="text/javascript">
+		
+		$(document).ready(function() {
+			App.init();
+			Initialization();
+			setTimer();
+		});
+		
+		function weiXinList(){    //生成微信群列表
+			$.ajax({
+				type:"post",
+				url:"../../WeChatRobot/getContact",
+				async:true,
+				cache:true,
+				success:function(json){
+					if(json.status==0){
+							var renderTo=$("#weiXinbody");
+							$("#weiXinbody").html("");
+							var html="";
+							if(json.groups!=undefined){
+									for(var i in json.groups){
+									var tr=$("<tr></tr>").appendTo(renderTo);
+									var td=$("<td></td>").text(i).appendTo(tr);
+									var td=$("<td></td>").text(json.groups[i].length).appendTo(tr);
+									var td1=$("<td style='text-align: right;'></td>").appendTo(tr);
+									var see=$("<i class='timeTip formChildren glyphicon glyphicon-folder-close see' data-toggle='tooltip' data-placement='top' title='查看监控内容'></i>").appendTo(td1);
+									see.data("groupsName",i);
+									$(see).click(function(){   //查看监控
+										var groupsName=$(this).data("groupsName");
+										location.href = "/web/temp/weiXinMonitor.html?groupsName="+groupsName;
+										
+										/* document.cookie="groupsName"+groupsName; */
+									});
+								}
+							}
+							else if(json.groups==undefined){
+								html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;通讯录中无群聊！</td></tr>';
+				            	$('#weiXinbody').empty().append(html);
+							}
+							update();
+					}
+				},
+				error:function(data){
+				}
+			});
+			
+		}
+		$("#clearLogin").click(function(){
+			$.post('../../WechatRobot/cleanLoginInfo',function(data){
+				if(data.status==0){
+					yunNoty(data);
+					setTimeout('location.href = "../../web/temp/weiXinLogin.html"',2000);
+				}else{
+					yunNotyError('清除失败！');
+				}
+			})
+		});
+		//监测登录状态
+		function setTimer(){
+			var timer = setInterval(function(){
+				if(window.top.$('.tab-panel.active').find('iframe').attr('src').indexOf('weiXinLogin')>-1){
+					exitWx();
+				}else{
+					clearInterval(timer);
+				}
+			},10000);
+		}
+		
+		//判断是否手动退出微信
+		function exitWx(){
+			$.ajax({
+				url: '../../WechatRobot/getLoginStatus',
+				type: 'post',
+				dataType: 'json',
+				async: true,
+				cache: true,
+				success: function(data){
+					if(data.loginStatus==false){
+						setTimeout('location.href = "../../web/temp/weiXinLogin.html"',1000);
+					}
+				}
+			});
+		};
+		
+		$("#confirmEmailBtn").click(function(){    //确认发送邮件按钮
+			var groupsName=$(this).data("groupsName");
+			$("#confirmEmail").text("正在发送请稍候......");
+			$.post("../../TimeTask/doWxGroupTask",{
+				},function(json){
+					if(json.status==0){
+						yunNoty(json);
+						$("#confirmEmail").text("发送成功！");
+						$("#confirmModal").modal("hide");
+					}
+					else{
+						$("#confirmEmail").text("发送失败！请重新发送......");
+						yunNotyError(json.message);
+					}
+				});
+		});
+		
+		$("#confirmModal").on('show.bs.modal', function () {
+			$("#confirmEmail").text("是否确认发送邮件？");
+		});
+		
+		function monitor(){      //监控
+				$.post("../../WeChatRobot/monitor",function(json){
+					if(json.status==0){
+						yunNoty(json);
+						weiXinList();
+						$("#send").click(function(){  //发送邮件
+							$("#confirmModal").modal("show");
+						});
+					}
+					else {
+						yunNotyError("开启监听失败！");
+						$("#send").unbind("click");
+					}
+				});
+			}
+		
+		function update(){   //刷新按钮事件
+			$("#update").unbind().click(function(){
+				if($("input[type='checkbox']").prop("checked")){
+						$("#weiXinbody").html("");
+						weiXinList();
+						}
+					});
+				}
+		
+		function Initialization(){   //初始化
+			$.post("../../WechatRobot/init",function(json){
+				if(json.status==0){
+					yunNoty(json);
+					$.post("../../WeChatRobot/monitorIsOpen",function(json){  //查看监控状态
+						if(json.isOpen){
+							$(".switch input[type='checkbox']").bootstrapSwitch('state', true, true);
+							weiXinList();
+							checkbox();
+							$("#send").click(function(){  //发送邮件
+								$("#confirmModal").modal("show");
+							});
+						}
+						else {
+							$(".switch input[type='checkbox']").bootstrapSwitch('state', false, false);
+							checkbox();
+							$("#send").unbind("click");
+						}
+					});
+				}
+				else{
+					yunNotyError("初始化失败！请重新登录！");
+					setTimeout(function(){
+						window.location.href = "../../web/temp/weiXinLogin.html";
+					},2000);
+				}
+			});
+		}
+		
+		function checkbox(){   //页面监控开关事件
+			$("span",".bootstrap-switch-container").click(function(){
+				if($("input[type='checkbox']").prop("checked")){
+						monitor();
+						$("#send").click(function(){  //发送邮件
+							$("#confirmModal").modal("show");
+						});
+					}
+					else if(!$("input[type='checkbox']").prop("checked")){
+						$.post("../../WechatRobot/onThreadStop",function(json){  //关闭监控
+							yunNoty(json);
+							$("#send").unbind("click");
+							$(".switch input[type='checkbox']").bootstrapSwitch('state', false, false);
+							$("#weiXinbody").html("");
+						});		
+					}
+			});
+		};
+	</script>
+  </body>
+</html>

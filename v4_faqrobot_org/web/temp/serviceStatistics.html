@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>监控站点统计</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">数据分析</a></li>
+				<li class="active">监控站点统计</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">
+					<span class="page-header-span">监控站点统计</span>
+				</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th width="180">站点</th>
+									<th width="180">服务器信息</th>
+									<th>答案数量</th>
+									<th>问题数量</th>
+									<th>交互次数</th>
+									<th width="105">配置时间</th>
+									<th width="105">数据库时间</th>
+									<th width="105">索引时间</th>
+									<th width="105">流程项时间</th>
+									<th>当前访客数量</th>
+									<th>当前客服数量</th>
+									<th width="105">最多访客时间</th>
+									<th>最高访客数量</th>
+									<th>寒暄库交互次数</th>
+								</tr>
+							</thead>
+							<tbody id="table">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+      $.getJSON('../../AdminManager/getMonitorSiteInfo', function( data ) {
+        data = JSON.parse(data.json);
+        $('#table').empty();
+        $.each(data.result, function( key, val ) {
+          var items = [];
+          if (key === 'allInfo') {
+            items.push( '<td>总计</td>' );
+            key = '';
+          } else {
+            if (val.webName == '') {
+              items.push( '<td>用户暂未设置</td>' );
+            } else {
+              items.push( '<td>' + val.webName + '</td>' );
+            }
+          }
+          items.push( '<td><span class="label label-info">' + key + '</span></td>' );
+          items.push( '<td>' + val.allAnswerCount + '</td>' );
+          items.push( '<td>' + val.allQuestionCount + '</td>' );
+          items.push( '<td>' + val.businessInteractionCount + '</td>' );
+          items.push( '<td>' + getTime(val.lastReloadConfigTime) + '</td>' );
+          items.push( '<td>' + getTime(val.lastReloadDBDataTime) + '</td>' );
+          items.push( '<td>' + getTime(val.lastReloadDocumentSearchTime) + '</td>' );
+          items.push( '<td>' + getTime(val.lastReloadWorkFlowTime) + '</td>' );
+          items.push( '<td>' + val.onlineCustomerCount + '</td>' );
+          items.push( '<td>' + val.onlineServiceCount + '</td>' );
+          items.push( '<td>' + getTime(val.onlinePeakTime) + '</td>' );
+          items.push( '<td>' + val.onlinePeakValue + '</td>' );
+          items.push( '<td>' + val.simimiCount + '</td>' );
+          $('<tr/>', {
+            html: items.join( '' )
+          }).appendTo( '#table' );
+        });
+        if (document.getElementById('table').innerText === '') {
+          $('<tr/>', {
+            html: items.join( '<td colspan=14 style="text-align:center"><i class="glyphicon glyphicon-warning-sign"></i>暂无数据</td>' )
+          }).appendTo( '#table' );
+        }
+      });
+		});
+
+    function getTime (i) {
+      if(i == 0) {
+        return '';
+      }
+      var t = new Date(i);
+      return t.toLocaleString();
+    }
+	</script>
+</body>
+</html>

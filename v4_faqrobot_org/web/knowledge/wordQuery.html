@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+
+<body>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">知识库管理</a></li>
+                <li>词库查询</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">词库查询</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin panel -->
+                <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div class="col-md-3 pull-right search-addSrc">
+                                <div class="input-group">
+                                    <input type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词">
+                                    <span class="input-group-btn">
+										<button class="btn btn-primary" type="button">
+											<i class="glyphicon glyphicon-search"></i>
+										</button>
+									</span>
+
+                                </div>
+                            </div>
+                            <legend>同义词</legend>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:120px;">词汇</th>
+                                        <th>同义词</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="trCtn trCtn1">
+                                        <td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <legend>近义词</legend>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:120px;">词汇</th>
+                                        <th>近义词</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="trCtn trCtn2">
+                                        <td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <legend>联想词</legend>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:120px;">词汇</th>
+                                        <th>联想词</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="trCtn trCtn3">
+                                        <td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- end panel -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/commonCSS.css">
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/main.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+            var This = this;
+            var type = 1, //素材类型
+                pageNo = 1, //当前页
+                pageSize = 10, //每页数量
+                queryStr = '', //搜索内容
+                mode = 1,
+                idStr = '', //是否传id
+                isJpage = 0, //是否已实例化jpage
+                delPage = 0; //是否删除jpage
+
+            function initSrc() {
+                Base.request({
+                    url: 'SimilarWords/getOtherWords',
+                    params: {
+                        keyWord: $('.search-input-addSrc').val(),
+                    },
+                    callback: function(data) {
+                        if (data.status) {
+                            Base.gritter(data.message, false);
+                        } else {
+                            $('.trCtn').empty().append('<td>' + $('.search-input-addSrc').val() + '</td>');
+
+                            var html = '';
+                            if (data.SameWordsList[0]) { //同义词
+                                for (var i = 0; i < data.SameWordsList.length; i++) {
+                                    html += data.SameWordsList[i].Datawords + ',';
+                                }
+                                html = '<td>' + html.substr(0, html.length - 1) + '</td>';
+                            } else {
+                                html += '<td><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                            }
+                            $('.trCtn1').append(html);
+
+                            html = '';
+                            if (data.SimilarWordsList[0]) { //近义词
+                                for (var i = 0; i < data.SimilarWordsList.length; i++) {
+                                    html += data.SimilarWordsList[i].Datawords + ',';
+                                }
+                                html = '<td>' + html.substr(0, html.length - 1) + '</td>';
+                            } else {
+                                html += '<td><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                            }
+                            $('.trCtn2').append(html);
+
+                            html = '';
+                            if (data.LenovoWordsList[0]) { //联想词
+                                for (var i = 0; i < data.LenovoWordsList.length; i++) {
+                                    html += data.LenovoWordsList[i].Datawords + ',';
+                                }
+                                html = '<td>' + html.substr(0, html.length - 1) + '</td>';
+                            } else {
+                                html += '<td><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                            }
+                            $('.trCtn3').append(html);
+                        }
+                    },
+                });
+            }
+
+            $('.progress-striped').hide();
+            $('.tab-addSrc').hide();
+            $('.tab-addSrc').eq(0).show();
+            var tabIndex = 0;
+
+            //搜索
+            $('.search-addSrc').on('click', function() {
+                if ($('.search-input-addSrc').val()) {
+                    initSrc();
+                } else {
+                    Base.gritter('输入搜索的词', false);
+                }
+            });
+            $('.search-input-addSrc').on('click', function() {
+                return false;
+            });
+
+            //ENTER
+            $(document).on('keyup', function(e) {
+                var $activeEl = $(document.activeElement);
+
+                if ($activeEl.is('.search-input-addSrc') && (e.keyCode == 13 || e.keyCode == 108)) {
+                    $('.search-addSrc').trigger('click');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

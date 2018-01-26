@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>系统升级</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet" />
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">系统升级</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">系统升级</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="row">
+              <a data-toggle="modal" class="btn btn-primary" href="#confirm" style="display:none;" id="aalet"><i class="glyphicon glyphicon-refresh"></i>查看升级状态</a>
+							<span class="btn btn-primary fileinput-button al1">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>上传系统升级文件</span>
+								<input type="file" accept=".ywu" name="file" id="exlfileupload">
+							</span>
+              <span class="btn btn-primary m-r-5 fileUpLoadingSign" style="display:none;">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>上传中</span>
+							</span>
+						</div>
+						<div class="row al1">
+							<div id="progressDiv">
+								<div id="exlProgress" class="progress" style="margin-top:20px;">
+									<div class="progress-bar progress-bar-success" style="width:0%; position:relative;">
+										<span style="position:absolute; right:0;">0%</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- begin scroll to top btn -->
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+		<!-- end scroll to top btn -->
+	</div>
+  <div class="modal fade" style="display: none;" aria-hidden="true" id="confirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+        <div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title" id="tt1">确认升级？</h4>
+        </div>
+        <div class="modal-body">
+          <p id="al1" class="al1">您确定要升级系统吗？</p>
+          <p id="al2" style="display:none;">系统正在升级，请不要刷新页面。</p>
+          <p id="al3" style="display:none;">升级成功后，会自动跳转至登录页面。</p>
+          <p id="al4" style="display:none;">升级成功！</p>
+          <div id="progressUpdate" class="progress" style="display:none;">
+            <div class="progress-bar progress-bar-success"></div>
+          </div>
+        </div>
+        <div class="modal-footer al1">
+          <a class="btn btn-sm btn-primary" href="javascript:;" onclick="confirmUpdate()">是</a>
+          <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+        </div>
+			</div>
+		</div>
+  </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+    var Interval = null;
+    var counter = 0;
+		$(document).ready(function() {
+			App.init();
+			//上传
+			$(function () {
+				'use strict';
+				$('#exlfileupload').fileupload({
+					url: '../../AutoUpdate/uploadFile',
+					dataType: 'json',
+					change: function(e, data) {
+						var flag = true;
+            $.each(data.files, function(index, file) {
+              var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+              if (str.toLowerCase() == 'ywu') {
+                flag = true;
+              } else {
+                flag = false;
+                yunNotyError("请上传ywu格式的文件！");
+              }
+            });
+						return flag;
+					},
+					done: function (e, data) {
+            if (data.result) {
+              if(data.result.status==0){
+                yunNoty(data.result);
+                $('#confirm').modal('show');
+              }
+              else{
+                yunNoty(data.result);
+                $('.fileinput-button').css('display','inline-block');
+                $('.fileUpLoadingSign').css('display','none');
+              }
+            } else {
+              if(data.status==0){
+                yunNoty(data);
+                $('#confirm').modal('show');
+              }
+              else{
+                yunNoty(data);
+                $('.fileinput-button').css('display','inline-block');
+                $('.fileUpLoadingSign').css('display','none');
+              }
+            }
+					}
+				}).bind('fileuploadstart', function (e) {
+					$('.fileinput-button').css('display','none');
+					$('.fileUpLoadingSign').css('display','inline-block');
+				}).bind('fileuploadstop', function (e) {
+					$('.fileinput-button').css('display','inline-block');
+					$('.fileUpLoadingSign').css('display','none');
+				});
+			});
+      $('#confirm').on('hide.bs.modal', function () {
+        if($('.fileinput-button').css('display') == 'none'){
+          $('#aalet').show();
+        }
+      });
+		});
+    //确认导入
+    function confirmUpdate(obj) {
+      $.ajax({
+        type: 'get',
+        datatype: 'json',
+        cache: false,
+        //不从缓存中去数据
+        url: encodeURI('../../AutoUpdate/confirmUpdate'),
+        success: function(data) {
+          if (data.status == 0) {
+            yunNoty({message:"升级成功！",status:0});
+            counter=99;
+            Update();
+          } else {
+            yunNoty(data);
+            $('#confirm').modal('hide');
+            $('#aalet').hide();
+            counter=0;
+            clearInterval(Interval);
+            $('#progressUpdate .progress-bar').css('width', '0%');
+            $('.al1').show();
+            $('#tt1').html('确认升级？');
+            $('#al2').hide();
+            $('#al3').hide();
+            $('#progressUpdate').hide();
+          }
+        }
+      });
+      $('.al1').hide();
+      $('#tt1').html('正在升级');
+      $('#al2').show();
+      $('#al3').show();
+      $('#progressUpdate').show();
+      Interval = setInterval(function(){
+        Update();
+      }, 1000);
+    }
+    function Update() {
+      if($('#progressUpdate .progress-bar')[0].style.width.split('%')[0] < 100) {
+        $('#progressUpdate .progress-bar').css('width', (counter++)+'%');
+      } else {
+        clearInterval(Interval);
+        $('#al2').hide();
+        $('#al3').hide();
+        $('#al4').show();
+        setTimeout(function(){
+          if(top) {
+            top.location.href = '/login.html';
+          } else {
+            window.location.href = '/login.html';
+          }
+        }, 2000);
+      }
+    }
+	</script>
+</body>
+</html>

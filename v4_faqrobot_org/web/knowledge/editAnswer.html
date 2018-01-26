@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>修改答案</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/skin/blue.monday/jplayer.blue.monday.css" type="text/css" rel="stylesheet" />
+	<style>
+		/* knowledge/addQuestion.addFlow.editAnswer start */
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		.overdueImg {
+			height: 20px;
+		}
+		.tab-content{
+			padding: 0;
+		}
+		div.delAble {
+			display: inline-block;
+			position: relative;
+		}
+		div.delAble span{
+			width: 20px;
+			height: 18px;
+			color: #4cae4c;
+			position: absolute;
+			right: -4px;
+			top: -5px;
+			cursor: pointer;
+			background-image: url(../common/images/close.png);
+		}
+		#AddQuesForm div label {
+			font-size: 16px;
+		}
+		#otherList td {
+		    word-wrap: break-word;
+			word-break: break-all;
+		}
+		/* knowledge/addQuestion.addFlow.editAnswer end */
+		
+		#op{
+		width:100%;
+	}
+	#op ul{
+		overflow:hidden;
+		padding-left:0px;
+	}
+	#op ul li{
+		float:left;
+		list-style-type: none;
+	}
+	#op ul li img{
+		width:245px;
+		height:150px;
+		margin-right:35px;
+		margin-bottom: 15px;
+	}
+	#onlyImgChoice{
+		overflow:hidden;
+	}
+	#onlyImgUpload{
+		padding: 5px 12px;
+		width: 110px;
+		border-radius: 8px;
+		margin-bottom: 6px;
+		margin-left: 3px;
+		font-size: 14px;
+	}
+	#videoBody{
+		width:100%;
+	}
+	#videoBody ul{
+		overflow:hidden;
+		padding-left:2px;
+	}
+	#videoBody ul li{
+		float:left;
+		list-style-type: none;
+	}
+	#videoBody ul li video{
+		width:245px;
+		height:150px;
+		margin-right:44px;
+		margin-bottom: 15px;
+	}
+	#videoUpload{
+		padding: 5px 12px;
+		width: 110px;
+		border-radius: 8px;
+		margin-bottom: 6px;
+		font-size: 14px;
+	}
+	.webuploader-pick{
+		padding: 7px 15px!important;
+	}
+	</style>
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active"></li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header"></h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="row">
+							<form class="form-horizontal" id="AddQuesForm">
+								<div class="form-group" id="fgEQ">
+									<label class="col-md-2 control-label" id="labelEQ">问题</label>
+									<!--label id="eQuestion" class="col-md-8 control-label text-left"></label-->
+									<div class="col-md-8">
+										<input class="form-control" id="eQuestion" readonly="">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label" id="labelAoF">答案<span class="red">&nbsp;*</span></label>
+									<div class="col-md-8">
+										<ul class="nav nav-pills" id="AnswerNav">
+											<!--<li class="active"><a href="#text" data-toggle="tab">文本</a></li>
+											<li class=""><a href="#richtext" data-toggle="tab">富文本</a></li>
+											<li class=""><a href="#onlyPicture" data-toggle="tab">图片</a></li>
+											<li class=""><a href="#picture" data-toggle="tab">图文</a></li>
+											<li class=""><a href="#voice" data-toggle="tab">语音</a></li>
+											<li class=""><a href="#video" data-toggle="tab">视频</a></li>
+											<li class=""><a href="#other" data-toggle="tab">第三方</a></li>
+											<li class=""><a href="#flow" data-toggle="tab">流程</a></li>
+											<li class="" id="moreform"><a href="#form" data-toggle="tab">场景式问答</a></li>
+											<li class=""><a href="#rg" data-toggle="tab">转人工</a></li>
+											<li class=""><a href="#ask" data-toggle="tab">自定义AskToken</a></li>
+											<li class=""><a href="#tabArray" data-toggle="tab">二维数组</a></li>-->
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane fade" id="text">
+												<textarea name="ans_text" class="form-control" id="ans_text" style="height:300px;" maxlength="200"></textarea>
+											</div>
+											<div class="tab-pane fade" id="richtext">
+												<textarea name="ans_richtext" class="" id="ans_richtext" maxlength="20000"></textarea>
+											</div>
+											<div class="tab-pane fade" id="picture">
+												<a data-toggle="modal" href="#pictureModel" class="btn btn-primary">选择图文</a>
+												<div name="ans_picture" class="" id="ans_picture">
+													<div id="pictureShow" class="m-t-5" style="height: auto; padding: 0; overflow: hidden; display:inline-block;"></div>
+													<input type="hidden" id="pictureId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="voice">
+												<a data-toggle="modal" href="#voiceModel" class="btn btn-primary">选择语音</a>
+												<div name="ans_voice" id="ans_voice">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="voiceId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="other">
+												<a data-toggle="modal" href="#otherModel" class="btn btn-primary">选择第三方</a>
+												<div name="ans_other" id="ans_other">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="otherName">
+													<input type="hidden" id="otherId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="flow">
+												<textarea name="ans_flow" class="" id="ans_flow" maxlength="20000"></textarea>
+											</div>
+											<div class="tab-pane fade" id="form">
+												<a data-toggle="modal" href="#formModel" class="btn btn-primary">选择表单</a>
+												<div name="ans_form" id="ans_form">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="formId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="rg">
+												<button class="btn btn-white disabled">此问题为转人工标准问题，当访客访问到该问题，机器人将直接进行转人工操作</button>
+											</div>
+											<div class="tab-pane fade" id="ask">
+												<a data-toggle="modal" href="#askModel" class="btn btn-primary">选择自定义AskToken</a>
+												<div name="ans_ask" id="ans_ask">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="askName">
+													<input type="hidden" id="askId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="tabArray">
+												<a data-toggle="modal" href="#tabModel" class="btn btn-primary">二维数组</a>
+												<div name="ans_tab" id="ans_tab">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="tabName">
+													<input type="hidden" id="tabId">
+												</div>
+												<div id="tabArrayThead"></div>
+											</div>
+											<div class="tab-pane fade" id="onlyPicture">
+												<a data-toggle="modal" href="#onlyPictureModel" class="btn btn-primary">选择图片</a>
+												<div name="ans_picture" class="" id="ans_picture">
+													<div id="OnlyPictureShow" class="m-t-5" style="height: auto; padding: 0; overflow: hidden; display: none;">
+														<img src="" style="width:245px;height:150px;"/>
+													</div>
+													<input type="hidden" id="OnlyPictureId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="video">
+												<a data-toggle="modal" href="#videoModel" class="btn btn-primary">选择视频</a>
+												<div name="ans_video" id="ans_video">
+													<div id="videoShow" class="m-t-5" style="height: auto; padding: 0; overflow: hidden; display: none;">
+														<video src="" style="width:245px;height:150px;margin-left:-9px;" controls='controls'/>
+													</div>
+													<input type="hidden" id="vodeoId">
+												</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="order">
+												<textarea name="ans_order" class="form-control" id="ans_order" style="height:300px;resize:none;" maxlength="200"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-2 control-label"></label>
+									<div class="col-md-8">
+										<div style="font-size: 16px;color:#2894ff;cursor: pointer;" onclick="advancedSet(this)">高级设置&nbsp<i class="fa fa-angle-double-down"></i></div>
+									</div>
+								</div>
+								<!-- 高级设置 -->
+								<div id="advancedSetDiv" style="display:none">
+									<div class="form-group" id="DivRule_Way">
+	                                  <label class="col-md-2 control-label">生效渠道</label>
+	                                  <div class="col-md-8" id="DivRule_WayItem">
+	                                    <a class="btn btn-white m-r-5" fid="0">网页</a>
+	                                    <a class="btn btn-white m-r-5" fid="1">微信</a>
+	                                  </div>
+	                                </div>
+	                                <div class="form-group" id="DivRule_Role">
+	                                  <label class="col-md-2 control-label">生效角色</label>
+	                                  <div class="col-md-8">
+	                                    <input type="hidden" name="hasChecked">
+	                                    <input type="hidden" name="hasCheckedId">
+	                                                        <input class="form-control" placeholder="请选择生效角色" type="text" data-toggle="modal" href="#roleModel" id="rolename" readonly>
+	                                  </div>
+	                                </div>
+	                                <div class="form-group" id="DivRule_Time">
+	                                  <label class="col-md-2 control-label">生效时间</label>
+	                                  <div class="col-md-8">
+	                                    <input class="form-control" type="checkbox" id="timePicker">
+	                                    <label class="control-label" for="timePicker">启用</label>
+	                                  </div>
+	                                </div>
+	                                <div class="form-group" id="dateTime" style="display: none;">
+	                                  <div class="col-md-offset-2 col-md-8">
+	                                    <div class="input-group" style="float: left; width: 20%; padding-right: 5px; min-width: 150px;">
+	                                      <input size="16" type="text" readonly class="form-control form_datetime" placeholder="启用时间" name="StartTime">
+	                                      <span class="input-group-addon" style="cursor:pointer;" onclick="$('#AddQuesForm [name=StartTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+	                                    </div>
+	                                    <div class="input-group" style="float: left; width: 20%; padding-right: 5px; min-width: 150px;">
+	                                      <input size="16" type="text" readonly class="form-control form_datetime" placeholder="失效时间" name="EndTime">
+	                                      <span class="input-group-addon" style="cursor:pointer;" onclick="$('#AddQuesForm [name=EndTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+	                                    </div>
+	                                  </div>
+	                                </div>
+	                                <div class="form-group " style="position:relative;">
+										<label class="col-md-2 control-label">推荐链接</label>
+										<div class="col-md-8">
+											<input class="form-control" type="text" placeholder="请输入推荐链接" name="thirdUrl" >
+										</div>
+									</div>
+								</div>
+                                
+								<div class="form-group">
+									<div class="col-md-offset-2 col-md-4">
+										<button type="button" class="btn btn-primary" id="formSubmit">确定</button>
+										<button type="button" class="btn btn-white m-r-15" id="formCancel">取消</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="pictureModel">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择图文</h4>
+						</div>
+						<div class="modal-body">
+							<div id="pictureDiv" style="margin-top:5px;">
+								<div id="img_boxs" style="margin-bottom:0;">
+									<div id="ib0" class="col-sm-12 col-md-4"></div>
+									<div id="ib1" class="col-sm-12 col-md-4"></div>
+									<div id="ib2" class="col-sm-12 col-md-4"></div>
+									<div id="ibh" class="text-center" style="display:none;">
+										<i class="glyphicon glyphicon-warning-sign"></i>暂无数据！<br><a href="/web/material/imgTexts.html" data-num="0" data-name="添加图文">点击跳转到添加图文页面</a>
+									</div>
+								</div>
+								<div id="picturepageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="voiceModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择语音</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Voice" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input type="text" class="form-control input-sm" name="name" style="margin-right: -4px;border-top-right-radius:0;border-bottom-right-radius:0;">
+										<button type="button" class="btn btn-primary btn-sm" onclick="voiceList(1);" style="border-top-left-radius:0;border-bottom-left-radius:0;"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="voiceDiv" style="margin-top:5px;">
+								<table class="table" id="voiceList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>文件名</th>
+											<th>播放</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="voicepageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selVoiceBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="otherModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择第三方</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Other" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input type="text" class="form-control input-sm" name="info" style="margin-right: -4px;border-top-right-radius:0;border-bottom-right-radius:0;">
+										<input type="text" style="display:none;">
+										<button type="button" class="btn btn-primary btn-sm" onclick="otherList(1);" style="border-top-left-radius:0;border-bottom-left-radius:0;"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="otherDiv" style="margin-top:5px;">
+								<table class="table" id="otherList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>描述</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="otherpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selOtherBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="formModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择表单</h4>
+						</div>
+						<div class="modal-body">
+							<div id="formDiv" style="margin-top:5px;">
+								<table class="table" id="formList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>表单名称</th>
+											<th>添加时间</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="formpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selFormBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="roleModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择生效角色</h4>
+						</div>
+						<div class="modal-body">
+              <div id="tree">
+                <span class="expandURA glyphicon glyphicon-plus-sign" style="cursor:pointer;"></span>
+                <span class="expandURN glyphicon glyphicon-minus-sign" style="cursor:pointer;"></span>
+                <div class="treeDiv">
+                  <ul id="treeUserRole" class="ztree"></ul>
+                </div>
+              </div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" onclick="setrolename();">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="onlyPictureModel">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择图片</h4>
+						
+						</div>
+						<div class="modal-body">
+							<div id="onlyImgChoice">
+								  
+								 <div class="progress progress-striped active" style="display:none;">
+                                            <div class="progress-bar"></div>
+                                 </div>
+								 <div id="onlyImgUpload">本地上传</div>																
+							</div>
+							
+							
+							<div id="onlyPictureDiv" style="margin-top:5px;overflow: hidden;">
+								<div id="onlyImg_boxs" style="margin-bottom:0;">
+									<div id="op" class="col-sm-12 col-md-4"></div>
+									<div id="onlyPictureibh" class="text-center" style="display:none;">
+										<i class="glyphicon glyphicon-warning-sign"></i>暂无数据！<br><a href="/web/material/addSrc.html" data-num="0" data-name="添加图片">点击跳转到添加素材页面或选择本地上传</a>
+									</div>
+								</div>
+								<div id="OnlyPicturepageList" style="margin-bottom:0;"></div>
+							</div>
+							
+						
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="videoModel">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择视频</h4>
+						</div>
+						<div class="modal-body">
+							
+							<div class="progress progress-striped active" style="display:none;">
+                                            <div class="progress-bar"></div>
+						    </div>
+						    <div id="videoUpload">本地上传</div>		
+						
+							<div id="videoDiv">
+								<div id="videoBody"></div>
+								<div id="videoibh" class="text-center" style="display:none;">
+										<i class="glyphicon glyphicon-warning-sign"></i>暂无数据！<br><a href="/web/material/addSrc.html" data-num="0" data-name="添加图片">点击跳转到添加素材页面或选择本地上传</a>
+								</div>
+								<div id="videopageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="askModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择自定义AskToken</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Ask" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input style="margin-right: -4px;border-top-right-radius:0;border-bottom-right-radius:0;" type="text" class="form-control input-sm" name="info">
+										<input type="text" style="display:none;">
+										<button style="border-top-left-radius:0;border-bottom-left-radius:0;" type="button" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="askDiv" style="margin-top:5px;">
+								<table class="table" id="askList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>对方的url</th>
+											<th>简介</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="askpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selAskBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="tabModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">二维数组</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Tab" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input style="margin-right: -4px;border-top-right-radius:0;border-bottom-right-radius:0;" type="text" class="form-control input-sm" name="info">
+										<input type="text" style="display:none;">
+										<button style="border-top-left-radius:0;border-bottom-left-radius:0;" type="button" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="tabDiv" style="margin-top:5px;">
+								<table class="table" id="tabList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>表名</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="tabpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selTabBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../..//assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+  <script src="../common/js/iframeTab.min.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script src="js/jquery.jplayer.min.js"></script>
+	<script src="../common/js/base.js"></script>
+	<link rel="stylesheet" href="../common/css/webuploader.css">
+	<script src="../common/js/webuploader.min.js"></script>
+	<script src="js/editAnswer.js"></script>
+	<script>
+	UE.registerUI('wfque', function (editor, uiName) {
+		//创建dialog
+		var dialog = new UE.ui.Dialog({
+				//指定弹出层中页面的路径，这里只能支持页面,因为跟addCustomizeDialog.js相同目录，所以无需加路径
+				iframeUrl: editor.options.UEDITOR_HOME_URL + 'dialogs/wfque/wflink.html',
+				//需要指定当前的编辑器实例
+				editor: editor,
+				//指定dialog的名字
+				name: '添加问题',
+				//dialog的标题
+				title: "添加标准问题",
+				//指定dialog的外围样式
+				cssRules: "width:800px;height:480px;",
+				//如果给出了buttons就代表dialog有确定和取消
+				buttons: [{
+						className: 'edui-okbutton',
+						label: '确定',
+						onclick: function () {
+							dialog.close(true);
+						}
+					}, {
+						className: 'edui-cancelbutton',
+						label: '取消',
+						onclick: function () {
+							dialog.close(false);
+						}
+					}
+				]
+			});
+
+		//参考addCustomizeButton.js
+		var btn = new UE.ui.Button({
+				name: '添加标准问题',
+				title: '关联标准问题（仅支持网页端）',
+				//需要添加的额外样式，指定icon图标，这里默认使用一个重复的icon
+				cssRules: 'background-position: -30px -76px;',
+				onclick: function () {
+					//渲染dialog
+					dialog.render();
+					dialog.open();
+				}
+			});
+		return btn;
+	});
+
+		if(window.location.host == 'v3.faqrobot.org') {
+			$('#moreform').hide();
+		}
+
+	// 高级设置显示隐藏
+	var advancedSetShow=false
+	function advancedSet(mark){
+		advancedSetShow=!advancedSetShow;
+		if(advancedSetShow){
+			$('#advancedSetDiv').show();
+			$(mark).find("i").attr("class","fa fa-angle-double-up")
+		}else{
+			$('#advancedSetDiv').hide();
+			$(mark).find("i").attr("class","fa fa-angle-double-down")
+		}
+	}
+	</script>
+</body>
+</html>

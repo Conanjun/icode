@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>生效规则</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">生效规则</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">生效规则</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<table class="table" id="listTable">
+							<thead>
+								<tr>
+									<th width="120">配置项描述</th>
+                                    <th>配置项值</th>
+                                    <th width="120">配置项是否启用</th>
+									<th width="120">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="Modal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择配置项值</h4>
+						</div>
+						<div class="modal-body">
+                            <input type="hidden" id="hid">
+							<div id="itemContainer"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="subItem">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			listTable();
+            $('#subItem').click(function() {
+                subItems();
+            });
+            $('#Modal').on('hidden.bs.modal', function () {
+                $('#itemContainer').empty();
+            });
+		});
+
+        //控制配置项打开/关闭
+		var flag_open=false;
+        function Rule(obj, bool) {
+            if(flag_open){
+                return;
+            }
+            flag_open=true;
+            $.ajax({
+                type: 'post',
+                datatype: 'json',
+                cache: false,
+                url: encodeURI('../../Configuration/addAndEditItem'),
+                data: 'isDisplay='+bool+'&id=' + $(obj).attr('rel'),
+                success: function(data) {
+                    flag_open=false;
+                    if(data.status === 0) {
+                        yunNoty(data);
+                        listTable();
+                    } else {
+                        yunNoty(data);
+                    }
+                }
+            });
+        }
+
+        //打开配置模态窗
+		var flag_setup=false;
+        function setUp(obj,argument) {
+            if(flag_setup){
+                return;
+            }
+            flag_setup=true;
+            $.ajax({
+                type: 'post',
+                datatype: 'json',
+                cache: false,
+                url: encodeURI('../../Configuration/listAllValue'),
+                data: 'dicType=' + $(obj).parents('tr').attr('DicType'),
+                success: function(data) {
+                    flag_setup=false;
+                    if(data.status === 0) {
+                        if(data.listValue) {
+                            if(data.listValue[0]) {
+                                $('#itemContainer').empty();
+                                for(var i in data.listValue) {
+                                    $('#itemContainer').append('<div class="m-5" style="display:inline-block;"><input type="checkbox" rid="'+data.listValue[i].Id+'" id="rid'+data.listValue[i].Id+'"><label class="m-l-5" for="rid'+data.listValue[i].Id+'" style="cursor: pointer;">'+data.listValue[i].DicDesc+'</label></div>');
+                                }
+                                $('input[rid]').iCheck({
+                                    checkboxClass: 'icheckbox_flat-blue',
+                                    radioClass: 'iradio_flat-blue',
+                                    cursor: true
+                                });
+
+                                var argumentList = [];
+                                if(argument){
+                                    argument = JSON.parse(argument);
+                                    argumentList = argument.DicList;
+                                }
+
+                                var arraycheckBox = [];
+                                arraycheckBox = [].slice.apply($("input[type='checkbox']"));
+                                if(arraycheckBox.length > 0){
+                                    arraycheckBox.forEach(function(element) {
+                                        argumentList.forEach(function(item) {
+                                            if($(element).attr('rid') == item.Id){
+                                                $(element).iCheck('check');
+                                            }
+                                        })
+                                    });
+                                }
+        
+                                $('#hid').val($(obj).attr('rel'));
+                                $('#Modal').modal('show');
+                            }
+                        }
+                    } else {
+                        yunNoty(data);
+                    }
+                }
+            });
+        }
+
+        //提交配置项值
+        var flag_sub=false;
+        function subItems() {
+            var ids = '';
+            $('input[rid]').each(function() {
+                if($(this).prop('checked')) {
+                    ids += $(this).attr('rid') + ',';
+                }
+            });
+            if(ids != "") {
+                ids = ids.substring(0,ids.length-1);
+            }
+            if(flag_sub){
+                return;
+            }
+            flag_sub=true;
+            $.ajax({
+                type: 'post',
+                datatype: 'json',
+                cache: false,
+                url: encodeURI('../../Configuration/addListValue'),
+                data: 'itemId=' + $('#hid').val() + '&itemValues=' + ids,
+                success: function(data) {
+                    flag_sub=false;
+                    if(data.status === 0) {
+                        yunNoty(data);
+                        $('#Modal').modal('hide');
+                        listTable();
+                    } else {
+                        yunNoty(data);
+                    }
+                }
+            });
+        }
+
+		function listTable(){
+		$('#listTable').tableAjaxLoader2(4);
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../Configuration/listAllItem'),
+				success:
+				function(data){
+					if(data.status===0){
+                        var List = [];
+                        if(data.listItem) {
+                            List = data.listItem;
+                        } else {
+                            return;
+                        }
+						if(List.length>0){
+							var html = "";
+                            var DicDesc = '';
+				            for(var i in List) {
+                                DicDesc = '';
+                                //存source_type
+                                if(List[i].DicType) {
+                                    html += "<tr DicType="+List[i].DicType+">";
+                                } else {
+                                    html += "<tr>";
+                                }
+								html += "<td>"+(List[i].ConfigItemDesc==null?'':List[i].ConfigItemDesc)+"</td>";
+                                if(List[i].DicList) {
+                                    if(List[i].DicList[0]) {
+                                        for(var j in List[i].DicList) {
+                                            DicDesc += List[i].DicList[j].DicDesc + "　";
+                                        }
+                                    }
+                                }
+                                if(DicDesc == '') {
+								    html += "<td>无配置项值</td>";
+                                } else {
+                                    html += "<td>" + DicDesc + "</td>";
+                                }
+                                if(List[i].IsDisplay === 0) {
+								    html += "<td style='color: #17A05E;'>已启用</td>";
+                                } else {
+                                    html += "<td style='color: #DD5145;'>已禁用</td>";
+                                }
+                                html += "<td>";
+                                if(List[i].IsDisplay === 0) {
+                                    if(List[i].DicType !== 'answer_type'){
+                                        html += "<a href='javascript:;' class='shutDown Ttip' rel='"+List[i].Id+"' title='禁用'><i class='glyphicon glyphicon-remove'></i></a>&nbsp;&nbsp;";
+									}
+                                } else {
+                                    html += "<a href='javascript:;' class='open Ttip' rel='"+List[i].Id+"' title='启用'><i class='glyphicon glyphicon-ok'></i></a>&nbsp;&nbsp;";
+                                }
+                                if(List[i].DicType) {
+								    html += "<a href='javascript:;' class='setUp Ttip' rel='"+List[i].Id+"' data='"+ JSON.stringify(List[i]) +"' title='配置'><i class='glyphicon glyphicon-cog'></i></a>";
+                                }
+								html += "</td></tr>";
+							}
+							$('#listTable').find('tbody').html(html);
+                            $('.Ttip').tooltip();
+                            $('.open').click(function() {
+                                Rule(this, 0);
+                            });
+                            $('.shutDown').click(function() {
+                                Rule(this, 1);
+                            });
+                            $('.setUp').click(function() {
+                                var data = $(this).attr('data');
+                                setUp(this,data);
+                            })
+						}else{
+							$('#listTable').find('tbody').html('<tr><td colspan=\"4\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

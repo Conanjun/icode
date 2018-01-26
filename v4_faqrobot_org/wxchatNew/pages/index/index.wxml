@@ -1,0 +1,22 @@
+<import src="guest.wxml" />
+<import src="robot.wxml" />
+
+<scroll-view class="vb-wholeCtn-scroll">
+	<view class="vb-wholeCtn vb-flex vb-flex-v">
+		<scroll-view class="vb-chatCtn-scroll vb-flex-1" scroll-y scroll-top="{{scrollTop}}">
+			<view class="vb-chatCtn">
+				<block wx:for="{{ chatRecords }}" wx:key="">
+					<template is="{{item.type ? 'robotsMsg' : 'guestsMsg'}}" data="{{ ...item }}" />
+				</block>
+			</view>
+		</scroll-view>
+		<view class="vb-editCtn" style="height: {{ vb_editCtn_style.height }};">
+			<view class="vb-inputCtn vb-flex vb-flex-h">
+				<input class="vb-input vb-flex-6" value="{{ inputWord }}" bindinput="input" bindconfirm="sendClick" placeholder="请输入您要咨询的问题" maxlength="100" confirm-type="send" />
+				<view class="vb-sendBtnCtn vb-flex-1">
+					<view bindtap="sendClick" class="vb-sendBtn">发送</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</scroll-view>

@@ -1,0 +1,162 @@
+/*
+ * variables
+ */
+.click{
+  text-align: right;
+  margin-top: 30px;
+  margin-right: -10px;
+}
+.word1{
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 26px
+}
+.word2{
+  text-align: center;
+  font-size: 16px;
+  margin-top: 30px;
+}
+.center{
+  text-align: center;
+}
+.Scan{
+  padding: 40px;
+  display: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+}
+.topRight{
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-block;
+}
+.computerIcon{
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-block;
+}
+/*上面是新添加的*/
+
+html {
+  width: 100%;
+  height: 100%;
+}
+html body {
+  width: 100%;
+  height: 100%;
+}
+html body .first-wrapper {
+  width: 100%;
+  height: 94px;
+  background-color: #fff;
+  overflow: hidden;
+}
+html body .headnav .container {
+  width: 100%;
+}
+html body .headnav .container .row div.l0 {
+  padding: 0;
+  width: 100%;
+  height: 10px;
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(#009FE9), to(#8ACBE7));
+  background: gradient(linear, 0 0, 100% 0, from(#009FE9), to(#8ACBE7));
+  background: #009FE9\9;
+}
+html body #formC {
+  width: 100%;
+  padding: 0;
+  background: url('../images/bg.jpg') no-repeat top center;
+}
+html body .form {
+  position: relative;
+  max-width: 600px;
+  padding: 40px;
+  margin: 90px auto;
+  border-radius: 8px;
+  background-color: white;
+}
+html body .form button.btn-block {
+  margin-top: 15px;
+}
+html body .form button:hover {
+  transform: none;
+}
+html body .form button:focus {
+  transform: none;
+  outline: 0;
+}
+html body .form input.form-control {
+  border-radius: 30px;
+  margin: 15px 0;
+}
+html body .form .vcodeImg {
+  margin-left: 10px;
+  margin-top: 15px;
+  height: 30px;
+}
+html body .form .plus {
+  margin-top: 10px;
+  height: 20px;
+  width: 100%;
+}
+html body .form div.icon {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto;
+}
+html body .form .REG_circle_1.BG_Blue div.icon {
+  background: url('../images/1-1.png') no-repeat center center;
+}
+html body .form .REG_circle_1.BG_Grey div.icon {
+  background: url('../images/1-2.png') no-repeat center center;
+}
+html body .form .REG_circle_2.BG_Blue div.icon {
+  background: url('../images/2-1.png') no-repeat center center;
+}
+html body .form .REG_circle_2.BG_Grey div.icon {
+  background: url('../images/2-2.png') no-repeat center center;
+}
+html body .form .REG_circle_3.BG_Blue div.icon {
+  background: url('../images/3-1.png') no-repeat center center;
+}
+html body .form .REG_circle_3.BG_Grey div.icon {
+  background: url('../images/3-2.png') no-repeat center center;
+}
+html body .form div.REG_word {
+  margin: 8px 0;
+}
+html body .form div.REG_circle {
+  display: inline-block;
+  width: 90px;
+  text-align: center;
+  padding: 15px;
+}
+html body .form .Color_Blue {
+  color: #00A0E9;
+}
+html body .form .Color_Grey {
+  color: #B3C2D2;
+}
+.s1 {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  width: 200px;
+  margin: 0;
+  margin-left: -100px;
+}
+.s2 {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  width: 200px;
+  margin: 0;
+  margin-left: -100px;
+}

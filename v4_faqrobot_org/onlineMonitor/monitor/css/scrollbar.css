@@ -1,0 +1,42 @@
+/**************************** BEGIN ****************************/
+/* jquery.scrollbar.css */
+@charset "utf-8";
+
+.SC_backCtn {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 2px;
+}
+
+.SC_backClass {/*可配置*/
+    background: #E3E4E4;
+    width: 4px;
+    border-radius: 5px;
+}
+
+.SC_frontCtn {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+
+.SC_frontClass {/*可配置*/
+    background: #B5B5B5;
+    width: 8px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.SC_frontClass:hover {/*可配置*/
+    background: #888889;
+}
+
+.SC_select_no {
+    -moz-user-select: none;/*火狐*/
+    -webkit-user-select: none;/*webkit浏览器*/
+    -ms-user-select: none;/*IE10*/
+    -khtml-user-select: none;/*早期浏览器*/
+    user-select: none;
+}
+/**************************** END ****************************/

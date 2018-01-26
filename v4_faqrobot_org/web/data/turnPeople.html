@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>转人工次数统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+    <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <link href="../common/css/customChatLog.css" rel="stylesheet">
+    <style type="text/css">
+        @media (max-width: 1217px) {
+            .form-horizontal .hideForm {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 991px) {
+            #qualityForm .col-md-3 {
+                padding-right: 0;
+                padding-left: 0;
+            }
+
+            #qualityForm .col-md-6 {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">转人工次数统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">转人工次数统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计转人工次数" class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        转人工次数统计
+                    </h4>
+                </div>
+                <div class="panel-body form-inline">
+                    <input type="hidden" id="saveURL" value="../../TurnPeopleLog/list"/>
+                    <div style="font-size:0;" class="text-right">
+                        <div class="btn-group m-r-4 f-s-14" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll(1,1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="DTT" style="display: inline-block;vertical-align: top;" class="f-s-14 m-b-5 m-r-4">
+                            <select class="selectpicker" id="TT" name="turnPeopleType">
+                                <option value="">全部客服</option>
+                                <option value="1">第三方客服</option>
+                                <option value="2">云问客服</option>
+                            </select>
+                        </div>
+                        <div id="DataSource" style="display:inline-block;vertical-align: top;" class="f-s-14 m-r-4">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <div class="form-group f-s-14 m-r-4" style="display:inline-block;vertical-align: top;">
+                            <label class="control-label pagination-right">访客名称：</label>
+                            <input type="text" class="form-control" name="clientName" onkeypress="searchKey(event)">
+                        </div>
+                        <div class="form-group f-s-14 m-r-4" style="display:inline-block;vertical-align: top;">
+                            <label class="control-label pagination-right">接待客服</label>
+                            <input type="text" class="form-control" name="customer" onkeypress="searchKey(event)">
+                        </div>
+                        <button type="button" onclick="queryAll(1)" class="btn btn-primary m-r-4"
+                                style="display:inline-block;vertical-align: top;"><i
+                                class="glyphicon glyphicon-search"></i></button>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary m-r-5 pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>客服名称</th>
+                            <th>访客名称</th>
+                            <th width="120">来源</th>
+                            <th width="150">聊天记录</th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                    <div id="pageList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="chatModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">查看记录</h4>
+            </div>
+            <div class="modal-body p-b-0 p-t-5">
+                <div class="row-fluid sendCheck" style="display: none;">
+                    <div class="row">
+                        <form id="qualityForm">
+                            <input type="hidden" name="uuid">
+                            <input type="hidden" name="chatVersion">
+                            <input type="hidden" name="chatlogId">
+                            <label class="bold">问题</label>
+                            <input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue"
+                                   style="margin-bottom: 10px;">
+                            <div style="padding-left: 0" class="col-md-3">
+                                质检类型 <b class="red">*</b><select name="qualityModeId" class="col-md-12 form-control"
+                                                                 style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
+                                <input type="hidden" name="recheckModeId">
+                            </div>
+                            <div class="col-md-3">
+                                质检评分<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score"
+                                           style="margin-bottom: 10px;">
+                            </div>
+                            <div class="col-md-6" style="padding-right:0px">
+                                质检评语<input type="text" placeholder="质检评语" class="col-md-12 form-control"
+                                           name="qualityContent"
+                                           style="resize: none; height: 34px;margin-bottom: 10px;">
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="row">
+                        <ul class="nav nav-pills nav-pills-chg">
+                            <li status="1" class="active"><a href="#navChatLogOne" data-toggle="tab"
+                                                             aria-expanded="true">已有答案回答</a></li>
+                            <li status="2"><a href="#navChatLogTwo" data-toggle="tab" aria-expanded="false">编辑答案回答</a>
+                            </li>
+                        </ul>
+                        <!--切换的内容-->
+                        <div style="padding: 0" class="tab-content">
+
+                            <!-- 点击切换2-->
+                            <div class="tab-pane active" id="navChatLogOne">
+                                <form id="nav-pills-tab-2-form">
+                                    <input type="hidden" name="pageNo" value="1">
+                                    <input type="hidden" name="isLeaf" value="1">
+                                    <input type="hidden" name="status" value="0">
+                                    <input type="hidden" name="level" value="1">
+                                    <input type="hidden" name="pageSize" value="5">
+                                    <input type="hidden" id="tab2quetype" name="queryType" value="1">
+                                    <div class="row">
+                                            <span class="col-md-5">选择分类：
+                                                <a href="#" class="ztreeName2">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+
+                                        <div class="ztree tanchu" id="tanchutree2"
+                                             style="display: none;margin-top: 15px"></div>
+                                        <div class="input-group col-md-4 pull-right">
+                                            <input type="text" class="form-control" id="tab2que" name="question">
+                                            <div class="input-group-btn">
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a href="javascript:;"
+                                                           onclick="$('#tab2que').attr('name', 'question')$('#tab2quetype').val('1')">问题</a>
+                                                    </li>
+                                                    <li><a href="javascript:;"
+                                                           onclick="$('#tab2que').attr('name', 'answer')$('#tab2quetype').val('2')">答案</a>
+                                                    </li>
+                                                </ul>
+                                                <button type="button"
+                                                        class="btn-toggle btn btn-primary dropdown-toggle curHtml"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">问题<span class="caret"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary searchHasAns">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="max370">
+                                    <table class="table" style="width:100%;margin: 10px 0">
+                                        <thead>
+                                        <tr>
+                                            <td width="50"></td>
+                                            <th>问题</th>
+                                            <th id="gggggggg">答案</th>
+                                            <th width="160">时间</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="tbody2"></tbody>
+                                    </table>
+                                </div>
+                                <div id="itemContainer2" style="margin-bottom: -20px;"></div>
+                            </div>
+
+                            <!-- 点击切换3-->
+                            <div class="tab-pane " id="navChatLogTwo">
+                                <div class="col-md-12">
+                                    <div class="row mb10">
+                                            <span class="col-md-12" style="padding-left: 0;">问题分类<b class="red">*</b>：
+                                                <a class="ztreeName3" href="javascript:;">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+                                        <div class="ztree tanchu" id="tanchutree3"
+                                             style="display: none;margin-top: 15px"></div>
+                                    </div>
+
+                                    <div class="row mb10" id="warpRoles">
+                                        <span>生效角色：</span>&nbsp;&nbsp;
+                                        <a id="juese" href="#QuestionClassModel" data-toggle="modal">来访者角色</a>
+                                    </div>
+                                    <div class="row mb10" id="warpRules">
+                                        <div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
+                                            <span>生效渠道：</span>&nbsp;
+                                        </div>
+                                        <div class="col-md-10" style="margin-left:-20px;">
+                                            <div id="chooseAll"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <span>输入答案<b class="red">*</b>：</span>
+                                    </div>
+                                    <div style="padding: 0" class="row">
+                                        <textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5"
+                                                  name="title"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- 底部3按钮-->
+                        <div style="position: absolute;bottom: 15px;right:30px" class="row">
+                            <a href="javascript:;" class="cancel btn btn-sm btn-white">取消</a>
+                            <a href="javascript:;" class="testOnly btn btn-sm btn-primary">仅质检</a>
+                            <button class="testAndlearn btn btn-sm btn-white btn-primary">质检并学习</button>
+                        </div>
+                    </div>
+                </div>
+                <form method="POST" id="visiterForm" class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group m-b-5">
+                            <label class="col-md-2 control-label">访客信息</label>
+                            <div class="col-md-9" style="padding-left:15px;padding-right:15px;padding-top:7px;">
+                                <span class="visiterInfo"></span>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="$('.hideForm').toggle()">
+                                    高级查询
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group hideForm m-b-5" style="display: none;">
+                            <label class="col-md-2 control-label">起始时间</label>
+                            <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                                <input size="16" type="text" readonly class="form-control form_datetime input-sm"
+                                       name="startTime">
+                            </div>
+                            <label class="col-md-2 control-label">结束时间</label>
+                            <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                                <input size="16" type="text" readonly class="form-control form_datetime input-sm"
+                                       name="endTime">
+                            </div>
+                        </div>
+                        <div class="form-group hideForm m-b-5" style="display: none;">
+                            <label class="col-md-2 control-label">内容</label>
+                            <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                                <input type="text" class="form-control input-sm" name="content">
+                            </div>
+                        </div>
+                        <div class="form-group hideForm" style="display: none;">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                                <a href="javascript:void(0);" title="本次记录" class="bcjl btn btn-primary btn-xs">本次记录</a>
+                                <a href="javascript:void(0);" title="全部记录" class="qbjl btn btn-primary btn-xs">全部记录</a>
+                                <button type="button" class="btn btn-primary btn-xs" id="searchChatRe">搜索</button>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="searchClear()">清空</button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="recordsChatUserId" name="chatUserId">
+                        <input type="hidden" class="tempValue">
+                        <input type="hidden" class="chatV" name="chtvs">
+                        <input type="hidden" class="locateContent" name="locateContent">
+                    </fieldset>
+                </form>
+                <div id="chatCon">
+                    <div id="chatLogList">
+                        <ul class="chats"></ul>
+                    </div>
+                </div>
+                <div id="chatpageList" style="margin-top:10px; margin-bottom:0px;"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/bootstrap-paginator.js"></script>
+<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+<script src="../common/js/icheck.js"></script>
+<script src="../common/js/base.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/customChatLog.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script type="text/javascript">
+    function showdata (json) {
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var AllList = []
+        var DList = []
+        var value = json.IntervalDays
+        var Alen = json.countAndTime.length
+        //如果数据为空，return
+        if (Alen == 0) {
+            DList.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
+            AllList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        } else {
+            if (value > 3) {
+                for (var i = 0; i < Alen; i++) {
+                    DList.push(json.countAndTime[i].Day)
+                    AllList.push(json.countAndTime[i].TurnPeopleCount)
+                }
+
+            } else {
+                for (var i = 0; i < Alen; i++) {
+                    var date = ''
+                    if (json.countAndTime[i].Hour < 10) {
+                        date = '0' + json.countAndTime[i].Hour + ':00'
+                    } else {
+                        date = json.countAndTime[i].Hour + ':00'
+                    }
+                    DList.push(date)
+                    AllList.push(json.countAndTime[i].TurnPeopleCount)
+                }
+            }
+        }
+        var maxY = Math.max.apply(null, AllList) < 5 ? 5 : Math.max.apply(null, AllList)
+        // 初始 option1
+        option1 = {
+            title: {
+                text: '转人工次数统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['转人工次数']
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: true,
+                data: DList,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 15,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+
+                    },
+                    interval: 0
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                max: maxY,
+                name: '访客数',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                }
+            }],
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            series: [{
+                name: '转人工次数',
+                type: 'line',
+                data: AllList
+            }]
+        }
+
+        myChart1.hideLoading()
+        myChart1.setOption(option1)
+        window.onresize = myChart1.resize
+    }
+
+    function showtable (json) {
+        var table = ''
+        var Dlen = json.list.length
+        var value = json.IntervalDays
+        if (Dlen == 0) {
+            table += '<tr >'
+            table += '<td colspan=4 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+            return
+        }
+        for (var t = 0; t < Dlen; t++) {
+            table += '<tr>'
+            table += '<td>' + json.list[t].Customer + '</td>'
+            table += '<td>' + json.list[t].ClientName + '</td>'
+            table += '<td>' + getSourceName(json.list[t].SourceId) + '</td>'
+            //if(json.list[t].LogItems===0 && json.list[t].StayTime===0){
+            //	table +="<td><a href=\"javascript:void(0);\" style='color:#999' title=\"查看聊天记录\" rel=\""+json.list[t].ChatUserId+"\" cv=\""+json.list[t].ChatVersion+"\" onclick=\"lookChat(this);return false;\">查看聊天记录</a></td>";
+            //}else{
+            if (json.list[t].watched === false) {
+                table += '<td><a href="javascript:void(0);" title="查看聊天记录" rel="' + json.list[t].ChatUserId + '" cv="' + json.list[t].ChatVersion + '" onclick="lookChat(this);return false;">查看聊天记录</a></td>'
+            } else {
+                table += '<td><a href="javascript:void(0);" style="color:#999;" title="查看聊天记录" rel="' + json.list[t].ChatUserId + '" cv="' + json.list[t].ChatVersion + '" onclick="lookChat(this);return false;">查看聊天记录&nbsp;<span>已读</span></a></td>'
+            }
+            //}
+            table += '</tr>'
+        }
+        $('#visitDataTable').html(table)
+        //下面开始处理分页
+        var options = {
+            currentPage: json.currentPage,
+            totalPages: json.totlePages,
+            onPageClicked: function (event, originalEvent, type, page) {
+                queryAll(page)
+            }
+        }
+        setPage('pageList', options)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        showdata(json)
+        showtable(json)
+    }
+
+    function searchKey (e) {
+        if (e.key == 'Enter') {
+            queryAll(1)
+        }
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        $('body').on('change', '#Choice_Query', function () {
+            queryAll(1)
+        })
+        $('body').on('change', '#TT', function () {
+            queryAll(1)
+        })
+
+        $('.selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '120px',
+        })
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        //列出图表
+        queryAll(1)
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta name="keywords" content="FAQ客服机器人,微信智能客服,智能客服机器人,智能问答,微信机器人,智能机器人,FAQ机器人,FAQ Robot,机器客服,智能问答机器人">
+		<meta name="description" content="中国领先的智能问答机器人系统，为企业、政府机构网站、微信、APP等提供先进的智能客服机器人云服务与智能问答系统解决方案。">
+		<link rel="shortcut icon" href="./assets/login/images/logo_min.png" type="/image/x-icon">
+		<title>找回密码</title>
+		<link href="./assets/login/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./assets/login/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="./assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="./assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+		<link href="./assets/login/css/common.css" rel="stylesheet">
+		<link href="./assets/login/css/retrieve.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="header">
+			<div class="navbar navbar-custom navbar-white">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img alt="Brand" src="./assets/login/images/logo.png">
+						</a>
+					</div>
+					<div class="collapse navbar-collapse" id="navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="under"><a href="http://www.iyunwen.com/index.html">首页</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/chanpin.html">产品</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/cases.html">客户案例</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/about.html">关于我们</a></li>
+							<!--li class="under"><a href="#">云问之家</a></li-->
+							<li><button type="button" class="btn btn-primary navbar-btn m-l-5" onclick="location.href='/login.html'">登录</button></li>
+							<li><button type="button" class="btn btn-white navbar-btn m-l-5" onclick="location.href='/register.html'">注册</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="first-wrapper">
+			<div class="page-header-bg-image"></div>
+		</div>
+		<div class="headnav">
+			<div class="container">
+				<div class="row">
+					<div class="l0"></div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="formC">
+			<form id="findPwd">
+				<h2 class="form-signin-heading">找回密码</h2>
+				<!-- 顶部标题 -->
+				<div id="Pwd_top">
+					<div class="row">
+						<div class="col-md-6">
+							<button type="button" class="btn btn-white btn-block" onclick="clickOne()"> 手机号找回 </button>
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="btn btn-white btn-block" onclick="clickTwo()"> 邮箱找回 </button>
+						</div>
+					</div>
+				</div>
+				<!-- 手机号找回 -->
+				<div id="Pwd_by_Tel">
+					<input type="text" name="telNum_by_Tel" id="telNum_by_Tel" class="form-control" maxlength="11" placeholder="请输入手机号" autofocus="">
+					<div class="row" id="Pwd_by_Tel_2" style="display: none;">
+						<div class="col-md-6">
+							<input type="text" name="code_by_Tel" id="code_by_Tel" class="form-control" maxlength="4" placeholder="请输入图形验证码">
+						</div>
+						<div class="col-md-6">
+							<img class="vcodeImg" src="./ImageCode" >
+						</div>
+					</div>
+					<div class="row" id="Pwd_by_Tel_3" style="display: none;">
+						<div class="col-md-6">
+							<input type="text" name="telVerifyCode_by_Tel" id="telVerifyCode_by_Tel" class="form-control" maxlength="6" placeholder="请输入手机验证码">
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-primary btn-block" type="button" id="getcode_by_Tel" onclick="getTelCode(this)">获取验证码</button>
+						</div>
+					</div>
+					<button class="btn btn-primary btn-block" type="button" onclick="checkTel()">提交</button>
+				</div>
+				<!-- 邮箱找回 -->
+				<div id="Pwd_by_Name" style="display: none;">
+					<input type="text" name="userName" id="userName" class="form-control" maxlength="60" placeholder="请输入用户名" style="display: none;">
+					<input type="text" name="telNum_by_Name" id="telNum_by_Name" class="form-control" readonly="readonly" style="display: none;">
+          <div style="position:relative;z-index: 5;">
+            <input type="text" name="email_by_Name" id="email_by_Name" class="form-control" placeholder="请输入邮箱">
+            <ul class="list"></ul>
+          </div>
+					<div class="row" id="Pwd_by_Name_3" style="display: none;">
+						<div class="col-md-6">
+							<input type="text" name="code_by_Name" id="code_by_Name" class="form-control" maxlength="4" placeholder="请输入图形验证码">
+						</div>
+						<div class="col-md-6">
+							<img class="vcodeImg" src="./ImageCode" >
+						</div>
+					</div>
+					<div class="row" id="Pwd_by_Name_4" style="display: none;">
+						<div class="col-md-6">
+							<input type="text" name="telVerifyCode_by_Name" id="telVerifyCode_by_Name" class="form-control" maxlength="6" placeholder="请输入手机验证码">
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-primary btn-block" type="button" id="getcode_by_Name" onclick="getNameCode(this)">获取验证码</button>
+						</div>
+					</div>
+					<button class="btn btn-primary btn-block" type="button" onclick="checkEmail()">提交</button>
+				</div>
+				<!-- 重置密码 -->
+				<div id="NewPwd" style="display: none;">
+					<input type="password" name="passWord" id="passWord" class="form-control" maxlength="25" placeholder="请输入新密码">
+					<input type="password" name="check_password" id="check_password" class="form-control" maxlength="25" placeholder="请再次输入新密码">
+					<button class="btn btn-primary btn-block" type="button" onclick="resetPwd_tel()">提交</button>
+				</div>
+				<!-- 重置密码成功 -->
+				<div class="text-center" id="reSuccess" style="display: none;"> 
+					<div class="containerInner">
+						<img src="images/Pwd/icon_sucess.png" alt="密码重置成功" />
+					</div>
+					<div class="containerInner">
+						<p>您的密码已修改成功！</p>
+					</div>
+					<div class="containerInner">
+						<p><span id="autoCount">3s</span>为您跳转至登录</p>
+					</div>
+					<div class="containerInner">
+						<button type="button" class="btn btn-primary btn-block" onclick="location.href='login.html'">立即登录</button>
+					</div>
+				</div>
+				<!-- 发送邮件成功 -->
+				<div class="text-center" id="emailSuccess" style="display: none;"> 
+					<div class="containerInner m-10">
+						<img src="images/Pwd/icon_mail.png" alt="邮件发送成功" />
+					</div>
+					<div class="containerInner">
+						<p>找回密码链接已发送至您的邮箱！</p>
+					</div>
+					<div class="">
+						<p>请<a href="javascript:;" target="_blank" id="somemail">登录邮箱</a>查收！</p>
+					</div>
+					<div class="">
+						<p>如果没有收到邮件，您可尝试<a href="javascript:;" onclick="checkEmailAgain();">重新发送邮件</a></p>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>关于我们</h5>
+							<p>南京云问网络技术有限公司是目前中国领先的互联网人工智能技术服务提供商之一。</p>
+							<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=630406961&amp;site=qq&amp;menu=yes" class="btn btn-default" target="_blank">在线客服</a>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>联系我们</h5>
+							<ul>
+								<li><p>南京市江宁区</p></li>
+								<li><p><i class="glyphicon glyphicon-home"></i>胜利路89号紫金研发创业中心3号楼4层</p></li>
+								<li><p><i class="glyphicon glyphicon-envelope"></i>market@FaqRobot.org</p></li>
+								<li><p><i class="glyphicon glyphicon-earphone"></i>025-52208363</p></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>付费版本</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">商用版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">高级版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">专业版本</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>帮助中心</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">新手引入</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">接入网站</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">对接微信</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<div class="yunwen p-t-40 p-b-40">
+					Copyright © 2012 - 2016 南京云问网络技术有限公司 版权所有<br>
+					<a href="http://www.miitbeian.gov.cn" target="_blank">网站备案编号：苏ICP备10216663号</a>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="./assets/login/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="./assets/login/jquery/jquery.placeholder.min.js"></script>
+		<script type="text/javascript" src="./assets/login/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.validate.js"></script>
+		<script type="text/javascript" src="./assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+		<script type="text/javascript" src="./assets/plugins/gritter/js/jquery.gritter.js"></script>
+		<script type="text/javascript" src="web/common/js/security.js"></script>
+		<script type="text/javascript" src="web/common/js/customMethod.js"></script>
+		<!--[if lt IE 9]>
+			<script src="./assets/login/crossbrowserjs/html5shiv.js"></script>
+			<script src="./assets/login/crossbrowserjs/respond.min.js"></script>
+			<script src="./assets/login/crossbrowserjs/excanvas.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="./assets/login/js/retrieve.js"></script>
+	</body>
+</html>

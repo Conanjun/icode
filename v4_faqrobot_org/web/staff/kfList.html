@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>客服管理</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">客服管理</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">客服管理</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="alert alert-warning fade in m-b-15">
+							<strong>友情提示:</strong>
+							未设置接待量的客服默认不限制接待量
+							<span class="close" data-dismiss="alert">×</span>
+						</div>
+						<table class="table" id="userList">
+							<thead>
+								<tr>
+								  <th>用户名</th>
+								  <th>昵称</th>
+								  <th>电话 </th>
+								  <th>邮箱</th>
+								  <th>QQ</th>
+								  <th>角色</th>
+								  <th width="80">接待量</th>
+								  <th width="80">技能组</th>
+								  <th width="60">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">客服设置</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="addUser" class="form-horizontal">
+								<fieldset>
+									<input id="aid" name="id" type="hidden" />
+									<div class="form-group">
+										<label class="col-md-3 control-label">最大接待量 <span class="red"> *</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入最大接待量" id="maxun" class="form-control" name="un" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="10">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">选择技能组 <span class="red"> *</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="pwd" id="pwd">
+											<select>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="subfome();">保存</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+	var llist = [];
+		$(document).ready(function() {
+			App.init();
+			iframeTab.init({iframeBox: ''});
+			//生成列表
+			$.getJSON('../../TurnPeopleGuideConfig/listGroups', function(data){
+				if(data.list && data.list.length > 0) {
+					data.list.forEach(function(el){
+						$('#pwd').append('<option value="'+el.Id+'">'+el.ModelName+'</option>');
+					});
+				}
+			});
+			listUser(1);
+			$('#addUser').on('submit', function(e){
+				e.preventDefault();
+				subfome();
+			});
+		});
+		function subfome(){
+			if($('#maxun').val()) {
+				var dataJSON = {
+					userId: $('#aid').val(),
+					json: '{"count":"'+$('#maxun').val()+'"}',
+					groupId: $('#pwd').val()
+				}
+				$.ajax({
+					type:'post',
+					datatype:'json',
+					cache:false,//不从缓存中去数据
+					url:encodeURI('../../TurnPeopleGuideConfig/addAttributes'),
+					data:dataJSON,
+					success:
+						function(data){
+							if(data.status===0){
+								yunNoty(data);
+								$('#addModal').modal('hide');
+								listUser($('.pagination li.active a').html());
+							}else{
+								yunNoty(data);
+							}
+						}
+				});
+			} else {
+				yunNotyError('请输入最大接待量!');
+			}
+		}
+function listUser(pageNo){
+	if(!pageNo)pageNo=1;
+	$('#userList').tableAjaxLoader2(7);
+	$.ajax({
+		type:'post',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../TurnPeopleGuideConfig/allUserList?pageSize='+10+'&pageNo='+pageNo),
+		data:$('#user_form').serialize(),
+		success:
+			function(data){
+				if(data.status===0){
+					if(data.list===undefined){
+						$('#userList').find('tbody').html('<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空！</td></tr>');
+						$('#pageList').html('');
+						return;
+					}
+					if(data.list.length>0){
+						llist = data.list;
+						var html = "";
+						for(var i=0;i<data.list.length;i++){
+							html += "<tr id=\"list-tr-"+data.list[i].Id+"\">";
+							var name=data.list[i].UserName===null?'':data.list[i].UserName;
+							html += "<td>"+name+"</td>";
+							var nicheng=data.list[i].Name===null?'':data.list[i].Name;
+							html += "<td>"+nicheng+"</td>";
+							var num=data.list[i].TelNum===null?'':data.list[i].TelNum;
+							html += "<td>"+num+"</td>";
+							var email=data.list[i].Email===null?'':data.list[i].Email;
+							html += "<td>"+email+"</td>";
+							var QQ=data.list[i].Qq===null?'':data.list[i].Qq;
+							html += "<td>"+QQ+"</td>";
+							if(data.list[i].RoleName==='' || data.list[i].RoleName===null){
+								html += "<td></td>";
+							}else{
+								html += "<td><span title=\""+data.list[i].RoleName+"\">"+limitstr(data.list[i].RoleName,30)+"</span></td>";
+							}
+							if(data.list[i].ConfigList && data.list[i].ConfigList.length > 0) {
+								var count = 0;
+								var groupName = '';
+								data.list[i].ConfigList.forEach(function(el){
+									if(el.Name == 'count') {
+										count = el.DefaultValue;
+										llist[i].countAAA = el.DefaultValue;
+									} else if(el.Name == 'groupName') {
+										groupName = el.DefaultValue;
+										llist[i].groupNameAAA = el.DefaultValue;
+									}
+								});
+								if(count == 0) {
+									count = '<a rel="'+data.list[i].Id+'" title="编辑" class="m-s" style="color:#707478;text-decoration: none;">未设置</a>'
+								}
+								if(groupName == '') {
+									groupName = '<a rel="'+data.list[i].Id+'" title="编辑" class="m-s" style="color:#707478;text-decoration: none;">未设置</a>'
+								}
+								html += '<td>'+count+'</td><td>'+groupName+'</td>';
+							} else {
+								html += '<td><a rel="'+data.list[i].Id+'" title="编辑" class="m-s" style="color:#707478;text-decoration: none;">未设置</a></td><td><a rel="'+data.list[i].Id+'" title="编辑" class="m-s" style="color:#707478;text-decoration: none;">未设置</a></td>';
+							}
+							html += '<td><a rel="'+data.list[i].Id+'" title="编辑" class="m-snew" style="cursor:pointer;"><i class="glyphicon glyphicon-cog"></i></a></td>';
+							html += "</tr>";
+						}
+						$('#userList').find('tbody').html(html);
+						$('.m-snew').on('click',function(){
+							$('#addModal').modal('show');
+							var index = $(this).parent().parent().index();
+							$('#aid').val($(this).attr('rel'));
+							$('#maxun').val(llist[index].countAAA || '');
+							var idtemp = null;
+							$('#pwd option').each(function(){
+								if($(this).text() == llist[index].groupNameAAA) {
+									idtemp = $(this).val();
+								}
+							});
+							$('#pwd').val(idtemp);
+						});
+						$('.timeTip').tooltip();
+						//下面开始处理分页
+						var options = {
+							data: [data, 'list', 'total'],
+							currentPage: data.currentPage,
+							totalPages: data.totlePages,
+							onPageClicked: function (event, originalEvent, type, page) {
+								listUser(page);
+							}
+						};
+						setPage('pageList',options);
+					}else{
+						$('#userList').find('tbody').html('<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空！</td></tr>');
+						$('#pageList').html('');
+					}
+				}else{
+					yunNoty(data);
+				}
+			}
+	});
+}
+	</script>
+</body>
+</html>

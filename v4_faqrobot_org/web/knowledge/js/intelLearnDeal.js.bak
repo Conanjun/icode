@@ -1,0 +1,1023 @@
+$(document).ready(function() {
+    $('#modal-dialog-ans .ans-textarea').addWordCount(20000);
+    //datetimepicker配置项
+    $(".form_datetime").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy-mm-dd hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        minuteStep: 10,
+        initialDate: new Date(),
+        zIndex: 1500,
+    });
+
+    $('.edit-textarea').addWordCount(200);
+
+    var This = this;
+    var type = 2, //素材类型
+        pageNo = 1, //当前页
+        pageSize = 10, //每页数量
+        orderType = 4,
+        isLeaf = 0,
+        groupId = 0,
+        inQue = '', //搜索的问题
+        isJpage = 0, //是否已实例化jpage
+        delPage = 0, //是否删除jpage
+        solutionId = 0; //问题标识
+
+    //渲染问题详情
+    var search = This.location.search;
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r !== null) return decodeURIComponent(r[2]); return null; //返回参数值
+}
+	solutionId = getUrlParam('solutionId');
+
+    function initSrc() {
+        $('.multCos').iCheck('uncheck');
+        Base.request({
+            url: 'LearnQue/list',
+            params: {
+                type: type,
+                pageNo: pageNo,
+                pageSize: pageSize,
+                orderType: orderType,
+                solutionId: solutionId,
+            },
+            callback: function(data) {
+                if (data.status) {
+                    Base.gritter(data.message, false);
+                } else {
+                    if (!$('.creat')[0]) {
+                        var efftiveTime = '';
+
+                        if (data.answer.TimeLiness == 1) {
+                            if (data.answer.StartTime == null || data.answer.StartTime == null) {
+                                efftiveTime = '未设置';
+                            } else {
+                                efftiveTime = data.answer.StartTime + '&nbsp;—&nbsp;' + data.answer.EndTime;
+                            }
+                        } else {
+                            efftiveTime = '未设置';
+                        }
+
+                        $('.msgCtn').append('<div class="fontLeft">创建者:<span class="creat">' + data.answer[0].Name + '</span>&nbsp;&nbsp;|&nbsp;&nbsp;' + (data.answer[0].GroupName ? '分类:<span class="group" >' + (data.answer[0].GroupName || '') + '</span>&nbsp;&nbsp;|&nbsp;&nbsp;' : '') + '<span>来访者角色：</span><span class="visiterRole" >未设置</span><span>&nbsp;&nbsp;|</span>&nbsp;&nbsp;浏览<span class="hits">' + data.answer[0].Hits + '</span>次&nbsp;&nbsp;|&nbsp;&nbsp;生效时间：<span class="efftiveTime">' + efftiveTime + '</span><span class="time" style="float:right;">' + data.answer[0].AddTime + '</span></div>');
+
+                        $('.queListCtn div').append(data.answer[0].Question);
+                        $('.ansListCtn .msgOuterCtn div:first').before(data.answer[0].Answer);
+
+                        //获取来访者角色
+                        Base.request({
+                            url: 'comb/findSolutionComb',
+                            params: {
+                                id: solutionId,
+                            },
+                            callback: function(data) {
+                                if (data.status) {
+                                    Base.gritter(data.message, false);
+                                } else {
+                                    var rolesArr = [];
+                                    if (data.roles[0]) {
+                                        for (var i = 0; i < data.roles.length; i++) {
+                                            rolesArr.push(data.roles[i].Name);
+                                        }
+                                        $('.visiterRole').text(rolesArr);
+                                    }
+                                    if (rolesArr[0]) {} else {
+                                        $('.visiterRole').prev().remove();
+                                        $('.visiterRole').next().remove();
+                                        $('.visiterRole').remove();
+                                    }
+                                }
+                            },
+                        });
+                    }
+
+                    var html = '';
+                    if (data.List[0]) {
+                        for (var i = 0; i < data.List.length; i++) {
+                            html += '<tr Id="' + data.List[i].Id + '" GroupId="' + data.List[i].GroupId + '" ChatUserId="' + data.List[i].ChatUserId + '" ChatVersion="' + data.List[i].ChatVersion + '"><td><input class="singleCos" type="checkbox"></td><td>' + data.List[i].InQue + '</td><td style="width: 70px;">' + data.List[i].SourceName + '</td><td style="width: 150px;">' + data.List[i].DateTime + '</td><td style="width: 135px;"><a><i class="timeTip look clickBtn glyphicon glyphicon-eye-open" title="查看聊天记录" data-toggle="modal" data-target="#modal-dialog-record"></i><i class="timeTip go clickBtn glyphicon glyphicon-ok" title="通过"></i><i class="timeTip editGo clickBtn glyphicon glyphicon-edit" title="编辑通过" data-toggle="modal" data-target="#modal-dialog-edit"></i><i class="timeTip ans clickBtn glyphicon glyphicon-pencil" title="回答" data-toggle="modal" data-target="#modal-dialog-ans"></i><i class="timeTip ig clickBtn glyphicon glyphicon-eye-close" title="删除"></i></a></td></tr>';
+                        }
+                        var options = {
+                            data: [data, 'List', 'total'],
+                            currentPage: data.currentPage,
+                            totalPages: data.totlePages ? data.totlePages : 1,
+                            alignment: 'right',
+                            onPageClicked: function(event, originalEvent, type, page) {
+                                pageNo = page;
+                                initSrc();
+                            }
+                        };
+                        $('#itemContainer').bootstrapPaginator(options);
+                    } else {
+                        html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前无待处理问题，请换一批问题学习！</td></tr>';
+                        $('#itemContainer').empty();
+                        setTimeout(function() {
+                          var ifT = iframeTab.init({iframeBox: ''});
+                          ifT.closeActIframe('',parent.$('#tabHeader li[data-num="'+getUrlParam('tmpNum')+'"]').attr('data-tab'));
+                        }, 3000);
+                    }
+                    $('.tbody1').empty().append(html);
+                    $('.timeTip').tooltip();
+                    icheckInit();
+                    $('.chats').slimScroll({
+                        height: ($(window).height() - 300) + 'px'
+                    });
+
+                }
+            },
+        });
+    }
+    initSrc();
+
+    //全部忽略事件
+    $('body').on('click', '.go, .ig, .mult-go, .mult-ig', function() {
+        delPage = 1;
+        isJpage = 0;
+
+        if ($(this).is('.go')) { //通过
+            var $tr = $(this).parents('tr'),
+                ids = $tr.attr('Id');
+
+            Base.request({
+                url: 'LearnQue/doPassLearnQue',
+                params: {
+                    ids: ids,
+                    solutionId: solutionId,
+                },
+                callback: function(data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false);
+                    } else {
+                        Base.gritter(data.message, true);
+                        initSrc();
+                    }
+                },
+            });
+        }
+        if ($(this).is('.ig')) { //忽略
+            var $tr = $(this).parents('tr'),
+                ids = $tr.attr('Id');
+
+            Base.request({
+                url: 'LearnQue/doIgnoreQues',
+                params: {
+                    ids: ids,
+                },
+                callback: function(data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false);
+                    } else {
+                        Base.gritter(data.message, true);
+                        initSrc();
+                    }
+                },
+            });
+        }
+        if ($(this).is('.mult-go')) { //批量通过
+            var ids = [];
+
+            $('.singleCos').each(function() {
+                var $tr = $(this).parents('tr'),
+                    id = $tr.attr('Id');
+
+                if ($(this).is(':checked')) {
+                    ids.push(id);
+                }
+            });
+
+            Base.request({
+                url: 'LearnQue/doPassLearnQue',
+                params: {
+                    ids: ids.toString(),
+                    solutionId: solutionId,
+                },
+                callback: function(data) {
+                    if (data.status) {
+                        var msg = data.message;
+                        if (msg == '参数不能为空！') {
+                            msg = '勾选要通过的问题';
+                        }
+                        Base.gritter(msg, false);
+                    } else {
+                        Base.gritter(data.message, true);
+                        initSrc();
+                    }
+                },
+            });
+        }
+        if ($(this).is('.mult-ig')) { //批量忽略
+            var ids = [];
+
+            $('.singleCos').each(function() {
+                var $tr = $(this).parents('tr'),
+                    id = $tr.attr('Id');
+
+                if ($(this).is(':checked')) {
+                    ids.push(id);
+                }
+            });
+
+            Base.request({
+                url: 'LearnQue/doIgnoreQues',
+                params: {
+                    ids: ids.toString(),
+                },
+                callback: function(data) {
+                    if (data.status) {
+                        var msg = data.message;
+                        if (msg == '参数不能为空') {
+                            msg = '勾选要忽略的问题';
+                        }
+                        Base.gritter(msg, false);
+                    } else {
+                        Base.gritter(data.message, true);
+                        initSrc();
+                    }
+                },
+            });
+        }
+    });
+
+    var pageNo1 = 1, //当前页
+        pageSize1 = 10, //每页数量
+        isJpage1 = 0, //是否已实例化jpage
+        startTime = '',
+        endTime = '',
+        content = '',
+        chatUserId = '',
+        chtvs = '';
+
+    //配置模态框
+    $('#modal-dialog-record').on('hidden.bs.modal', function() {
+        $('#clearChatRe').trigger('click');
+    });
+
+    //调出编辑通过
+    $('body').on('click', '.editGo', function() {
+        var $tr = $(this).parents('tr');
+        $('.edit-textarea').attr({
+            id: $tr.attr('id'),
+        }).val($tr.find('td:eq(1)').text());
+    });
+
+    //确认通过
+    $('.edit-ensure').on('click', function() {
+
+        Base.request({
+            url: 'LearnQue/doPassEditQue',
+            params: {
+                solutionId: solutionId,
+                formatQue: $('.edit-textarea').val(),
+                id: $('.edit-textarea').attr('id'),
+            },
+            callback: function(data) {
+                if (data.status) {
+                    Base.gritter(data.message, false);
+                } else {
+                    Base.gritter(data.message, true);
+
+                    isJpage = 0;
+                    initSrc();
+                    $('#modal-dialog-edit').modal('hide');
+                }
+            },
+        });
+    });
+
+    //查看聊天记录
+    $('body').on('click', '.look', function() {
+        var $tr = $(this).parents('tr');
+        startTime = $('input[name=startTime]').val();
+        endTime = $('input[name=endTime]').val();
+        content = $('input[name=content]').val();
+        chatUserId = $tr.attr('ChatUserId');
+        chtvs = $tr.attr('ChatVersion');
+        pageNo1 = 1;
+        isJpage1 = 0;
+        lookChat();
+
+        $('#modal-dialog-record').attr({
+            chatUserId: chatUserId,
+            chtvs: chtvs,
+        });
+    });
+
+    //本次记录
+    $('.bcjl').on('click', function() {
+        startTime = $('input[name=startTime]').val();
+        endTime = $('input[name=endTime]').val();
+        content = $('input[name=content]').val();
+        pageNo1 = 1;
+        isJpage1 = 0;
+        chtvs = $('#modal-dialog-record').attr('chtvs');
+        lookChat();
+    });
+    //全部记录
+    $('.qbjl').on('click', function() {
+        startTime = $('input[name=startTime]').val();
+        endTime = $('input[name=endTime]').val();
+        content = $('input[name=content]').val();
+        pageNo1 = 1;
+        isJpage1 = 0;
+        chtvs = '';
+        lookChat();
+    });
+    //搜索
+    $('#searchChatRe').on('click', function() {
+        startTime = $('input[name=startTime]').val();
+        endTime = $('input[name=endTime]').val();
+        content = $('input[name=content]').val();
+        pageNo1 = 1;
+        isJpage1 = 0;
+        lookChat();
+    });
+    //清空
+    $('#clearChatRe').on('click', function() {
+        $('input[name=startTime]').val('');
+        $('input[name=endTime]').val('');
+        $('input[name=content]').val('');
+    });
+
+    //跳转
+    $('.goPage-addSrc1 a').on('click', function() {
+        $('.holder1').jPages(parseInt($('.goPage-addSrc1 input').val()));
+        return false;
+    });
+
+    //全选
+    $('.goPage-addSrc1 input').on('focus', function() {
+        $(this).select();
+    });
+
+    //查看聊天记录
+    function lookChat() {
+        Base.request({
+            url: 'chatlog/findLog',
+            params: {
+                pageNo: pageNo1,
+                pageSize: pageSize1,
+                startTime: startTime,
+                endTime: endTime,
+                content: content,
+                chatUserId: chatUserId,
+                //chatUserId: '1016739',
+                chtvs: chtvs,
+                //chtvs: '1016739_2016-05-12 15:05:36_45',
+            },
+            callback: function(data) {
+                if (data.status) {
+                    Base.gritter(data.message, false);
+                } else {
+                    var visiterInfo = '';
+                    if (typeof data.userCard != 'undefined' && data.userCard != null) {
+                        if (data.userCard.Name != null) {
+                            visiterInfo = data.userCard.Name + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+                        } else if (data.userCard.UserName != null) {
+                            visiterInfo += data.userCard.Name + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+                        }
+                    }
+                    if (typeof data.chatUser != 'undefined' && data.chatUser != null) {
+                        if (data.chatUser.SysInfo != null) {
+                            visiterInfo += data.chatUser.SysInfo + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+                        }
+                        if (data.chatUser.Broswer != null) {
+                            visiterInfo += data.chatUser.Broswer + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+                        }
+                        if (data.chatUser.Address != null) {
+                            visiterInfo += data.chatUser.Address + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+                        }
+                        if (data.chatUser.HostIp != null) {
+                            visiterInfo += data.chatUser.HostIp;
+                        }
+                    }
+                    $('#visiterForm .visiterInfo').html(visiterInfo + '<button type="button" class="btn btn-primary btn-xs" onclick="$(\'.hideForm\').toggle();">高级查询</button>');
+
+                    var html = '';
+                    if (data.list[0]) {
+                        for (var i = 0; i < data.list.length; i++) {
+                            var reply = data.list[i].Reply,
+                                src = data.list[i].Reply.match(/src=\"([^\"]+)/);
+                            if (src) {
+								reply = '<a href="' + src[1] + '" data-lightbox="gallery">' + (data.list[i].Reply || '　') + '</a>';
+							}
+							if(data.list[i].Question){
+							html += '<li class="right"><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">访客</a><a class="image"><img src="../common/images/user.png" alt=""></a><div class="message">' + (data.list[i].Question || '　') + '</div></li>';}
+							if(reply){
+							html +='<li class="left"><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">机器人</a><a class="image"><img src="../common/images/robot.png" alt=""></a><div class="message">' + reply + '</div></li>';
+							}
+                        }
+
+                        var options = {
+                            currentPage: data.currentPage,
+                            totalPages: data.totlePages ? data.totlePages : 1,
+                            alignment: 'right',
+                            onPageClicked: function(event, originalEvent, type, page) {
+                                pageNo1 = page;
+                                lookChat();
+                            }
+                        };
+                        $('#itemContainer1').bootstrapPaginator(options);
+                    } else {
+                        html += '<td colspan="7" style="text-align:center; display: block; margin: 0 auto;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                        $('#itemContainer1').empty();
+                    }
+                    $('.chats').empty().append(html);
+                    $('.timeTip').tooltip();
+                    icheckInit();
+                    $('#chatLogList').slimScroll({
+                        height: ($(window).height() - 300) + 'px'
+                    });
+
+
+
+                }
+            },
+        });
+    }
+    //ENTER
+    $(document).on('keyup', function(e) {
+        var $activeEl = $(document.activeElement);
+
+        if ($activeEl.is('.tipsearch') && (e.keyCode == 13 || e.keyCode == 108)) {
+            $('#searchChatRe').trigger('click');
+        }
+        if ($activeEl.is('.search-input-addSrc2') && (e.keyCode == 13 || e.keyCode == 108)) {
+            $('.btnSearch2').trigger('click');
+        }
+    });
+
+    //全选
+    $('body').on('ifChecked', '.multCos', function() {
+        $('.singleCos').iCheck('check');
+    });
+    //全不选
+    $('body').on('ifUnchecked', '.multCos', function() {
+        $('.singleCos').iCheck('uncheck');
+    });
+
+    //跳转
+    $('.goPage-addSrc a').on('click', function() {
+        $('.holder').jPages(parseInt($('.goPage-addSrc input').val()));
+        return false;
+    });
+
+    //全选文本
+    $('.goPage-addSrc input').on('focus', function() {
+        $(this).select();
+    });
+
+    //排序
+    $('.sort1').on('click', function() { //默认
+        $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+        orderType = 3;
+        pageNo = 1;
+        initSrc();
+    });
+    $('.sort2').on('click', function() { //时间正序
+        $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+        orderType = 3;
+        pageNo = 1;
+        initSrc();
+    });
+    $('.sort3').on('click', function() { //时间倒序
+        $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+        orderType = 4;
+        pageNo = 1;
+        initSrc();
+    });
+
+    var pageNo2 = 1, //当前页
+        pageSize2 = 5, //每页数量
+        isJpage2 = 0, //是否已实例化jpage
+        groupId = 0,
+        solutionId2 = 0,
+        isLeaf = 1,
+        answer = '',
+        question = '',
+        status = 0,
+        level = 1,
+        ids = 0,
+        queryStr = '?question=';
+
+    $('.fromCtn').add('.textareaCtn').hide();
+
+    //回答
+    function ansQue() {
+        Base.request({
+            url: 'question/listAns' + queryStr + answer + $('.search-input-addSrc2').val(),
+            params: {
+                pageNo: pageNo2,
+                pageSize: pageSize2,
+                groupId: groupId,
+                isLeaf: isLeaf,
+                status: status,
+                level: level,
+            },
+            callback: function(data) {
+                if (data.status) {
+                    Base.gritter(data.message, false);
+                } else {
+                    var html = '';
+                    if (data.ListQue[0]) {
+                        for (var i = 0; i < data.ListQue.length; i++) {
+                            html += '<tr Id="' + (data.ListQue[i].Id || '') + '"  SolutionId="' + (data.ListQue[i].SolutionId || '') + '"><td style="text-align: center;"><input class="singleAnsCos" type="radio" name="ansQue"></td><td class="cosInput"><div class="minheight" style="max-width: 300px;">' + (data.ListQue[i].Answer || '') + '</div></td><td class="minwidth95 cosInput">' + (data.ListQue[i].Time || '') + '</td></tr>';
+                        }
+
+                        var options = {
+                            currentPage: data.currentPage,
+                            totalPages: data.totlePages ? data.totlePages : 1,
+                            alignment: 'right',
+                            onPageClicked: function(event, originalEvent, type, page) {
+                                pageNo2 = page;
+                                ansQue();
+                            }
+                        };
+                        $('#itemContainer2').bootstrapPaginator(options);
+                    } else {
+                        html += '<td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                        $('#itemContainer2').empty();
+                    }
+                    $('.tbody2').empty().append(html);
+                    $('.timeTip').tooltip();
+                    icheckInit();
+                    $('.minheight').each(function() {
+                        var height = $(this).height;
+                        if (height > 100) {
+                            height = 100;
+                        }
+                        $('.minheight').slimScroll({
+                            height: height,
+                        });
+                    })
+                    $('.slimScrollBar').hide();
+                }
+            },
+        });
+    }
+
+    // 点击td自动选中input
+    $('body').on('click', '.cosInput', function() {
+        $(this).parents('tr').find('input').iCheck('check');
+    })
+
+    //问题
+    function queQue() {
+        Base.request({
+            url: 'question/listQue',
+            params: {
+                pageNo: pageNo2,
+                pageSize: pageSize2,
+                groupId: groupId,
+                isLeaf: isLeaf,
+                question: question,
+            },
+            callback: function(data) {
+                if (data.status) {
+                    Base.gritter(data.message, false);
+                } else {
+                    var html = '';
+                    if (data.ListQue[0]) {
+                        for (var i = 0; i < data.ListQue.length; i++) {
+                            html += '<tr Id="' + (data.ListQue[i].Id || '') + '"  SolutionId="' + (data.ListQue[i].SolutionId || '') + '"><td><input class="singleAnsCos" type="radio" name="ansQue"></td><td class="cosInput">' + (data.ListQue[i].Question || '') + '</td><td class="cosInput">' + (data.ListQue[i].Time || '') + '</td></tr>';
+                        }
+
+                        var options = {
+                            currentPage: data.currentPage,
+                            totalPages: data.totlePages ? data.totlePages : 1,
+                            alignment: 'right',
+                            onPageClicked: function(event, originalEvent, type, page) {
+                                pageNo2 = page;
+                                queQue();
+                            }
+                        };
+                        $('#itemContainer2').bootstrapPaginator(options);
+                    } else {
+                        html += '<td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>';
+                        $('#itemContainer2').empty();
+                    }
+                    $('.tbody2').empty().append(html);
+                    $('.timeTip').tooltip();
+                    icheckInit();
+
+
+                }
+            },
+        });
+    }
+
+    //调出回答
+    $('body').on('click', '.ans', function() {
+        var treeObj = $.fn.zTree.getZTreeObj("ztree2");
+        //treeObj.expandAll(false);
+
+        var $tr = $(this).parents('tr'),
+            answer1 = $tr.find('td:eq(1)').text();
+
+        ids = $tr.attr('id');
+        $('input[name=ansQueInput]').val(answer1);
+        answer = '';
+        ansQue();
+    });
+
+    var RoleName = [],
+        CombIds = [],
+        role = false;
+
+    //确认回答
+    $('.justAns').add('.ansAndLearn').on('click', function() {
+        if ($(this).is('.justAns')) { //仅回答
+            learnFlag = 0;
+        }
+        if ($(this).is('.ansAndLearn')) { //回答并学习
+            learnFlag = 1;
+        }
+
+        $('.singleAnsCos').each(function() {
+            if ($(this).prop('checked')) {
+                solutionId2 = $(this).parents('tr').attr('solutionId');
+            }
+        });
+
+        answer = $('input[name=ansQueInput]').val();
+
+        if (role) { //可选择来访者角色
+            var roleIds1 = '';
+            $('.changeChannel').each(function() {
+                if (+$(this).attr('go')) {
+                    roleIds1 += $(this).attr('diccode') + ',';
+                }
+            });
+            if (roleIds1) {
+                roleIds1 = roleIds1.substring(0, roleIds1.length - 1);
+            } else {
+                roleIds1 = '-1';
+            }
+            CombIds = []
+            CombIds = CombIds.join(',');
+            if (!CombIds) {
+                CombIds = '-1';
+            }
+            if (groupId || learnFlag === 0) {
+                Base.request({
+                    url: 'LearnQue/doFixByNewAnswer',
+                    params: {
+                        fixMode: 4,
+                        ids: ids,
+                        answer: $('.ans-textarea').val(),
+                        learnFlag: learnFlag,
+                        groupId: groupId,
+                        formatQue: answer,
+                        effectiveRules: '[{"type":1,"roleIds":"' + roleIds1 + '"},{"type":2,"roleIds":"' + CombIds + '"}]',
+                    },
+                    callback: function(data) {
+                        if (data.status) {
+                            Base.gritter(data.message, false);
+                        } else {
+                            Base.gritter(data.message, true);
+                            $('#modal-dialog-ans').modal('hide');
+                            groupId = 0;
+                            $('.ans-textarea').val();
+                            initSrc();
+                        }
+                    },
+                });
+            } else {
+                Base.gritter('请选择一个分类', false);
+            }
+        } else { //不可选择来访者角色
+            Base.request({
+                url: 'LearnQue/doFixByOtherAnswer',
+                params: {
+                    fixMode: 3,
+                    ids: ids,
+                    formatQue: answer,
+                    learnFlag: learnFlag,
+                    groupId: groupId,
+                    solutionId: solutionId2,
+                },
+                callback: function(data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false);
+                    } else {
+                        Base.gritter(data.message, true);
+                        $('#modal-dialog-ans').modal('hide');
+                        groupId = 0;
+                        initSrc();
+                    }
+                },
+            });
+        }
+    });
+
+    $('#modal-dialog-ans').on('hidden.bs.modal', function(e) {
+        groupId = 0;
+        $('.search-input-addSrc2').val('');
+        $('a[href=#nav-pills-tab-1]').trigger('click');
+        $('a[href=#nav-pills-tab-1]').parent().addClass('active').siblings().removeClass('active');
+        $('.ans-textarea').val('');
+
+        //重置生效渠道
+        $('.changeChannel').each(function() {
+            $(this).removeClass('btn-primary').attr('go', '0');
+        });
+    })
+
+    //合并回答
+    $('.ansOneTime').on('click', function() {
+        $('#modal-dialog-ans').modal('show');
+        ids = [];
+        var answer1 = [];
+        $('.singleCos').each(function() {
+            var $tr = $(this).parents('tr'),
+                id = $tr.attr('Id');
+
+            if ($(this).is(':checked')) {
+                ids.push(id);
+                answer1.push($tr.find('td:eq(1)').text());
+            }
+        });
+
+        ids = ids.toString();
+        $('input[name=ansQueInput]').val(answer1);
+        answer = '';
+        ansQue();
+
+    });
+
+    //回答页面搜索
+    $('.btnSearch2').on('click', function() {
+        question = $('.search-input-addSrc2').val();
+        pageNo2 = 1;
+
+        if ($('.sort2_0')[0].style.display == 'none') {
+            queQue();
+        } else {
+            ansQue();
+        }
+    });
+    //问题、答案搜索 queryStr
+    $('.sort2_1').on('click', function() {
+        $('.sort2_0').html($(this).text() + '<span class="caret"></span>');
+        queryStr = '?question=';
+    });
+    $('.sort2_2').on('click', function() {
+        $('.sort2_0').html($(this).text() + '<span class="caret"></span>');
+        queryStr = '?answer=';
+    });
+
+    $('.fromCtn').hide();
+    $('.hideCtn').show();
+    $('.showCtn').hide();
+
+    //切换列表
+    $('a[href=#nav-pills-tab-1]').on('click', function() {
+        role = false;
+        $('.fromCtn').hide();
+        $('.hideCtn').show();
+        $('.showCtn').hide();
+        $('.sort2_0').show();
+        $('#gggggggg').html('答案');
+        pageNo2 = 1;
+        ansQue();
+    });
+    $('a[href=#nav-pills-tab-2]').on('click', function() {
+        role = true;
+        $('.fromCtn').show();
+        $('.hideCtn').hide();
+        $('.showCtn').show();
+    });
+    $('a[href=#nav-pills-tab-3]').on('click', function() {
+        role = false;
+        $('.fromCtn').hide();
+        $('.hideCtn').show();
+        $('.showCtn').hide();
+        $('.sort2_0').hide();
+        $('#gggggggg').html('问题');
+        pageNo2 = 1;
+        queQue();
+    });
+
+    //跳转
+    $('.goPage-addSrc2 a').on('click', function() {
+        $('.holder2').jPages(parseInt($('.goPage-addSrc2 input').val()));
+        return false;
+    });
+
+    //全选文本
+    $('.goPage-addSrc input').on('focus', function() {
+        $(this).select();
+    });
+
+    var setting2 = {
+        data: {
+            simpleData: {
+                enable: true,
+            },
+        },
+        view: { //不显示图标
+            showIcon: false
+        },
+        check: {
+            //enable: true,
+        },
+        callback: {
+            onClick: function(event, treeId, treeNode) {
+                $('.closeAll2').trigger('click');
+                groupId = treeNode.id - 1;
+                isJpage2 = 0;
+                ansQue();
+                $('#ztree2').fadeOut();
+                $('.selectQue').html(treeNode.name);
+            },
+        }
+    };
+
+
+    var setting3 = {
+        data: {
+            simpleData: {
+                enable: true,
+            },
+        },
+        view: { //不显示图标
+            showIcon: false
+        },
+        check: {
+            enable: true,
+        },
+        callback: {
+            onCheck: function(event, treeId, treeNode) {
+                RoleName = [];
+                CombIds = [];
+
+                var treeObj3 = $.fn.zTree.getZTreeObj("ztree3");
+                var nodes3 = treeObj3.getCheckedNodes(true);
+
+                for (var i = 0; i < nodes3.length; i++) {
+                    RoleName.push(nodes3[i].name);
+                    CombIds.push(nodes3[i].id);
+                }
+                $('.roleInput').attr({
+                    title: RoleName,
+                }).val(RoleName);
+            },
+        }
+    };
+
+    //获取问题分类
+    Base.request({
+        url: 'classes/listClasses',
+        params: {
+            m: 0,
+        },
+        callback: function(data) {
+            if (data.status) {
+                Base.gritter(data.message, false);
+            } else {
+                var html = '';
+                if (data.list[0]) {
+                    var formatData = [],
+                        len = data.list.length;
+
+                    for (var key in data.list) {
+                        formatData[key] = {};
+                        formatData[key]['name'] = data.list[key]['Name'];
+                        formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+                        formatData[key]['id'] = data.list[key]['Id'] + 1;
+                    }
+
+                    formatData[len] = {};
+                    formatData[len]['name'] = '全部分类';
+                    formatData[len]['pId'] = 0;
+                    formatData[len]['id'] = 1;
+                    formatData[len]['open'] = true;
+
+
+                    $.fn.zTree.init($("#ztree2"), setting2, formatData);
+                } else {
+
+                }
+
+            }
+        },
+    });
+
+    //获取来访者角色分类
+    Base.request({
+        url: 'comb/loadCombs',
+        params: {
+            m: 0,
+        },
+        callback: function(data) {
+            if (data.status) {
+                Base.gritter(data.message, false);
+            } else {
+                var html = '';
+                if (data.list[0]) {
+                    var formatData = [],
+                        len = data.list.length;
+
+                    for (var key in data.list) {
+                        formatData[key] = {};
+                        formatData[key]['name'] = data.list[key]['Name'];
+                        formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+                        formatData[key]['id'] = data.list[key]['Id'] + 1;
+                    }
+
+                    formatData[len] = {};
+                    formatData[len]['name'] = '全部角色';
+                    formatData[len]['pId'] = 0;
+                    formatData[len]['id'] = 1;
+
+
+                    $.fn.zTree.init($("#ztree3"), setting3, formatData);
+
+                } else {
+
+                }
+
+            }
+        },
+    });
+
+    // 显隐分类
+    $('body').on('click', function(e) {
+        if ($(e.target).is('.selectQue')){// || $(e.target).hasClass('switch')) {
+            $('#ztree2').fadeIn();
+            $('#ztree2 li:first').slimScroll({
+                height: '300px',
+            });
+        } else {
+            $('#ztree2').fadeOut();
+        }
+    });
+
+    //展开所有
+    $('.openAll2').on('click', function() {
+        var treeObj2 = $.fn.zTree.getZTreeObj("ztree2");
+        treeObj2.expandAll(true);
+    });
+    //折叠所有
+    $('.closeAll2').on('click', function() {
+        var treeObj2 = $.fn.zTree.getZTreeObj("ztree2");
+        treeObj2.expandAll(false);
+    });
+
+    //展开所有
+    $('.openAll3').on('click', function() {
+        var treeObj3 = $.fn.zTree.getZTreeObj("ztree3");
+        treeObj3.expandAll(true);
+    });
+    //折叠所有
+    $('.closeAll3').on('click', function() {
+        var treeObj3 = $.fn.zTree.getZTreeObj("ztree3");
+        treeObj3.expandAll(false);
+    });
+    $('#ztree2').on('click', function(e) {
+        e.stopPropagation();
+    });
+
+    //获取生效渠道
+    Base.request({
+        url: 'Configuration/listItem',
+        params: {},
+        callback: function(data) {
+            if (data.status) {
+                Base.gritter(data.message, false);
+            } else {
+                //生效渠道
+                if (data.listItem[0].IsDisplay) { //不展示
+                    $('.channelCtn').remove();
+                } else {
+                    var html = '';
+                    if (data.listItem[0].DicList) {
+                        for (var i = 0; i < data.listItem[0].DicList.length; i++) {
+                            html += '<a href="javascript:;" class="btn btn-sm btn-white changeChannel" DicCode="' + data.listItem[0].DicList[i].DicCode + '" go="0" style="margin: 2px;">' + data.listItem[0].DicList[i].DicDesc + '</a>';
+                        }
+                    }
+                    $('.channel').append(html);
+                }
+
+                //生效角色
+                if (data.listItem[1].IsDisplay) { //不展示
+                    $('.roleCtn').remove();
+                }
+
+            }
+        },
+    });
+    //切换选择渠道
+    $('body').on('click', '.changeChannel', function() {
+        if (+($(this).attr('go'))) { //1
+            $(this).attr('go', '0');
+            $(this).removeClass('btn-primary');
+        } else {
+            $(this).attr('go', '1');
+            $(this).addClass('btn-primary');
+        }
+    });
+
+
+});

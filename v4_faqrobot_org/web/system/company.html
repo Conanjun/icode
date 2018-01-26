@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>企业信息</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">企业信息</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">企业信息</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<form method="POST" class="form-horizontal" id="company_form">
+							<fieldset>
+								<legend>修改企业信息</legend>
+								<div class="form-group">
+									<label class="control-label col-md-1">企业名称<span class="red">&nbsp;*</span></label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入企业名称" class="form-control" name="webName" id="company" maxlength="200">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">网址<span class="red">&nbsp;*</span></label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入网址" class="form-control" name="webSite" id="url" value="http://">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">电话</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入电话" class="form-control" name="tel" id="tel" maxlength="20">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">企业地址</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入企业地址" class="form-control" name="address" id="adress">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">企业简介</label>
+									<div class="col-md-7">
+										<textarea type="text" placeholder="请输入企业简介" class="" name="info" id="intro" maxlength="200"></textarea>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">营业时间</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入营业时间" class="form-control" name="openTime" id="openTime">
+									</div>
+								</div>
+								<input type="hidden" name="id" id="companyhid">
+								<div class="form-group">
+									<div class="col-md-offset-1 col-md-7">
+										<button class="btn btn-primary" type="submit">保存</button>
+										<button onclick="clearinput()" class="btn btn-white" type="button">取消</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			setInterval(function() {
+				if($('.edui-editor').css('position') != 'absolute') {
+					$('.edui-editor').css('width', 'auto');
+				}
+        if($('#edui1_iframeholder').css('width') != 'auto') {
+          $('#edui1_iframeholder').css('width', 'auto');
+        }
+			},1000);
+			getInfo();
+        	$('#company').addWordCount(200);
+			//表单验证
+			$('#company_form').validate({
+				rules:{
+					webName:{
+						required:true,
+					},
+					webSite:{
+						required:true,
+						url:true
+					},
+					tel:{
+						isTel:true
+					},
+					address:{
+						maxlength:150
+					},
+					info:{
+						maxlength:200
+					}
+				},
+				messages:{
+					webName:{
+						required:"请输入您的企业名称！",
+					},
+					webSite:{
+						required:"请输入您的企业网址！",
+						url:"请输入完整的正确网址，例如 http://www.faqrobot.org！"
+					},
+					tel:{
+						isTel:"请正确填写您的电话！"
+					},
+					address:{
+						maxlength:"请输入不多于150个字符！"
+					},
+					info:{
+						maxlength:"请输入不多于200个字符！"
+					}
+				},
+				submitHandler: Add
+			});
+		});
+
+		UE.getEditor('intro', {
+			toolbars: [
+				['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+			],
+			//initialFrameWidth: $('#intro').width(),
+			initialFrameHeight: 240,
+			wordCount:true,
+			maximumWords: 200
+		});
+		var flag_add=false;
+		function Add(){
+			if(UE.getEditor('intro').getContent().length > 200) {
+				yunNotyError('企业简介请输入不多于200个字符！');
+				return false;
+			}
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../company/editCompanyInfo'),
+				data:$("#company_form").serialize(),
+				success:
+				function(data){
+					flag_add=false;
+					if(data.status==0){
+						yunNoty(data);
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function clearinput(){
+			var id = $('#companyhid').val();
+			$('#company_form').find('input').val('');
+			UE.getEditor('intro').setContent('');
+			$('#companyhid').val(id);
+		}
+
+		function getInfo(){
+			$.getJSON("../../company/getCompany", function(data){
+				if(data.status==0){
+					$('#companyhid').val(data.company.Id);
+					$('#company').val(data.company.WebName);
+					$('#url').val(data.company.WebSite);
+					$('#tel').val(data.company.Tel);
+					$('#adress').val(data.company.Address);
+					$('#openTime').val(data.company.OpenTime);
+					UE.getEditor('intro').ready( function() {
+					UE.getEditor('intro').setContent(data.company.Info);
+					});
+				} else if (data.status==-1){
+					data.clallback=function(){
+						top.location.href="../../login.html";
+					};
+					data.timeout=1500;
+					yunNoty(data);
+				}
+				else{
+					yunNoty(data);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>  
+<head>
+<meta charset="utf-8">
+    <title>FaqRobot智能问答机器人</title>
+	<link href="skin/fees4/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="skin/fees4/css/style.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="css/jquery.autocomplete.css" rel="stylesheet">
+    <link href="css/nanoscroller.css" rel="stylesheet">
+    <link href="skin/fees4/css/toastr.css" rel="stylesheet">
+	<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="js/jquery.nanoscroller.js"></script>
+    <script src="skin/fees4/js/toastr.min.js"></script>
+	<script src="skin/fees4/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="skin/fees4/js/jquery.autocomplete.js"></script>
+    <script src="skin/fees4/js/jquery.faqrobot.dev.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  </head>
+  <body>
+    <div class="modal-shiftfix">
+      <div class="container-fluid main-content">
+        <!-- Statistics -->
+        <div class="row">
+          <!-- Conversation -->
+          <div class="col-lg-12">
+            <div class="widget-container scrollable chat chat-page" >
+              <div class="contact-list">
+                <div class="tabbable" id="tabs-604718">
+				<ul class="nav nav-tabs">
+					<li style="width:144px;">
+						<a href="#panel-895617" data-toggle="tab">快捷服务</a>
+					</li>
+					<li class="active"  style="width:129px;">
+						<a href="#topQuestionDiv" data-toggle="tab">热点问题</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane " id="panel-895617">
+                    	<div style="padding:5px;">
+						    <a href="javascript:" title="意见反馈" onClick="dialog(500,430); return false;"><img src="skin/fees4/images/fade.png"></a>
+                        </div>
+					</div>
+					<div class="tab-pane active" id="topQuestionDiv">
+						
+					</div>
+				</div>
+			</div>
+              </div>
+              <div class="heading">
+                <img src="skin/fees4/images/logo.png" id="weblogo">
+              </div>
+              <div class="widget-content padded nano" id="chatDiv">
+                <div class="content" style="padding:20px; overflow-y: visible;"> 
+                     <ul id="left_content"></ul>
+                </div>
+              </div>
+              <div class="post-message">
+              	<p style="margin-bottom:5px; text-align:right;">您还可以输入<span id="wordremain" style="color:#F00">100</span>个字符   <span id="clearScreen"><img src="skin/fees4/images/del.png">&nbsp;清空记录</span></p>
+                <input type="text" oldvalue="请输入您要咨询的内容" class="form-control" id="text-in" maxlength="100"><input type="button" value="发送" id="inputPR">
+                <p style="margin-bottom:0px; text-align:center; font-size:12px;" id="advFaqrobot">对机器人感兴趣，请百度<a href="http://www.faqrobot.org" target="_blank">FaqRobot智能问答机器人</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+<div class="fadeBackModal"></div>
+<div class="fadeBackContent" >
+      <div id="head_bg"></div>
+      <form >
+    <div id="pingjia" style="margin-left:40px;">
+          <p><strong>请您对刚才的服务沟通进行评价:</strong></p>
+          <div class="rad fontColor" >
+        <input type="radio" name="level" checked="checked" value="1" class="rdoGood">
+        送鲜花
+        <input type="radio" name="level"  value="0" style="margin-left:100px;" class="rdoBad">
+        拍板砖 </div>
+        </div>
+    <div class="hid" id="hid" style="display:none">
+          <p><strong>您不满意的原因是？</strong></p>
+          <div class="fade fontColor">
+        <input type="checkbox" name="reason[]"  value="回答不准确" >
+        回答不准确
+        <input type="checkbox" name="reason[]"  value=" 答非所问" style="margin-left:50px;">
+        答非所问
+        <input type="checkbox" name="reason[]"  value="机器人骂人" style="margin-left:50px;">
+        机器人骂人 </div>
+          <div style=" margin-left: 35px;">
+        <label class="contTitle fontColor">为了更好的为您服务，请输入您的宝贵意见！</label>
+        <br>
+        <textarea name="content" id="cont"></textarea>
+      </div>
+          <input type="hidden" name="sub">
+        </div>
+    	<div id="send">
+          <input type="button"  value="发送" id="fadeBackId" />
+          <input type="button"  value="取消" class="modalclose" style="margin-left:5px;" />
+        </div>
+  </form>
+    </div>
+<script type="text/javascript">
+
+	 var opts = {
+		"closeButton": true,
+		"debug": false,
+		"toastClass": "black",
+		"onclick": null,
+		"showDuration": "100",
+		"hideDuration": "1000",
+		"timeOut": "5000",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	};
+
+	var s_tspan=3;//主动请求的时间间隔
+	var s_state=0;//聊天的状态
+	var baseUrl= 'http://127.0.0.1:10098/robot/';
+	baseUrl= '../';
+	var s_q_url="";//问题的url
+	var s_a_url="";//获取相关问题答案的url地址
+	var s_sysNum="";
+	var hkey = "Enter";//hotKey
+	var t_count=0;//运行的代理的次数
+	var dt;//定时器
+	var robotName='FAQRobot';
+	
+	var robot_name = "faqrobot机器人";
+    var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'topQuestionDiv',
+        sendBtn:'inputPR',
+        inputMsgArea:'text-in',
+		inputMagOldvalue:"请输入您要咨询的内容",
+		fadeBackId:'fadeBackId',
+		wordremain:'wordremain',
+		clearScreen:'clearScreen',
+        logoUrl:"skin/fees4/images/logo.png",
+		logoDiv:"weblogo",
+		kfUrl:'skin/fees4/images/avatar-male.jpg',
+		khUrl:'skin/fees4/images/avatar-female.jpg',
+		sourceId:0
+	};
+    $(document).ready(function() {
+       $("#text-in").faqrobot(10000,option);
+		getHeight();
+    });
+	
+	function getHeight(){
+		var height = (window.innerHeight || document.documentElement.clientHeight) || document.body.clientHeight;
+	    document.getElementById('chatDiv').style.height = height -188+ "px";
+
+	}
+	window.onresize=function(){
+		getHeight();
+	}
+	//获取聊天的时间
+function getTime(){
+		var now= new Date();
+		var year=now.getFullYear();
+		var month=now.getMonth()+1;
+		var day=now.getDate();
+		var hour=now.getHours();
+		var minute=now.getMinutes();
+		var second=now.getSeconds();
+		return year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+}
+ function dialog(width,height){
+		$(".hid").hide();
+        $(".fadeBackModal").css({display:"block",width:$(document).width()+"px",height:$(document).height()+"px",top:0,left:0});
+        $(".fadeBackContent .modalclose").click(function(){
+            $(".fadeBackModal").animate({opacity:"0.15"},"normal",function(){$(this).hide();});
+            $(".fadeBackContent").animate({top:($(document).scrollTop()-(height=="auto"?300:parseInt(height)))+"px"},"normal",function(){$(this).hide();});
+        });
+        $(".fadeBackModal").animate({opacity:"0.5"},"normal");
+        $(".fadeBackContent").show();
+
+        $(".fadeBackContent").css({left:(($(document).width())/2-(parseInt(width)/2))+"px",top:($(document).scrollTop()-(height=="auto"?300:parseInt(height)))+"px",width:width});
+        $(".fadeBackContent").animate({top:($(document).scrollTop()+50)+"px"},"normal");
+    }
+//意见反馈
+    $(".rdoGood").click(function(){
+        $(".hid").hide();
+    })
+    $(".rdoBad").click(function(){
+        $(".hid").show();
+    })
+</script>
+
+  </body>
+</html>

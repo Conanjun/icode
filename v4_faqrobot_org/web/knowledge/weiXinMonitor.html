@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+	<title>监控列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	
+	<style type="text/css">
+		.panel-body{
+			overflow: hidden;
+		}
+		#left{
+			float:left;
+			width: 20%;
+			border-right: 1px solid #dfdfdf;
+			margin-top: 10px;
+		}
+		#right{
+			float:left;
+			width: 80%;
+		}
+		.hr1{
+			width: 90%;
+			margin: 0 auto;
+		}
+		#head{
+		    font-size: 13px;
+		    font-weight: bold;
+		    color: #333;
+		    padding-left: 20px;
+		    padding-bottom: 10px;
+		}
+		#questionName{
+			font-size: 20px;
+			color: #666666;
+			margin-left: 18px;
+    		margin-bottom: 10px;
+		}
+		.hr2{
+			width: 97.5%;
+			margin: 0 auto;
+		}
+		#question{
+			width: 97.5%;
+			margin: 0 auto;
+		}
+		#crux{
+			width: 100%;
+			overflow: hidden;
+		}
+		.cruxText{
+			width: 100%;
+			overflow: hidden;
+			margin: 0 auto;
+		}
+		.cruxText:hover{
+			background-color: #EFF4F5;
+		}
+		.num{
+		    background-color: #FF595F;
+		    float: right;
+		    margin-right: 25px;
+		    margin-top: 7px;
+		    padding: 2px 12px;
+		    color: white;
+		    font-weight: bold;
+		    border-radius: 16px;
+		}
+		.crux{
+			float: left;
+		    font-size: 16px;
+		    padding: 8px 0px;
+	        margin-left: 17px;
+		}
+		.left{
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+		}
+		.time{
+			width: 100%;
+			text-align: center;
+		    margin-bottom: 15px;
+		}
+		.right{
+			margin-top:15px;
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+		}
+		.leftImg{
+			float: left;
+		}
+		.rightImg{
+			float: right;
+		}
+		.leftChat{
+			max-width: 200px;
+			padding: 7px 5px;
+			float: left;
+			margin-top: 10px;
+			margin-left: 5px;
+			border-radius:3px;
+			border:1px solid #dfdfdf;
+		}
+		.rightChat{
+			max-width: 200px;
+			padding: 7px 5px;
+			float: right;
+			margin-top: 10px;
+			margin-left: 5px;
+			border-radius:3px;
+			border:1px solid #dfdfdf;
+		}
+		.itemLeft{
+			float: left;
+		}
+		.itemRight{
+			float: right;
+		}
+		.robot{
+			position: absolute;
+		    margin-top: -15px;
+		    margin-left: 9px;
+		}
+		.tourist{
+			margin-top: -15px;
+		    margin-right: -74px;
+		    float: right;
+		}
+		.chatCtn{
+		    max-height: 100px;
+    		overflow: auto;
+		}
+	</style>
+  </head>
+  
+ <body class="pace-done">
+ 
+ 		
+ 	<div class="modal" id="modal-dialog-record">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">聊天记录</h4>
+                </div>
+                <div class="modal-body" style="padding: 5px 15px;">
+
+                    <div class="chatCtn" style="margin-bottom: 24px;">
+                        <div class="chats">
+							<div class="left">
+								<div class="time">2017-6-21 15:41:06</div>
+								<img class="leftImg" src="images/kfimg.png"/>
+								<div class="leftChat">你好</div>
+								<div class="robot">机器人</div>
+							</div>
+							<div class="right">
+								<div class="time">2017-6-21 15:41:06</div>
+								<img class="rightImg" src="images/khimg.png"/>
+								<div class="rightChat">你好</div>
+								<div class="tourist">我</div>
+							</div>
+                        </div>
+                        
+                        <div id="itemContainerPageList"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer" style="margin-top: -25px;">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+ 
+ 
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">监控列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">监控列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div id="left">
+							<div id="head">关键词</div>
+							<hr style="height:1px;border:none;border-top:1px solid #dfdfdf;" class="hr1"/>
+							<div id="crux">
+								<div class="cruxText">
+									<div class="crux">云问</div>
+									<div class="num">3</div>
+								</div>
+							</div>
+						</div>
+						<div id="right">
+							<div id="questionName">#云问 3条</div>
+							<hr style="height:1px;border:none;border-top:1px solid #dfdfdf;" class="hr2"/>
+							<div id="question">
+							<table class="table" id="questionTabList">
+							<thead>
+								<tr>
+									<th style="width:20%;">关键词问题</th>
+									<th style="width:20%;">微信群名</th>
+									<th style="width:20%;">微信昵称</th>
+									<th style="width:20%;">时间</th>
+									<th style="width:20%;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="questionTabBody">
+								<tr>
+									<td>云问是做什么的？</td>
+									<td>云问.NSDQ</td>
+									<td>小王</td>
+									<td>2017-6-13 13:51</td>
+									<td>
+										<a data-toggle="modal" href="#modal-dialog-record" id="record">
+											<span>查看聊天记录</span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="js/jquery.scrollTo.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+		
+			 //chats调用滚动条插件
+			var chats_scrollbar = $('.chats').scrollbar({
+			    'autoBottom': false,//内容改变，是否自动滚动到底部
+			});
+			
+		
+			$.post("",function(json){   //关键词列表
+				
+				if(json.status==0){
+					var renderTo=$("#crux");
+					$("#crux").html("");
+					$(json.List).each(function(i,t){
+						var cruxText=$("<div class='cruxText'></div>").appendTo(renderTo);
+						var crux=$("<div class='crux'></div>").text("云问").appendTo(cruxText);
+						var num=$("<div class='num'></div>").text("3").appendTo(cruxText);
+						cruxText.data("cruxId",cruxId);
+						$(cruxText).click(function(){  //关键字点击事件
+							var cruxId=$(this).data("cruxId");
+							$.post("",{
+									id:cruxId
+								},function(json){
+									var renderTo=$("#questionTabBody");
+									$("#questionTabBody").html("");
+									$(json.List).each(function(i,t){
+										var tr=$("<tr></tr>").appendTo(renderTo);
+										var td=$("<td></td>").text(t).appendTo(tr);
+										var td=$("<td></td>").text(t).appendTo(tr);
+										var td=$("<td></td>").text(t).appendTo(tr);
+										var td=$("<td></td>").text(t).appendTo(tr);
+										var td1=$("<td></td>").appendTo(tr);
+										var a=$("<a data-toggle='modal' href='#modal-dialog-record' class='record'></a>").appendTo(td1);
+										var span=$("<span></span>").text("查看聊天记录").appendTo(a);
+									});
+								});
+						});
+					});
+					
+				}
+				else{
+					yunNotyError("关键词列表加载失败!");
+				}
+			});
+		});
+		
+		function question(questionId){
+			$.post("",{
+				
+			},function(json){
+				var renderTo=$("#questionTabBody");
+				$("#questionTabBody").html("");
+				$(json.List).each(function(i,t){
+					var tr=$("<tr></tr>").appendTo(renderTo);
+					var td=$("<td></td>").text().appendTo(tr);
+					var td=$("<td></td>").text().appendTo(tr);
+					var td=$("<td></td>").text().appendTo(tr);
+				});
+			});
+		}
+		
+		
+	</script>
+  </body>
+</html>

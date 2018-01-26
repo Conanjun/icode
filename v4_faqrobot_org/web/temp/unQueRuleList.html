@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>预警设置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">预警设置</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">预警设置</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加预警设置</span>
+						</a>
+						<table class="table" id="ruleTabList">
+							<thead>
+								<tr>
+									<th>规则名称 </th>
+									<th width="120">是否开启 </th>
+									<th width="120">报警值 </th>
+									<th width="120">时间间隔 </th>
+									<th width="120">时间选择 </th>
+									<th width="120">页面提示状态</th>
+									<th width="120">报警邮箱状态</th>
+									<th width="120">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="rulepageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加预警设置</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-warning fade in m-b-15">
+								<strong>提示：</strong>
+								某些关键词在被访问的次数达到报警值时会生成对应的报警记录。 
+								<span data-dismiss="alert" class="close">×</span>
+							</div>
+							<form method="POST" id="addRuleFrom" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">规则名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入规则名称" class="form-control" name="ruleName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">报警值<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入报警值" class="form-control" name="threshold">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">时间间隔 (默认分钟)<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入时间间隔 (默认分钟)" class="form-control" name="intervalminutes">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">时间选择<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="scopeDay">
+												<option value="3">三天</option>
+												<option value="7">七天</option>
+												<option value="30">三十天</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否开启页面提示<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="enablePageNotice">
+												<option value="1">开启</option>
+												<option value="0">停用</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否开启报警邮箱<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="enableEmailNotice">
+												<option value="1">开启</option>
+												<option value="0">停用</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">选择报警邮箱<span class="red">&nbsp;*</span></label>
+										<input type="hidden" name="emailIds">
+										<div class="col-md-7" id="emAdd">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addRuleFrom').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改预警设置</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-warning fade in m-b-15">
+								<strong>提示：</strong>
+								某些关键词在被访问的次数达到报警值时会生成对应的报警记录。 
+								<span data-dismiss="alert" class="close">×</span>
+							</div>
+							<form method="POST" id="editRuleFrom" class="form-horizontal">
+								<input type="hidden" name="id">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">规则名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入规则名称" class="form-control" name="ruleName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">报警值<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入报警值" class="form-control" name="threshold">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">时间间隔 (默认分钟)<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入时间间隔 (默认分钟)" class="form-control" name="intervalminutes">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">时间选择<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="scopeDay">
+												<option value="3">三天</option>
+												<option value="7">七天</option>
+												<option value="30">三十天</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否开启页面提示<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="enablePageNotice">
+												<option value="1">开启</option>
+												<option value="0">停用</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否开启报警邮箱<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="enableEmailNotice">
+												<option value="1">开启</option>
+												<option value="0">停用</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">选择报警邮箱<span class="red">&nbsp;*</span></label>
+										<input type="hidden" name="emailIds">
+										<div class="col-md-7" id="emEdit">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editRuleFrom').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		var allList = [];
+		$(document).ready(function() {
+			App.init();
+			iframeTab.init({iframeBox: ''});
+			//列出表格
+			ruleList();
+      emailRuleList();
+
+			$('#addRuleFrom').validate({
+				rules:{
+					ruleName:{
+						required:true,
+						maxlength:10
+					},
+					intervalminutes:{
+						required:true,
+						number:true,
+						min:10
+					},
+					threshold:{
+						required:true,
+						number:true,
+						min:10
+					}
+				},
+				messages:{
+					ruleName:{
+						required:"请输入规则名称！",
+						maxlength:"请输入不多于10个字符！"
+					},
+					intervalminutes:{
+						required:'请输入时间间隔，默认分钟！',
+						number:'请输入有效的时间间隔！',
+						min:'时间间隔最低为10分钟！'
+					},
+					threshold:{
+						required:'请输入报警值！',
+						number:'请输入数字！',
+						min:'报警值最低为10！'
+					}
+				},
+				submitHandler: addRules
+			});
+
+			$('#editRuleFrom').validate({
+				rules:{
+					ruleName:{
+						required:true,
+						maxlength:10
+					},
+					intervalminutes:{
+						required:true,
+						number:true,
+						min:10
+					},
+					threshold:{
+						required:true,
+						number:true,
+						min:10
+					}
+				},
+				messages:{
+					ruleName:{
+						required:"请输入规则名称！",
+						maxlength:"请输入不多于10个字符！"
+					},
+					intervalminutes:{
+						required:'请输入时间间隔，默认分钟！',
+						number:'请输入有效的时间间隔！',
+						min:'时间间隔最低为10分钟！'
+					},
+					threshold:{
+						required:'请输入报警值！',
+						number:'请输入数字！',
+						min:'报警值最低为10！'
+					}
+				},
+				submitHandler: editRules
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#addRuleFrom')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#editRuleFrom')[0].reset();
+			})
+		});
+
+		var flag_add=false;
+		//添加规则
+		function addRules() {
+      var eids = '';
+      $('.selectA:checked').each(function(){
+        eids += $(this).val() + ',';
+      });
+      if(eids.length) {
+        eids = eids.substr(0, eids.length-1);
+      }
+      $('#addRuleFrom input[name=emailIds]').val(eids);
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UnknownQuestionWarnRule/insertWarnRule'),
+				data: $("#addRuleFrom").serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						ruleList();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//修改规则
+		function editRules() {
+      var eids = '';
+      $('.selectE:checked').each(function(){
+        eids += $(this).val() + ',';
+      });
+      if(eids.length) {
+        eids = eids.substr(0, eids.length-1);
+      }
+      $('#editRuleFrom input[name=emailIds]').val(eids);
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UnknownQuestionWarnRule/updateWarnRule'),
+				data: $("#editRuleFrom").serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#editModal').modal('hide');
+						ruleList();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+//切换功能开关
+function changeConfigModeValue(code,newVal,id) {
+	if(!code ){
+		return;
+	}
+	if(newVal!==0 && newVal!=1){
+		return;
+	}
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,
+		url:encodeURI('../../UnknownQuestionWarnRule/enableOrDisable?id='+code),
+		success:
+		function(data){
+			if(data.status===0){
+				if(newVal==1){
+					$('[data-id="switchery-state-text-'+id+'"]').text('开启').addClass('btn-success').removeClass('btn-danger');
+				} else {
+					$('[data-id="switchery-state-text-'+id+'"]').text('关闭').removeClass('btn-success').addClass('btn-danger');
+				}
+				yunNoty(data);
+			}else{
+				var option = {
+					color : "#348fe2",
+					secondaryColor : "#dfdfdf",
+					className : "switchery",
+					disabled : false,
+					disabledOpacity : 0.5,
+					speed : "0.5s"
+				};
+				var switcheryA = $('[data-change="check-switchery-state-text-'+id+'"]');
+				if(newVal==1){
+					switcheryA.removeAttr('checked');
+					switcheryA.next().remove();
+					var n = new Switchery(switcheryA[0], option);
+				} else {
+					switcheryA.attr('checked', 'checked');
+					switcheryA.next().remove();
+					var m = new Switchery(switcheryA[0], option);
+				}
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//switchery 初始化
+var renderSwitcher = function() {
+	if ($("[data-render=switchery]").length !== 0) {
+		$("[data-render=switchery]").each(function() {
+			var n = new Switchery(this, {
+				color : "#348fe2",
+				secondaryColor : "#dfdfdf",
+				className : "switchery",
+				disabled : false,
+				disabledOpacity : 0.5,
+				speed : "0.5s"
+			});
+		});
+	}
+};
+		//规则列表
+		function ruleList(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$('#ruleTabList').tableAjaxLoader2(6);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI('../../UnknownQuestionWarnRule/listWarnRule?pageSize=' + 10 + '&pageNo=' + pageNo),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.warnRules==undefined){
+							$('#ruleTabList').find('tbody').html('<tr><td colspan=\"7\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#rulepageList').html('');
+							return;
+						}
+						var s = [];
+						if (data.warnRules.length > 0) {
+							allList = data.warnRules;
+							var list = data.warnRules;
+							for (var i = 0; i < list.length; i++) {
+								s.push('<tr>');
+								s.push('<td>' + (list[i].RuleName == null ? '&nbsp;': list[i].RuleName) + '</td>');
+								if(list[i].EnableRule==='0'){
+									s.push('<td><input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text-'+i+'" cid="'+i+'" code="'+list[i].Id+'" /></td>');
+								} else if(list[i].EnableRule==='1'){
+									s.push('<td><input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text-'+i+'" cid="'+i+'" code="'+list[i].Id+'" checked /></td>');
+								}
+								s.push('<td>' + (list[i].Intervalminutes == null ? '&nbsp;': list[i].Intervalminutes) + '</td>');
+								s.push('<td>' + (list[i].Threshold == null ? '&nbsp;': list[i].Threshold) + '</td>');
+								s.push('<td>' + (list[i].ScopeDay == null ? '&nbsp;': list[i].ScopeDay) + '天</td>');
+								s.push('<td>' + (list[i].EnablePageNotice == null ? '&nbsp;': (list[i].EnablePageNotice == '1' ? '开启' : '关闭')) + '</td>');
+								s.push('<td>' + (list[i].EnableEmailNotice == null ? '&nbsp;': (list[i].EnableEmailNotice == '1' ? '开启' : '关闭')) + '</td>');
+								s.push('<td><a href="javascript:;" title="编辑"  class="editRuleA_list" rel="' + list[i].Id + '" ggg="'+list[i].EmailIds+'"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;   <a href="javascript:;" title="删除" class="m-del" rel="' + list[i].Id + '"><i class="glyphicon glyphicon-trash"></i></a></td>');
+								s.push('</tr>');
+							}
+							$('#ruleTabList').find('tbody').html(s.join(''));
+					renderSwitcher();
+					for(var j=0;j<list.length;j++){
+						$('[data-change="check-switchery-state-text-'+j+'"]').on("change", function() {
+							var codeValue=$(this).attr("code");
+							var newValue=$(this).prop("checked")?1:0;
+							var id=$(this).attr("cid");
+							changeConfigModeValue(codeValue,newValue,id);
+						});
+					}
+							//点击修改的时候弹出框
+							$('.editRuleA_list').on('click',
+							function() {
+								$('#editModal').modal('show');
+								$("#editRuleFrom input[name=id]").val($(this).attr('rel'));
+								var ggg = $(this).attr('ggg').split(',');
+								ggg.forEach(function(el){
+								  $('.selectE[value='+el+']').iCheck('check');
+								});
+								var o = $(this).parent().parent().index();
+								$("#editRuleFrom input[name=ruleName]").val(allList[o].RuleName);
+								$("#editRuleFrom input[name=threshold]").val(allList[o].Threshold);
+								$("#editRuleFrom input[name=intervalminutes]").val(allList[o].Intervalminutes);
+								$("#editRuleFrom select[name=scopeDay]").val(allList[o].ScopeDay);
+								$("#editRuleFrom select[name=enablePageNotice]").val(allList[o].EnablePageNotice);
+								$("#editRuleFrom select[name=enableEmailNotice]").val(allList[o].EnableEmailNotice);
+							})
+							//删除规则
+							$('.m-del').on('click',function(){
+								var self = this;
+								$(self).adcCreator(function() {
+									delById(self, '../../UnknownQuestionWarnRule/deleteWarnRule', ruleList, 'rulepageList');
+								});
+							});
+							var options = {
+								data: [data, 'warnRules', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									ruleList(page);
+								}
+							};
+							setPage('rulepageList', options);
+						} else {
+							$('#ruleTabList').find('tbody').html('<tr><td colspan=\"7\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#rulepageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+			//setTimeout("ruleList()", 60000);
+		}
+
+    function emailRuleList(tabId,formId){
+      $.ajax({
+        type:'get',
+        datatype:'json',
+        cache:false,
+        url:encodeURI('../../alarmEmail/listEmail?pageSize=6'),
+        success:
+        function(data){
+          if(data.status==0){
+            if(data.List.length>0){
+              for(var i=0;i<data.List.length;i++){
+                $('#emAdd').append('<div><input type="checkbox"  class="selectA" value="'+data.List[i].Id+'" id="add'+data.List[i].Id+'"><label for="add'+data.List[i].Id+'" class="control-label" style="margin-left: 5px;">'+data.List[i].Email+'</label></div>');
+                $('#emEdit').append('<div><input type="checkbox"  class="selectE" value="'+data.List[i].Id+'" id="edit'+data.List[i].Id+'"><label for="edit'+data.List[i].Id+'"  class="control-label" style="margin-left: 5px;">'+data.List[i].Email+'</label></div>');
+              }
+              icheckInit();
+            }else{
+              $('#emAdd').html('');
+              $('#emEdit').html('');
+            }
+          }else{
+              yunNoty(data);
+          }
+        }
+      })
+    }
+
+	</script>
+</body>
+</html>

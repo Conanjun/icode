@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>问题导入</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet" />
+	<style>
+		span.rollback-success {
+			border-color: #00acac;
+			color: #00acac;
+			display: inline-block;
+			border-style: solid;
+			border-radius: 3px;
+			border-width: 2px;
+			padding: 0px 5px;
+		}
+		span.rollback-fail {
+			border-color: #ff5b57;
+			color: #ff5b57;
+			display: inline-block;
+			border-style: solid;
+			border-radius: 3px;
+			border-width: 2px;
+			padding: 0px 5px;
+		}
+		.btn-default.disabled, .btn-default[disabled], .btn-default.disabled:hover, .btn-default[disabled]:hover {
+			background-color: #b6c2c9;
+		}
+
+		#content div.text-right{
+			height: 40px;
+			line-height: 40px;
+			margin-bottom: -10px;
+		}
+		.entityTio {
+			width: 100%;
+			border-radius: 5px;
+			outline: none;
+			height: 28px;
+			border: 1px solid #ccc;
+			text-indent: 10px;
+		}
+		.pull-right>.dropdown-menu{
+			left: 0;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+
+<div id="exlProgress" style="position:fixed;z-index:99;top:0;right:0;background-color:rgba(0,0,0,0.4);width:100%;height:100%;display:none">
+<div style="width:329px;margin:25% auto;">
+<h4 style="text-align:center;color:#1296db;font-size:18px;font-family:'微软雅黑';text-shadow:1px 1px 2px  #FFFFFF;font-weight:700">Loading...</h4>
+<div class="progress progress-striped active" style="height:10px;background-color:#dadada;box-shadow:inset 0px 0px 3px lightgray;">
+<div class="progress-bar" style="background-color:#33b5e2"></div></div></div></div>
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+	<div id="content" class="content">
+		<ol class="breadcrumb pull-right">
+			<li><a href="javascript:;">首页</a></li>
+			<li><a href="javascript:;">知识库管理</a></li>
+			<li class="active">问题导入</li>
+		</ol>
+		<div class="row">
+			<h1 class="page-header">问题导入</h1>
+			<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+				<input type="hidden" name="checkedId">
+				<input type="hidden" name="sgId">
+				<div class="panel-body">
+					<div class="row">
+						<span class="files" id="files" style="display:inline-block;"></span>
+							<span class="btn btn-primary fileinput-button m-r-1" data-step="1" data-intro='根据下载模板填写导入的问题，你就可以点这里批量导入了！'>
+								<i class="glyphicon glyphicon-plus"></i>
+								<span>问题导入</span>
+								<input type="file" accept=".xls,.xlsx" name="file" id="exlfileupload">
+							</span>
+							<span class="btn btn-primary fileUpLoadingSign m-r-4" style="display:none;">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>上传中</span>
+							</span>
+						<!--<button class="btn btn-info confirmLoadBtn m-r-4" style="display: none;">
+                            <i class="glyphicon glyphicon-import"></i>
+                            <span>确认导入</span>
+                        </button>-->
+						<div class="btn-group m-r-1" data-step="4" data-intro='在这里，可以按选择导入类型！' id="confirmLoadBtn" style="display: none;">
+							<button id="menuDown1" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+								<i class="glyphicon glyphicon-import"></i>导入全部&nbsp;&nbsp;<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li class="confirmLoadBtnAll"><a href="javascript:;">导入全部</a></li>
+								<li class="confirmLoadBtnChoose"><a href="javascript:;">导入选中</a></li>
+							</ul>
+						</div>
+						<a data-toggle="modal" class="btn btn-primary" href="#clearListConfirm" data-step="2" data-intro='如果发现导入的列表内容过多，点这里可以给你清空列表！'>
+							<i class="glyphicon glyphicon-remove"></i>
+							<span>清空列表</span>
+						</a>
+						<a class="btn btn-default pull-right" id="openRollback" data-step="3" data-intro='点击这里可以批量删除问题哦！'>
+							<i class="glyphicon glyphicon-trash"></i>
+							<span>删除问题</span>
+						</a>
+						<a class="btn btn-default pull-right m-r-4" target="_blank" href="../../questionExcel/exportTemplate" data-step="5" data-intro='不知道导入的问题格式？来下载模板看看吧！'>
+							<i class="glyphicon glyphicon-download"></i>
+							<span>下载模板</span>
+						</a>
+						<div class="btn-group pull-right m-r-4" data-step="4" data-intro='在这里，可以按你喜欢的顺序进行问题的排序！'>
+							<button id="menuDown" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+								默认排序 <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li> <a href="javascript:;" onClick="problem_Import(1,12,this);return false;">默认排序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,11,this);return false;">状态正序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,12,this);return false;">状态倒序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,20,this);return false;">说明正序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,21,this);return false;">说明倒序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,22,this);return false;">问题内容正序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,23,this);return false;">问题内容倒序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,24,this);return false;">分类正序</a> </li>
+								<li> <a href="javascript:;" onClick="problem_Import(1,25,this);return false;">分类倒序</a> </li>
+							</ul>
+						</div>
+					</div>
+					<div class="text-right">
+						累计已添加<span id="hasCount" style="color:#348fe2"></span>条问题，剩余可添加<span id="remainCount" style="color:#348fe2"></span>条问题，知识库容量<span id="totalCount" style="color:#348fe2"></span>条
+					</div>
+					<table class="table" id="problemList">
+						<thead>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div id="problemPageList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- begin scroll to top btn -->
+	<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	<!-- end scroll to top btn -->
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="clearListConfirm">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h4 class="modal-title">清空列表</h4>
+			</div>
+			<div class="modal-body">
+				<p>您确定要清空问题列表吗？</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="confrimClearList">是</button>
+				<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="rollbackConfirm">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+				<h4 class="modal-title">删除问题</h4>
+			</div>
+			<div class="modal-body">
+				<p>您确定要删除已选问题吗？删除该问题，该问题下所有信息将无法恢复！</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="confrimrollback">是</button>
+				<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal-intelTerm">
+	<div class="modal-lg modal-dialog" style="width: 80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">设置句式</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-3 col-xs-3">
+						<input type="hidden" name="treeName">
+						<input type="hidden" name="treeId">
+						<div id="affix1inner">
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeTermClass',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeTermClass',false);" style="cursor:pointer;"></span>
+							<div class="treeDivModal">
+								<ul id="treeTermClass" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-xs-6">
+						<table class="table" id="termTable" style="margin-top: 0;">
+							<thead>
+							<th style="width:100px;">选择</th>
+							<th>句式组</th>
+							</thead>
+							<tbody></tbody>
+						</table>
+						<div id="termPageList" style="margin:0;"></div>
+					</div>
+					<div class="col-md-3 col-xs-3">
+						<div class="col-md-12 m-5" id="EntitysList" style="padding-right:0;">
+							<label class="col-md-12 control-label" style="padding:0;text-align: left;">实体<span class="red">&nbsp;*</span></label>
+							<div class="col-md-12" style="margin-top:10px;padding:0;">
+								<input type="text" class="entityTio">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-primary addTerm">确定</button>
+				<button type="submit" class="btn btn-sm btn-white" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<link rel="stylesheet" href="../common/css/introjs.css">
+<script src="../common/js/intro.js"></script>
+<script src="../common/js/base.js"></script>
+<script src="../common/js/bootstrap-paginator.js"></script>
+<script src="../common/js/jquery.validate.js"></script>
+<script src="../common/js/icheck.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script type="text/javascript">
+	var tmpFlag=false;
+	var checkb;
+	$(document).ready(function() {
+		function RBG(){
+			var	ids = getSelectedIds();
+			if (ids=="") {
+				Base.gritter('您未勾选任何问题！',false);
+				return false;
+			} else {
+				$('#rollbackConfirm').modal('show');
+			}
+		}
+		$('#openRollback').on('click', RBG)
+		// 新手引导(需要引导的页面的code即为页面名称)
+		Base.request({
+			url: 'tipHelp/add',
+			params: {
+				code: 'importQuestion',
+				webId: -1,
+			},
+			callback: function(data) {
+				if(data.status) {//!=0 旧
+
+				}else {//=0 新
+					Base.request({
+						url: 'tipHelp/check',
+						params: {
+							code: 'importQuestion',
+							webId: -1,
+						},
+						callback: function(data) {
+							if(data.status) {//旧
+							}else {//新
+								introJs().setOptions({
+									'prevLabel': '上一步',
+									'nextLabel': '下一步',
+									'skipLabel': '　',
+									'doneLabel': '　',
+									'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
+								}).start().onexit(function() {//非常规退出
+								}).oncomplete(function() {//正常完成
+								}).onchange(function(obj) {//已完成当前一步
+									var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
+
+									$('.tipStep'+ (curNum-1)).hide();//隐藏前一个
+									$('.tipStep'+ (curNum+1)).hide();//隐藏后一个
+									$(obj).show();//显示当前
+								});
+							}
+						},
+					});
+				}
+			},
+		});
+
+
+		App.init();
+		icheckBindInit();
+		problem_Import();
+		queStatus();//一进页面请求当前是否有导入任务
+		$('#affix1inner').slimScroll({
+			height: $(window).height() - 150 + 'px',
+			allowPageScroll: false
+		});
+		//上传
+		$(function () {
+			'use strict';
+			$('#exlfileupload').fileupload({
+				url: '../../question/jQueryFileUpload',
+				dataType: 'json',
+				change: function(e, data) {
+					var flag = true;
+					$.each(data.files,
+							function(index, file) {
+								//var sizeBig = file.size / (1024 * 1024);
+								var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+								if (str == "xls" || str == "xlsx") {
+									flag = true;
+									// if (sizeBig > 1) {
+									// 	yunNotyError("上传文件过大，请输入不大于1M的文件！");
+									// 	flag = false;
+									// }
+								} else {
+									flag = false;
+									yunNotyError("请上传xls或xlsx格式的文件！");
+								}
+							});
+					return flag;
+				},
+				done: function (e, data) {
+					if(data.result.status==0){
+						yunNoty(data.result);
+						queStatus();
+
+					}
+					else{
+						yunNoty(data.result);
+						$('.fileinput-button').css('display','inline-block');
+						$('.fileUpLoadingSign').css('display','none');
+					}
+				}
+			}).bind('fileuploadstart', function (e) {
+				$('.fileinput-button').css('display','none');
+				$('.fileUpLoadingSign').css('display','inline-block');
+			}).bind('fileuploadstop', function (e) {
+				$('.fileinput-button').css('display','inline-block');
+				$('.fileUpLoadingSign').css('display','none');
+			});
+		});
+
+		setInterval(function(){
+			var	ids = getSelectedIds();
+			if (ids=="") {
+				$('#openRollback').css('cursor', 'not-allowed').attr('disabled', 'disabled').css('pointer-events', 'all');
+				$('#openRollback').off('click', RBG);
+			} else {
+				$('#openRollback').css('cursor', 'pointer').removeAttr('disabled').css('pointer-events', 'all');
+				$('#openRollback').off('click', RBG).on('click', RBG);
+			}
+		},500);
+	});
+
+	function queStatus() {
+		$.ajax({
+			type: 'get',
+			datatype: 'json',
+			cache: false,
+			//不从缓存中去数据
+			url: encodeURI('../../Question/getStatus'),
+			success: function(data) {
+				if (data.status == 0) {
+					if (data.progressToKnowledge < 0) {
+						if (data.progressToMiddle < 0) {
+							return;
+						} else {
+							$('#exlProgress').show();
+							$('#exlProgress .progress-bar').css('width', data.progressToMiddle + '%');
+							$('#exlProgress h4').text(data.progressToMiddle + '%');
+							if (data.progressToMiddle == 100) {
+								setTimeout(function() {
+									$('#confirmLoadBtn').show();
+									$('#exlProgress').hide();
+									yunNoty(data);
+									problem_Import();
+								},
+								1000);
+								return;
+							}
+						}
+					} else {
+						$('#exlProgress .progress-bar').removeClass('progress-bar-success').addClass('progress-bar-info');
+						$('#exlProgress').show();
+						$('#exlProgress .progress-bar').css('width', data.progressToKnowledge + '%');
+						$('#exlProgress h4').html(data.progressToKnowledge + '%');
+						if (data.progressToKnowledge == 100) {
+							//表明当前导入已经完成
+							setTimeout(function() {
+								$('#exlProgress').hide();
+								$('#exlProgress .progress-bar').addClass('progress-bar-success').removeClass('progress-bar-info');
+								yunNoty(data);
+								problem_Import();
+							},
+							1000);
+							return;
+						}
+					}
+					setTimeout(function() {
+						queStatus();
+					},
+					1000)
+				} else {
+					if (data.message == '请先开始问题导入！') {
+						return;
+					} else {
+						yunNoty(data);
+					}
+				}
+			}
+		});
+	}
+
+
+	//列出要导入的问题
+	function problem_Import(pageNo, orderType,asd) {
+		if(asd)$('#menuDown').html($(asd).html()+'<span class="caret"></span>');
+		if (!pageNo) pageNo = 1;
+		if (!orderType) orderType = 20;
+		$('#problemList').tableAjaxLoader2(6);
+		if(sessionStorage.getItem('sentenceValue') == 1){
+			$('#problemList thead').html('<tr>'+
+					'<th width="50" class="table_checkbox" ><input type="checkbox" name="select_rows" class="select_rows" data-tableid="problemList"/></th>'+
+					'<th width="10%"> 问题 </th>'+
+					'<th width="10%"> 相似问法 </th>'+
+					'<th width="15%"> 答案 </th>'+
+					'<th width="10%">生效渠道</th>'+
+					'<th width="8%"> 导入类型 </th>'+
+					'<th width="8%"> 分类 </th>'+
+					'<th width="10%"> 标签 </th>'+
+					'<th width="10%"> 句式 </th>'+
+					'<th width="10%"> 状态 </th>'+
+					'<th width="10%"> 说明 </th>'+
+					'</tr>');
+		}else{
+			$('#problemList thead').html('<tr>'+
+					'<th width="50" class="table_checkbox" ><input type="checkbox" name="select_rows" class="select_rows" data-tableid="problemList"/></th>'+
+					'<th width="10%"> 问题 </th>'+
+					'<th width="10%"> 相似问法 </th>'+
+					'<th width="15%"> 答案 </th>'+
+					'<th width="10%">生效渠道</th>'+
+					'<th width="8%"> 导入类型 </th>'+
+					'<th width="8%"> 分类 </th>'+
+					'<th width="10%"> 标签 </th>'+
+					'<th width="10%"> 状态 </th>'+
+					'<th width="10%"> 说明 </th>'+
+					'</tr>');
+		}
+		$.ajax({
+			type: 'get',
+			datatype: 'json',
+			cache: false,
+			//不从缓存中去数据
+			url: encodeURI('../../question/listMiddleQuestion?pageSize=' + 20 + '&pageNo=' + pageNo + '&orderType=' + orderType),
+			success: function(data) {
+				if (data.status == 0) {
+					$("#hasCount").html(data.HasCount);
+					$("#remainCount").html(data.RemainCount);
+					$("#totalCount").html(data.TotalCount);
+					var s = []; //暂时存储html代码
+					var Status = ''; //导入状态
+					if (data.List.length > 0) {
+						for (var i = 0; i < data.List.length; i++) {
+							s.push('<tr id="' + data.List[i].Id + '">');
+							if (data.List[i].Status == 1 || data.List[i].Status == 4 || data.List[i].Status == 5) {
+								s.push('<td><input type="checkbox" name="ckb" class="select_row" value="'+data.List[i].Id+'" data-del="1" /></td>');
+							} else {
+								s.push('<td><input type="checkbox" name="ckb" class="select_row" value="'+data.List[i].Id+'" /></td>');
+							}
+							s.push('<td>');
+							s.push(data.List[i].Question==null?'--':data.List[i].Question);
+							s.push('</td>');
+							s.push('<td>');
+							s.push(data.List[i].StandQue==null?'--':data.List[i].StandQue);
+							s.push('</td>');
+							s.push('<td>');
+							s.push(data.List[i].AnswerCont==null?'--':data.List[i].AnswerCont);
+							s.push('</td>');
+							if(data.List[i].SourceScope != null){
+								var scorceArr = [];
+								var scorce1="";
+								var scorce2="";
+								var scorce3="";
+								var scorce4="";
+								var scorce5 = '';
+								if(data.List[i].SourceScope.match(',')){
+									scorceArr = data.List[i].SourceScope.split(',');
+
+									$.each(scorceArr, function(i,item) {
+										if(item == ''||item == 100){
+											scorce1 = '全渠道、';
+										}
+										if(item == 0){
+											scorce2 = '网页渠道、';
+										}
+										if(item == 1){
+											scorce3 = '微信渠道、';
+										}
+										if(item == 2){
+											scorce4 = 'API、';
+										}
+										if(item == 3){
+											scorce5 = 'APP、';
+										}
+									});
+								}else{
+									if(data.List[i].SourceScope == ''||data.List[i].SourceScope == 100){
+										scorce1 = '全渠道、';
+									}else if(data.List[i].SourceScope == 0){
+										scorce2 = '网页渠道、';
+									}else if(data.List[i].SourceScope == 1){
+										scorce3 = '微信渠道、';
+									}else if(data.List[i].SourceScope == 2){
+										scorce4 = 'API、';
+									}else if(data.List[i].SourceScope == 3){
+										scorce5 = 'APP、';
+									}
+								}
+								var scorce = (scorce1+scorce2+scorce3+scorce4+scorce5).substring(0,(scorce1+scorce2+scorce3+scorce4+scorce5).length-1);
+								s.push('<td>'+scorce+'</td>');
+							}else{
+								s.push('<td>--</td>');
+							}
+							if(data.List[i].Mode != null) {
+								if (data.List[i].Mode==1) {
+									s.push('<td>导入已有问题的答案</td>');
+								} else if (data.List[i].Mode==2) {
+									s.push('<td>导入标准问题及答案</td>');
+								} else {
+									s.push('<td>导入相似问法</td>');
+								}
+							} else {
+								if(data.List[i].Type==1){
+									s.push('<td>导入问题答案</td>');
+								}else{
+									s.push('<td>导入相似问法</td>');
+								}
+							}
+							s.push('<td>');
+							s.push(data.List[i].ClassName == null ? '--': data.List[i].ClassName);
+							s.push('</td>');
+							s.push('<td LabelId="'+data.List[i].LabelId+'">');
+							s.push(data.List[i].LabelName == null ? '--' : data.List[i].LabelName);
+							s.push('</td>');
+
+							if (data.List[i].Status == 1) {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									s.push('<td>--</td>');
+								}
+								s.push('<td>');
+								Status = '<span class="label label-danger" style="line-height:2; font-size:90%">导入失败</span>';
+							} else if (data.List[i].Status == 2) {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									if(data.List[i].Mode != 2){
+										s.push('<td>--</td>');
+										s.push('<td>');
+									}else{
+										s.push('<td SgId="'+data.List[i].SgId+'" Entitys="'+data.List[i].Entitys+'">');
+										s.push('<span class="pharse" style="margin-right:10px;">'+(data.List[i].SgName == null ? '&nbsp;' : data.List[i].SgName)+'</span><a class="glyphicon glyphicon-pencil editPharse" style="cursor:pointer;"></a></td>');
+										s.push('<td>');
+									}
+								}else{
+									s.push('<td>');
+								}
+								Status = '<span class="label label-warning waitting" style="line-height:2; font-size:90%">等待导入</span>';
+							} else if (data.List[i].Status == 3) {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									if(data.List[i].Mode != 2){
+										s.push('<td>--</td>');
+										s.push('<td>');
+									}else{
+										s.push('<td SgId="'+data.List[i].SgId+'" Entitys="'+data.List[i].Entitys+'">');
+										s.push('<span class="pharse" style="margin-right:10px;">'+(data.List[i].SgName == null ? '&nbsp;' : data.List[i].SgName)+'</span><a class="glyphicon glyphicon-pencil editPharse" style="cursor:pointer;"></a></td>');
+										s.push('<td>');
+									}
+								}else{
+									s.push('<td>');
+								}
+								Status = '<span class="label label-success" style="line-height:2; font-size:90%">导入成功</span>';
+							} else if (data.List[i].Status == 4) {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									s.push('<td>--</td>');
+								}
+								s.push('<td>');
+								Status = '<span class="label rollback-success" style="line-height:1.5; font-size:90%">删除成功</span>';
+							} else if (data.List[i].Status == 5) {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									s.push('<td>--</td>');
+								}
+								s.push('<td>');
+								Status = '<span class="label rollback-fail" style="line-height:1.5; font-size:90%">删除失败</span>';
+							} else {
+								if(sessionStorage.getItem('sentenceValue') == 1){
+									s.push('<td>--</td>');
+								}
+								s.push('<td>');
+								Status = '';
+							}
+							s.push(Status);
+							s.push('</td>');
+							s.push('<td>');
+							s.push(data.List[i].Result == null ? '--': data.List[i].Result);
+							s.push('</td>');
+							s.push('</tr>');
+						}
+						$('#problemList').find('tbody').html(s.join(''));
+						icheckListInit();
+						$('.select_row').each(function(ind, el){
+							if($(el).data('del')) {
+								$(el).iCheck('disable');
+							}
+						});
+						var flagWait = false;
+						for(var i = 0;i < $("#problemList tbody tr td span").length;i++){
+							if($("#problemList tbody tr td span").eq(i).hasClass('waitting')){
+								flagWait = true;
+							}
+						}
+						if(flagWait){
+							$('#confirmLoadBtn').show();
+						}else{
+							$('#confirmLoadBtn').hide();
+						}
+
+						//选择句式组
+						$(".editPharse").unbind('click').bind('click',function(e){
+							$(".entityTio").val('');
+							var src=e.target || window.event.srcElement;
+							var pharId = $(src).parents('tr').attr('id');
+							var pharseText = $(src).parent('td').find('.pharse');
+							var Entitys = $(src).parent().attr('entitys');
+							var sgId = $(src).parent().attr('sgid');
+							$('[name="checkedId"]').val(sgId);
+							$("#modal-intelTerm").modal('show');
+							if(Entitys != 'null'){
+								$(".entityTio").val(Entitys);
+							}
+							editPharse(pharId,pharseText);
+						});
+						checkb = $("#problemList").find("tr td .icheckbox_flat-blue").not('.disabled');
+						//下面开始处理分页
+						var options = {
+							data: [data, 'List', 'total'],
+							currentPage: data.currentPage,
+							totalPages: data.totlePages,
+							onPageClicked: function(event, originalEvent, type, page) {
+								problem_Import(page, orderType);
+							}
+						};
+						setPage('problemPageList', options);
+					} else {
+						$('#problemList').find('tbody').html('<tr><td colspan="11" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						$('#problemPageList').html('');
+
+					}
+				} else if (data.status == -1) {
+					data.clallback = function() {
+						top.location.href = "../../login.html";
+					};
+					data.timeout = 1500;
+					yunNoty(data);
+				} else {
+					yunNoty(data);
+				}
+			}
+		})
+	}
+	function editPharse(pharId,pharseText){
+		//手动选择句式树
+		var termsetting = {
+			view: {
+				dblClickExpand: false,
+				showIcon: false
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "Id",
+					pIdKey: "ParentId",
+					rootPId: 0
+				},
+				key: {
+					name: "Name"
+				}
+			},
+			async: {
+				enable: true,
+				url: "../../classes/listClasses?m=11",
+				autoParam: ["id"],
+				dataFilter: ajaxDataFilter1
+			},
+			callback: {
+				onClick: ZTreeClassTermClick,
+				onAsyncSuccess: zTreeOnAsyncSuccess
+			}
+		};
+		//格式化一步获取的json数据
+		function ajaxDataFilter1(treeId, parentNode, responseData) {
+			if (responseData) {
+				if (responseData.status == -1) {
+					yunNoty(responseData);
+				}
+				responseData.list.push({
+					Id: -1,
+					ParentId: 0,
+					Name: "全部分类",
+					open: true
+				});
+				return responseData.list;
+			}
+			return responseData;
+		}
+
+		function ZTreeClassTermClick(treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj('treeTermClass');
+			Nodes = zTree.getSelectedNodes();
+			$('#modal-intelTerm input[name=treeName]').val(Nodes[0].Name);
+			$('#modal-intelTerm input[name=treeId]').val(Nodes[0].Id);
+			termList(1);
+		}
+		function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+			var treeObj = $.fn.zTree.getZTreeObj("treeTermClass");
+		}
+		$.fn.zTree.init($("#treeTermClass"), termsetting, []);
+		$('#modal-intelTerm input[name=treeId]').val(0);
+		termList(1);
+
+		var text = '';
+		$("#modal-intelTerm .addTerm").unbind('click').bind('click',function(){
+			editSentence(pharId,pharseText,text);
+		});
+	}
+	function editSentence(pharId,pharseText,text){
+		$.ajax({
+			type:"post",
+			url:"../../KnSentencegroupSolution/doEditKSSolution",
+			data:{
+				'tempSId':pharId,
+				'sgId':$('[name="checkedId"]').val(),
+				'entitys':$('.entityTio').val(),
+				'qiYong':1
+			},
+			async:true,
+			cache:true,
+			success:function(data){
+				if(data.status == 0){
+					pharseText.html(text);
+					queStatus();
+					$("#modal-intelTerm").modal('hide');
+				}else{
+					yunNoty(data);
+				}
+			}
+		});
+	}
+
+	//手动选择句式内容列表
+	function termList(pageNum){
+		if(!pageNum) pageNum=1;
+		$('#termTable').tableAjaxLoader2(2);
+		$.ajax({
+			type:"post",
+			url:"../../KnSentenceGroup/getKnSentenceGroupList?pageSize=8&pageNo="+pageNum+"&groupId="+(parseInt($('#modal-intelTerm input[name=treeId]').val()) || ''),
+			async:true,
+			cache:true,
+			success:function(data){
+				if(data.list.Items && data.list.Items.length>0){
+					var html = [];
+					var temp = data.list.Items;
+					for(var i=0;i<temp.length;i++){
+						html+='<tr id="'+temp[i].Id+'" ClassId="'+temp[i].ClassId+'" SgName="'+temp[i].SgName+'">'+
+								'<td><input type="radio" name="match"></td>'+
+								'<td>'+temp[i].SgName+'</td>'+
+								'</tr>';
+					}
+					$("#termTable tbody").html(html);
+					icheckListInit();
+					//单选框点击事件
+					$('#termTable tr input[name=match]').on('ifClicked',function(){
+						$('[name="checkedId"]').val($(this).parents('tr').attr('id'));
+					})
+					//表格点击事件
+					$("#termTable tr").on('click',function(){
+						$(this).find('input[name="match"]').iCheck('check');
+						$('[name="checkedId"]').val($(this).attr('id'));
+					});
+					for(var i = 0; i < $('#termTable tbody tr').length;i++){
+						if($('#termTable tbody tr').eq(i).attr('id') == $('[name="checkedId"]').val()){
+							$('#termTable tbody tr').eq(i).find('input[name=match]').iCheck('check');
+							text = $('#termTable tbody tr').eq(i).parent().siblings().text();
+						}
+					}
+					//下面开始处理分页
+					var options = {
+						currentPage: data.currentPage,
+						totalPages: data.totlePages,
+						onPageClicked: function (event, originalEvent, type, page) {
+							termList(page);
+						}
+					};
+					setPage('termPageList',options);
+				}else{
+					$('#termTable').find('tbody').html('<tr><td colspan="2" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前记录为空！</td></tr>');
+					$('#termPageList').html('');
+				}
+			}
+		});
+	}
+	//点击导入全部
+	$('.confirmLoadBtnAll').on("click",function(){
+		$('#menuDown1').html('<i class="glyphicon glyphicon-import"></i>'+$(this).text()+'&nbsp;&nbsp;'+'<span class="caret"></span>');
+		if(($("#problemList tbody tr").find('.checked').length == $(checkb).length) || !$(checkb).hasClass('checked')){
+			confirmLoad();
+		}else{
+			yunNotyError('请全部选中进行导入！');
+		}
+	});
+	//点击导入选中
+	$('.confirmLoadBtnChoose').on("click",function(){
+		$('#menuDown1').html('<i class="glyphicon glyphicon-import"></i>'+$(this).text()+'&nbsp;&nbsp;'+'<span class="caret"></span>');
+		if($(checkb).hasClass('checked')){
+			confirmLoad();
+		}else{
+			yunNotyError('请自行选择进行导入！');
+		}
+	});
+
+	//确认导入
+	function confirmLoad(){
+		var id="";
+		$(checkb).each(function(){
+			if($(this).hasClass("checked")){
+				id += $(this).parents('tr').attr('id')+",";
+			}
+		});
+		var ids = id.substring(0,id.length-1);
+		if(tmpFlag)return;
+		tmpFlag=true
+		$.ajax({
+			type: 'get',
+			datatype: 'json',
+			cache: false,
+			//不从缓存中去数据
+			url: encodeURI('../../question/confirmImport'),
+			data:{'ids':ids},
+			success: function(data) {
+				tmpFlag=false;
+				if (data.status == 0) {
+					yunNoty(data);
+					queStatus();
+				} else {
+					yunNoty(data);
+				}
+			}
+		});
+	}
+
+	//确认清空
+	$('#confrimClearList').click(function() {
+		$.ajax({
+			type: 'get',
+			datatype: 'json',
+			cache: false,
+			//不从缓存中去数据
+			url: encodeURI('../../Question/clearQuestionMiddle'),
+			success: function(data) {
+				if (data.status == 0) {
+					$('#clearListConfirm').modal('hide');
+					$('#confirmLoadBtn').hide();
+					yunNoty(data);
+					problem_Import();
+				} else {
+					yunNoty(data);
+				}
+			}
+		});
+	});
+
+	//确认删除
+	$('#confrimrollback').click(function() {
+		ids = getSelectedIds();
+		if (ids === "") {
+			yunNotyError('您未勾选任何问题！');
+			return false;
+		}
+		$.ajax({
+			type: 'get',
+			datatype: 'json',
+			cache: false,
+			url: encodeURI('../../QuestionExcel/rollBackQuestion'),
+			data: {
+				ids: ids
+			},
+			success: function(data) {
+				if (data.status === 0) {
+					$('#rollbackConfirm').modal('hide');
+					var ids_array = ids.split(",");
+					for (i = 0; i < ids_array.length; i++) {
+						$('#list-tr-' + ids_array[i]).hide();
+					}
+					problem_Import($('#problemPageList .active a').html(), $('input[name=orderType]').val());
+					$('.select_rows').attr('checked', false);
+					yunNoty(data);
+				} else {
+					yunNoty(data);
+					$('#rollbackConfirm').modal('hide');
+					problem_Import();
+				}
+			}
+		});
+	});
+
+</script>
+</body>
+</html>

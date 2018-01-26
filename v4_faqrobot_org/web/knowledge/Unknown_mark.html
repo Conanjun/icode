@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<title>未知问题标签列表</title>
+<!-- ================== BEGIN BASE CSS STYLE ================== -->
+<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+<link href="../../assets/css/style.min.css" rel="stylesheet" />
+<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+<link href="../../assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+
+<!-- ================== END BASE CSS STYLE ================== -->
+
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<style type="text/css">
+.nano {
+	height: 220px;
+}
+.nano .pane {
+	width: 8px;
+	right: 1px;
+	margin: 5px;
+}
+.nano .slider {
+	background: #f4f5f6;
+}
+.domBtn{
+	cursor:move;
+}
+.dom_tmp {
+	position: absolute;
+	font-size: 12px;
+	display: inline-block;
+	padding: 2px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	border-radius:4px;
+}
+body{
+width: 100%;
+min-width: 100%;
+}
+</style>
+<script>		IDMark_A = "_a";
+		var newNameTmp='';
+       	 var setting = {
+			 edit:{
+				enable:true,
+				showRemoveBtn: setRemoveBtn,
+				showRenameBtn: setRenameBtn,
+				removeTitle:'删除',
+				renameTitle:'重命名'
+			},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "Id",
+				pIdKey : "ParentId",
+				rootPId : 0
+			},
+			key : {
+				name : "Name"
+			}
+		},
+		view : {
+			selectedMulti : false,
+			showIcon: false,
+			addHoverDom: addHoverDom,
+			removeHoverDom: removeHoverDom
+		},
+		async : {
+			enable : true,
+			url : "../../classes/listClasses?m=10",
+			autoParam : ["id"],
+			dataFilter : ajaxDataFilter
+		},
+		callback : {
+			beforeDrag: beforeDrag,
+			onClick : function (e, treeId, treeNode) {
+				var ZTree = $.fn.zTree.getZTreeObj("treeClasses"),
+				Nodes = ZTree.getSelectedNodes();
+				if (Nodes.length == 0) {
+					yunNotyError("请先选择一个节点");
+				}
+				//$('#unknown_form input[name=groupId]').val(Nodes[0].Id);
+				//allInfo();
+				$('#isleaf').val(Nodes[0].Isleaf);// #4
+        		$('.classifyName').val(Nodes[0].Name);
+				$('#groupId').val(Nodes[0].Id);
+				$('#hideClassifyId').val(Nodes[0].Id);
+				if(treeNode){
+					$('.branchSearch input[name=groupId]').val(treeNode.Id);
+					allInfo(1,4);
+        		}
+			},
+			beforeRemove:beforeRemove,
+			onRename: zTreeOnRename,
+			beforeRename:beforeRename
+		}
+	};
+	function beforeRename(treeId, treeNode, newName, isCancel) {
+		newNameTmp=treeNode.Name
+		if (newName.length == 0 ) {
+			if(treeNode.Id<0){
+				 var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+				 zTree.removeNode(treeNode);
+				 return false;
+			}
+			yunNotyError("标签名称不能为空！");
+			return false;
+		}
+		if (newName.length >15 ) {
+			yunNotyError("标签名称名称不能超过15个字符");
+			return false;
+		}
+		return true;
+	}
+
+	function zTreeOnRename(event, treeId, treeNode, isCancel) {
+		var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+		var nodes = zTree.getSelectedNodes();// #3
+		if (nodes[0].level > 2) {
+		    var nodes = zTree.getSelectedNodes();
+			zTree.removeNode(nodes[0]);
+			yunNotyError("分类的层级最高为2级！");
+			return;
+		}
+		if(treeNode.Id<0){//如果id<0那么就是前台新增的节点，后台数据库的id必定大于0
+			//做节点的新增操作
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../classes/addClasses'),
+				data:'name='+treeNode.Name+'&parentId='+treeNode.ParentId,
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.classes){
+							treeNode.Id=data.classes.Id;
+							yunNoty(data);
+						}
+						return false;
+					}else{
+					    var nodes = zTree.getSelectedNodes();
+						zTree.removeNode(nodes[0]);
+						yunNoty(data);
+					}
+				}
+			});
+			return;
+		}
+		//如果未修改就不去请求修改接口
+		if(newNameTmp==treeNode.Name){return;}
+		$.ajax({
+		type:'post',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../classes/updateClasses'),
+		data:'className='+treeNode.Name+'&id='+treeNode.Id+'&parentId='+treeNode.ParentId,// #2
+		success:
+		function(data){// #2
+			yunNoty(data);
+			if(data.status) {
+			    var nodes = zTree.getSelectedNodes();
+				nodes[0].Name = newNameTmp;
+				zTree.updateNode(nodes[0]);
+			}
+		}
+		});
+	}
+	function addHoverDom(treeId, treeNode) {
+		if($('#diyBtn_-1')){$('#diyBtn_-1').remove();}
+		var aObj = $("#" + treeNode.tId + "_a");
+		if ($("#diyBtn_"+treeNode.Id).length>0 ) return;
+		var $editStr = $("<span id='diyBtn_" +treeNode.Id+ "' title='新增'><span class='button add'></span></span>");
+		if(aObj.find('.edit').length==0){
+			aObj.append($editStr);
+		}else{
+			aObj.find('.edit').before($editStr);
+		}
+		// 新增
+		$editStr.on('click', function() {
+			var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+			var curNode = zTree.addNodes(treeNode, {pId:treeNode.id, Name:'',Id:-1});
+			zTree.editName(curNode[0]);
+			return false;
+		})
+
+	}
+	function removeHoverDom(treeId, treeNode) {
+			$("#diyBtn_"+treeNode.Id).unbind().remove();
+	}
+	function beforeDrag(treeId, treeNodes) {
+			return false;
+	}
+	//如果节点下面有子节点则不显示删除按钮
+	function setRemoveBtn(treeId, treeNode) {
+　　//判断为顶级节点则不显示删除按钮
+	　　return !treeNode.isParent;
+　　}
+	function setRenameBtn(treeId, treeNode){
+		if(treeNode.level==0){
+			return false;
+		}
+		return true;
+	}
+	//删除节点
+	function beforeRemove(treeId, treeNode) {
+		var flag  = false;
+		$.ajax({
+			type:'get',
+			async: false,
+			datatype:'json',
+			cache:false,//不从缓存中去数据
+			url:encodeURI('../../classes/deleteClasses?id='+treeNode.Id),
+			success:
+			function(data){
+				if(data.status==0){
+					flag= true;
+					yunNoty(data);
+				}else{
+					if(data.message=='id不能为空！ ') {
+						data = $.extend(data, {message: '该分类不能删除'});
+					}
+					yunAlert(data);
+				}
+			}
+		});
+		return flag;
+	}
+	//格式化一步获取的json数据
+	function ajaxDataFilter(treeId, parentNode, responseData) {
+		if (responseData) {
+			responseData.list.push({ Id:0, ParentId:0, Name:"全部分类", open:true});
+			return responseData.list;
+		}
+		return responseData;
+	};
+
+		$(document).ready(function(){
+			zTree=$.fn.zTree.init($("#treeClasses"), setting, []);
+		});
+
+</script>
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+          <script src="../../js/html5.js"></script>
+        <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+</head>
+<body >
+<!-- section content -->
+<section class="section">
+
+  <div id="page-container" class="fade in">
+    <div id="content" class="content" style="padding-bottom: 0;">
+	    <!-- begin breadcrumb -->
+	    <ol class="breadcrumb pull-right">
+	        <li><a href="javascript:;">首页</a></li>
+	        <li><a href="javascript:;">知识库管理</a></li>
+	        <li>未知问题标签列表</li>
+	    </ol>
+	    <!-- end breadcrumb -->
+	    <!-- begin page-header -->
+	    <h1 class="page-header">未知问题标签列表</h1>
+	    <!-- end page-header -->
+    </div>
+    <div class="rowNav" style="padding: 0 20px;">
+      <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+        <div class="panel-body">
+          <div class="col-md-12 boldb">
+            <div>
+              <div class="col-md-2 boldc" style="margin-top:15px;overflow:auto;"> <a href="javascript:void(0);" class="expandListAll glyphicon glyphicon-plus-sign"></a> <a href="javascript:void(0);" class="expandNot glyphicon glyphicon-minus-sign"></a>
+                <ul id="treeClasses" class="ztree ">
+                </ul>
+              </div>
+
+				<div class="col-md-10" style="padding: 0;">
+              <div class="col-md-12" style="display:none">
+                                <form class="branchSearch">
+                              <input type="hidden" name="groupId" value="0">
+                              <input type="hidden" name="isLeaf" value="0">
+                            </form>
+                                <div class="tabbable" id="tabs-244362">
+                              <div class="tab-content" style="padding: 0;">
+                                    <div class="tab-pane  active" id="panel-768597">
+                                  <form class="col-md-12 addClassF" id="classify_Add_Form" style="padding: 0;">
+                                        <label class="bold">分类名称</label>
+                                        <input maxlength="50" type="text" class="col-md-12 ie_input_28 form-control" name="name" style="margin: 15px 0;">
+                                        <input maxlength="10" type="hidden" name="parentId">
+
+                                        <!-- <label class="bold">标签</label>
+                                        <input type="text" class="col-md-12">-->
+
+                                        <!--  <label class="bold tooltip-demo">分类维度<a data-original-title="分类维度说明！" href="#" data-toggle="tooltip" data-placement="right"> <img src="../../images/question1.png"></a></label>
+                                        <input type="text" class="col-md-12">-->
+                                        <div id="divnotshow" style="display:none;margin-bottom:10px;">
+                                          <label class="bold">分类所属角色</label>
+                                          <input type="hidden" name="roleIds">
+                                        </div>
+                                        <button type="button" onclick="doAddClasses();" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+                                        <!--<button type="button" class="btn" onClick="delClassify()"><i class="icon-remove"></i>删除</button>-->
+                                      </form>
+                                </div>
+                                    <div class="tab-pane" id="panel-413206">
+                                  <form class="col-md-12" id="addBrunch_form" style="margin-top: -225px;" novalidate="novalidate">
+                                        <table style="height:60px; margin-top:-25px;">
+                                      <tbody><tr>
+                                            <th>生效时间:</th>
+                                            <td>&nbsp;&nbsp;&nbsp; </td>
+                                            <td><div class="icheckbox_minimal-blue" style="position: relative;"><input type="checkbox" name="timeLiness" class="timeLiness" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0; cursor: pointer;"></ins></div>
+                                          启用</td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td><table id="dateTime" style="display:none; margin-top:7px;">
+                                                <tbody><tr>
+                                                <td><label>启用</label></td>
+                                                <td><div class="input-append date form_datetime">
+                                                    <input size="16" type="text" value="" readonly="" name="startTime" style="height:28px;">
+                                                    <span class="add-on"><i class="icon-remove"></i></span> <span class="add-on"><i class="icon-calendar"></i></span></div></td>
+                                                <td><label>失效</label></td>
+                                                <td><div class="input-append date form_datetime">
+                                                    <input size="16" type="text" value="" readonly="" name="endTime" style="height:28px;">
+                                                    <span class="add-on"><i class="icon-remove"></i></span> <span class="add-on"><i class="icon-calendar"></i></span></div></td>
+                                              </tr>
+                                              </tbody></table></td>
+                                          </tr>
+                                    </tbody></table>
+                                        <span class="bold">主干词</span> <span class="tooltip-demo"><a data-original-title="主干词可以为该分类添加一些具有区别于其他分类意义的关键词，以便于机器人对该分类的语义特性进行联想理解与拓展学习。！" href="#" data-toggle="tooltip" data-placement="right"> <img src="../common/images/question1.png"></a></span>
+                                        <input type="text" class="col-md-12 label_margin" name="words" data-validate="{minlength:2,maxlength:6,messages:{minlength:'请输入不少于2个字符的主干词！',maxlength:'请输入不多于6个字符的主干词！'}}">
+                                        <input type="hidden" name="groupId" id="groupId" value="34183">
+                                        <input type="hidden" name="isleaf" id="isleaf" value="34183">
+                                        <label class="bold">权重</label>
+                                        <div class="iradio_minimal-blue" style="position: relative;"><input type="radio" name="level" value="0" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0; cursor: pointer;"></ins></div>
+                                        高级
+                                        <div class="iradio_minimal-blue" style="position: relative;"><input type="radio" name="level" value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0; cursor: pointer;"></ins></div>
+                                        一般<br>
+                                        <input type="hidden" id="hideClassifyId" value="34183">
+                                        <button type="button" class="btn btn-primary label_margin" onclick="doAddBrunch()"><i class="icon-plus icon-white"></i>添加</button>
+                                      </form>
+                                  <div class="navbar navbar-inner" style="margin-top:250px;">
+                                        <ul class="nav">
+                                      <a class="brand">主干词列表</a>
+                                      <li><a>[&nbsp;&nbsp;本页<span class="currPage">0</span>条<span class="fenge">|</span>共<span class="pageTotal">0</span>条&nbsp;&nbsp;]</a> </li>
+                                    </ul>
+                                        <ul class="nav pull-right">
+                                      <li class="dropdown handPutIn"> <span class="dropdown-toggle" data-toggle="dropdown"> 编辑 <b class="caret"></b> </span>
+
+                                            <ul class="dropdown-menu">
+                                          <li><a href="javascript:void(0);" class="p_del"><i class="icon-trash"></i>批量删除</a></li>
+                                        </ul>
+                                          </li>
+                                    </ul>
+                                      </div>
+                                  <table class="table table-bordered table-hover" id="brunchList">
+                                        <thead>
+                                      <tr>
+                                            <th class="table_checkbox"><div class="icheckbox_minimal-blue" style="position: relative;"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="brunchList" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0; cursor: pointer;"></ins></div></th>
+                                            <th>主干词</th>
+                                            <th>权重 </th>
+                                            <th>添加人</th>
+                                            <th>操作</th>
+                                          </tr>
+                                    </thead>
+                                        <tbody><tr><td colspan="5" style="text-align:center;"><i class="icon-exclamation-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr></tbody>
+                                      </table>
+                                  <div id="itemContainer123" class="pagination pagination-right"></div>
+                                </div>
+                                  </div>
+                            </div>
+                              </div>
+                              <div class="tableHead aa">
+	  								<a href="javascript:;" class="multiDel btn btn-default pull-right" style="margin-bottom: 15px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+	  							</div>
+              <div class="col-md-12 list" style="padding: 0;">
+                <table class="table table1" style="margin-top: 0px;" id="ed1">
+               <thead>
+	                   <tr>
+	                       <th style="width: 10px;"><input class="multCos" type="checkbox"></th>
+	                       <th>问题详细</th>
+	                       <th style="width: 150px;">时间</th>
+	                       <th class="col-md-1">操作</th>
+	                   </tr>
+	               </thead>
+	               <tbody class="tbody1">
+	               </tbody>
+	           </table>
+
+                <div id="itemContainer"></div>
+                <!--操作排序问题-->
+                <input type="hidden" name="orderType" value="4">
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="modal fade" id="editclassName">
+    <div class="modal-silm modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">修改类名称</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="container-fluid">
+                      <div class="row-fluid">
+                        <form class="col-md-12" id="editreName">
+                              <label class="bold">名称</label>
+                              <input type="text" class="col-md-12 ie_input_28 form-control" name="className" maxlength="50">
+                              <input type="hidden" name="id">
+                              <input type="hidden" name="classhideName">
+                			  <input type="hidden" name="pId">
+                            </form>
+                      </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+            	<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="editClassify(); return false;">确定</button>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- javascript
+        ================================================== -->
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+        <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+        <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <!--[if lt IE 9]>
+            <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+            <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+            <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+        <![endif]-->
+        <!-- ================== END BASE JS ================== -->
+
+        <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+        <script src="../../assets/js/apps.min.js"></script>
+        <!-- ================== END PAGE LEVEL JS ================== -->
+
+        <!-- 必加开始 -->
+        <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+        <link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+        <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+        <link href="css/style.css" rel="stylesheet" />
+
+        <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+        <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+        <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+        <script src="../common/js/bootstrap-paginator.js"></script>
+        <script src="../common/js/icheck.js"></script>
+        <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+        <script src="../../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="../common/js/base.js"></script>
+        <!-- 必加结束 -->
+
+<script>
+//$(document).ready(function(){
+	// 批量删除
+	$('.multiDel').on('click', function() {
+		var ids=getSelectedIds();
+			if(ids==''){
+				ids = getSelectedIds();
+			}
+			if(ids==""){
+				return false;
+			}
+			markDel(ids);
+	})
+
+	$('body').on('click', '.markDel', function() {
+		var $tr = $(this).parents('tr');
+		markDel($tr.attr('id').match(/\d+/));
+	})
+
+	function markDel(ids) {
+		$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../LearnQue/deleteUnQuestionInfo?ids='+ids),
+		success:
+		function(data){
+			yunNoty(data);
+			if (data.status==0){
+				allInfo(1,4);
+			}
+		}
+		})
+	}
+	//展开分类
+	$(".expandAll").bind("click", expandAll);
+
+	function expandAll() {
+		var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+		zTree.expandAll(true);
+		yun_scroll();
+		return false;
+	}
+	$(".expandNot").bind("click", expandNot);
+
+	function expandNot() {
+		var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+		zTree.expandAll(false);
+		return false;
+	}
+
+
+	$(".expandListAll").bind("click", expandAll);
+
+	function expandAll() {
+		var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+		zTree.expandAll(true);
+		return false;
+	}
+
+	//全选
+	$('body').on('ifChecked', '.multCos', function() {
+	   $('.singleCos').iCheck('check');
+	});
+	//全不选
+	$('body').on('ifUnchecked', '.multCos', function() {
+	   $('.singleCos').iCheck('uncheck');
+	});
+
+	allInfo(1,4);
+
+   //未知问题列表
+   function allInfo(pageNo,orderType){
+   	if(!pageNo)pageNo=1;
+   	if(!orderType){
+   		orderType=$('input[name=orderType]').val();
+   	}else{
+   		$('input[name=orderType]').val(orderType);
+   	}
+		$('#ed1').tableAjaxLoader2(7);
+   	$.ajax({
+   		type:'get',
+   		datatype:'json',
+   		cache:false,//不从缓存中去数据
+   		url:encodeURI('../../LearnQue/getUnQByClass?pageSize='+20+'&pageNo='+pageNo+'&groupId='+$('input[name=groupId]').val()),
+   		data:$("#unknown_form").serialize(),
+   		success:
+   		function(data){
+   	      if(data.status==0){
+   			  $('.pageTotal').html(data.total);
+   	      	if(data.list.length>0){
+   	      		var html = "";
+   				var tmpList=data.list;
+   	      		for(var i=0;i<tmpList.length;i++){
+   					$('.currPage').html(i+1);
+   					/*html +="<li id=\"dom_"+tmpList[i].Id+"\"><div>";
+   					html +="<span class=\"dateT\"><a class=\"markDel\" href=\"javascript:;\"  rel=\""+tmpList[i].ChatUserId+"\" cv=\""+tmpList[i].ChatVersion+"\" style=\"margin-right:10px;\">删除</a>"+tmpList[i].DateTime+"</span>";
+   					html +="<div class=\"title\">";
+
+   					html +="<span  class=\"domBtn\">&nbsp;&nbsp;<a class=\"timeTip\" title=\"\">"+(i+1)+"</a>&nbsp;.&nbsp;</span>";
+   				    html +="<input class=\"qcbox\" type=\"checkbox\" value=\""+tmpList[i].Id+"\" name=\"ckb\" style=\"margin-top:-2px;\">&nbsp;&nbsp;";
+   				    var unknowQue=tmpList[i].InQue==null?'':tmpList[i].InQue;
+   				    unknowQue=unknowQue.replace(/<[^>]+>/g,"");
+   				    html +="<a href=\"javascript:void(0);\"  class=\"q_link get"+tmpList[i].Id+"\" title=\""+unknowQue+"\" >"+limitstr(unknowQue,25)+"</a>";
+   					html +="</div>"
+   					html +="</div></li>"*/
+
+   					html += '<tr id=\"dom_'+tmpList[i].Id+'\"><td><input class=\"qcbox singleCos\" type=\"checkbox\" value=\"'+tmpList[i].Id+'\" name=\"ckb\"></td><td>'+ (tmpList[i].InQue || '') +'</td><td>'+ (tmpList[i].CheckTime || '') +'</td><td style="white-space:nowrap;"><a class=\"markDel\" href=\"javascript:;\"  rel=\"'+tmpList[i].ChatUserId+'\" cv=\"'+tmpList[i].ChatVersion+'\" style=\"margin-right:10px;\"><i class="timeTip look clickBtn glyphicon glyphicon-trash" title="删除"></i></a></td></tr>';// #2
+   	      		}
+   	      		/*//下面开始处理分页
+   	      		var options = {
+   		            currentPage: data.currentPage,
+   		            totalPages: data.totlePages,
+   					alignment:'right',
+   					onPageClicked: function (event, originalEvent, type, page) {
+   						allInfo(page,orderType);
+   						}
+   		            };
+   		        setPage('itemContainer',options);*/
+
+   		        var options = {
+                    data: [data, 'list', 'total'],
+                    currentPage: data.currentPage,
+                    totalPages: data.totlePages ? data.totlePages : 1,
+                    alignment: 'right',
+                    onPageClicked: function(event, originalEvent, type, page) {
+   						allInfo(page,orderType);
+                    }
+                };
+                $('#itemContainer').bootstrapPaginator(options);
+   			}else{
+   				html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+   				$('#itemContainer').empty();
+   			}
+   	      }else{
+   	      			yunNoty(data);
+   	      }
+
+   	      $('.tbody1').empty().append(html);
+   	      $('.timeTip').tooltip();
+   	       icheckInit();
+   	   }
+   	});
+   }
+
+
+
+
+//})
+</script>
+</body>
+</html>

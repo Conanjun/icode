@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+        .input-group-addon {
+            background: #348FE2;
+            color: #fff;
+        }
+        #queManual .form-group {
+            padding: 0 15px;
+        }
+		.item{
+			width:100%;
+			overflow:hidden;
+			padding: 10px 10px;
+		}
+		.checkbDiv{
+			float:left;
+			width: 5%;
+		}
+		.itemTxt{
+			float: left;
+			margin-left: 10px;
+			font-size: 12px;
+			width: 90%;
+			cursor: pointer;
+			margin-top: 1px;
+		}
+		#labelTxtPageList{
+			margin-top:10px;
+		}
+		#labelTxt{
+			max-height:400px;
+		}
+		.editLabels{
+			cursor: pointer;
+		}
+
+        .QueContainer .zntjo{
+            width:80%;
+            padding: 6px 0px;
+        }
+
+        .ansItemCtn>div{
+            vertical-align: top;
+        }
+        .ansItemImg{
+            display:inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+        }
+		.yun_menuContent{
+			background: #fff none repeat scroll 0 0;
+		    border: 1px solid #d9e0e7;
+		    border-radius: 4px;
+		    bottom: 0;
+		    height: 171px;
+		    overflow: auto;
+		    position: absolute;
+		    width: 100%;
+			display:none;
+		}
+		.entitys{
+		    width: 100%;
+		    border-radius: 4px;
+		    outline: none;
+		    height: 34px;
+		    border: 1px solid #ccc;
+		}
+		.entityTio{
+			width:100%;
+			border-radius: 5px;
+		    outline: none;
+		    height: 28px;
+		    border: 1px solid #ccc;
+		}
+		.interTerm1{
+			position: relative;
+		}
+		.spanInter{
+			/*position: absolute;*/
+		    /*z-index: 22;*/
+		    /*background: #000;*/
+		    /*color: #fff;*/
+		    /*padding: 5px;*/
+		    /*border-radius: 5px;*/
+		    /*max-width: 200px;*/
+		    /*top: -14px;*/
+    		/*right: -212px;*/
+    }
+		@media (max-width:991px){
+			#EntitysList{
+				height: auto;
+    			overflow: hidden;
+			}
+			#EntitysList .col-md-7{
+				width: 50%;
+				float: left;
+			}
+			#EntitysList .col-md-4{
+				width: 40%;
+				float: left;
+			}
+			
+			.yun_menuContent{
+				width:95%;
+			}
+		}
+		.table2 tr td:last-child,.table2 th:last-child{
+            min-width:85px;
+        }
+		#affix1inner .treeDivModal{
+			overflow-x:  auto !important;
+		}
+		#termPageList ul li:last-child{
+			display: none;
+		}
+        /*修改问题置灰显示*/
+        .editQueGrey{
+            cursor: not-allowed !important;
+            color: #b6c2c9;
+        }
+        /*问题删除按钮置灰显示*/
+        .oneDelQueGrey{
+            cursor: not-allowed !important;
+            color: #b6c2c9;
+        }
+    </style>
+</head>
+<body>
+
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="labelClassModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择标签</h4>
+						</div>
+						<div class="modal-body">
+							<div id="labelTxt"></div>
+						</div>
+						<div class="modal-footer">
+							<div id="checkLabel"></div>
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selLabelBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+            <div class="modal fade" id="modal-keyword">
+                <div class="modal-silm modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">设置关键词
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="panel-body">
+                                    <form class="form-horizontal" novalidate="novalidate" id="highLevelForm">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">
+                                                        <span style="position:relative;top:-2px">关键词</span>
+                                                        <span class="timeTip" id="keypopi">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px; color:#337ab7;"></i>
+                                                        </span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="text" placeholder="请输入关键词" class="form-control" name="keyWord">
+                                                </div>
+                                            </div>
+                                            <!--<div class="form-group">
+                                                <label class="col-md-3 control-label">
+                                                        <span style="position:relative;top:-2px">公式</span>
+                                                        <span class="timeTip" data-original-title="判断用户问题是否符合该正则表达式，若符合，给出该问题的答案。">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px; color:#337ab7;"></i>
+                                                        </span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="text" placeholder="请输入公式" class="form-control" name="requestRegex">
+                                                </div>
+                                            </div>-->
+                                            <input type="hidden" name="groupId">
+                                            <input type="hidden" name="solutionId">
+                                        </fieldset>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        	<a href="javascript:;" class="btn btn-sm btn-primary addKeyWord">确定</a>
+                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-formula">
+                <div class="modal-silm modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">设置公式
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="panel-body">
+                                    <form class="form-horizontal" novalidate="novalidate" id="highFormulaForm">
+                                        <fieldset>
+                                            <!--<div class="form-group">
+                                                <label class="col-md-3 control-label">
+                                                    <span style="position:relative;top:-2px">关键词</span>
+                                                        <span class="timeTip" id="keypopi">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px; color:#337ab7;"></i>
+                                                        </span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="text" placeholder="请输入关键词" class="form-control" name="keyWord">
+                                                </div>
+                                            </div>-->
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">
+                                                        <span style="position:relative;top:-2px">公式</span>
+                                                        <span class="timeTip" data-html='true' data-original-title="<div style='min-width: 200px;text-align: left'>判断用户问题是否符合该正则表达式，若符合，给出该问题的答案。</div>">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px; color:#337ab7;"></i>
+                                                        </span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="text" placeholder="请输入公式" class="form-control" name="requestRegex">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="groupId">
+                                            <input type="hidden" name="solutionId">
+                                        </fieldset>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" class="btn btn-sm btn-primary addFormula">确定</a>
+                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+			<div class="modal fade bs-example-modal-lg" id="modal-intelTerm">
+                <div class="modal-lg modal-dialog" style="width: 80%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">设置句式</h4>
+                        </div>
+                        <div class="modal-body">
+                        	<div class="row" style="max-height: 440px;">
+                        		<div class="col-md-3 col-xs-3">
+                        			<input type="hidden" name="solutionId">
+                        			<input type="hidden" name="treeName">
+		                            <input type="hidden" name="treeId">
+		                            <div id="affix1inner">
+		                            	<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeTermClass',true);" style="cursor:pointer;"></span>
+			                            <span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeTermClass',false);" style="cursor:pointer;"></span>
+			                            <div class="treeDivModal">
+			                                <ul id="treeTermClass" class="ztree"></ul>
+			                            </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-md-5 col-xs-5">
+                        			<table class="table" id="termTable">
+                        				<thead>
+                        					<th>选择</th>
+                        					<th>句式组</th>
+                        				</thead>
+                        				<tbody></tbody>
+                        			</table>
+                        			<div id="termPageList" style="margin:0;"></div>
+                        		</div>
+                        		<div class="col-md-4 col-xs-4">
+                        			<div class="form-group" id="intelMatchContainer">
+										<div class="col-md-12" id="intelMatch">
+											<!--<div class="col-md-12 m-5">智能匹配的句式：
+												<a data-toggle="tooltip" data-placement="top" title="设置句式后，可关联句式中的多种问法" class="marklpa">
+								                   <i class="fa fa-question-circle" style="font-size: 20px;"></i>
+								                </a>
+											</div>-->
+											<div class="col-md-12 m-5">
+												<div class="col-md-3" style="padding: 0;">是否启用:</div>
+												<div class="col-md-7" style="padding-left: 0;">
+													<input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" checked/>
+												</div>
+											</div>
+											<div class="col-md-12 m-5" id="EntitysList" style="padding-right:0;">
+												<label class="col-md-12 control-label" style="padding:0;text-align: left;">实体<span class="red">&nbsp;*</span></label>
+												<textarea class="form-control entityTio" style="resize:none"></textarea>
+												<p class="help-block">多个实体用“，”隔开</p>
+											</div>
+							                <div class="col-md-12 m-5" id="myTabContent">
+					                     		<!--<div class="col-md-3" style="padding:0;">关联句式:</div>
+					                     		<div class="col-md-9 relation" style="padding-left: 0;"></div>-->
+							                </div>
+							                <div class="col-md-12 m-5">
+							                  <a href="../../web/temp/phraseGroup.html" data-num="0" data-name="句式组列表">新增句式</a>
+							                </div>
+										</div>
+									</div>
+                        		</div>
+                        	</div>
+                        </div>
+                        <div class="modal-footer" style="max-height: 60px;">
+                        	<a href="javascript:;" class="btn btn-sm btn-primary addTerm">确定</a>
+                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="modal fade" id="similarAddModal" style="display: none;">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			                <h4 class="modal-title">添加句式组</h4>
+			            </div>
+			            <div class="modal-body">
+                                <div class="alert alert-warning fade in m-b-15" style="display:none;">
+                                        <strong>友情提示：</strong>
+                                        当前相似问法实体与标准问题中的实体不一致，请谨慎添加！
+                                        <span class="close" data-dismiss="alert">×</span>
+                                    </div>
+			               <form id="addSentenceForm" class="form-synonym form-horizontal">
+				                 <div class="form-group">
+				                    <label class="col-md-3 control-label">句式组名称<span class="red">&nbsp;*</span></label>
+				                    <div class="col-md-7">
+				                    	<input type="text" class="form-control" name="sgName" placeholder="请输入句式组名称">
+				                    </div>
+				                </div>
+				                    <input type="hidden" name="level" value="1">
+				                    <input type="hidden" name="classId">
+				                    <input type="hidden" name="id">
+				                <div class="form-group">
+				                	 <label class="col-md-3 control-label">选择分类<span class="red">&nbsp;*</span></label>
+				                     <div class="col-md-7">
+				                     	<a href="javascript:;" class="form-control hasgN" id="phraseTree">全部分类</a>
+				                        <div id="menuContent1" class="yun_menuContent" >
+				                          <ul id="classTree_phrase" class="ztree" >
+				                          </ul>
+				                        </div>
+				                     </div>
+				                </div>
+				                <!--<div class="form-group" id="">
+									<label class="col-md-3 control-label">是否启用</label>
+									<div class="col-md-7">
+										<input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" value="0" />
+									</div>
+								</div>-->
+								<div id="form_entity">
+									<!--<label class="col-md-3 control-label">实体<span class="red">&nbsp;*</span></label>
+									<div class="col-md-8 col-xs-8" style="padding：0">
+										<div class="col-md-7">
+											<input type="text" class="entitys"/>
+										</div>
+										<div class="col-md-4 m-t-5 m-l-5">
+	                                        <a href="javascript:;" name="delentityInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
+	                                        <a href="javascript:;" name="addentityInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
+	                                    </div>
+									</div>-->
+								</div>
+			                </form>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="similarBtn">确定</button>
+			                <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
+            <div class="modal fade" style="display: none;" aria-hidden="true" id="delAnsConfirm">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title" id="tipTitle"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="tipWord"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delYes">是</button>
+                            <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal " style="display: none;" aria-hidden="true" id="queManualModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">智能推荐</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" id="search_Que" class="form-inline" style="position: relative;">
+                                <fieldset>
+                                    <input type="hidden" name="level" value="1">
+                                    <input type="hidden" name="groupId" class="selQueX" value="0">
+                                    <input type="hidden" name="isLeaf" value="0">
+                                    <div class="form-group">
+                                        <label class="control-label">选择分类：</label>
+                                        <a id="queSel" style="cursor:pointer;">全部分类</a>
+                                    </div>
+                                    <div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 0px; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500;">
+                                        <div class="treeDivOfConfigure" tabindex="0" id="classTree">
+                                            <ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-left:10px; float:right;">
+                                        <input type="text" class="form-control input-sm" name="question">
+                                        <input type="text" style="display: none;">
+                                        <button type="button" class="lookFor btn btn-primary btn-sm"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                            <div id="queDiv" style="margin-top:5px;">
+                                <ul class="nav nav-pills" id="queDivNav">
+                                    <li class="active"><a href="#queManualQue" data-toggle="tab">问题</a></li>
+                                    <li class=""><a href="#queManualFlow" data-toggle="tab">流程</a></li>
+                                </ul>
+                                <div class="tab-content" style="margin-bottom:0;padding: 0;">
+                                    <div class="tab-pane  active in" id="queManualQue">
+                                        <div id="queManualQueTable">
+                                            <table class="table" id="ansList">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="60">选择</th>
+                                                        <th>问题</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="quepageList" style="margin:0;"></div>
+                                    </div>
+                                    <div class="tab-pane " id="queManualFlow">
+                                        <div id="queManualFlowTable">
+                                            <table class="table" id="flowList">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="75">选择</th>
+                                                        <th>流程</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="flowpageList" style="margin:0;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="queManualConfirm">确定</button>
+                            <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal " style="display: none;" aria-hidden="true" id="QuestionClassModel">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">选择分类</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="treeName">
+                            <input type="hidden" name="treeId">
+                                <span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeQueClass',true);" style="cursor:pointer;"></span>
+                                <span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeQueClass',false);" style="cursor:pointer;"></span>
+                                <div class="treeDivModal">
+                                    <ul id="treeQueClass" class="ztree"></ul>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-primary" href="javascript:;" id="selClassBtn">确定</button>
+                            <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="modal" id="modal-history">
+        <div class="modal-silm modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">历史版本</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                            <div class="ansItemCtnClone" style="word-break:break-all; word-wrap:break-word;">
+                            </div>
+                        <div class="panel-body">
+
+                            <table class="table table3">
+                                <thead>
+                                    <tr id="trtoadd">
+                                        <th>答案详细</th>
+                                        <th>用户</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="tbody3">
+                                </tbody>
+                            </table>
+                            <div id="itemContainer3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="page-container" class=" page-header-fixed page-sidebar-fixed in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">知识库管理</a></li>
+                <li>问题详细</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">问题详细</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin col-12 -->
+                <div>
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <input type="hidden" name="checkedPage">
+                        <input type="hidden" name="checkedId">
+                            <div class="">
+                                <div class="panel-body" style="padding:0;">
+                                    <table class="table table1" style="margin:0;overflow:auto">
+
+                                        <tbody class="tbody1">
+                                        </tbody>
+                                    </table>
+
+                                    <!---------------------->
+
+                                    <div class="recWholeCtn">
+                                        <legend style="margin-bottom: 10px;">推荐问题</legend>
+
+
+                                        <!-- <div class="alert alert-info  in m-b-15">
+                                            <strong>友情提示：</strong>
+                                            学习机器人未知的问题。您也可以在这里回复客户的问题哦！他们下次来访时可以看到哦！
+                                            <span class="close" data-dismiss="alert">×</span>
+                                        </div> -->
+                                        <form class="form-horizontal">
+                                            <div>
+                                                <ul class="nav nav-pills">
+                                                    <li class="recomBtn"><a href="#queOff" data-toggle="tab" aria-expanded="false">关闭</a></li>
+                                                    <li class="recomBtn"><a href="#queManual" data-toggle="tab">问题推荐</a></li>
+                                                    <a class="reflashRec"><span class="timeTip glyphicon glyphicon-refresh" data-original-title="更新推荐问题"></span></a>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane" id="queOff">
+                                                    </div>
+                                                    <div class="tab-pane active in" id="queManual">
+
+                                                        <div class="QueContainer row">
+                                                            <div class="form-group col-md-2">
+                                                                <button type="button" class="btn btn-primary zntjo">智能推荐</button>
+                                                            </div>
+                                                            <div class="form-group col-md-8">
+                                                                <input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="请选择推荐的问题" name="postQueInput">
+                                                            </div>
+                                                            <div class="form-group col-md-2 m-t-5 m-l-5">
+                                                                <a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
+                                                                <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                    <div class="recWholeCtn">
+                                        <legend style="margin-bottom: 10px;">相似问法</legend>
+                                        <div class="alert alert-warning fade in m-b-15">
+                                            <strong>友情提示：</strong>
+                                            至少要添加3种以上相似问法才可以智能学习！
+                                            <span class="close" data-dismiss="alert">×</span>
+                                        </div>
+                                        <div class="row">
+                                            <form class="form-inline">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" class="inputSim form-control" placeholder="输入相似问法" maxlength="200">
+                                                        <span class="search-addSrc input-group-btn" style=" padding-bottom: 0px;">
+                                                            <button class="addSim btn btn-primary" type="button">添加相似问法</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group pull-right" style="padding-left: 0;">
+                                                    <div class="btn-group" style="margin-left: 2px;">
+                                                        <button type="button" class="sortWord btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">默认排序<span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-right" style="min-width: 100px;">
+                                                            <li class="simSort1"> <a href="javascript:;">默认排序</a> </li>
+                                                            <li class="simSort2"> <a href="javascript:;">时间正序</a> </li>
+                                                            <li class="simSort3"> <a href="javascript:;">时间倒序</a> </li>
+                                                            <li class="simSort4"> <a href="javascript:;">浏览量正序</a> </li>
+                                                            <li class="simSort5"> <a href="javascript:;">浏览量倒序</a> </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group pull-right" style="padding-right: 0;">
+                                                    <div class="input-group">
+                                                        <input class="form-control" type="text" placeholder="搜索相似问法" id="searchSimilar">
+                                                        <a href="javascript:;" class="searchInput input-group-addon btn-primary"><span class="fa fa-search"></span></a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="recWholeCtn" style="padding: 0 15px;">
+                                        <div>
+                                           <!-- <div class="input-group">
+                                                <span class="search-addSrc input-group-btn">
+                                                </span>
+                                            </div>
+-->
+                                            <table class="table table2" id="simiQueTab">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 50%;">相似问法</th>
+                                                        <th>浏览次数</th>
+                                                        <th>添加时间</th>
+                                                        <th class="col-md-1">操作</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody class="tbody2">
+                                                </tbody>
+                                            </table>
+                                            <div id="itemContainer2"></div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                    </div>
+                    <!-- end panel -->
+
+                </div>
+                <!-- end col-12 -->
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link rel="stylesheet" href="../common/css/jPages.css">
+    <link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../../assets/plugins/switchery/switchery.min.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../common/js/jPages.min.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/iframeTab.min.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/main2.js"></script>
+    <script src="js/queDetail.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+            iframeTab.init({iframeBox: ''});
+            
+            //switchery 初始化
+		var green = "#00acac",
+		red = "#ff5b57",
+		blue = "#348fe2",
+		purple = "#727cb6",
+		orange = "#f59c1a",
+		black = "#2d353c";
+		var renderSwitcher = function() {
+		    if ($("[data-render=switchery]").length !== 0) {
+		        $("[data-render=switchery]").each(function() {
+		            var e = green;
+		            if ($(this).attr("data-theme")) {
+		                switch ($(this).attr("data-theme")) {
+		                case "red":
+		                    e = red;
+		                    break;
+		                case "blue":
+		                    e = blue;
+		                    break;
+		                case "purple":
+		                    e = purple;
+		                    break;
+		                case "orange":
+		                    e = orange;
+		                    break;
+		                case "black":
+		                    e = black;
+		                    break;
+		                }
+		            }
+		            var t = {};
+		            t.color = e;
+		            t.secondaryColor = $(this).attr("data-secondary-color") ? $(this).attr("data-secondary-color") : "#dfdfdf";
+		            t.className = $(this).attr("data-classname") ? $(this).attr("data-classname") : "switchery";
+		            t.disabled = $(this).attr("data-disabled") ? true: false;
+		            t.disabledOpacity = $(this).attr("data-disabled-opacity") ? $(this).attr("data-disabled-opacity") : 0.5;
+		            t.speed = $(this).attr("data-speed") ? $(this).attr("data-speed") : "0.5s";
+		            var n = new Switchery(this, t);
+		        });
+		    }
+		};
+        renderSwitcher();
+        			
+			$("a[href=#queManual]").click(function(){
+				if($("#queManual a[name=addpostInput]").length>=5){
+				  	$("#queManual a[name=addpostInput] span").hide()
+				  }
+			})
+        });
+    </script>
+
+</body>
+</html>

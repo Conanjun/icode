@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>大屏对接列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">大屏对接列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">大屏对接列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加大屏对接</span>
+						</a>
+						<a href="javascript:;" class="btn btn-default pull-right" id="mul-del"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+						<div class="table-responsive">
+							<table class="table" id="ThirdAuthList">
+								<thead>
+									<tr>
+										<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="ThirdAuthList"/></th>
+										<th>设备编号</th>
+										<th width="120">设备当前状态</th>
+										<th width="120">设备当前类别</th>
+										<th>设备地址</th>
+										<th>解绑用户</th>
+										<th>授权用户</th>
+										<th width="120">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加大屏对接</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="ThirdAuth_form" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">授权码<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入授权码" class="form-control" name="deviNumber">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">手机号<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入手机号" class="form-control" name="phone" maxlength="11">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">设备地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入设备地址" class="form-control" name="deviceAdress" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">描述信息<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入描述信息" class="form-control" name="deviceInfo">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#ThirdAuth_form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="myModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改大屏对接</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<input type="hidden" name="empowerState" id="empowerStateS">
+									<div class="form-group">
+										<label class="col-md-3 control-label">设备地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入设备地址" class="form-control" name="deviceAdress" maxlength="50">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">描述信息<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入描述信息" class="form-control" name="deviceInfo">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+	$.fn.laheiCreator = function(cb) {
+		var self = this;
+		var $delBD = $('<div class="modal" id="ADCDELModal" aria-hidden="false"><div class="modal-backdrop fade in" style="height: 5000px" id="ADCBackDrop"></div><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">确认拉黑？</h4></div><div class="modal-body"><p>确定要拉黑该设备？</p></div><div class="modal-footer"><a href="javascript:;" class="btn btn-sm btn-primary" id="adc-ok-ensure">确认</a> <a href="javascript:;" class="btn btn-sm btn-white" id="adc-cancel-ensure">取消</a></div></div></div></div>');
+		$delBD.hide().appendTo($('body')).fadeIn('300');
+		$('#adc-cancel-ensure').add('#ADCBackDrop').off('click').on('click', function() {
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+		$('#adc-ok-ensure').off('click').on('click', function() {
+			cb(self);
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+	}
+	$.fn.jiebangCreator = function(cb) {
+		var self = this;
+		var $delBD = $('<div class="modal" id="ADCDELModal" aria-hidden="false"><div class="modal-backdrop fade in" style="height: 5000px" id="ADCBackDrop"></div><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">确认解绑？</h4></div><div class="modal-body"><p>确定要解绑该设备？</p></div><div class="modal-footer"><a href="javascript:;" class="btn btn-sm btn-primary" id="adc-ok-ensure">确认</a> <a href="javascript:;" class="btn btn-sm btn-white" id="adc-cancel-ensure">取消</a></div></div></div></div>');
+		$delBD.hide().appendTo($('body')).fadeIn('300');
+		$('#adc-cancel-ensure').add('#ADCBackDrop').off('click').on('click', function() {
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+		$('#adc-ok-ensure').off('click').on('click', function() {
+			cb(self);
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+	}
+	$.fn.bangdingCreator = function(cb) {
+		var self = this;
+		var $delBD = $('<div class="modal" id="ADCDELModal" aria-hidden="false"><div class="modal-backdrop fade in" style="height: 5000px" id="ADCBackDrop"></div><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">确认绑定？</h4></div><div class="modal-body"><p>确定要绑定该设备？</p></div><div class="modal-footer"><a href="javascript:;" class="btn btn-sm btn-primary" id="adc-ok-ensure">确认</a> <a href="javascript:;" class="btn btn-sm btn-white" id="adc-cancel-ensure">取消</a></div></div></div></div>');
+		$delBD.hide().appendTo($('body')).fadeIn('300');
+		$('#adc-cancel-ensure').add('#ADCBackDrop').off('click').on('click', function() {
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+		$('#adc-ok-ensure').off('click').on('click', function() {
+			cb(self);
+			$('#ADCDELModal').fadeOut('250').remove();
+		});
+	}
+		$(document).ready(function() {
+			App.init();
+			icheckBindInit();
+		  $('#mul-del').on('click', function() {
+		    $(this).adcCreator(function() {
+					selectDel('','../../EntityRobot/deleteEmpInfo',listthirdAuthPage,'pageList')
+		    });
+		  });
+			//列出表格
+			listthirdAuthPage(1);
+			//添加大屏对接表单验证
+			$('#ThirdAuth_form').validate({
+				rules:{
+					deviNumber:{
+						required:true
+					},
+					phone:{
+						required:true
+					},
+					deviceAdress:{
+						required:true
+					},
+					deviceInfo:{
+						required:true
+					}
+				},
+				messages:{
+					deviNumber:{
+						required:"请输入授权码！"
+					},
+					phone:{
+						required:"请输入手机号！"
+					},
+					deviceAdress:{
+						required:"请输入设备地址！"
+					},
+					deviceInfo:{
+						required:"请输入描述信息！"
+					}
+				},
+				submitHandler: addAuth
+			});
+			//修改大屏对接表单验证
+			$('#save_form').validate({
+				rules:{
+					deviceAdress:{
+						required:true
+					},
+					deviceInfo:{
+						required:true
+					}
+				},
+				messages:{
+					deviceAdress:{
+						required:"请输入设备地址！"
+					},
+					deviceInfo:{
+						required:"请输入描述信息！"
+					}
+				},
+				submitHandler: savethirthSub
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#ThirdAuth_form input[type=text]').val('');
+			})
+		});
+		function getEmpowerState(s) {
+			switch(s) {
+				case 0:
+					return '黑名单';
+				case 1:
+					return '已授权';
+				case 2:
+					return '待授权';
+			}
+		}
+		function getbUsers(un, ut, um) {
+			if(un==null) {
+				un = '未知';
+			}
+			if(ut==null) {
+				ut = '未知';
+			} else {
+				var gt = new Date(ut);
+				ut = gt.toLocaleDateString();
+			}
+			if(um==null) {
+				um = '未知';
+			}
+			return '用户：' + un + '<br>时间：' + ut + '<br>电话：' + um;
+		}
+		function shouquan(self){
+			$(self).bangdingCreator(function() {
+				$.getJSON('../../EntityRobot/updateEmpowerInfo', 'id=' + $(self).attr('rel') + '&empowerState=1',
+				function(data) {
+					if (data.status === 0) {
+						var page = $('#pageList .active a').html();
+						if($('.m-del')!==undefined) {
+							if($('.m-del').size()==1) page-=1;
+							if(page<1) page=1;
+						}
+						listthirdAuthPage(page);
+					}
+					yunNoty(data);
+				});
+			});
+		}
+		function jiebang(self){
+			$(self).jiebangCreator(function() {
+				$.getJSON('../../EntityRobot/updateEmpowerInfo', 'id=' + $(self).attr('rel') + '&empowerState=2',
+				function(data) {
+					if (data.status === 0) {
+						var page = $('#pageList .active a').html();
+						if($('.m-del')!==undefined) {
+							if($('.m-del').size()==1) page-=1;
+							if(page<1) page=1;
+						}
+						listthirdAuthPage(page);
+					}
+					yunNoty(data);
+				});
+			});
+		}
+		function lahei(self){
+			$(self).laheiCreator(function() {
+				$.getJSON('../../EntityRobot/updateEmpowerInfo', 'id=' + $(self).attr('rel') + '&empowerState=0',
+				function(data) {
+					if (data.status === 0) {
+						var page = $('#pageList .active a').html();
+						if($('.m-del')!==undefined) {
+							if($('.m-del').size()==1) page-=1;
+							if(page<1) page=1;
+						}
+						listthirdAuthPage(page);
+					}
+					yunNoty(data);
+				});
+			});
+		}
+		var listthirdAuthPageData = null;
+		function listthirdAuthPage(pageNo){
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			if(!pageNo)pageNo=1;
+			$('#ThirdAuthList').tableAjaxLoader2(8);
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../EntityRobot/getEmpByTerm?pageSize='+10+'&pageNo='+pageNo),
+				//data:encodeURI(tempcontent),
+				success:
+				function(data){
+					if(data.status===0){
+						if(data.list===undefined || data.list===null){
+							$('.select_rows').iCheck('uncheck');
+							$('#ThirdAuthList').find('tbody').html('<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+							return;
+						}
+						if(data.list.length>0){
+							listthirdAuthPageData = data.list;
+							var html = [];
+							for(var i=0;i<data.list.length;i++){
+								html.push('<tr id="list-tr-'+data.list[i].Id+'">');
+								html.push('<td><input type="checkbox" name="ckb" class="select_row" value="'+data.list[i].Id+'" /></td>');
+								html.push( '<td>'+(data.list[i].DeviceNumber||'')+'</td>');
+								html.push( '<td>'+getEmpowerState(data.list[i].EmpowerState)+'</td>');
+								html.push( '<td>'+(data.list[i].DeviceAdress||'')+'</td>');
+								html.push( '<td>'+(data.list[i].DeviceInfo||'')+'</td>');
+								html.push( '<td>'+getbUsers(data.list[i].EmpowerUserId,data.list[i].EmpowerTime,data.list[i].EmpowerPhone)+'</td>');
+								html.push( '<td>'+getbUsers(data.list[i].UnbindUserId,data.list[i].UnbindTime,data.list[i].UnbindPhone)+'</td>');
+								html.push('<td style="font-size: 16px;">');
+								html.push('<a href="javascript:;" title="编辑" rel="'+data.list[i].Id+'" style="cursor:pointer" onclick="editthirdAuthModal(this)"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;')
+								if(data.list[i].EmpowerState != 1) {
+									html.push('<a href="javascript:;" title="绑定" rel="'+data.list[i].Id+'" style="cursor:pointer" onclick="shouquan(this)"><i class="fa fa-lock"></i></a>&nbsp;&nbsp;')
+								}
+								if(data.list[i].EmpowerState != 2) {
+									html.push('<a href="javascript:;" title="解绑" rel="'+data.list[i].Id+'" style="cursor:pointer" onclick="jiebang(this)"><i class="fa fa-unlock"></i></a>&nbsp;&nbsp;')
+								}
+								if(data.list[i].EmpowerState != 0) {
+									html.push('<a href="javascript:;" title="拉黑" rel="'+data.list[i].Id+'" style="cursor:pointer" onclick="lahei(this)"><i class="fa fa-times"></i></a>&nbsp;&nbsp;')
+								}
+								html.push('<a href="javascript:;" title="删除" rel="'+data.list[i].Id+'" style="cursor:pointer" class="m-del"><i class="fa fa-trash"></i></a>')
+								html.push('</td></tr>');
+							}
+							$('#ThirdAuthList').find('tbody').html(html.join(''));
+							//单个删除
+							$('.m-del').on('click',function(){
+								var self = this;
+								$(self).adcCreator(function() {
+									delById(self,'../../EntityRobot/deleteEmpInfo',listthirdAuthPage,'pageList');
+								});
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'list', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function (event, originalEvent, type, page) {
+									listthirdAuthPage(page);
+								}
+							};
+						setPage('pageList',options);
+						}else{
+							$('.select_rows').iCheck('uncheck');
+							$('#ThirdAuthList').find('tbody').html('<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//添加第三方认证表单提交
+		var flag_auth_add=false;
+		function addAuth(){
+			if(flag_auth_add){
+				return;
+			}
+			flag_auth_add=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../EntityRobot/empByNum'),
+				data:$("#ThirdAuth_form").serialize(),
+				success:
+				function(data){
+					flag_auth_add=false;
+					if(data.status===0){
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listCurrentPage(listthirdAuthPage,'pageList');
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//修改第三方认证表单提交
+		function savethirthSub(){
+			saveModal('../../EntityRobot/updateEmpowerInfo','save_form','myModal',listthirdAuthPage,'pageList');
+		}
+
+		//填充模态窗
+		function editthirdAuthModal(obj){
+			var index = $(obj).parents('tr').index();
+			$('#save_form input[name=deviceAdress]').val(listthirdAuthPageData[index].DeviceAdress);
+			$('#save_form input[name=deviceInfo]').val(listthirdAuthPageData[index].DeviceInfo);
+			$('#empowerStateS').val(listthirdAuthPageData[index].EmpowerState);
+			$('#hideid').val(listthirdAuthPageData[index].Id);
+			$('#myModal').modal('show');
+		}
+	</script>
+</body>
+</html>

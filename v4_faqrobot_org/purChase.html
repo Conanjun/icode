@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="FAQRobot,robot,faq问答机器人,客服机器人,智能问答机器人">
+<meta name="description" content="中国领先的智能问答机器人系统，为企业、网站、政府机构等提供先进的智能客服与智能问答系统解决方案。 ">
+<title>支付中心</title>
+<link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="./assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<style>
+	div.separator {
+		margin: 15px;
+	}
+	div.pad {
+		padding-left: 15px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	div.radioButton {
+		display: block;
+		margin: 0px auto;
+		width: 1000px;
+	}
+	div.radioButtonDiv {
+		text-align: center;
+		width: 24%;
+		display: inline-block;
+	}
+	.btn-exlg {
+		border-radius: 6px;
+		font-size: 21px;
+		line-height: 1.33;
+		padding: 15px 28px;
+	}
+	div.BackgroundWhite {
+		background: white;
+	}
+	div.InLineB3 {
+		width: 32%;
+		display: inline-block;
+	}
+	div.BuyContent,a.BuyContent{
+		line-height: 50px;
+		font-size: 0;
+		display: inline-block;
+	}
+	div.AskContent {
+		line-height: 50px;
+		font-size: 0;
+		display: inline-block;
+	}
+	span.font14 {
+		font-size: 14px;
+	}
+	.btn-white {
+		background-repeat: repeat-x;
+		border-color: #ccc;
+		text-shadow: 0 1px 0 #fff;
+	}
+	.versionSpan {
+		background-color: #1ee73f;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		color: #fff;
+		display: inline-block;
+		font-size: 16px;
+		line-height: 1.5;
+		margin-left: 10px;
+		padding: 2px 6px;
+		text-align: center;
+		white-space: nowrap;
+	}
+	.versions {
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 230px;
+		margin-top: 30px;
+		margin-bottom: 45px;
+		padding-bottom: 45px;
+	}
+	.versionsContent {
+		color: #FFF;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		margin-bottom: 45px;
+	}
+	.office {
+		background: #1EE73F none repeat scroll 0 0;
+	}
+	.advanced {
+		background: #1B96FF none repeat scroll 0 0;
+	}
+	.professional {
+		background: #FF5157 none repeat scroll 0 0;
+	}
+	.versions ul li {
+		margin-bottom: 4px;
+		color: #758392;
+	}
+	.content-grey {
+		color: #666666;
+	}
+	.content-blue {
+		color: #1B96FF;
+	}
+</style>
+</head>
+
+<body style="background:#F5F5F5;">
+	<div class="BackgroundWhite" style="padding-top: 24px; padding-bottom: 24px;">
+    	<div style="padding-left:50px; padding-right:50px; width: 1250px; margin:auto;">
+            <div href="#" style="border-right: 1px #D6D6D6 solid; padding-right:10px; display: inline-block;">
+            	<img border="0" alt="云问" src="images/logoP.png">
+            </div>
+            <div style="padding-left:5px; display: inline-block;">
+                <span>支付中心</span>
+            </div>
+    	</div>
+	</div>
+    <div style="padding-left:50px; padding-right:50px; width: 1250px; margin:auto;">
+        <div class="separator"></div>
+        <div class="BackgroundWhite" style="border-bottom: 1px #D6D6D6 solid;">
+          <div class="pad">
+            <h4>购买</h4>
+          </div>
+        </div>
+        <div class="BackgroundWhite">
+          <div class="content-grey" style="padding:25px;">
+            请根据您的需求选择您需要自定义的业务知识条目数
+          </div>
+        </div>
+        <div class="BackgroundWhite">
+        	<div>
+		        <div class="radioButton">
+                    <div class="radioButtonDiv">
+                        <label type="button" class="btn btn-white btn-exlg">300条</label>
+                    </div>
+                    <div class="radioButtonDiv">
+                        <label type="button" class="btn btn-white btn-exlg">600条</label>
+                    </div>
+                    <div class="radioButtonDiv">
+                        <label type="button" class="btn btn-white btn-exlg">1000条</label>
+                    </div>
+                    <div class="radioButtonDiv">
+                        <label type="button" class="btn btn-white btn-exlg">>1000条</label>
+                    </div>	
+                </div>
+        	</div>
+        </div>
+        <div class="BackgroundWhite">
+          <div class="content-grey" style="padding:25px;">
+            请选择购买时长
+          </div>
+        </div>
+        <div class="BackgroundWhite" style="padding-bottom:35px;">
+        	<div style="display: block; margin: 0px auto; width: 900px;">
+                <form id="buyForm">
+            		<input type="text" id="mon" style="height: 30px; text-align:center;" placeholder="请输入购买时长" name="months">
+                    <input type="hidden" name="pId" value="FAQROBOT-BT0000001">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
+                        <label type="button" id="monAdd" class="btn btn-white btn-xs" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                        </label>
+                        <label type="button" id="monMinus" class="btn btn-white btn-xs" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <span class="content-grey">个月</span>
+                    <input type="hidden" name="webId">
+                </form>
+            </div>
+		</div>
+        
+        <div class="separator"></div>
+        <div class="BackgroundWhite text-center" id="totalMoney" style="display: block; font-size: 0;">
+        	<div class="BuyContent" style="width: 10%; border-right: 1px #D6D6D6 solid;">
+                    <span class="content-grey font14">总价</span>
+            </div>
+            <div class="BuyContent" style="width: 40%; text-align:left; padding-left:15px;">
+            	<span class="content-blue font14">￥</span>
+            	<span class="content-blue font14" id="feePerMonth">188</span>
+            	<span class="content-grey font14" id="libAmount">（300条）</span>
+            	<span class="content-grey font14">&times;&nbsp;&nbsp;</span>
+                <span class="content-blue font14" id="month">0</span>
+            	<span class="content-grey font14">个月</span>
+            	<span class="versionSpan font14" id="versionInfo">商用版</span>
+                <span class=" font14" id="errorInfo" style="color:#ff1f1f; padding-left:20px;"></span>
+            </div>
+            <div class="" style="width: 35%; text-align:right; padding-right:15px; display: inline-block; font-size: 0;">
+            	<span class="content-grey font14">合计：</span>
+                <span class="content-blue" style="font-size:28px;" id="total">0</span>
+                <span class="content-blue" style="font-size:28px;">.00</span>
+                <span class="content-blue font14">元</span>
+            </div>
+            <div class="BuyContent" style="background: #1B96FF; cursor:pointer; width: 15%;" id="buyBtn">
+                <span style="color: #FFF; font-size: 14px;">立即购买</span>
+            </div>
+           
+        </div>
+        <div class="BackgroundWhite text-center" id="askMoney" style="font-size:0">
+        	<div class="AskContent" style="width: 10%;">
+                <div style="border-right: 1px #D6D6D6 solid;">
+                    <span class="content-grey font14">总价</span>
+                </div>
+            </div>
+            <div class="AskContent" style="width: 75%;">
+            	<span style="color: #FF1F1F; font-size: 14px;">您的知识库需求超出现有版本，请与我们联系后再购买，谢谢！</span>
+            </div>
+            <a href="http://wpa.qq.com/msgrd?v=3&uin=2256938395&site=qq&menu=yes" class="BuyContent" style="background: #1B96FF; cursor:pointer; width: 15%; ">
+                <span style="color: #FFF; font-size: 14px;">立即垂询</span>
+            </a>
+        </div>
+        
+        <div class="separator"></div>
+        <div class="BackgroundWhite" style="border-bottom: 1px #D6D6D6 solid;">
+          <div class="pad">
+            <h4>版本介绍</h4>
+          </div>
+        </div>
+        <div class="BackgroundWhite text-center">
+            <div style="display: block; margin: 0px auto; width: 1000px;">
+                <div class="InLineB3">
+                    <div class="versions">
+                        <div class="office versionsContent">
+                            <h3 class="price"><i>￥</i>188/月</h3>
+                            <h4>商用版</h4>
+                            <p>&#8212;&#8212;&#8212;300条知识库&#8212;&#8212;&#8212;</p>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li style="color: #FF9500;">已包含基础版全部功能</li>
+                            <li>自定义咨询图标样式</li>
+                            <li>更多聊天页面模板</li>
+                            <li>去除广告信息</li>
+                            <li>添加多用户</li>
+                            <li>访客来访区域统计</li>
+                            <li>访问问题类别统计</li>
+                            <li>题库满意度统计</li>
+                            <li>支持标准身份认证对接</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="InLineB3" style="vertical-align: top;">
+                    <div class="versions">
+                        <div class="advanced versionsContent">
+                            <h3 class="price"><i>￥</i>488/月</h3>
+                            <h4>高级版</h4>
+                            <p>&#8212;&#8212;&#8212;600条知识库&#8212;&#8212;&#8212;</p>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li style="color: #1EE73F;">已包含商用版全部功能</li>
+                            <li>在线监控</li>
+                            <li>问题来访区域统计</li>
+                            <li>题库更新统计</li>
+                            <li>访问问题分级统计</li>
+                            <li>会话满意度统计</li>
+                            <li>多微信号对接</li>
+                            <li>对接企业号</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="InLineB3" style="vertical-align: top;">
+                    <div class="versions">
+                        <div class="professional versionsContent">
+                            <h3 class="price"><i>￥</i>888/月</h3>
+                            <h4>专业版</h4>
+                            <p>&#8212;&#8212;&#8212;1000条知识库&#8212;&#8212;&#8212;</p>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li style="color: #1B96FF;">已包含高级版全部功能</li>
+                            <li>支持角色管理</li>
+                            <li>访问问题区域统计</li>
+                            <li>客服工作量统计</li>
+                            <li>未知问题数量统计</li>
+                            <li>智能回复时间统计</li>
+                            <li>人工服务(客户经理，</li>
+                            <li>知识库的指导维护)</li>
+                            <li>支持身份认证对接（定制）</li>
+                            <li>支持数据查询接口（定制）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+	<div class="row separator"></div>
+	<div class="BackgroundWhite text-center" style="padding-top: 24px; padding-bottom: 24px;">
+        <p>ICP备:苏ICP备10216663号 COPYRIGHT©2010-2013 南京云问网络技术有限公司　ALL RIGHTS RESERVED</p>
+	</div>
+    
+	<script src="./assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="./assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+	$(document).ready(function() {
+		$("#askMoney").hide();
+		$("#mon").val("");
+		$("#month").text("0");
+		$('#buyForm input[name=pId]').val('FAQROBOT-BT0000001');
+		$('#buyForm input[name=webId]').val(getUrlParam('webId'));
+		var version = getUrlParam('version');
+		var type = getUrlParam('type');//升级
+		
+		//预设勾选项 0=不勾 1=300 2=600 3=1000 4>1000
+		var btnColor = 0;
+		if(version==3 || version==4 || version==5) {
+			if(type && type!=100) {
+				//升级
+				if(version == 3) {
+					//预选第二项
+					$(".btn-exlg").eq(1).removeClass("btn-white").addClass("btn-info");
+					btnColor = 2;
+					buy600();
+					$(".btn-exlg").eq(0).addClass('btn-disabled');
+					$(".btn-exlg").eq(1).addClass('btn-choose');
+					$(".btn-exlg").eq(2).addClass('btn-choose');
+					$(".btn-exlg").eq(3).addClass('btn-choose');
+				} else if(version == 4) {
+					//预选第三项
+					$(".btn-exlg").eq(2).removeClass("btn-white").addClass("btn-info");
+					btnColor = 3;
+					buy1000();
+					$(".btn-exlg").eq(0).addClass('btn-disabled');
+					$(".btn-exlg").eq(1).addClass('btn-disabled');
+					$(".btn-exlg").eq(2).addClass('btn-choose');
+					$(".btn-exlg").eq(3).addClass('btn-choose');
+				} else if(version == 5) {
+					//预选第四项
+					$(".btn-exlg").eq(3).removeClass("btn-white").addClass("btn-info");
+					btnColor = 4;
+					$(".btn-exlg").eq(0).addClass('btn-disabled');
+					$(".btn-exlg").eq(1).addClass('btn-disabled');
+					$(".btn-exlg").eq(2).addClass('btn-disabled');
+					$(".btn-exlg").eq(3).addClass('btn-choose');
+				}
+			} else {
+				//续费
+				$(".btn-exlg").addClass('btn-disabled');
+				if(version == 3) {
+					$(".btn-exlg").eq(0).removeClass("btn-white").addClass("btn-info");
+					buy300();
+				} else if(version == 4) {
+					$(".btn-exlg").eq(1).removeClass("btn-white").addClass("btn-info");
+					buy600();
+				} else if(version == 5) {
+					$(".btn-exlg").eq(2).removeClass("btn-white").addClass("btn-info");
+					buy1000();
+				}
+			}
+		} else {
+			//购买
+			$(".btn-exlg").addClass('btn-choose');
+			//预选第一项
+			$(".btn-exlg").eq(0).removeClass("btn-white").addClass("btn-info");
+			btnColor = 1;
+			buy300();
+		}
+		
+		$('.BackgroundWhite #mon').keydown(function(event){
+			if(event.keyCode==13){
+			 return false;
+			}
+		})
+		
+		//不能点击
+		$(".btn-disabled").attr('disabled', 'disabled');
+
+		//hover
+		$(".btn-choose").hover(function(){
+			$(this).removeClass("btn-white");
+			$(this).addClass("btn-info");
+		},function(){
+			$(this).removeClass("btn-info");
+			$(this).addClass("btn-white");
+			if(btnColor==1) {
+				$(".btn-exlg").eq(0).removeClass("btn-white");
+				$(".btn-exlg").eq(0).addClass("btn-info");
+			} else if(btnColor==2) {
+				$(".btn-exlg").eq(1).removeClass("btn-white");
+				$(".btn-exlg").eq(1).addClass("btn-info");
+			} else if(btnColor==3) {
+				$(".btn-exlg").eq(2).removeClass("btn-white");
+				$(".btn-exlg").eq(2).addClass("btn-info");
+			} else if(btnColor==4) {
+				$(".btn-exlg").eq(3).removeClass("btn-white");
+				$(".btn-exlg").eq(3).addClass("btn-info");
+			}
+		});
+		//click
+		$(".btn-choose").click(function(){
+			$('#errorInfo').html('');
+			$(".btn-exlg").removeClass("btn-info");
+			$(".btn-exlg").addClass("btn-white");
+			$(this).removeClass("btn-white");
+			$(this).addClass("btn-info");
+			if($(this).text()=="300条") {
+				buy300();
+				btnColor = 1;
+			} else if($(this).text()=="600条") {
+				buy600();
+				btnColor = 2;
+			} else if($(this).text()=="1000条") {
+				buy1000();
+				btnColor = 3;
+			} else {
+				$("#totalMoney").hide();
+				$("#askMoney").show();
+				btnColor = 4;
+			}
+			$("#total").text($("#feePerMonth").text()*$("#mon").val());
+		});
+		
+		$("div[name=buy]").hover(function(){
+			$(this).css("background","#39b4e6");
+		},function(){
+			$(this).css("background","#1B96FF");
+		});
+		//月份选择框
+		$("#monAdd").click(function() {
+			$('#errorInfo').html('');
+			var month = $("#mon").val();
+			if(month=="") {
+				$("#mon").val(1);
+			} else if(month<999999999){
+				month++;
+				$("#mon").val(month);
+			}
+			$("#month").text($("#mon").val());
+			$("#total").text($("#feePerMonth").text()*$("#mon").val());
+		});
+		$("#monMinus").click(function() {
+			$('#errorInfo').html('');
+			var month = $("#mon").val();
+			if(month>0) {
+				month--;
+				$("#mon").val(month);
+			}
+			$("#month").text($("#mon").val());
+			$("#total").text($("#feePerMonth").text()*$("#mon").val());
+		});
+		
+		$("#mon").keyup(function() {
+			$('#errorInfo').html('');
+			var month = $("#mon").val();
+			if(isPInt(month) && month<999999999) {
+				$("#month").text($("#mon").val());
+				$("#total").text($("#feePerMonth").text()*$("#mon").val());
+			} else {
+				$("#mon").val("");
+				$("#month").text("0");
+				$("#total").text("0");
+			}
+		});
+	});
+	
+	function buy300() {
+		$("#feePerMonth").text("188");
+		$("#libAmount").text("（300条）");
+		$("#month").text($("#mon").val());
+		$("#askMoney").hide();
+		$("#totalMoney").show();
+		$("#versionInfo").text("商用版");
+		$("#versionInfo").css("background-color","#1EE73F");
+		$('#buyForm input[name=pId]').val('FAQROBOT-BT0000001');
+	}
+
+	function buy600() {
+		$("#feePerMonth").text("488");
+		$("#libAmount").text("（600条）");
+		$("#month").text($("#mon").val());
+		$("#askMoney").hide();
+		$("#totalMoney").show();
+		$("#versionInfo").text("高级版");
+		$("#versionInfo").css("background-color","#1B96FF");
+		$('#buyForm input[name=pId]').val('FAQROBOT-BT0000002');
+	}
+
+	function buy1000() {
+		$("#feePerMonth").text("888");
+		$("#libAmount").text("（1000条）");
+		$("#month").text($("#mon").val());
+		$("#askMoney").hide();
+		$("#totalMoney").show();
+		$("#versionInfo").text("专业版");
+		$("#versionInfo").css("background-color","#FF5157");
+		$('#buyForm input[name=pId]').val('FAQROBOT-BT0000003');
+	}
+
+	function isPInt(str) {
+		var g = /^[1-9]*[1-9][0-9]*$/;
+		return g.test(str);
+	}
+	
+	$('#buyBtn').click(function(){
+		var tmpMonths=$('#buyForm input[name=months]').val();
+		if(tmpMonths){
+			if(getUrlParam('version')){
+				if(getUrlParam('type')!=100){
+					var tmpDays='';
+					if(getUrlParam('num')){
+						tmpDays=$('#buyForm input[name=months]').val();
+						if(getUrlParam('num')> parseInt(tmpDays*30)){
+							alert('您目前升级版本的天数小于当前使用的版本（还剩余"'+getUrlParam('num')+'"天），请重新选择购买时间~');
+							return;
+						}else{
+							location.href="pay/alipay/upgrade?"+$('#buyForm').serialize();
+						}
+					}else{//升级
+						location.href="pay/alipay/upgrade?"+$('#buyForm').serialize();
+					}
+				}else{
+					//续费
+					location.href="pay/alipay/renew?"+$('#buyForm').serialize();
+				}
+			}else{
+				//购买
+				location.href="pay/alipay/buy?"+$('#buyForm').serialize();
+			}
+		}else{
+			$('#errorInfo').html('请选择您要充值的月数');
+		}
+	})
+	
+	function getUrlParam(name) {
+	  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	  var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	  if (r != null) return unescape(r[2]); return null; //返回参数值
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>词库操作</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/lexicon.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">词库</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">词库</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="row">
+							<button type="button" id="parentBtn" class="btn btn-primary m-l-4"></button>
+						</div>
+						<div class="row" style="display:none;">
+							<input type="text" id="first" class="form-control" onkeyup="value=value.toLowerCase();" />
+							<button type="button" id="commit" class="btn btn-primary m-l-4">保存</button>
+						</div>
+						<div class="row word-nav">
+							<div class="col-xs-3 col-md-3 f-s-14 b-g-b">
+								<span>当前词语</span>
+							</div>
+							<div class="col-xs-9 col-md-9 f-s-14 b-g-b">
+								<span>添加说明</span>
+							</div>
+						</div>
+						<div class="lexicon-edit">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<div class="modal fade" id="delete-dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">确认删除?</h4>
+				</div>
+				<div class="modal-body">
+					<span id="delete-span"></span>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" id="del-modal-confirm">确认</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="synonym-dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">编辑词语</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" id="synonym-form">
+						<fieldset>
+						<input type="hidden" id="synonym-id" name="id">
+						<input type="hidden" id="synonym-word" name="word">
+						<input type="hidden" id="synonym-word-before" name="word-before">
+						<input type="hidden" id="synonym-feature" name="word-feature">
+						<div class="form-group">
+							<label class="col-md-3 control-label">词　汇<span class="red">&nbsp;*</span></label>
+							<div class="col-md-7">
+								<input type="text" placeholder="请输入词汇" class="form-control" id="synonym-tyc" name="tyc" maxlength="100"  onkeyup="if (this.value != this.value.toLowerCase()) this.value=this.value.toLowerCase();">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">同义词</label>
+							<div class="col-md-7">
+							<input type="text" placeholder="请输入同义词" class="form-control" name="ttc" maxlength="100">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">词性</label>
+							<div class="col-md-7">
+								<select name="nature" class="form-control" id="feature">
+									
+								</select>
+							</div>
+						</div>
+						</fieldset>
+					</form>
+					<div class="alert-synonym hide" style="text-indent: 85px;">
+						每个同义词字符在1-10之间,多个词之间用逗号","分隔
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" id="synonym-modal-confirm">确认</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+				</div>
+			</div>
+		</div>
+    </div>
+    
+    <!--判断是否是表格词库-->
+	<div class="modal fade" id="tabSynonym1" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="tabModalLabel">提示：</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row">
+	        	<form method="POST" class="form-horizontal tab_form" id="tab_form">
+	        		<fieldset>
+						<div class="form-group" style="margin-left: 0;margin-right: 0;">你添加的是表格词，请问是否打开表格词库查看！</div>
+					</fieldset>
+				</form>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <a class="btn btn-primary" id="sureTab" data-num="0" data-name="表格词库">确定</a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/lexiconEdit.js"></script>
+
+	<script id="word-container" type="text/x-handlebars-template">
+		<div cid="{{ cid }}" fid="{{ fid }}" class="word-container">
+			<span class="del-span" title="点击删除"></span>
+			<label class="w">{{ name }}</label>
+		</div>
+	</script>
+
+	<script id="word-content-nil" type="text/x-handlebars-template">
+		<div class="word-content row">
+			<div class="selc col-md-3 col-xs-3 f-s-14">
+				<span class="word-selected">&nbsp;</span>
+			</div>
+			<div class="fulc col-md-9 col-xs-9 f-s-14">
+				<div class="add-container">
+				 	<input type="text" class="add-word-input" onkeyup="value=value.toLowerCase();">
+					<!--<input type="text" class="add-word-input">-->
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="word-content-list" type="text/x-handlebars-template">
+		<div class="word-content row">
+			<div class="selc col-md-3 col-xs-3 f-s-14">
+				<span class="word-selected">&nbsp;</span>
+			</div>
+			<div class="fulc col-md-9 col-xs-9 f-s-14">
+				{{#each list}}
+				<div cid="{{ cid }}" fid="{{ fid }}" editid="{{ editid }}" class="word-container">
+					<span class="del-span" title="点击删除"></span>
+					<label class="w">{{ cid }}</label>
+				</div>
+				{{/each}}
+				<div class="add-container">
+				 	<input type="text" class="add-word-input" onkeyup="value=value.toLowerCase();">
+					<!--<input type="text" class="add-word-input">-->
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="del-confirm-string" type="text/x-handlebars-template">
+		<span>是否解除词语『{{ father }}』与『{{ children }}』的关系？</span>
+	</script>
+</body>
+</html>

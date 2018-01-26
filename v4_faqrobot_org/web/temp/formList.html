@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+        a .timeTip {
+            margin: 0 3px;
+            cursor: pointer;
+        }
+        .cosType2, .b {
+            display: none;
+        }
+        .cosType2, .g {
+            display: none;
+        }
+        th {
+
+        }
+    </style>
+</head>
+<body>
+    <div class="modal fade" id="listModal" style="z-index:1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">数据模型列表</h4>
+                </div>
+                <div class="modal-body">
+                   <table class="table" id="formTabListzzz">
+                    <thead>
+                      <tr>
+                        <th>选择</th>
+                        <th>名称</th>
+                        <th>简介信息</th>
+                        <th>顶部展示的默认提示语</th>
+                        <th>最大展示的属性数量</th>
+                        <th>是否展示退出标记</th>
+                        <th>在属性列表前的提示语</th>
+                        <th>在属性列表后的提示语</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                  <div id="formpagezzz"></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-primary" onclick="selectlist();">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #modal-dialog -->
+    <div class="modal fade" id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">添加场景式问答表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="formList" class="form-synonym form-horizontal" novalidate="novalidate">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">表单名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" placeholder="请输入表单名称" class="input2-synonym form-control" name="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">是否需要表单确认<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <label>
+                                      <input type="radio" name="showConfirm" value="0" checked="checked">
+                                      不确认
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="showConfirm" value="1">
+                                      确认
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="showConfirm" value="2">
+                                      展示确认
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">接口的简介<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" placeholder="请输入接口的简介" class="input2-synonym form-control" name="info">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">保存方式<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-9">
+                                    <label>
+                                      <input type="radio" name="saveType" value="0" checked="checked">
+                                      url直接提交
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="saveType" value="1">
+                                      用java类处理
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="saveType" value="3">
+                                      意图处理
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="saveType" value="4">
+                                      数据模型
+                                    </label>
+                                    <label>
+                                      <input type="radio" name="saveType" value="5">
+                                      知识库检索
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="cosType1">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">url提交地址<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" placeholder="请输入url提交地址" class="input2-synonym form-control" name="targetUrl">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">url请求方式<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-7">
+                                        <label>
+                                          <input type="radio" name="submitMethod" value="0" checked="checked">
+                                          get
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="submitMethod" value="1">
+                                          post
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cosType2">
+                                <div class="form-group b">
+                                    <label class="col-md-3 control-label">意图类型<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" placeholder="请输入意图类型" class="input2-synonym form-control" name="intentType">
+                                    </div>
+                                </div>
+                                <div class="form-group g">
+                                    <label class="col-md-3 control-label">模型ID<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-8">
+                                      <select name="modelId" class="form-control">
+                                      </select>
+                                      <a class="btn btn-primary btn-xs" onclick="$('#listModal').modal('show');" style="margin-top: 5px;">
+                                        <span>选择数据模型</span>
+                                      </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">处理数据的类的名称<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" placeholder="请输入处理数据的类的名称" class="input2-synonym form-control" name="className">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">处理类的方法<span class="red">&nbsp;*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" placeholder="请输入处理类的方法" class="input2-synonym form-control" name="classMethod">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cosType3" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">默认关键词</label>
+                                    <div class="col-md-8">
+                                        <input type="text" placeholder="多个关键词以逗号隔开" class="input2-synonym form-control" name="keyWords">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">结束语<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" placeholder="请输入结束语" class="input2-synonym form-control" name="endMessage">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="ensure-synonym btn btn-sm btn-primary">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">系统管理</a></li>
+                <li>场景式问答列表</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">场景式问答列表</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 添加场景式问答表单</button>
+								<table class="table" id="ttt">
+									<thead>
+										<tr>
+											<th>表单的名称</th>
+											<th>是否需要表单确认</th>
+											<th>接口的简介</th>
+											<th style="white-space: nowrap;">添加时间</th>
+											<th style="white-space: nowrap;text-align:center;width: 80px;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="itemContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/commonCSS.css">
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/formList.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+            formList();
+            $.getJSON('../../DisplayModel/list?pageSize=50&pageNo=1', function(data){
+              if(data.status==0){
+                if(data.list.length>0){
+                  data.list.forEach(function(el){
+                    $('[name=modelId]').append('<option value="'+el.Id+'">'+el.Name+'</option>');
+                  });
+                }
+              }
+            });
+        });
+function selectlist() {
+  $('select[name=modelId]').val($('input[name=somelist]:checked').val());
+  $('#listModal').modal('hide');
+}
+//分布式提交表单列表
+function formList(pageNo){
+	if(!pageNo)pageNo=1;
+  $('#formTabListzzz').tableAjaxLoader2(8);
+	$.ajax({
+	type:'post',
+	datatype:'json',
+	cache:false,//不从缓存中去数据
+	url:encodeURI('../../DisplayModel/list?pageSize='+15+'&pageNo='+pageNo),
+	success:
+	function(data){
+		if(data.status==0){
+			if(data.list.length>0){
+				var temp=[];
+				for(var i=0;i<data.list.length;i++){
+					temp.push('<tr>');
+					temp.push('<td><label><input type="radio" name="somelist" value="'+data.list[i].Id+'"></label></td>');
+          temp.push('<td>'+ (data.list[i].Name||'') +'</td>');
+          temp.push('<td>'+ (data.list[i].Info||'') +'</td>');
+          temp.push('<td>'+ (data.list[i].TopWords||'') +'</td>');
+          temp.push('<td>'+ (data.list[i].MaxShowItemCount||'') +'</td>');
+					if(data.list[i].OutSelect===0){
+            temp.push('<td>展示</td>');
+					}else if(data.list[i].OutSelect===1){
+            temp.push('<td>不展示</td>');
+					}
+          temp.push('<td>'+ (data.list[i].BeforeWords||'') +'</td>');
+          temp.push('<td>'+ (data.list[i].AfterWords||'') +'</td>');
+					temp.push('</tr>');
+				}
+				$('#formTabListzzz').find('tbody').html(temp.join(''));
+				var options = {
+          currentPage: data.currentPage,
+          totalPages: data.totlePages,
+					alignment:'right',
+					onPageClicked: function (event, originalEvent, type, page) {
+						formList(page);
+					}
+        };
+        setPage('formpagezzz',options);
+			}else{
+				$('#formTabListzzz').find('tbody').html('<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>当前纪录为空！</td></tr>');
+				$('#formpagezzz').html('')
+			}
+		 }else{
+			yunNoty(data);
+		}
+	}
+	});
+}
+    </script>
+</body>
+</html>

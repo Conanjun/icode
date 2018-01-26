@@ -1,0 +1,211 @@
+@charset "utf-8";
+
+.num-payCode {
+    border-radius: 100px;
+    width: 26px;
+    height: 16px;
+    line-height: 16px;
+    background-color: #C1CCD1;
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+}
+.itemCtn-payCode {
+    padding-bottom: 20px;
+}
+.skinctn-payCode span {
+    display: inline-block;
+    width: 200px;
+    vertical-align: top;
+    border: 1px solid #e2e7eb;
+    border-radius: 5px;
+    padding: 10px;
+}
+.skinctn-payCode span img {
+    width: 100%;
+    margin-top: 5px;
+}
+.skinctn-payCode span img:hover {
+    width: 100%;
+    box-shadow: 0 0 2px #888888;
+}
+.media-heading {
+    margin-bottom: 12px;
+}
+.itemCtn-payCode label {
+    margin-right: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+    vertical-align: -1px;
+}
+.input-payCode .input-group {
+    margin: 10px 0;
+}
+textarea.code-payCode {
+    height: 80px;
+    resize: none;
+    margin: 10px 0;
+}
+.prev-payCode {
+    margin-right: 10px;
+}
+.cosImgBtn-payCode {
+    margin-bottom: 10px;
+}
+.imgGallery {
+    display: inline-block;
+    width: 33.3%;
+    font-size: 0;
+    overflow: hidden;
+    padding: 2px;
+}
+.imgGallery img {
+    width: 100%;
+    max-height: 150px;
+    cursor: pointer;
+}
+.imgGallery img:hover {
+    box-shadow: 0 0 2px #888888;
+}
+.modal-footer1 {
+    border-top: none;
+}
+.holder {
+    margin: 0;
+    margin-right: 12px;
+}
+.holder a {
+    border-radius: 3px;
+    display: inline-block;
+    width: 29px;
+    line-height: 29px;
+    height: 29px;
+    text-align: center;
+    border-color: #e2e7eb;
+    border: 1px solid #ddd;
+    text-decoration: none;
+}
+.holder a.jp-current, a.jp-current:hover {
+    color: #fff;
+    border: 1px solid #242a30;
+}
+.holder .jp-current {
+    color: #fff;
+    background: #242a30!important;
+    border: 1px solid #242a30;
+}
+.holder .jp-previous, .holder .jp-next {
+    background: none;
+    width: 58px;
+}
+.holder1 {
+    margin: 0;
+    margin-right: 12px;
+}
+.holder1 a {
+    border-radius: 3px;
+    display: inline-block;
+    width: 29px;
+    line-height: 29px;
+    height: 29px;
+    text-align: center;
+    border-color: #e2e7eb;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.holder1 span {
+    margin-left: 10px;
+    vertical-align: 4px;
+}
+.holder1 a:hover {
+    color: #fff;
+    border: 1px solid #242a30;
+    background: #242a30;
+}
+.holder1 .jp-disabled {
+    color: #bbb;
+}
+.holder1 .jp-disabled:hover {
+    color: #bbb;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+.holder1 .jp-current {
+    color: #fff;
+    background: #242a30!important;
+    border: 1px solid #242a30;
+}
+.holder1 .jp-previous, .holder1 .jp-next {
+    background: none;
+    width: 58px;
+}
+.goPage-addSrc input, .goPage-addSrc a  {
+    border-radius: 3px;
+    display: inline-block;
+    width: 46px;
+    line-height: 29px;
+    height: 29px;
+    text-align: center;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #333;
+    vertical-align: middle;
+    outline: none;
+}
+.goPage-addSrc input  {
+    width: 29px;
+}
+.goPage-addSrc a:hover  {
+    color: #fff;
+    background: #242a30;
+    border: 1px solid #242a30;
+}
+.loadImg-payCode {
+    margin-bottom: 20px;
+}
+.cosImg-payCode {
+    margin-bottom: 10px;
+}
+.cosImg-payCode img {
+    max-height: 150px;
+}
+.cosImg-payCode3 {
+    display: inline-block;
+}
+.cosImg-payCode3 img {
+    width: 56px;
+    height: 56px;
+    border-radius: 5px;
+    border: 1px solid #e2e7eb;
+}
+.cosImgBtn-payCode2 {
+    margin-left: 10px;
+}
+.cosImg-payCode3 {
+    margin-left: 2px;
+}
+table {
+    vertical-align: middle;
+}
+table a {
+    margin: 0 2px;
+    cursor: pointer;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    vertical-align: middle;
+}
+tbody img {
+    max-width: 100px;
+    max-height: 100px;
+}
+.modal-backdrop {
+    position: fixed;
+}
+.pagination {
+    margin: 0;
+}
+
+
+

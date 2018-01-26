@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<title>句式列表</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+
+<!-- ================== BEGIN BASE CSS STYLE ================== -->
+<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+<link href="../../assets/css/style.min.css" rel="stylesheet" />
+<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+<link href="../common/css/zTreeStyleTest.css" rel="stylesheet"/>
+<style>
+.yun_menuContent{
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #d9e0e7;
+    border-radius: 4px;
+    bottom: 0;
+    height: 171px;
+    overflow: auto;
+    position: absolute;
+    width: 100%;
+	display:none;
+}
+.import input {
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	background: #fff;
+	border: #2A72B5 1px solid;
+	color: #2a72b5;
+}
+@media (max-width:1200px ) {
+	.col-md-3{
+		width: 25%;
+		float: left;
+	}
+	.col-md-9{
+		width: 75%;
+		float: left;
+	}
+}
+</style>
+<!-- ================== END BASE CSS STYLE ================== -->
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+  <div id="content" class="content">
+    <ol class="breadcrumb pull-right">
+      <li><a href="javascript:;">首页</a></li>
+      <li><a href="javascript:;">系统管理</a></li>
+      <li class="active">句式列表</li>
+    </ol>
+    <div class="row">
+      <h1 class="page-header">句式列表</h1>
+      <div data-sortable-id="table-basic-1" class="panel panel-inverse" style="padding-top: 0;">
+        <div class="panel-body">
+          <div class="row">
+			  <form>
+				<button type="button" class="down btn btn-default pull-right"><i class="glyphicon glyphicon-download"></i> 下载模版</button>
+              <div class="btn-group m-b-5 pull-right m-r-4" role="group" aria-label="...">
+                <button type="button" class="sortWord btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">默认排序&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li><a class="sort1" href="#">默认排序</a></li>
+                  <li><a class="sort2" href="#">句式长度正序</a></li>
+                  <li><a class="sort3" href="#">句式长度倒序</a></li>
+                  <li><a class="sort4" href="#">时间倒序</a></li>
+                  <li><a class="sort5" href="#">时间正序</a></li>
+                </ul>
+              </div>
+              <div class="pull-right search-addSrc m-r-4">
+                  <div class="input-group" style="max-width: 250px;">
+                      <input type="text" class="searchBy form-control" placeholder="输入问题或答案">
+                      <input type="text" style="display:none">
+                      <span class="btnSearch input-group-btn">
+						<button class="btn btn-primary" type="button">
+                          <i class="glyphicon glyphicon-search"></i>
+						</button>
+                      </span>
+                  </div>
+              </div>
+                <button type="button" class="add btn btn-primary m-b-5"><i class="glyphicon glyphicon-plus"></i> 添加句式</button>
+                <div type="button" class="import btn btn-primary m-b-5 m-r-1"><i class="glyphicon glyphicon-upload"></i> 导入句式</div>
+                <button type="button" class="export btn btn-primary m-b-5"><i class="glyphicon glyphicon-download"></i> 导出Excel</button>
+                <input class="search_form" type="hidden" value="0" />
+                <input class="search_form2" type="hidden" value="4" />
+			  <div class="progress progress-striped active" style="display: none;">
+				  <div class="progress-bar"></div>
+			  </div>
+			  </form>
+            <!--分类树-->
+            <div class="col-md-3 toShow m-t-10" style="border: 1px solid #D9E0E7; border-radius: 3px; padding: 5px; overflow: hidden; margin-bottom: 0; margin-bottom: 15px;">
+            <div>
+                <span class="openAll glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                <span class="closeAll glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+                <span class="openIt pull-right glyphicon glyphicon-chevron-down" style="cursor:pointer;" title="展开"></span>
+                <span class="closeIt pull-right glyphicon glyphicon-chevron-up" style="cursor:pointer;" title="收起"></span>
+            </div>
+
+              <div id="classTree" class="ztree" style="position: relative; overflow: auto; border: none;">
+              </div>
+            </div>
+            <div class="col-md-9 toHide m-t-10" style="padding: 0 0 0 15px">
+              <div class="row">
+                <table class="table" id="phraseDiv" style="margin-top: 0px;">
+                  <tbody>
+                  </tbody>
+                </table>
+                <div id="pageList" style="float: right;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addSentenceModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">添加句式</h4>
+            </div>
+            <div class="modal-body">
+               <form id="addSentenceForm" class="form-synonym form-horizontal">
+                 <div class="form-group">
+                    <label class="col-md-3 control-label">句式内容<span class="red">&nbsp;*</span></label>
+                    <div class="col-md-7">
+                    	<input type="text" class="form-control" name="sentence" placeholder="请输入句式内容">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">句式长度<span class="red">&nbsp;*</span></label>
+                    <div class="col-md-7">
+                    	<input type="text" class="form-control" name="length"  placeholder="请输入句式长度" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') ">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">句式<span class="red">&nbsp;*</span></label>
+                    <div class="col-md-7">
+                        <input type="radio" checked="checked" name="type" value="0">标准句式
+                        <input type="radio" name="type" value="1">标准正则
+                    </div>
+                </div>
+                    <input type="hidden" name="level" value="1">
+                    <input type="hidden" name="groupId">
+                    <input type="hidden" name="id">
+                <div class="form-group">
+                	 <label class="col-md-3 control-label">选择分类<span class="red">&nbsp;*</span></label>
+                     <div class="col-md-7">
+                     	<a href="javascript:;" class="form-control hasgN" id="phraseTree" onClick="showMenu(); return false;">全部分类</a>
+                        <div id="menuContent" class="yun_menuContent" >
+                          <ul id="classTree_phrase" class="ztree" >
+                          </ul>
+                        </div>
+                     </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" href="javascript:;" onclick="addSentenceFun();">确定</button>
+                <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addSentenceCommonModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">普通句型</h4>
+            </div>
+            <div class="modal-body">
+            	<ul role="tablist" class="nav nav-pills" id="myTabs">
+                  <li class="active" ><a aria-expanded="false" aria-controls="home" data-toggle="tab" role="tab" id="home-tab" href="#home">添加普通句型</a></li>
+                  <li class=""><a aria-controls="profile" data-toggle="tab" id="profile-tab" role="tab" href="#profile" aria-expanded="true">普通句型列表</a></li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div aria-labelledby="home-tab" id="home" class="tab-pane fade active in" role="tabpanel">
+                    <form id="addSentenceCommonForm" class="form-synonym form-horizontal">
+                         <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align: left;">句式内容<span class="red">&nbsp;*</span></label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="sentence" placeholder="请输入句式内容">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align: left;">句式长度<span class="red">&nbsp;*</span></label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" name="length"  placeholder="请输入句式长度" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') ">
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" name="testQue" placeholder="请输入测试问题" value="1">
+                        <input type="hidden" class="form-control" name="testRes"  placeholder="请输入预计答案" value="1">
+                        <div class="form-group">
+                        	<label class="col-md-3 control-label"></label>
+                            <div class="col-md-7">
+                        		<button type="button" class="addWord btn btn-primary">确定</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="solutionId">
+                        <input type="hidden" name="level" value="1">
+                        <input type="hidden" name="groupId">
+                        <input type="hidden" name="type">
+                    </form>
+                  </div>
+                  <div aria-labelledby="profile-tab" id="profile" class="tab-pane fade " role="tabpanel">
+                    <table class="table table2" id="ttt2">
+                        <thead>
+                            <tr>
+                                <th>句型详细</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="tbody2">
+                        </tbody>
+                    </table>
+                    <div class="pull-right" >
+                      <div id="itemContainer2"style="margin: 0;"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+  <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a> </div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+<!-- ================== END BASE JS ================== -->
+<script src="../common/js/bootstrap-paginator.js"></script>
+<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/webuploader.min.js"></script>
+<script src="../common/js/base.js"></script>
+<script src="js/phraseList.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		App.init();
+		phraseListTab();
+		$.fn.zTree.init($("#classTree"), setting, []);
+	})
+</script>
+</body>
+</html>

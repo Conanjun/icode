@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>问题回收站</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		#trashList p img{
+			max-width:200px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">问题回收站</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">问题回收站</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div style="height: 34px;">
+							<a href="javascript:;" id="recid" class="btn btn-primary m-b-10">
+								<i class="fa fa-reply"></i>
+								<span>批量恢复</span>
+							</a>
+							<a href="javascript:;" class="btn btn-default pull-right" id="mul-del">
+								<i class="glyphicon glyphicon-trash"></i>
+								<span>批量删除</span>
+							</a>
+							<select class="selectpicker pull-right m-r-4" id="orderType">
+								<option value="-1">默认排序</option>
+								<option value="0">时间降序</option>
+								<option value="1">时间升序</option>
+							</select>
+							<a href="#makeSure" data-toggle="modal" class="onekey btn btn-primary pull-right m-r-4" href="javascript:;">一键清空</a>
+							<div id="makeSure" class="modal" style="display:none;">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">确定清空？</h4>
+										</div>
+										<div class="modal-body">
+											<p>确定要清空所有内容？</p>
+										</div>
+										<div class="modal-footer">
+											<a href="javascript:;" class="emptyBtn btn btn-sm btn-primary" id="ok">确认</a>
+											<a href="javascript:;" class="btn btn-sm btn-white" id="cancel">取消</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="input-group pull-right m-r-4" style="width:250px;">
+								<input id="question" class="form-control" placeholder="请输入要查询的问题">
+								<span class="input-group-btn" style="padding-bottom: 0;">
+									<button class="btn btn-primary" onclick="listTrash()" type="button">
+										<i class="glyphicon glyphicon-search"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+						<table class="table" id="trashList">
+							<thead>
+								<tr>
+									<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="trashList"/></th>
+									<th style="width: 300px;">问题</th>
+									<th>答案</th>
+                                    <th style="width:160px;">答案类型</th>
+									<th style="width:150px">说明</th>
+									<th style="width:160px;">删除日期</th>
+									<th style="width: 70px;" >操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		var listTrashData = null;
+		$(document).ready(function() {
+			$('#cancel').on('click',function(){
+				$('#makeSure').modal('hide');
+			});
+			App.init();
+			icheckBindInit();
+			$('.selectpicker').selectpicker({
+				style: 'btn-primary',
+				size: 4,
+				width: '100px',
+			});
+			$('body').on('change', '#orderType', function(){
+				listTrash();
+			});
+			function delfun(){
+				$(this).adcCreator(function() {
+					selectDel('','../../question/clearQuestionByIds',listTrash,'pageList')
+				});
+			}
+			$('#mul-del').on('click',delfun);
+			//列出表格
+			listTrash();
+			setInterval(function(){
+				var ids = getSelectedIds();
+				if (ids === "") {
+					$('#recid').css('pointer-events', 'all').attr('disabled', true);
+					$('#mul-del').css('pointer-events', 'all').css('cursor', 'not-allowed');
+					$('#recid').off('click', recover);
+					$('#mul-del').off('click', delfun);
+				} else {
+					$('#recid').css('pointer-events', 'all').removeAttr('disabled');
+					$('#mul-del').css('pointer-events', 'all').css('cursor', 'default');
+					$('#recid').off('click', recover).on('click', recover);
+					$('#mul-del').off('click', delfun).on('click', delfun);
+				}
+			},500);
+		});
+		var wwid =sessionStorage.getItem('Wid');
+		$('.emptyBtn').click(function(){
+			$.ajax({
+				type: 'get',
+				url: encodeURI('../../question/clearRecycleStand'),
+				data:{webId:wwid},
+				success:function(data){
+					if(data.status==0){
+						$('#trashList').find('tbody').html(' ');
+						yunNoty(data);
+						listTrash();
+					}else{
+						yunNoty(data);
+					}
+					$('#makeSure').modal('hide');
+				}
+			})
+		});
+
+		function listTrash(pageNo) {
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			if (!pageNo) pageNo = 1;
+			$('#trashList').tableAjaxLoader2(5);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../question/showDeleteQuestions'),
+				data: {
+					pageSize: 10,
+					pageNo: pageNo,
+					orderType: $('#orderType').val(),
+					question: $('#question').val()
+				},
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.questionList==undefined){
+							$('#trashList').find('tbody').html('<tr><td colspan=\"5\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+							return;
+						}
+						if (data.questionList.length > 0) {
+							listTrashData = data.questionList;
+							var html = "";
+							for (var i = 0; i < data.questionList.length; i++) {
+								html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\">";
+								html += "<td><input type=\"checkbox\" name=\"ckb\" class=\"select_row\" value=\"" + data.questionList[i].Id + "\" /></td>";
+								html += "<td>";
+								html += (data.questionList[i].Question == null ? '&nbsp;': data.questionList[i].Question);
+								html += "</td>";
+								html += "<td><div style='max-width:400px;word-break: break-all;'>";
+								html += (data.questionList[i].ListAnswer[0].Answer == null ? '暂无答案':data.questionList[i].ListAnswer[0].Answer);
+								html += "</div></td>";
+								html += "<td>"+ansType(data.questionList[i].ListAnswer[0].Mode)+"</td>";
+								html += "<td>";
+								html += data.questionList[i].Context == null ? '&nbsp;': data.questionList[i].Context;
+								html += "</td>";
+								html += "<td>";
+								html += data.questionList[i].UpdateTime == null ? '&nbsp;': data.questionList[i].UpdateTime;
+								html += "</td>";
+								html += "<td><a href='javascript:;' class='edit' title='恢复' rel='"+data.questionList[i].Id+"' style='cursor:pointer'><i class='fa fa-reply'></i></a>&nbsp;&nbsp;<a class=\"m-del\" rel=\"" + data.questionList[i].Id + "\" style=\"cursor:pointer;\" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+							}
+							$('#trashList').find('tbody').html(html);
+							$('.edit').tooltip();
+							//单个恢复
+							$('.edit').on('click',function(){
+								recover($(this).attr('rel'));
+							});
+							//单个删除
+							$('.m-del').on('click',function(){
+								var self = this;
+	              				$(self).adcCreator(function() {
+									delById(self,'../../question/clearQuestionByIds',listTrash,'pageList');
+								});
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'questionList', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									listTrash(page);
+								}
+							};
+							setPage('pageList', options);
+						} else {
+							$('.onekey').attr('disabled','true');
+							$('.onekey').css('cursor','not-allowed');
+							$('#trashList').find('tbody').html('<tr><td colspan=\"5\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//判断当前答案属于什么类型的
+		
+		function ansType(str){
+			var ansType='';
+			switch (str) {
+				case 0:
+					ansType='文本';
+					break;
+				case 1:
+					ansType='图文';
+					break;
+				case 2:
+					ansType='富文本';
+					break;
+				case 3:
+					ansType='语音';
+					break;
+				case 4:
+					ansType='第三方接口';
+					break;
+				case 6:
+					ansType='流程';
+					break;
+				case 7:
+					ansType='分步式表单';
+					break;
+				case 8:
+					ansType='转人工';
+					break;
+				default:
+				    ansType='未知答案类型';
+			}
+			return ansType;
+		}
+		
+		//通用的批量删除方法
+		var flag_recS=false;
+		function recover(id) {
+			var ids = null;
+			if(id && typeof id == 'string') {
+				ids = id;
+			} else {
+				ids = getSelectedIds();
+			}
+			if (ids === "") {
+				yunNotyError('请选择要恢复的问题！');
+				return false;
+			}
+			if(flag_recS){
+				return;
+			}
+			flag_recS=true;
+			$.getJSON('../../question/renewQuestionById', "ids=" + ids,
+			function(data) {
+				setTimeout(function(){flag_recS=false;}, 1000);
+				if (data.status === 0) {
+					var ids_array = ids.split(",");
+					for (i = 0; i < ids_array.length; i++) {
+						$('#list-tr-' + ids_array[i]).hide();
+					}
+					var page = $('#pageList .active a').html();
+					if($('.m-del')!==undefined) {
+						if($('.m-del').size()==ids_array.length) page-=1;
+						if(page<1) page=1;
+					}
+					listTrash(page);
+					$('.select_rows').attr('checked', false);
+					yunNoty(data);
+				} else {
+					yunNoty(data);
+				}
+				if(data.errorRenew && data.errorRenew[0]) {
+					var msg = '';
+					for(var i in data.errorRenew) {
+						msg += data.errorRenew[i].message+"<br>";
+					}
+					var option = {
+						title: "提醒",
+						text: msg,
+						class_name: "gritter-light"
+					};
+					$.gritter.add(option);
+				}
+			});
+			return false;
+		}
+	</script>
+</body>
+</html>

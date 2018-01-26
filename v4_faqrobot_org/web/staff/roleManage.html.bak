@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>角色管理</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.auth_list li {
+			display: inline-block;
+			width: 150px;
+		}
+		.auth_list li.li_block {
+			display: block;
+		}
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		.table.selRP>tbody>tr>td, .table.selRP>tbody>tr>th, .table.selRP>tfoot>tr>td, .table.selRP>tfoot>tr>th, .table.selRP>thead>tr>td, .table.selRP>thead>tr>th {
+			padding: 10px 0;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">角色管理</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">角色管理</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="col-md-3">
+							<div style="display:none; margin-bottom: 15px;" id="rootUserDiv">
+								<label for="rootUser">站点ID</label>
+								<input type="text" id="rootUser" style="width: 80%; height: 24px;" />
+								<button class="btn btn-primary btn-mini" id="btnListWebId"><i class="glyphicon glyphicon-search"></i></button>
+							</div>
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeClasses',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeClasses',false);" style="cursor:pointer;"></span>
+							<div class="treeDivLeft">
+								<ul id="treeClasses" class="ztree"></ul>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<ul class="nav nav-pills">
+								<li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">添加角色</a></li>
+								<li id="navLi2"><a href="#nav-pills-tab-2" data-toggle="tab">修改角色</a></li>
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane fade active in" id="nav-pills-tab-1">
+									<form id="addRoleform" class="form-horizontal">
+										<fieldset>
+											<input type="hidden" name="ParentId" value="0">
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色名称</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请输入角色名称" class="form-control" name="name">
+												</div>
+											</div>
+											<div style="display:none;">
+												<label>角色等级</label>
+												<select name="Level">
+													<option value="0">管理员</option>
+													<option value="1">普通用户</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色说明</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请输入角色说明" class="form-control" name="info">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色生效时间</label>
+												<div class="col-md-6">
+													<input class="form-control" type="checkbox" name="timeLiness_temp" value="0">
+													<label class="control-label">启用</label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-offset-2 col-md-6">
+													<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+														<input size="16" type="text" readonly class="form-control form_datetime" placeholder="启用时间" name="startTime">
+														<span class="input-group-addon" style="cursor:pointer;" onclick="$('#addRoleform [name=StartTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+													</div>
+													<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+														<input size="16" type="text" readonly class="form-control form_datetime" placeholder="失效时间" name="endTime">
+														<span class="input-group-addon" style="cursor:pointer;" onclick="$('#addRoleform [name=EndTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">权限名称</label>
+												<div class="col-md-10">
+													<table class="table table-bordered selRP" style="margin-top:0; border:none;">
+														<tbody>
+														<tr>
+															<th style="border-top:none;border-left:none;border-right:none;">
+																<input type="checkbox" class="selAll">
+																全选
+															</th>
+														</tr>
+														<tr>
+															<td style="border-bottom:none;border-left:none;border-right:none;">
+																<div class="auth_list"></div>
+															</td>
+														</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">选择分类</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请选择分类" readonly class="form-control" id="SELCLASS">
+													<input type="hidden" name="classesIds">
+												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-md-2 control-label">选择来访者角色</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请选择来访者角色" readonly class="form-control" id="visiterRole">
+													<input type="hidden" name="combIds">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-offset-2 col-md-6">
+													<button type="button" class="btn btn-primary" onclick="$('#addRoleform').submit()">
+														添加
+													</button>
+												</div>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+								<div class="tab-pane fade" id="nav-pills-tab-2">
+									<form id="repRoleform" class="form-horizontal">
+										<fieldset>
+											<input type="hidden" name="ParentId" value="0">
+											<input type="hidden" name="id">
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色名称</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请输入角色名称" class="form-control" name="name">
+												</div>
+											</div>
+											<div style="display:none;">
+												<label>角色等级</label>
+												<select name="Level" id="selLevelRole">
+													<option value="0">管理员</option>
+													<option value="1">普通用户</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色说明</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请输入角色说明" class="form-control" name="info">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">角色生效时间</label>
+												<div class="col-md-6">
+													<input class="form-control" type="checkbox" name="timeLiness_temp" value="0">
+													<label class="control-label">启用</label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-offset-2 col-md-6">
+													<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+														<input size="16" type="text" readonly class="form-control form_datetime" placeholder="启用时间" name="startTime">
+														<span class="input-group-addon" style="cursor:pointer;" onclick="$('#repRoleform [name=StartTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+													</div>
+													<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+														<input size="16" type="text" readonly class="form-control form_datetime" placeholder="失效时间" name="endTime">
+														<span class="input-group-addon" style="cursor:pointer;" onclick="$('#repRoleform [name=EndTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">权限名称</label>
+												<div class="col-md-10">
+													<table class="table table-bordered selRP" style="margin-top:0; border:none;">
+														<tbody>
+														<tr>
+															<th style="border-top:none;border-left:none;border-right:none;">
+																<input type="checkbox" class="selAll">
+																全选
+															</th>
+														</tr>
+														<tr>
+															<td style="border-bottom:none;border-left:none;border-right:none;">
+																<div class="auth_list"></div>
+															</td>
+														</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-md-2 control-label">选择分类</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请选择分类" readonly class="form-control" id="repSELCLASS">
+													<input type="hidden" name="classesIds">
+												</div>
+											</div>
+											<div class="form-group ">
+												<label class="col-md-2 control-label">选择来访者角色</label>
+												<div class="col-md-6">
+													<input type="text" placeholder="请选择来访者角色" readonly class="form-control" id="visitereditRole">
+													<input type="hidden" name="combIds">
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-md-offset-2 col-md-6">
+													<button type="button" class="btn btn-primary" onclick="$('#repRoleform').submit()">
+														保存
+													</button>
+												</div>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delpModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除角色</h4>
+						</div>
+						<div class="modal-body">
+							<p>确定删除该角色吗？</p>
+							<form method="POST" id="delRId" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="delData('delRId','../../AuthRole/deleteRole','delpModal','treeClasses');">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="timeModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">生效时间</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="setTimeRoleForm" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="Id">
+									<div class="form-group">
+										<div class="col-md-offset-1 col-md-10">
+											<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+												<input size="16" type="text" readonly class="form-control form_datetime" placeholder="启用时间" name="StartTime">
+												<span class="input-group-addon" style="cursor:pointer;" onclick="$('#setTimeRoleForm [name=StartTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+											</div>
+											<div class="input-group" style="float: left; width: 45%; padding-right: 5px;">
+												<input size="16" type="text" readonly class="form-control form_datetime" placeholder="失效时间" name="EndTime">
+												<span class="input-group-addon" style="cursor:pointer;" onclick="$('#setTimeRoleForm [name=EndTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="setPowerTime()">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="ClassModalOut">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择分类</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="hasChecked">
+							<input type="hidden" name="hasCheckedId">
+							<input type="hidden" name="hasCheckedMaterial">
+							<input type="hidden" name="hasCheckedIdMaterial">
+							<div class="row">
+								<div class="col-md-6">
+									<div>问题分类</div>
+									<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeRoleClass',true);" style="cursor:pointer;"></span>
+									<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeRoleClass',false);" style="cursor:pointer;"></span>
+									<div class="treeDivModal">
+										<ul id="treeRoleClass" class="ztree"></ul>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div>素材分类</div>
+									<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeMaterialClass',true);" style="cursor:pointer;"></span>
+									<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeMaterialClass',false);" style="cursor:pointer;"></span>
+									<div class="treeMaterialModal">
+										<ul id="treeMaterialClass" class="ztree"></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selClassBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="ClassModalREP">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改分类</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="hasChecked">
+							<input type="hidden" name="hasCheckedId">
+							<input type="hidden" name="hasCheckedMaterial">
+							<input type="hidden" name="hasCheckedIdMaterial">
+							<div class="row">
+								<div class="col-md-6">
+									<div>问题分类</div>
+									<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeRoleREPClass',true);" style="cursor:pointer;"></span>
+									<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeRoleREPClass',false);" style="cursor:pointer;"></span>
+									<div class="treeDivModalRep">
+										<ul id="treeRoleREPClass" class="ztree"></ul>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div>素材分类</div>
+									<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeMaterialREPClass',true);" style="cursor:pointer;"></span>
+									<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeMaterialREPClass',false);" style="cursor:pointer;"></span>
+									<div class="treeMaterialModalRep">
+										<ul id="treeMaterialREPClass" class="ztree"></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selrepClassBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="sel_visiter_Role">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择来访者角色</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="hasChecked">
+							<input type="hidden" name="hasCheckedId">
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeRoleVisiter',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeRoleVisiter',false);" style="cursor:pointer;"></span>
+							<div class="treeDivModalVisitor">
+								<ul id="treeRoleVisiter" class="ztree"></ul>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="sel_visiter_btn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="sel_visiter_edit_Role">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改来访者角色</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="hasChecked">
+							<input type="hidden" name="hasCheckedId">
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeRoleeditVisiter',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeRoleeditVisiter',false);" style="cursor:pointer;"></span>
+							<div class="treeDivModalVisitorEdit">
+								<ul id="treeRoleeditVisiter" class="ztree"></ul>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="sel_visiter_btn_edit">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/roleManage.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//左侧树滚动条
+			$('.treeDivLeft').slimScroll({
+				height: '500px'
+			});
+			//问答树滚动条
+			$('.treeDivModal').slimScroll({
+				height: '300px'
+			});
+			$('.treeDivModalRep').slimScroll({
+				height: '300px'
+			});
+			//素材树滚动条
+			$('.treeMaterialModal').slimScroll({
+				height: '300px'
+			});
+			$('.treeMaterialModalRep').slimScroll({
+				height: '300px'
+			});
+			//来访者角色树滚动条
+			$('.treeDivModalVisitor').slimScroll({
+				height: '300px'
+			});
+			$('.treeDivModalVisitorEdit').slimScroll({
+				height: '300px'
+			});
+			$.fn.zTree.init($("#treeClasses"), setting, []);
+			$('#addRoleform').validate({
+				submitHandler: addRole
+			});
+			$('#repRoleform').validate({
+				submitHandler: repRole
+			});
+			//生效时间
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				startDate: new Date(),
+				initialDate: new Date()
+			});
+			getRoles();
+			roleSel('addRoleform');
+			roleSel('repRoleform');
+			childRoleSel('addRoleform');
+			childRoleSel('repRoleform');
+		});
+	</script>
+</body>
+</html>

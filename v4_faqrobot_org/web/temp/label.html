@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>标签管理</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.wbbr {
+			word-wrap: break-word;
+    	word-break: break-all;
+		}
+		.imgContainer {
+			height: 100px;
+	    overflow: hidden;
+	    margin: 5px 0;
+	    padding: 3px;
+	    border: 1px solid #eee;
+		}
+		.qrcode img {
+			margin: 0 auto;
+		}
+		.imgTitle,.imgTime {
+			font-size: 18px;
+			text-align: center;
+		}
+		.imgUrl {
+			display: none;
+		}
+		.bootstrap-select.btn-group:not(.input-group-btn), .bootstrap-select.btn-group[class*="span"] {
+		    margin-bottom: 0px;
+		}
+		.dpd {
+			position: absolute;
+	    top: 100%;
+	    right: 0;
+	    z-index: 1000;
+	    display: none;
+	    min-width: 400px;
+	    padding: 5px 0;
+	    margin: 2px 0 0;
+	    text-align: left;
+	    list-style: none;
+	    background-color: #fff;
+	    -webkit-background-clip: padding-box;
+	    background-clip: padding-box;
+	    border: 0;
+	    border-radius: 4px;
+	    -webkit-box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+	    box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+		}
+		.dpd.see {
+			display: block;
+		}
+		.labelDiv {
+			display: inline-block;
+			padding: 8px;
+		}
+		#queManualModal .modal-backdrop.fade.in {
+    opacity: .1;
+    filter: alpha(opacity=10);
+}
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+				background: #fff;
+				border: #2A72B5 1px solid;
+				color: #2a72b5;
+			}
+			#queManual .form-group {
+				margin-bottom: 0;
+			}
+			.QueContainer:not(:first-child) .form-group:nth-child(1) {
+				margin-top: 10px;
+			}
+			.QueContainer:not(:first-child) .form-group:nth-child(2) {
+				margin-top: 15px;
+			}
+			.QueContainer:first-child .form-group:nth-child(2) {
+				margin-top: 5px;
+			}
+			.imgBtn {
+				display: inline-block;
+				position: relative;
+			}
+			.m-del {
+				width: 20px;
+    height: 20px;
+    background-image: url(images/close.png);
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    cursor: pointer;
+	display:none;
+}
+.m-del.showed {
+	display:block;
+}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">标签管理</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">标签管理</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 m-b-5">
+								<!--input id="ckAll" type="checkbox"><label id="ckAll" class="m-l-5 m-b-0 f-s-18" style="vertical-align:middle;">全选</label-->
+								<a data-toggle="modal" class="btn btn-primary" href="#addModal" id="addBtn">
+									<span>添加标签</span>
+								</a>
+								<button type="button" class="pull-right btn btn-default m-l-4" id="gg">删除标签</button>
+								<div class="input-group pull-right" style="width:250px;">
+									<input type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词" id="sip">
+									<span class="search-addSrc input-group-btn" style="padding-bottom: 0;" onclick="listPorts();">
+										<button class="btn btn-primary" type="button">
+											<i class="glyphicon glyphicon-search"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div id="listContainer" class="row"></div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title" id="n1">添加标签</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="addUser" class="form-horizontal">
+						<fieldset>
+							<div class="form-group">
+								<label class="col-md-2 control-label">标签名</label>
+								<div class="col-md-9">
+									<input type="text" placeholder="请输入标签名" class="form-control" name="labelName">
+								</div>
+							</div>
+				          <div class="form-group">
+			              <label class="col-md-2 control-label">链接问题</label>
+							<div id="queManual" class="col-md-9">
+								<div class="QueContainer">
+									<div class="form-group col-md-10">
+										<input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="请选择链接问题" name="postQueInput">
+									</div>
+									<div class="form-group col-md-2 m-l-5">
+										<a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
+										<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
+									</div>
+								</div>
+							</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addUser').submit()">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="queManualModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择问题</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="search_Que" class="form-inline" style="position: relative;">
+						<fieldset>
+							<input type="hidden" name="level" value="1">
+							<input type="hidden" name="groupId" class="selQueX" value="0">
+							<input type="hidden" name="isLeaf" value="0">
+							<div class="form-group">
+								<label class="control-label">选择分类：</label>
+								<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+							</div>
+							<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 0; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+								<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+									<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+								</div>
+							</div>
+							<div class="form-group" style="margin-left:10px; float:right;">
+								<input type="text" style="display:none;">
+								<input type="text" class="form-control input-sm" name="question">
+								<button type="button" class="btn btn-primary btn-sm" onClick="addQueSearch();"><i class="glyphicon glyphicon-search"></i></button>
+							</div>
+						</fieldset>
+					</form>
+					<div id="queDiv" style="margin-top:5px;">
+						<ul class="nav nav-pills" id="queDivNav">
+							<li class="active"><a href="#queManualQue" data-toggle="tab">问题</a></li>
+							<li class=""><a href="#queManualFlow" data-toggle="tab">流程</a></li>
+						</ul>
+						<div class="tab-content" style="margin-bottom:0;padding:0">
+							<div class="tab-pane fade active in" id="queManualQue">
+								<div id="queManualQueTable">
+									<table class="table" id="ansList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>问题</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="quepageList" style="margin:0;"></div>
+							</div>
+							<div class="tab-pane fade" id="queManualFlow">
+								<div id="queManualFlowTable">
+									<table class="table" id="flowList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>流程</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="flowpageList" style="margin:0;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="queManualConfirm">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/qrcode.min.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script id="list-item-template" type="text/x-handlebars-template">
+		{{#each list}}
+			<div class="imgBtn m-10" style="text-align:center;">
+				<button type="button" class="btn btn-primary edit">{{ LabelName }}</button>
+				<div class="m-del" rel="{{ Id }}"></div>
+			</div>
+		{{/each}}
+	</script>
+	<script id="edit-item-template" type="text/x-handlebars-template">
+		{{#each ListQuestion}}
+			<div class="QueContainer">
+				<div class="form-group col-md-10">
+					<input class="form-control" type="text" readonly="readonly" style="cursor:pointer" placeholder="请选择链接问题" name="postQueInput" value="{{ Question }}" rel="{{ Id }}">
+				</div>
+				<div class="form-group col-md-2 m-l-5">
+					<a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
+					<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
+				</div>
+			</div>
+		{{/each}}
+	</script>
+	<script type="text/javascript">
+		var flag = 'ADD';
+		var listWordWeightData = [];
+		var editData = null;
+		$(document).ready(function() {
+			App.init();
+			listPorts();
+			$('#gg').click(function(){
+				$('.m-del').toggleClass('showed');
+				});
+				$('#addBtn').click(function(){
+					flag = 'ADD';
+					$('#n1').html('添加标签');
+				});
+				$(document).on('click', '.edit', function(){
+					
+					flag = 'EDIT';
+					$('#n1').html('修改标签');
+							//填充模态窗
+								var index = $(this).parent().index();
+								editData = listWordWeightData[index];
+								$('#addModal').modal('show');
+					});
+					$('#addModal').on('show.bs.modal', function(){
+						if(flag == 'ADD') {
+							
+			$('[name="labelName"]').val('');
+			$('#queManual').html('<div class="QueContainer"><div class="form-group col-md-10"><input class="form-control" type="text" readonly="readonly" style="cursor:pointer" placeholder="请选择链接问题" name="postQueInput"></div><div class="form-group col-md-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+							}
+							if(flag == 'EDIT') {
+			$('[name="labelName"]').val(editData.LabelName);
+							var source = $("#edit-item-template").html();
+							var template = Handlebars.compile(source);
+							if(editData.ListQuestion && editData.ListQuestion[0]){
+							var html = template(editData);
+							$('#queManual').html(html);
+						} else {
+			$('#queManual').html('<div class="QueContainer"><div class="form-group col-md-10"><input class="form-control" type="text" readonly="readonly" style="cursor:pointer" placeholder="请选择链接问题" name="postQueInput"></div><div class="form-group col-md-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+							}
+							}
+						});
+			$('#addUser').validate({
+				rules:{
+					labelName:{
+						required:true
+					}
+				},
+				messages:{
+					labelName:{
+						required:"请输入标签名！"
+					}
+				},
+				submitHandler: addUser
+			});
+			//ENTER
+		  $(document).on('keyup', function(e) {
+			var $activeEl = $(document.activeElement);
+
+			if ($activeEl.is('#sip') && (e.keyCode == 13 || e.keyCode == 108)) {
+			  $('.search-addSrc').trigger('click');
+			}
+		  });
+		});
+		function addUser() {
+			var url = '';
+	var dataJSON = {
+		labelName:$('[name="labelName"]').val(),
+		labelType:1
+	};
+	var pqids = [];
+	$('[name=postQueInput]').each(function(){
+		if($(this).attr('rel')) {
+			pqids.push($(this).attr('rel'));
+		}
+	});
+	if(pqids.length > 0) {
+		dataJSON.solutionIds = pqids.join(',');
+	} else {
+		yunNotyError('请至少添加一个链接问题');
+		return false;
+	}
+	
+	if(flag=='EDIT'){
+		dataJSON.id=editData.Id;
+		url = '../../label/modifyLabel';
+		} else {
+			url = '../../label/addLabel';
+			}
+	  $.ajax({
+		type: 'post',
+		datatype: 'json',
+		cache: false,
+		url: encodeURI(url),
+		data: dataJSON,
+		success: function(data) {
+		  if (data.status == 0) {
+			yunNoty(data);
+			listPorts();
+			$('#addModal').modal('hide');
+		  } else {
+			yunNoty(data);
+		  }
+		}
+	  });
+		}
+		function listPorts(pageNo) {
+			//不勾选全选
+			//$('.select_rows').iCheck('uncheck');
+			if (!pageNo) pageNo = 1;
+			//$('#wordweightList').tableAjaxLoader2(3);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../label/findLabelsByNameAndType?pageSize=' + 10 + '&pageNum=' + pageNo + '&labelName=' + $('#sip').val()),
+				//data:encodeURI(tempcontent),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.list==undefined){
+							$('#listContainer').html('<div style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+							$('#pageList').html('');
+							return;
+						}
+						if (data.list.length > 0) {
+							listWordWeightData = data.list;
+							var source = $("#list-item-template").html();
+							var template = Handlebars.compile(source);
+							var html = template(data);
+							$('#listContainer').html(html);
+							icheckInit();
+							$('.url').each(function(i){
+								new QRCode($('.qrcode')[i], {
+									text: $(this).html(),
+									width: 128,
+									height: 128,
+									colorDark : "#000000",
+									colorLight : "#ffffff",
+									correctLevel : QRCode.CorrectLevel.L
+								});
+							})
+							//单个删除
+							$('.m-del').on('click',function(){
+								var self = this;
+								$(self).adcCreator(function() {
+									delById(self,'../../label/deleteByIds',listPorts,'pageList');
+								});
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'list', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									listPorts(page);
+								}
+							};
+							//setPage('pageList', options);
+						} else {
+							$('#listContainer').html('<div style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+							$('#pageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+  //智能推荐列表
+	$('#queManual').on('click', 'a[name=delpostInput]', function() {
+		if($('#queManual a[name=delpostInput]').size() > 1) {
+			$(this).parent().parent().remove();
+		} else {
+            $('#queManual [name=postQueInput]').removeAttr('rel');
+            $('#queManual [name=postQueInput]').removeAttr('srel');
+			$('#queManual [name=postQueInput]').val('');
+		}
+	});
+	$('#queManual').on('click', '[name=postQueInput]', function() {
+		QandFIndex = $(this).parent().parent().index();
+		showQueModal();
+	});
+	$('#queManual').on('click', 'a[name=addpostInput]', function() {
+		//if($('#queManual a[name=addpostInput]').size() < 5) {
+			$('#queManual').append('<div class="QueContainer"><div class="form-group col-md-10"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="请选择推荐的问题" name="postQueInput"></div><div class="form-group col-md-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+		//}
+	});
+	$('#queDivNav a').click(function (e) {
+		if($(this).attr('href') == '#queManualQue') {
+			sQue();
+		} else if($(this).attr('href') == '#queManualFlow') {
+			fQue();
+		}
+	});
+  enterSubmit($('#search_Que input[name=question]'),addQueSearch);
+  function addQueSearch(){
+  	if($('#queDivNav li').eq(0).hasClass('active')){
+  		sQue();
+  	}else if($('#queDivNav li').eq(1).hasClass('active')){
+  		fQue();
+  	}else{
+  		sQue();fQue();
+  	}
+  }
+
+function filterP(node) {
+	return (node.isParent == false);
+}
+//智能推荐树
+var hidesetting = {
+	view: {
+		dblClickExpand: false,
+		showIcon: false
+	},
+	data: {
+		simpleData : {
+		enable : true,
+		idKey : "Id",
+		pIdKey : "ParentId",
+		rootPId : 0
+		},
+		key : {
+			name : "Name"
+		}
+	},
+	async : {
+		enable : true,
+		url : "../../classes/listClasses?m=0",
+		autoParam : ["id"],
+		dataFilter : function(treeId, parentNode, responseData) {
+    	if (responseData) {
+    		if (responseData.status == -1) {
+    			yunNoty(responseData);
+    		}
+    		responseData.list.push({
+    			Id: 0,
+    			ParentId: 0,
+    			Name: "全部分类",
+    			open: true
+    		});
+    		return responseData.list;
+    	}
+    	return responseData;
+    }
+	},
+	callback: {
+		onClick: function(event, treeId, treeNode, clickFlag){
+			var treeObj = $.fn.zTree.getZTreeObj(treeId);
+			Nodes = treeObj.getSelectedNodes();
+			$('#queSel').html(Nodes[0].Name);
+			var array = treeObj.getNodesByFilter(filterP, false, treeNode);
+			if(array.length > 0) {
+				var groupId = '';
+				for(var i in array) {
+					groupId += (array[i].Id) + ',';
+				}
+				$('.selQueX').val(groupId);
+			} else {
+				$('.selQueX').val(treeNode.Id);
+			}
+			$("#menuContent").fadeOut("fast");
+			if($('#queManualQue').hasClass('active')) {
+				sQue(1);
+			}else if($('#queManualFlow').hasClass('active')) {
+				fQue(1);
+			}
+		},
+		onAsyncSuccess: function(event, treeId, treeNode, msg) {
+			var treeObj = $.fn.zTree.getZTreeObj(treeId);
+			var array = treeObj.getNodesByFilter(filterP);
+			if(array.length > 0) {
+				var groupId = '';
+				for(var i in array) {
+					groupId += (array[i].Id) + ',';
+				}
+				$('.selQueX').val(groupId);
+			} else {
+				$('.selQueX').val(treeNode.Id);
+			}
+			if($('#queManualQue').hasClass('active')) {
+				sQue(1);
+			}else if($('#queManualFlow').hasClass('active')) {
+				fQue(1);
+			}
+		},
+		beforeClick:function(treeId, treeNode, clickFlag) {
+    	//return !treeNode.isParent;//当是父节点 返回false 不让选取
+    	if(treeNode.isParent===true){
+    		$('#search_Que input[name=isLeaf]').val(0);
+    	}else{
+    		$('#search_Que input[name=isLeaf]').val(1);
+    	}
+    }
+	}
+};
+
+/**
+* 手动设置智能推荐确定
+*/
+$('#queManualConfirm').click(function() {
+	var addFlag = false;
+	var id = getSelectedIds_aQue();
+	var SolutionId = getSelectedSolutionIds_aQue();
+	var targetInput = $('#queManual [name=postQueInput]').eq(QandFIndex);
+	if(targetInput.val() === '') {
+		addFlag = true;
+	}
+	targetInput.attr('rel', id);
+	targetInput.attr('Srel', SolutionId);
+	targetInput.val($('#queDiv #list-tr-'+id).children('td').eq(1).html());
+	$('#queManualModal').modal('hide');
+	if(addFlag) {
+		//if($('#queManual a[name=addpostInput]').size() < 5) {
+			$('#queManual').append('<div class="QueContainer"><div class="form-group col-md-10"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="请选择推荐的问题" name="postQueInput"></div><div class="form-group col-md-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+		//}
+	}
+});
+
+/**
+* 获取智能推荐选中问题的Id
+* @param {null}
+* @return {Integer} 选中的Id
+*/
+function getSelectedIds_aQue() {
+	var cboxs = null;
+	if($('#queManualQue').hasClass('active')){
+		cboxs = document.getElementsByName('row_sel1');
+	}
+	else if($('#queManualFlow').hasClass('active')){
+		cboxs = document.getElementsByName('row_sel2');
+	}
+	if(typeof cboxs=="undefined"){
+		return -1;
+	}
+	var inputvalue="";
+	for(var i=0;i<cboxs.length;i++){
+		if(cboxs[i].checked===true){
+			inputvalue=cboxs[i].value;
+		}
+	}
+	return inputvalue;
+}
+/**
+* 获取智能推荐选中流程的Id
+* @param {null}
+* @return {Integer} 选中的Id
+*/
+function getSelectedSolutionIds_aQue() {
+	var cboxs = null;
+	if($('#queManualQue').hasClass('active')){
+		cboxs = document.getElementsByName('row_sel1');
+	}
+	else if($('#queManualFlow').hasClass('active')){
+		cboxs = document.getElementsByName('row_sel2');
+	}
+	if(typeof cboxs=="undefined"){
+		return -1;
+	}
+	var inputvalue="";
+	for(var i=0;i<cboxs.length;i++){
+		if(cboxs[i].checked===true){
+			inputvalue=cboxs[i].getAttribute('solutionid');
+		}
+	}
+	return inputvalue;
+}
+
+//智能推荐模态窗中的树
+function showMenu() {
+	var cityObj = $("#queSel");
+	var cityOffset = $("#queSel").offset();
+	$("#menuContent").slideDown("fast");
+	$("body").bind("mousedown", onBodyDown);
+	$('#classTree').slimScroll({
+		height: '300px'
+	});
+}
+function hideMenu() {
+	$("#menuContent").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+function onBodyDown(event) {
+	if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+		hideMenu();
+	}
+}
+
+//智能推荐问题模态框显示
+function showQueModal(){
+	$('#queManualModal').modal('show');
+}
+
+$('#queManualModal').on('show.bs.modal', function () {
+	$.fn.zTree.init($("#treeHide"),hidesetting,[]);
+	$('#queSel').html('全部分类');
+	hideMenu();
+});
+
+//智能推荐问题模态窗列表
+function sQue(pageNo){
+	if(!pageNo)pageNo=1;
+	$('#ansList').tableAjaxLoader2(2);
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../question/getQueListByMode?pageSize=8&pageNo='+pageNo+'&solutionType=1'),
+		data:$("#search_Que").serialize(),
+		success:
+		function(data){
+			if(data.status===0){
+				if(data.questionList.length>0){
+					var html = "";
+					var existIds=[];
+					$('#queManual').find('input[name=postQueInput]').each(function(){
+						existIds.push($(this).attr('rel')*1);
+					});
+					for(var i=0;i<data.questionList.length;i++){
+						if($.inArray(data.questionList[i].Id, existIds)>=0){
+  						html += '<tr id="list-tr-'+data.questionList[i].Id+'">';
+  						html += '<td><input disabled="" type="radio" name="row_sel1" value="'+data.questionList[i].Id+'" solutionId="'+data.questionList[i].SolutionId+'"></td>';
+  						if(data.questionList[i].AnswerStatus==-4){
+  							html += '<td class="dueTd">'+data.questionList[i].Question+'<a class="btn btn-xs btn-danger m-l-5">已过期</a></td>';
+  						}else{
+  							html += '<td style="word-break: break-all;">'+data.questionList[i].Question+'</td>';
+  						}
+  						html += '</tr>';
+						} else {
+  						html += '<tr id="list-tr-'+data.questionList[i].Id+'">';
+  						html += '<td><input type="radio" name="row_sel1" value="'+data.questionList[i].Id+'" solutionId="'+data.questionList[i].SolutionId+'"></td>';
+  						if(data.questionList[i].AnswerStatus==-4){
+  							html += '<td class="dueTd">'+data.questionList[i].Question+'<a class="btn btn-xs btn-danger m-l-5">已过期</a></td>';
+  						}else{
+  							html += '<td style="word-break: break-all;">'+data.questionList[i].Question+'</td>';
+  						}
+  						html += '</tr>';
+            }
+					}
+					$('#ansList').find('tbody').html(html);
+					// $('#ansList td').click(function() {
+						// $(this).parent().find('input[name=row_sel1]').attr("checked",'true');
+					// });
+					icheckInit();
+					$('#timePicker').on('ifChecked', function() {
+						$('#dateTime').show();
+					}).on('ifUnchecked', function() {
+						$('#dateTime').hide();
+						$('#ansRuleForm [name=StartTime]').val('');
+						$('#ansRuleForm [name=EndTime]').val('');
+					});
+					$('#ansList td').click(function() {
+						$(this).parent().find('input[name=row_sel1]:enabled').iCheck('check');
+					});
+					//下面开始处理分页
+					var options = {
+						currentPage: data.currentPage,
+						totalPages: data.totlePages,
+						onPageClicked: function (event, originalEvent, type, page) {
+							sQue(page);
+						}
+					};
+					setPage('quepageList',options);
+				}else{
+					if($('#search_Que input[name=question]').val() !==''){
+						$('#ansList').find('tbody').html('<tr><td colspan=\"2\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;搜索结果为空！</td></tr>');
+					} else {
+						$('#ansList').find('tbody').html('<tr><td colspan=\"2\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+					}
+					$('#quepageList').html('');
+				}
+			}else{
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//智能推荐流程模态窗列表
+function fQue(pageNo){
+	if(!pageNo)pageNo=1;
+	$('#flowList').tableAjaxLoader2(2);
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../question/getQueListByMode?pageSize=8&pageNo='+pageNo+'&solutionType=2'),
+		data:$("#search_Que").serialize(),
+		success:
+		function(data){
+			if(data.status===0){
+				if(data.questionList.length>0){
+					var html = "";
+					var existIds=[];
+					$('#queManual').find('input[name=postQueInput]').each(function(){
+						existIds.push($(this).attr('rel')*1);
+					});
+					for(var i=0;i<data.questionList.length;i++){
+						if($.inArray(data.questionList[i].Id, existIds)>=0){
+  						html += '<tr id="list-tr-'+data.questionList[i].Id+'">';
+  						html += '<td><input disabled="" type="radio" name="row_sel2" value="'+data.questionList[i].Id+'" solutionId="'+data.questionList[i].SolutionId+'"></td>';
+  						if(data.questionList[i].AnswerStatus==-4){
+  							html += '<td class="dueTd">'+data.questionList[i].Question+'<a class="btn btn-xs btn-danger m-l-5">已过期</a></td>';
+  						}else{
+  							html += '<td style="word-break: break-all;">'+data.questionList[i].Question+'</td>';
+  						}
+  						html += '</tr>';
+						} else {
+  						html += '<tr id="list-tr-'+data.questionList[i].Id+'">';
+  						html += '<td><input type="radio" name="row_sel2" value="'+data.questionList[i].Id+'" solutionId="'+data.questionList[i].SolutionId+'"></td>';
+  						if(data.questionList[i].AnswerStatus==-4){
+  							html += '<td class="dueTd">'+data.questionList[i].Question+'<a class="btn btn-xs btn-danger m-l-5">已过期</a></td>';
+  						}else{
+  							html += '<td style="word-break: break-all;">'+data.questionList[i].Question+'</td>';
+  						}
+  						html += '</tr>';
+            }
+					}
+					$('#flowList').find('tbody').html(html);
+					// $('#flowList td').click(function() {
+						// $(this).parent().find('input[name=row_sel2]').attr("checked",'true');
+					// });
+					icheckInit();
+					$('#timePicker').on('ifChecked', function() {
+						$('#dateTime').show();
+					}).on('ifUnchecked', function() {
+						$('#dateTime').hide();
+						$('#ansRuleForm [name=StartTime]').val('');
+						$('#ansRuleForm [name=EndTime]').val('');
+					});
+					$('#flowList td').click(function() {
+						$(this).parent().find('input[name=row_sel2]:enabled').iCheck('check');
+					});
+					//下面开始处理分页
+					var options = {
+						currentPage: data.currentPage,
+						totalPages: data.totlePages,
+						onPageClicked: function (event, originalEvent, type, page) {
+							fQue(page);
+						}
+					};
+					setPage('flowpageList',options);
+				}else{
+					if($('#search_Que input[name=question]').val() !==''){
+						$('#flowList').find('tbody').html('<tr><td colspan=\"2\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;搜索结果为空！</td></tr>');}
+					else{
+						$('#flowList').find('tbody').html('<tr><td colspan=\"2\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+					}
+					$('#flowpageList').html('');
+				}
+			}else{
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+	</script>
+</body>
+
+</html>

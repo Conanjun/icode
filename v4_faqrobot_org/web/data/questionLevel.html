@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>访问问题分级统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">访问问题分级统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">访问问题分级统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计不同分类下在聊天日志中的数量及占比情况"
+                   class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        访问问题分级统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/QueTypeCount/list"/>
+                    <div class="text-right">
+                        <div class="btn-group m-r-4" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="DataSource" style="display:inline-block;vertical-align: top;" class="m-r-4">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-offset-2 col-md-8">
+                            <div id="container"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>类别名称</th>
+                            <th>被问总次数&nbsp;<i data-toggle="tooltip" data-placement="right" title="类别被问的次数总和"
+                                              class="fa fa-question-circle"></i></th>
+                            <th>占比&nbsp;<i data-toggle="tooltip" data-placement="right" title="该类别下问题总数除以所有类别下问题总数"
+                                           class="fa fa-question-circle"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="js/util.js"></script>
+<script src="js/drilldown/highcharts.js"></script>
+<script src="js/drilldown/data.js"></script>
+<script src="js/drilldown/drilldown.js"></script>
+<script type="text/javascript">
+    function showPie (json) {
+        var classes = []
+        var countlist = []
+        var drilldownSeries = []
+        var rootList = [] //根分类
+        var classesMap = {} //类别的map集合，以类的ID为key
+        var parentsIdMap = {} //parentId的map集合，以parentId为key
+        var totalNum = 0
+        var resultData = {}
+        classes = json.classList
+        countlist = json.countList
+
+        /**
+         遍历classes获取classMap和parentIdMap
+         */
+        $.each(classes,
+            function (i, item) {
+                /* 				if(opts.idFlag!=""&&parseInt(opts.idFlag)==item.Id){
+                            classes[i].ParentId = -1;
+                        } */
+                if (item.ParentId == null | item.ParentId == 0) {
+                    item.ParentId = -1
+                }
+                var has = item.Id in classesMap
+                var hasParends = item.ParentId in parentsIdMap
+                if (!has) {
+                    classesMap[item.Id] = item
+                }
+                if (!hasParends) {
+                    parentsIdMap[item.ParentId] = item
+                }
+            })
+
+        //构造drilldown的map，此时类别的占比是初始化为0
+        var drilldownMap = {}
+        $.each(classes,
+            function (i, item) {
+                var has = item.ParentId in drilldownMap
+                if (!has) {
+                    var seconditem = {}
+                    seconditem.id = item.ParentId + ''
+                    seconditem.name = classesMap[item.ParentId].Name
+                    seconditem.data = []
+                    seconditem.data.push(getItemsData(item, 0))
+                    drilldownMap[item.ParentId] = seconditem
+                } else {
+                    drilldownMap[item.ParentId].data.push(getItemsData(item, 0))
+                }
+            })
+
+        // var  drilldownSeries = [];
+        for (var key in drilldownMap) {
+            drilldownSeries.push(drilldownMap[key])
+        }
+
+        //根据具体的类获取dirlldown中一项data,flag = 0时y初始化为0，为1获取实际值
+        function getItemsData (item, flag) {
+            var dataItem = {}
+            if (flag == 0) {
+                dataItem.name = item.Name
+                dataItem.y = 0
+            } else if (flag == 1) {
+                dataItem.y = map_value[item.Id] / totalNum * 100
+                dataItem.name = item.Name + '<br>被问次数<span style="color:red;">[</span>' + map_value[item.Id] + '<span style="color:red;">]</span>'
+            }
+            dataItem.id = item.Id
+            dataItem.drilldown = item.Id + ''
+            return dataItem
+        }
+
+        /*
+                 *初始化类别占比的map集合
+                 */
+        var map_value = {}
+
+        //查出所有的叶子节点,赋值为0
+        $.each(classes,
+            function (i, item) {
+                var has = item.Id in parentsIdMap
+                if (!has) {
+                    map_value[item.Id] = 0
+                }
+            })
+        //赋值已有的子类的数值
+        $.each(countlist,
+            function (i, item) {
+                var has = item.Id in map_value
+                if (has) {
+                    map_value[item.Id] = parseInt(item.Value)
+                } else if (item.Id == -100) {
+                    //alert("提示：这个类别Id下面没有问题！");
+                } else {
+                    //alert('分类错误');
+                }
+            })
+
+        /*
+                   遍历drilldownSeries中的数据项，
+                    根据以后的叶子节点的统计数量，统计出非叶子结点的数量，直到真剩下根节点
+                 */
+        while (drilldownSeries.length > 1) {
+
+            for (var i = 0; i < drilldownSeries.length; i++) { //遍历drilldown数组
+                var item = drilldownSeries[i]
+
+                var flag_allVaule = true
+                var count_value = 0
+                //遍历每一项项中data数组
+                for (var m = 0; m < item.data.length; m++) {
+                    var item1 = item.data[m]
+                    //如果该项在map_vlaue中，则进行叠加，否则跳出继续下一个item
+                    var has = item1.id in map_value
+
+                    if (!has) {
+                        flag_allVaule = false
+                        break
+                    }
+                    count_value = count_value + map_value[item1.id]
+                }
+                //将新查询到的值加入到map_value中，从dilldownSeries中移除一项
+                if (flag_allVaule) {
+                    //统计这个类的总数
+                    map_value[item.id] = count_value
+
+                    drilldownSeries.splice(i, 1)
+                }
+            }
+        }
+
+        //遍历classes获取根分类以及分类的总数
+        $.each(classes,
+            function (i, item) {
+                var newItem = {}
+                if (item.ParentId != item.Id && (item.ParentId == -1 | item.ParentId == null | item.ParentId == 0)) {
+                    newItem.name = item.Name + '<br>被问次数<span style="color:red;">[</span>' + map_value[item.Id] + '<span style="color:red;">]</span>'
+                    newItem.y = map_value[item.Id]
+                    newItem.drilldown = item.Id + ''
+                    totalNum += newItem.y
+                    rootList.push(newItem)
+                }
+            })
+        //计算根分类的占比
+        $.each(rootList,
+            function (i, item) {
+                item.y = item.y / totalNum * 100
+            })
+
+        /**
+         获取到完整的map_value后重新构造dirlldownMap和drilldownSeries
+         */
+        drilldownMap = {}
+        $.each(classes,
+            function (i, item) {
+                var has = item.ParentId in drilldownMap
+                if (!has) {
+                    var seconditem = {}
+                    seconditem.id = item.ParentId + ''
+                    seconditem.name = classesMap[item.ParentId].Name
+                    seconditem.data = []
+                    seconditem.data.push(getItemsData(item, 1))
+                    drilldownMap[item.ParentId] = seconditem
+                } else {
+                    drilldownMap[item.ParentId].data.push(getItemsData(item, 1))
+                }
+            })
+
+        drilldownSeries = []
+        for (var key in drilldownMap) {
+            drilldownSeries.push(drilldownMap[key])
+        }
+        /**
+         * highcharts图表展示
+         */
+        $('#container').highcharts({
+            chart: {
+                type: 'pie'
+            },
+            colors: [
+                '#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+                '#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+                '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+                '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+            ],
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y:.2f}%'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>占{point.y:.2f}%</b><br/>'
+            },
+            series: [{
+                name: '父类',
+                colorByPoint: true,
+                data: rootList
+            }],
+            drilldown: {
+                series: drilldownSeries
+            }
+        })
+    }
+
+    function showtable (json) {
+        var num = json.countList[0].Id
+        var table = ''
+        var count1 = 0
+        if (num == -100) {
+            table += '<tr >'
+            table += '<td colspan=3 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+            return
+        }
+        /**
+         对List按访问量从高到低进行排序
+         */
+        json.countList.sort(function (a, b) {
+            return b.Value - a.Value
+        })
+        var len = json.countList.length
+        //计算占比
+        var temp = 0
+        for (var i = 0; i < len; i++) {
+            temp = temp + parseInt(json.countList[i].Value)
+        }
+        if (temp === 0) {
+            temp == Number.MAX_VALUE
+        }
+        /**
+         如果List的长度大于20，则取前20条记录
+         如果List的长度小于20，则取全部记录
+         */
+        if (json.countList.length > 20) {
+            var len = 20
+        }
+        /**
+         动态渲染表
+         **/
+        for (var i = 0; i < len; i++) {
+            table += '<tr class="body-row">'
+            table += '<td class="col1">' + json.countList[i].Name + '</td>'
+            table += '<td class="col2">' + json.countList[i].Value + '</td>'
+            if (temp == 0) {
+                percent = '0%'
+            } else {
+                percent = Math.round(json.countList[i].Value / temp * 10000) / 100.00 + '%'
+            }
+            table += '<td class="col2">' + percent + '</td>'
+            table += '</tr>'
+            count1 += parseInt(json.countList[i].Value)
+        }
+        table += '<tr><td>总计</td><td>' + count1 + '</td><td>' + (Math.round(count1 / temp * 10000) / 100.00 + '%') + '</td></tr>'
+        $('#visitDataTable').html(table)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        showPie(json)
+        showtable(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        //列出图表
+        queryAll()
+    })
+</script>
+</body>
+</html>

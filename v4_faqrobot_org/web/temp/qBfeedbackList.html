@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>题库满意度反馈条目</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">满意度反馈列表条目</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">满意度反馈条目列表</h1>
+				<ul role="tablist" id="myTab" class="nav nav-tabs">  
+				    <li class="active">  
+				        <a aria-expanded="false" id="queBank-tab" aria-controls="queBank" data-toggle="tab" role="tab" href="#queBank">题库满意度反馈条目列表</a>  
+				    </li>  
+				    <li><a aria-expanded="dialog" id="dialog-tab" aria-controls="dialog" data-toggle="tab" role="tab" href="#dialog">会话满意度反馈条目列表</a></li>  
+				</ul>
+				
+				<div class="panel tab-content">
+					<div aria-labelledby="queBank-tab" role="tabpanel" class="tab-pane fade active in" id="queBank">
+						<div class="tableHead">
+							<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+								<i class="glyphicon glyphicon-plus"></i>
+								添加条目
+							</a>
+							<a href="javascript:void(0);" class="p_del btn btn-default pull-right">
+								<i class="glyphicon glyphicon-trash"></i>
+								批量删除
+							</a>
+							<!--<div class="btn-group m-r-4 pull-right">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									默认排序 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li> <a href="#" onClick="quebank(3);return false;">时间正序</a> </li>
+									<li> <a href="#" onClick="quebank(4);return false;">时间倒序</a> </li>
+									<li> <a href="#" onClick="quebank(1);return false;">排序正序</a> </li>
+									<li> <a href="#" onClick="quebank(2);return false;">排序倒序</a> </li>
+								</ul>
+							</div>-->
+						</div>
+						<table class="table" id="article_tab">
+							<thead>
+								<tr>
+									<th class="table_checkbox" width="60"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="article_tab"/></th>
+									<th>不满意原因</th>
+									<th width="80">排序</th>
+									<th width="180">时间</th>
+									<th style="width: 70px;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+					<div aria-labelledby="dialog-tab" role="tabpanel" class="tab-pane fade" id="dialog">
+						<div class="tableHead">
+							<a data-toggle="modal" class="btn btn-primary" href="#addDialogModal">
+								<i class="glyphicon glyphicon-plus"></i>
+								添加条目
+							</a>
+							<a href="javascript:void(0);" class="p_del btn btn-default pull-right">
+								<i class="glyphicon glyphicon-trash"></i>
+								批量删除
+							</a>
+							<!--<div class="btn-group m-r-4 pull-right">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									默认排序 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li> <a href="#" onClick="quebank(3);return false;">时间正序</a> </li>
+									<li> <a href="#" onClick="quebank(4);return false;">时间倒序</a> </li>
+									<li> <a href="#" onClick="quebank(1);return false;">排序正序</a> </li>
+									<li> <a href="#" onClick="quebank(2);return false;">排序倒序</a> </li>
+								</ul>
+							</div>-->
+						</div>
+						<table class="table" id="dialog_tab">
+							<thead>
+								<tr>
+									<th class="table_checkbox" width="60"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="dialog_tab"/></th>
+									<th>不满意原因</th>
+									<th width="80">排序</th>
+									<th width="180">时间</th>
+									<th style="width: 70px;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageDialogList"></div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="entryForm" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">条目内容</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入条目内容" class="form-control" name="reason">
+										</div>
+									</div>
+									<!--<div class="form-group">
+										<label class="col-md-3 control-label">排序数字</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入排序数字" class="form-control" name="orderId">
+										</div>
+									</div>-->
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#entryForm').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="saveEntryform" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">条目内容</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入条目内容" class="form-control" name="reason">
+										</div>
+									</div>
+									<!--<div class="form-group">
+										<label class="col-md-3 control-label">排序数字</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入排序数字" class="form-control" name="orderId">
+										</div>
+									</div>-->
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#saveEntryform').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delmodal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="delform" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="ids">
+									<div class="form-group">
+										<p class="col-md-offset-2">删除该项，数据报表将不再统计该项的数据，您确定删除吗？</p>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="confirmDel">确认</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addDialogModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="dialog_Form" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">条目内容</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入条目内容" class="form-control" name="reason">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#dialog_Form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editDialogModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="saveDialogform" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">条目内容</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入条目内容" class="form-control" name="reason">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#saveDialogform').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delDialogmodal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除条目</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="delDialogform" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="ids">
+									<div class="form-group">
+										<p class="col-md-offset-2">删除该项，数据报表将不再统计该项的数据，您确定删除吗？</p>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="confirmDialogDel">确认</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			icheckBindInit();
+			//列出表格
+			quebank();
+			$('#myTab').on('click','a',function(){
+				if($(this).attr('aria-controls')=='queBank'){
+					quebank();
+				}else{
+					dialogList();//列出表格
+				}
+			})
+			
+			$('#queBank .p_del').click(function() {
+				$('#delmodal input[name=ids]').val(getSelectedIds());
+				//$('#delmodal .modal-footer').show();
+				$('#delmodal').modal('show');
+			});
+			$('#delmodal #confirmDel').click(function() {
+				delEntryModal();
+			});
+
+			$('#entryForm').validate({
+				rules:{
+					reason:{
+						required:true,
+						minlength:3
+					},
+					orderId:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					reason:{
+						required:'请输入条目内容！',
+						minlength:'条目内容不能少于3个字符！'
+					},
+					orderId:{
+						required:'请输入排序！',
+						number:'请输入数字！'
+					}
+				},
+				submitHandler: doNewAdd
+			});
+
+			$('#saveEntryform').validate({
+				rules:{
+					reason:{
+						required:true,
+						minlength:3
+					},
+					orderId:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					reason:{
+						required:'请输入条目内容！',
+						minlength:'条目内容不能少于3个字符！'
+					},
+					orderId:{
+						required:'请输入排序！',
+						number:'请输入数字！'
+					}
+				},
+				submitHandler: editEntry
+			});
+			
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#entryForm')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#saveEntryform')[0].reset();
+			});
+			
+			//会话满意度
+			$('#dialog .p_del').click(function() {
+				$('#delDialogmodal input[name=ids]').val(getSelectedIds());
+				//$('#delmodal .modal-footer').show();
+				$('#delDialogmodal').modal('show');
+			});
+			$('#delDialogmodal #confirmDialogDel').click(function() {
+				delDialogModal();
+			});
+			$('#dialog_Form').validate({
+				rules:{
+					reason:{
+						required:true,
+						minlength:3
+					}
+				},
+				messages:{
+					reason:{
+						required:'请输入条目内容！',
+						minlength:'条目内容不能少于3个字符！'
+					}
+				},
+				submitHandler: doDiaLogAdd
+			});
+			$('#saveDialogform').validate({
+				rules:{
+					reason:{
+						required:true,
+						minlength:3
+					}
+				},
+				messages:{
+					reason:{
+						required:'请输入条目内容！',
+						minlength:'条目内容不能少于3个字符！'
+					}
+				},
+				submitHandler: editDialog
+			});
+			//清空表单
+			$('#addDialogModal').on('hidden.bs.modal', function () {
+				$('#dialog_Form')[0].reset();
+			})
+			$('#editDialogModal').on('hidden.bs.modal', function () {
+				$('#saveDialogform')[0].reset();
+			});
+			
+		});
+
+		var flag_add = false;
+		function doNewAdd() {
+			if (flag_add) {
+				return;
+			}
+			flag_add = true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doAddItem?type=0'),
+				data: $("#entryForm").serialize(),
+				success: function(data) {
+					flag_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						quebank();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//修改
+		function editEntry() {
+			if (flag_add) {
+				return;
+			}
+			flag_add = true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doEditItem'),
+				data: $("#saveEntryform").serialize(),
+				success: function(data) {
+					flag_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#editModal').modal('hide');
+						quebank();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function quebank() {
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			//if (!orderType) orderType = 4;
+			$('#article_tab').tableAjaxLoader2(5);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/list?orderType=1&type=0'),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#article_tab').find('tbody').html('<tr><td colspan="5" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							return;
+						}
+						var s = []; //暂时存储html代码
+						if (data.List.length > 0) {
+							for (var i = 0; i < data.List.length; i++) {
+								s.push('<tr Id="' + data.List[i].Id + '" OrderId="'+data.List[i].OrderId+'">');
+								s.push('<td><input type="checkbox" name="ckb" class="select_row" value="' + data.List[i].Id + '" /></td>');
+								s.push('<td>' + (data.List[i].Reason == null ? '&nbsp;': data.List[i].Reason) + '</td>');
+								s.push('<td><a href="javascript:;" class="moveTop" title="向上移动" onclick="moveTop(this)"><i class="glyphicon glyphicon-hand-up"></i></a>&nbsp;&nbsp;<a href="javascript:;" class="moveBottom" title="向下移动" onclick="moveBottom(this)"><i class="glyphicon glyphicon-hand-down"></i></a></td>');
+								s.push('<td>' + (data.List[i].CreateTime == null ? '&nbsp;': data.List[i].CreateTime) + '</td>');
+								s.push('<td><a href="javascript:;" class="edit" rel="' + data.List[i].Id + '" title="修改" onclick="editEntrya(this)"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a href="javascript:;" class="m-del" rel="' + data.List[i].Id + '" title="删除" ><i class="glyphicon glyphicon-trash"></i></a></td>');
+								s.push('</tr>');
+							}
+							$('#article_tab').find('tbody').html(s.join(''));
+							$('.m-del').on('click',
+							function() {
+								$('#delmodal input[name=ids]').val($(this).attr('rel'));
+								$('#delmodal').modal('show');
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									quebank(page);
+								}
+							};
+							setPage('pageList', options);
+						} else {
+							$('#article_tab').find('tbody').html('<tr><td colspan="5" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+		//编辑条目
+		function editEntrya(obj) {
+			$('#saveEntryform input[name=id]').val($(obj).attr('rel'));
+			var tmpObj = $(obj).parents('tr').children('td');
+			$('#saveEntryform input[name=reason]').val(tmpObj.eq(1).html());
+			$('#saveEntryform input[name=orderId]').val(tmpObj.eq(2).html());
+			$('#editModal').modal('show');
+		}
+
+		//删除条目
+		function delEntryModal() {
+			//$('#delmodal .modal-footer').show();
+			var ids = $('#delmodal input[name=ids]').val();
+			if (!ids) {
+				yunNotyError('请选择您要删除的条目');
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doDel?ids=' + ids),
+				success: function(data) {
+					if (data.status == 0) {
+						quebank();
+						yunNoty(data);
+						$('#delmodal').modal('hide');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		
+		//会话满意度验证
+		var dialog_add = false;
+		function doDiaLogAdd() {
+			if (dialog_add) {
+				return;
+			}
+			dialog_add = true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doAddItem?type=1'),
+				data: $("#dialog_Form").serialize(),
+				success: function(data) {
+					dialog_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addDialogModal').modal('hide');
+						dialogList();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		
+		//修改
+		function editDialog() {
+			if (dialog_add) {
+				return;
+			}
+			dialog_add = true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doEditItem'),
+				data: $("#saveDialogform").serialize(),
+				success: function(data) {
+					dialog_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#editDialogModal').modal('hide');
+						dialogList();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function dialogList() {
+			//不勾选全选
+			$('.select_rows').iCheck('uncheck');
+			//if (!orderType) orderType = 1;
+			$('#dialog_tab').tableAjaxLoader2(5);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/list?orderType=1&type=1'),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#dialog_tab').find('tbody').html('<tr><td colspan="5" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							return;
+						}
+						var s = []; //暂时存储html代码
+						if (data.List.length > 0) {
+							for (var i = 0; i < data.List.length; i++) {
+								s.push('<tr Id="' + data.List[i].Id + '" OrderId="'+data.List[i].OrderId+'">');
+								s.push('<td><input type="checkbox" name="ckb" class="select_row" value="' + data.List[i].Id + '" /></td>');
+								s.push('<td>' + (data.List[i].Reason == null ? '&nbsp;': data.List[i].Reason) + '</td>');
+								s.push('<td><a href="javascript:;" class="moveTop" title="向上移动" onclick="moveTop(this)"><i class="glyphicon glyphicon-hand-up"></i></a>&nbsp;&nbsp;<a href="javascript:;" class="moveBottom" title="向下移动" onclick="moveBottom(this)"><i class="glyphicon glyphicon-hand-down"></i></a></td>');
+								s.push('<td>' + (data.List[i].CreateTime == null ? '&nbsp;': data.List[i].CreateTime) + '</td>');
+								s.push('<td><a href="javascript:;" class="edit" rel="' + data.List[i].Id + '" title="修改" onclick="editDialoga(this)"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a href="javascript:;" class="m-del" rel="' + data.List[i].Id + '" title="删除" ><i class="glyphicon glyphicon-trash"></i></a></td>');
+								s.push('</tr>');
+							}
+							$('#dialog_tab').find('tbody').html(s.join(''));
+							$('.m-del').on('click',function() {
+								$('#delDialogmodal input[name=ids]').val($(this).attr('rel'));
+								$('#delDialogmodal').modal('show');
+							});
+							icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									dialogList(page);
+								}
+							};
+							setPage('pageDialogList', options);
+						} else {
+							$('#dialog_tab').find('tbody').html('<tr><td colspan="5" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+		//编辑条目
+		function editDialoga(obj) {
+			$('#saveDialogform input[name=id]').val($(obj).attr('rel'));
+			var tmpObj = $(obj).parents('tr').children('td');
+			$('#saveDialogform input[name=reason]').val(tmpObj.eq(1).html());
+			$('#editDialogModal').modal('show');
+		}
+
+		//删除条目
+		function delDialogModal() {
+			//$('#delmodal .modal-footer').show();
+			var ids = $('#delDialogmodal input[name=ids]').val();
+			if (!ids) {
+				yunNotyError('请选择您要删除的条目');
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../UselessReasonItem/doDel?ids=' + ids),
+				success: function(data) {
+					if (data.status == 0) {
+						dialogList();
+						yunNoty(data);
+						$('#delDialogmodal').modal('hide');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//点击向上箭头移动排序
+		function moveTop(obj){
+			var idOne = $(obj).parents('tr').attr('id');
+			var idTwo = $(obj).parents('tr').prev().attr('id');
+			var orderIdOne = $(obj).parents('tr').attr('orderid');
+			var orderIdTwo = $(obj).parents('tr').prev().attr('orderid');
+			var upHtml = $(obj).parents('tr');
+			if(idTwo){
+				$(upHtml).animate({backgroundColor:'#e2e7eb'},300,function(){
+					$(upHtml).animate({backgroundColor:'#fff'},300);
+				});
+				$(upHtml).insertBefore($(obj).parents('tr').prev());
+				moveSave(idOne,idTwo,orderIdOne,orderIdTwo);
+			}else{
+				yunNotyError('此项不能向上移动！');
+			}
+		}
+		//点击向下箭头移动排序
+		function moveBottom(obj){
+			var idOne = $(obj).parents('tr').attr('id');
+			var idTwo = $(obj).parents('tr').next().attr('id');
+			var orderIdOne = $(obj).parents('tr').attr('orderid');
+			var orderIdTwo = $(obj).parents('tr').next().attr('orderid');
+			var downHtml = $(obj).parents('tr');
+			if(idTwo){
+				$(downHtml).animate({backgroundColor:'#e2e7eb'},300,function(){
+					$(downHtml).animate({backgroundColor:'#fff'},300);
+				});
+				$(downHtml).insertAfter($(obj).parents('tr').next());
+				moveSave(idOne,idTwo,orderIdOne,orderIdTwo);
+			}else{
+				yunNotyError('此项不能向下移动！');
+			}
+		}
+		//移动箭头后保存数据
+		function moveSave(idOne,idTwo,orderIdOne,orderIdTwo){
+			$.ajax({
+				type:"post",
+				url:"../../UselessReasonItem/updateOrderidByID",
+				data:{'idOne':idOne,'idTwo':idTwo,'orderIdOne':orderIdOne,'orderIdTwo':orderIdTwo},
+				async:true,
+				cache:true,
+				success:function(data){
+					if(data.status == 0){
+						yunNoty(data);
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		
+	</script>
+</body>
+</html>

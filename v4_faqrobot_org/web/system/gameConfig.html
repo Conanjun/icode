@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>策略配置</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        .gameForm .col-md-12,
+        .gameItemForm .col-md-12 {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body class="pace-done">
+    <!-- 新增策略 -->
+    <div class="modal fade" id="modal-game" style="display: none;">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">策略配置</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="gameForm">
+                        <div class="row-fluid">
+                            <div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">渠道
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <select name="sourceId" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">策略类型
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <select name="strategyMode" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">是否开启
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="radio" checked="checked" name="isOpen" value="1">开启
+                                        <input type="radio" name="isOpen" value="0">关闭
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">引导语
+                                            <span class="red">&nbsp;&nbsp;</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <textarea class="col-md-12 form-control" name="guideWords"></textarea>
+                                    </div>
+                                </div>
+                                <!-- <input class="col-md-12 form-control" type="text" name="value"> -->
+                                <div class="col-md-12" style="text-align: center;">
+                                    <button type="button" class="addGameItemBtn btn btn-sm btn-primary" href="javascript:;">添加策略项</button>
+                                </div>
+                            </div>
+                            <div class="tab-pane">
+                                <!--查询结束-->
+                                <table class="table" style="margin-bottom: 0;margin-top: 10px;word-wrap: break-word;word-break: break-all;">
+                                    <thead>
+                                        <tr>
+                                            <th>策略项</th>
+                                            <th>策略值</th>
+                                            <th style="width: 80px;">需要确认</th>
+                                            <th>确认提示信息</th>
+                                            <th style="width: 65px;">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="gameItemTbody">
+                                        <tr class="empty">
+                                            <td colspan="5" style="text-align:center;">
+                                                <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="gameItemPage"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="ensureAddGameBtn btn  btn-primary">确定</a>
+                    <a href="javascript:;" class="btn  btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增策略项 -->
+    <div class="modal fade" id="modal-gameItem" style="display: none;">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">策略项配置</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="gameItemForm">
+                        <div class="row-fluid row">
+                            <div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">策略项
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <select name="gameItemA" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">策略值
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input name="gameItemB" class="col-md-12 form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">需要确认
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="radio" checked="checked" name="gameItemC" value="1">需要
+                                        <input type="radio" name="gameItemC" value="0">不需要
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <label class="bold">确认提示信息
+                                            <span class="red">&nbsp;*</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        <textarea class="col-md-12 form-control" name="gameItemD"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="ensureAddGameItemBtn btn  btn-primary">确定</a>
+                    <a href="javascript:;" class="btn  btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fade in hide" id="page-loader">
+        <span class="spinner"></span>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="javascript:;">首页</a>
+                </li>
+                <li>
+                    <a href="javascript:;">系统管理</a>
+                </li>
+                <li class="active">策略配置</li>
+            </ol>
+            <div class="row">
+                <h1 class="page-header">策略配置</h1>
+                <div class="panel">
+                    <div class="panel-body" style="padding-bottom: 0;">
+                        <!--查询开始-->
+                        <div>
+                            <form class="form-inline" action="">
+                                <input type="text" style="display: none;" />
+                                <button type="button" class="addGame btn btn-primary">
+                                    <i class="glyphicon glyphicon-plus"></i> 新增策略</button>
+                                <div class="input-group pull-right">
+                                    <button type="button" class="sortWord2 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">全部渠道&nbsp;
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+                                        <li>
+                                            <a class="sort2-1">全部渠道</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="input-group pull-right m-r-3">
+                                    <button type="button" class="sortWord4 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认排序&nbsp;
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+                                        <li>
+                                            <a class="sort4-1">默认排序</a>
+                                        </li>
+                                        <li>
+                                            <a class="sort4-2">时间正序</a>
+                                        </li>
+                                        <li>
+                                            <a class="sort4-3">时间倒序</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="input-group pull-right m-r-3">
+                                    <button type="button" class="sortWord3 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">全部策略&nbsp;
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+                                        <li>
+                                            <a class="sort3-1">全部策略</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="input-group pull-right m-r-3">
+                                    <button type="button" class="sortWord1 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">全部状态&nbsp;
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+                                        <li>
+                                            <a class="sort1">全部状态</a>
+                                        </li>
+                                        <li>
+                                            <a class="sort2">开启状态</a>
+                                        </li>
+                                        <li>
+                                            <a class="sort3">关闭状态</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="input-group pull-right m-r-4">
+                                    <input style="border-top-right-radius:0;border-bottom-right-radius:0;" class="form-control" type="text" name="content" placeholder="请输入查询内容">
+                                    <span class="input-group-btn">
+                                        <button style="border-top-left-radius:0;border-bottom-left-radius:0;" class="search btn btn-primary" type="button" style="border-radius: 3px;">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="tab-content" style="padding: 0;">
+                            <div class="tab-pane active">
+                                <!--查询结束-->
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>渠道</th>
+                                            <th>策略类型</th>
+                                            <th>状态</th>
+                                            <th>引导语</th>
+                                            <th>关联策略 </th>
+                                            <th>创建时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="gameTbody"></tbody>
+                                </table>
+                                <div id="gamePage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a data-click="scroll-top" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" href="javascript:;">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/js/apps.min.js"></script>
+    <!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+    <!-- ================== END BASE JS ================== -->
+
+    <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="../common/js/jquery.scrollbar.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            App.init();
+
+            // 渠道
+            Base.request({
+                url: 'Configuration/showSourceByWebId',
+                callback: function (data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false);
+                    } else {
+                        if (data.listSource) {
+                            if (data.listSource[0]) {
+                                var html = '';
+                                var _html = '';
+                                for (var i = 0; i < data.listSource.length; i++) {
+                                    html += '<option value="' + data.listSource[i].DicCode + '">' + data.listSource[i].DicDesc + '</option>';
+                                    _html += '<li><a class="sort2-1" sourceId="' + data.listSource[i].DicCode + '">' + data.listSource[i].DicDesc + '</a></li>';
+                                }
+                                $('[name=sourceId]').empty().append(html);
+                                $('.sortWord2').next().append(_html);
+                            }
+                        }
+                        window.data = data;
+                        // 策略类型
+                        Base.request({
+                            url: 'strategy/StrategyModeList',
+                            callback: function (data) {
+                                if (data.status) {
+                                    Base.gritter(data.message, false);
+                                } else {
+                                    if (data.list) {
+                                        if (data.list[0]) {
+                                            var html = '';
+                                            var _html = '';
+                                            for (var i = 0; i < data.list.length; i++) {
+                                                /*
+                                                 * TaskId = 423 策略配置选择转人工或第三方客服时传参错误
+                                                 * 原因：传参是获取的标签属性中的值，该标签属性值拼接的是data.list[i].Id，而实际应该是data.list[i].IntValue，所以导致拿到的值也是错的
+                                                 * 修改：将data.list[i].Id改为data.list[i].IntValue
+                                                */
+                                                html += '<option value="' + data.list[i].IntValue + '">' + data.list[i].CodeDesc + '</option>';
+                                                _html += '<li><a class="sort3-1" strategyMode="' + data.list[i].IntValue + '">' + data.list[i].StrValue + '</a></li>';
+                                            }
+                                            $('[name=strategyMode]').empty().append(html);
+                                            $('.sortWord3').next().append(_html);
+                                        }
+                                    }
+                                    window.data2 = data;
+                                    go();
+                                }
+                            },
+                        });
+                    }
+                },
+            });
+
+            // 转义渠道
+            function toRoad(dicCode) {
+                if (window.data.listSource) {
+                    if (window.data.listSource[0]) {
+                        var html = '';
+                        for (var i = 0; i < window.data.listSource.length; i++) {
+                            if (window.data.listSource[i].DicCode == dicCode) {
+                                return window.data.listSource[i].DicDesc;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 转义策略类型
+            function toRoad2(id) {
+                if (window.data2.list) {
+                    if (window.data2.list[0]) {
+                        var html = '';
+                        for (var i = 0; i < window.data2.list.length; i++) {
+                            if (window.data2.list[i].IntValue == id) {
+                                return window.data2.list[i].StrValue;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 断点
+            function go() {
+
+
+                var pageNo = 1,
+                    pageSize = 20,
+                    sourceId = '',// 渠道
+                    isOpen = '',
+                    strategyMode = '',// 策略类型
+                    orderType = '';// 时间排序
+
+                StrategyList();
+                // 策略列表
+                function StrategyList() {
+                    Base.request({
+                        url: 'strategy/StrategyList',
+                        params: {
+                            pageNo: pageNo,
+                            pageSize: pageSize,
+                            content: $('[name=content]').val() || '',// 模糊查询
+                            sourceId: sourceId,// 渠道
+                            isOpen: isOpen,// 
+                            strategyMode: strategyMode,// 策略类型
+                            orderType: orderType,// 时间排序
+                        },
+                        callback: function (data) {
+                            if (data.status) {
+                                yunNoty(data);
+                            } else {
+                                var html = '';
+                                if (data.list[0]) {
+                                    for (var i = 0; i < data.list.length; i++) {
+                                        var params = '';
+                                        for (var key in data.list[i]) {
+                                            params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+                                        }
+                                        html += '<tr ' + params + '><td>' + (toRoad(data.list[i].SourceId) || '') + '</td><td>' + (toRoad2(data.list[i].StrategyMode) || '') + '</td><td>' + (data.list[i].IsOpen ? '打开' : '关闭') + '</td><td>' + (data.list[i].GuideWords || '') + '</td><td>' + (data.list[i].StrategyItemType || '') + '</td><td>' + (data.list[i].CreateTime || '') + '</td><td style="white-space: nowrap;"><a><i class="gameEdit timeTip glyphicon glyphicon-pencil" title="编辑"></i>&nbsp;&nbsp;<i class="gameDel timeTip glyphicon glyphicon-trash" title="删除"></i></a></td></tr>';
+                                    }
+
+                                    var options = {
+                                        data: [data, 'list', 'total'],
+                                        currentPage: data.currentPage,
+                                        totalPages: data.totlePages,
+                                        alignment: 'right',
+                                        onPageClicked: function (event, originalEvent, type, page) {
+                                            pageNo = page;
+                                            StrategyList();// 后台为返回分页
+                                        }
+                                    };
+                                    $('#gamePage').bootstrapPaginator(options);
+                                } else {
+                                    html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+                                    $('#gamePage').empty();
+                                }
+                                $('.gameTbody').empty().append(html);
+                                $('.timeTip').tooltip();
+
+                            }
+                        },
+                    });
+                }
+
+                // 弹出策略框
+                $('.addGame').on('click', function () {
+                    $('#modal-game').modal('show');
+                })
+
+                var gameIsAdd = true;// 是不是新增
+                var gameId = '';// 修改策略时的id
+                var gameItemIsAdd = true;// 是不是新增
+                // 弹出策略项框
+                $('.addGameItemBtn').on('click', function () {
+                    gameItemIsAdd = true;// 是不是新增
+                    strategyItemList($('[name=strategyMode]').val());
+                })
+
+                // 策略类型
+                function strategyItemList(id, ran, callback) {
+                    Base.request({
+                        url: 'strategy/StrategyItemList',
+                        params: {
+                            id: id
+                        },
+                        callback: function (data) {
+                            if (data.status) {
+                                Base.gritter(data.message, false);
+                            } else {
+                                if (data.list) {
+                                    if (data.list[0]) {
+                                        var html = '';
+                                        for (var i = 0; i < data.list.length; i++) {
+                                            html += '<option value="' + data.list[i].StrValue + '">' + data.list[i].CodeDesc + '</option>';
+                                        }
+                                        $('[name=gameItemA]').attr('ran', ran || ('' + Math.random()).replace('\.', '')).empty().append(html);
+                                    }
+                                }
+                                $('#modal-gameItem').modal('show');
+                                callback && callback();
+                                window.data3 = data;
+                            }
+                        },
+                    });
+                }
+
+                // 策略项表单配置
+                $('.gameItemForm').validate({
+                    rules: {
+                        gameItemB: {
+                            required: true,
+                            number: true,
+                        },
+                        gameItemD: {
+                            required: true,
+                        },
+                    },
+                    messages: {
+                        gameItemB: {
+                            required: "请输入策略值！",
+                            number: "请输入数字！",
+                        },
+                        gameItemD: {
+                            required: "请输入确认提示信息！",
+                        },
+                    },
+                    submitHandler: function () {
+                        $('.empty').remove();
+                        var html = '<td value="' + ($('[name=gameItemA]').val() || '') + '">' + ($('[name=gameItemA] option:selected').text() || '') + '</td><td>' + ($('[name=gameItemB]').val() || '') + '</td><td value="' + (parseInt($('[name=gameItemC]:checked').val() || '')) + '">' + (parseInt($('[name=gameItemC]:checked').val()) ? '需要' : '不需要') + '</td><td>' + ($('[name=gameItemD]').val() || '') + '</td><td style="white-space: nowrap;"><a><i class="gameItemEdit timeTip glyphicon glyphicon-pencil" title="编辑"></i><i class="gameItemDel timeTip glyphicon glyphicon-trash" title="删除"></i></a></td>';
+                        if (gameItemIsAdd) {// 新增
+                            $('.gameItemTbody').append('<tr id="' + $('[name=strategyMode]').val() + '" ran="' + ($('[name=gameItemA]').attr('ran') || '') + '">' + html + '</tr>');
+                        } else {// 修改
+                            var $tr = $('.gameItemTbody tr[ran="' + $('[name=gameItemA]').attr('ran') + '"]');
+                            $tr.empty().append(html);
+                        }
+                        $('#modal-gameItem').modal('hide');
+                    },
+                });
+
+                // 一个渠道只能对应一个策略类型
+                var changeOld = $('[name=strategyMode]').val();
+                $('[name=strategyMode]').on('change', function (e) {
+                    var changeNew = $('[name=strategyMode]').val();
+                    var $tr = $('.gameItemTbody tr:not(.empty)');
+                    if (!$tr.length) {
+                        changeOld = changeNew;
+                    }
+                    for (var i = 0; i < $tr.length; i++) {
+                        if ($tr.eq(i).attr('id') != changeNew) {
+                            $('[name=strategyMode]').val(changeOld);
+                            Base.gritter('一个渠道只能对应一个策略类型', false);
+                            break;
+                        } else {
+                            changeOld = changeNew;
+                        }
+                    }
+                })
+
+                // 确认新增策略项
+                $('.ensureAddGameItemBtn').on('click', function () {
+                    $('.gameItemForm').submit();
+                })
+
+                // 策略项框消失后
+                $('#modal-gameItem').on('hidden.bs.modal', function () {
+                    $('.gameItemForm')[0].reset();
+                })
+
+                // 修改策略项
+                $('body').on('click', '.gameItemEdit', function () {
+                    gameItemIsAdd = false;// 是不是新增
+                    var $tr = $(this).parents('tr');
+                    strategyItemList($tr.attr('id'), $tr.attr('ran'), function () {
+                        // 找到策略项并选中
+                        var $option = $('[name=gameItemA] option');
+                        for (var i = 0; i < $option.length; i++) {
+                            if ($option.eq(i).text() == $('td:eq(0)', $tr).text()) {
+                                $option.eq(i).prop('selected', true);
+                                break;
+                            }
+                        }
+                        $('[name=gameItemB]').val($('td:eq(1)', $tr).text());
+                        $('[name=gameItemC][value=' + $('td:eq(2)', $tr).attr('value') + ']').prop('checked', true);
+                        $('[name=gameItemD]').val($('td:eq(3)', $tr).text());
+                    });
+                })
+
+                // 删除策略项
+                $('body').on('click', '.gameItemDel', function () {
+                    $(this).parents('tr').remove();
+                    if (!$('.gameItemTbody tr').length) {
+                        $('.gameItemTbody').empty().append('<tr class="empty"><td colspan="5" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+                    }
+                })
+
+                // 策略表单配置
+                $('.gameForm').validate({
+                    rules: {
+                    },
+                    messages: {
+                    },
+                    submitHandler: function () {
+                        var strategyItemType = {};
+                        strategyItemType['strategyItem'] = [];
+                        $('.gameItemTbody tr:not(.empty)').each(function (i) {
+                            var $tr = $(this);
+                            strategyItemType['strategyItem'][i] = {};
+                            $('td', this).each(function (j) {
+                                var $td = $(this);
+                                if (j == 0) {// 策略项
+                                    strategyItemType['strategyItem'][i]['strategyItemType'] = $td.attr('value');
+                                }
+                                if (j == 1) {// 策略值
+                                    strategyItemType['strategyItem'][i]['stringValue'] = $td.text();
+                                }
+                                if (j == 2) {// 需要确认
+                                    strategyItemType['strategyItem'][i]['isSuccess'] = $td.attr('value');
+                                } else if (j == 3) {// 确认提示信息
+                                    strategyItemType['strategyItem'][i]['successInfo'] = $td.text();
+                                }
+                            });
+                        });
+
+                        if (gameIsAdd) {
+                            Base.request({
+                                url: 'strategy/addStrategyTest',
+                                $formObj: $('.gameForm'),
+                                params: {
+                                    strategyItemType: JSON.stringify(strategyItemType)
+                                },
+                                callback: function (data) {
+                                    if (data.status) {
+                                        Base.gritter(data.message, false);
+                                    } else {
+                                        Base.gritter(data.message, true);
+                                        StrategyList();
+                                        $('#modal-game').modal('hide');
+                                    }
+                                },
+                            });
+                        } else {
+                            Base.request({
+                                url: 'strategy/editStrategy',
+                                $formObj: $('.gameForm'),
+                                params: {
+                                    id: gameId,
+                                    strategyItemType: JSON.stringify(strategyItemType)
+                                },
+                                callback: function (data) {
+                                    if (data.status) {
+                                        Base.gritter(data.message, false);
+                                    } else {
+                                        Base.gritter(data.message, true);
+                                        StrategyList();
+                                        $('#modal-game').modal('hide');
+                                    }
+                                },
+                            });
+                        }
+
+                    },
+                });
+
+                // 确认新增策略
+                $('.ensureAddGameBtn').on('click', function () {
+                    $('.gameForm').submit();
+                })
+
+                // 策略框消失后
+                $('#modal-game').on('hidden.bs.modal', function () {
+                    $('.gameForm')[0].reset();
+                    $('.gameItemTbody').empty().append('<tr class="empty"><td colspan="5" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+                    gameIsAdd = true;
+                })
+
+                // 修改策略
+                $('body').on('click', '.gameEdit', function () {
+                    gameIsAdd = false;// 是不是新增
+                    var $tr = $(this).parents('tr');
+                    gameId = $tr.attr('id');
+                    Base.request({
+                        url: 'strategy/StrategyById',
+                        params: {
+                            id: $tr.attr('id')
+                        },
+                        callback: function (data) {
+                            if (data.status) {
+                                Base.gritter(data.message, false);
+                            } else {
+                                $('#modal-game').modal('show');
+
+                                // 回填策略
+                                $('[name=sourceId]').val(data.list.SourceId);
+                                $('[name=strategyMode]').val(data.list.StrategyMode);
+                                $('[name=isOpen][value="' + data.list.IsOpen + '"]').prop('checked', true);
+                                $('[name=guideWords]').val(data.list.GuideWords);
+                                changeOld = $('[name=strategyMode]').val();
+                                // 回填策略项
+                                if (data.list.StrategyItemList) {
+                                    if (data.list.StrategyItemList[0]) {
+                                        var html = '';
+                                        for (var i = 0; i < data.list.StrategyItemList.length; i++) {
+                                            html += '<tr id="' + data.list.StrategyMode + '" ran="' + (('' + Math.random()).replace('\.', '')) + '"><td value="' + (data.list.StrategyItemList[i].StrategyItemType || '') + '">' + (data.list.StrategyItemList[i].Desc || '') + '</td><td>' + (data.list.StrategyItemList[i].StringValue || '') + '</td><td value="' + (data.list.StrategyItemList[i].IsSuccess) + '">' + (data.list.StrategyItemList[i].IsSuccess ? '需要' : '不需要') + '</td><td>' + (data.list.StrategyItemList[i].SuccessInfo || '') + '</td><td style="white-space: nowrap;"><a><i class="gameItemEdit timeTip glyphicon glyphicon-pencil" title="编辑"></i><i class="gameItemDel timeTip glyphicon glyphicon-trash" title="删除"></i></a></td></tr>';
+                                        }
+                                        $('.gameItemTbody').empty().append(html);
+                                    }
+                                }
+                                //
+                                /*$('.empty').remove();
+                                var html = '<td value="'+ ($('[name=gameItemA]').val() || '') +'">'+ ($('[name=gameItemA] option:selected').text() || '') +'</td><td>'+ ($('[name=gameItemB]').val() || '') +'</td><td value="'+ (parseInt($('[name=gameItemC]:checked').val() || '')) +'">'+ (parseInt($('[name=gameItemC]:checked').val())?'需要':'不需要') +'</td><td>'+ ($('[name=gameItemD]').val() || '') +'</td><td style="white-space: nowrap;"><a><i class="gameItemEdit timeTip glyphicon glyphicon-pencil" title="编辑"></i><i class="gameItemDel timeTip glyphicon glyphicon-trash" title="删除"></i></a></td>';
+                                if(gameItemIsAdd) {// 新增
+                                    $('.gameItemTbody').append('<tr id="'+ $('[name=strategyMode]').val() +'" ran="'+ ($('[name=gameItemA]').attr('ran') || '') +'">'+ html +'</tr>');
+                                }else {// 修改
+                                    var $tr = $('.gameItemTbody tr[ran="'+ $('[name=gameItemA]').attr('ran') +'"]');
+                                    $tr.empty().append(html);
+                                }*/
+                                //
+                            }
+                        },
+                    });
+                })
+
+                // 删除策略
+                $('body').on('click', '.gameDel', function () {
+                    var $tr = $(this).parents('tr');
+                    Base.request({
+                        url: 'strategy/deleteStrategy',
+                        params: {
+                            id: $tr.attr('id')
+                        },
+                        callback: function (data) {
+                            if (data.status) {
+                                Base.gritter(data.message, false);
+                            } else {
+                                Base.gritter(data.message, true);
+                                StrategyList();
+                            }
+                        },
+                    });
+                })
+
+                // 搜索
+                $('.search').on('click', function () {
+                    StrategyList();
+                })
+                /*  Taskid=431,黄世鹏
+                    添加按下enter的事件
+                */
+                $("input[name=content]").on("keyup",function(){
+                    if(event.keyCode==13){
+                        StrategyList();
+                    }
+                })
+                // 时间排序
+                $('.sort4-1').on('click', function () {//默认排序
+                    $('.sortWord4').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    orderType = '',
+                        StrategyList();
+                });
+                $('.sort4-2').on('click', function () {//时间正序
+                    $('.sortWord4').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    orderType = 0,
+                        StrategyList();
+                });
+                $('.sort4-3').on('click', function () {//时间倒序
+                    $('.sortWord4').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    orderType = 1,
+                        StrategyList();
+                });
+                // 状态排序
+                $('.sort1').on('click', function () {//全部状态
+                    $('.sortWord1').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    isOpen = '',
+                        StrategyList();
+                });
+                $('.sort2').on('click', function () {//开启状态
+                    $('.sortWord1').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    isOpen = 1,
+                        StrategyList();
+                });
+                $('.sort3').on('click', function () {//关闭状态
+                    $('.sortWord1').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    isOpen = 0,
+                        StrategyList();
+                });
+                // 渠道排序
+                $('body').on('click', '.sort2-1', function () {
+                    $('.sortWord2').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    sourceId = $(this).attr('sourceId'),
+                        StrategyList();
+                })
+                // 策略排序
+                $('body').on('click', '.sort3-1', function () {
+                    $('.sortWord3').html($(this).text() + '&nbsp' + '<span class="caret"></span>');
+                    strategyMode = $(this).attr('strategyMode'),
+                        StrategyList();
+                })
+
+
+
+
+
+
+            }
+        });
+    </script>
+</body>
+
+</html>

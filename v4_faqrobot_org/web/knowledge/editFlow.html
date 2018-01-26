@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>流程详细</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet" />
+	<style>
+		#flowContent img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+		}
+		legend {
+			margin-bottom: 20px;
+		}
+		.item{
+			width:100%;
+			overflow:hidden;
+			padding: 10px 10px;
+		}
+		.checkbDiv{
+			float:left;
+			width: 5%;
+		}
+		.itemTxt{
+			float: left;
+			margin-left: 10px;
+			font-size: 12px;
+			width: 90%;
+			cursor: pointer;
+			margin-top: 1px;
+		}
+		#labelTxtPageList{
+			margin-top:10px;
+		}
+		#labelTxt{
+			max-height:400px;
+		}
+		.editLabels{
+			cursor: pointer;
+		}
+
+		.ansItemImg{
+			display:inline-block;
+			width: 20px;
+			height: 20px;
+			vertical-align: bottom;
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
+		.yun_menuContent{
+			background: #fff none repeat scroll 0 0;
+		    border: 1px solid #d9e0e7;
+		    border-radius: 4px;
+		    bottom: 0;
+		    height: 171px;
+		    overflow: auto;
+		    position: absolute;
+		    width: 100%;
+			display:none;
+		}
+		.entitys{
+		    width: 100%;
+		    border-radius: 4px;
+		    outline: none;
+		    height: 34px;
+		    border: 1px solid #ccc;
+		}
+		.entityTio{
+			width:100%;
+			border-radius: 5px;
+		    outline: none;
+		    height: 28px;
+		    border: 1px solid #ccc;
+		}
+		.interTerm1{
+			position: relative;
+		}
+		.spanInter{
+			/*position: absolute;*/
+		    /*z-index: 22;*/
+		    /*background: #000;*/
+		    /*color: #fff;*/
+		    /*padding: 5px;*/
+		    /*border-radius: 5px;*/
+		    /*max-width: 200px;*/
+			/*top: -14px;*/
+			/*right: -212px;*/
+		}
+		
+		#affix1inner .treeDivModal{
+			overflow-x:  auto !important;
+		}
+	</style>
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">流程详细</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">流程详细</h1>
+				<div data-sortable-id="table-basic-1" class="panel">
+					<div class="panel-body">
+						<input type="hidden" name="checkedPage">
+						<input type="hidden" name="checkedId">
+						<table class="table table1" style="overflow:auto">
+							<tbody class="tbody1"></tbody>
+						</table>
+						<legend class="m-t-15">流程项</legend>
+						<div class="row m-b-5">
+								<!--div class="col-md-2">
+									<a data-toggle="modal" class="btn btn-primary" id="btnAddFlowModal" href="#addFlowModal">添加新的流程项</a>
+								</div-->
+							<form class="form-inline">
+								<div class="form-group pull-right">
+									<div class="input-group" style="margin-right:95px;">
+										<input class="form-control" type="text" placeholder="搜索流程项" id="searchString">
+										<a href="javascript:;" name="searchInput" class="input-group-addon btn btn-primary" onclick="listFlowItems();"><span class="fa fa-search"></span></a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="row" id="flowContent" data-step="1" data-intro='这里是流程项的详细内容，点击添加按钮可以添加新的流程项哦！'></div>
+						<legend class="m-t-15">相似问法</legend>
+						<div class="alert alert-warning fade in m-b-15">
+							<strong>友情提示：</strong>
+							至少要添加3种以上相似问法才可以智能学习！
+							<span class="close" data-dismiss="alert">×</span>
+						</div>
+						<div class="row">
+							<form class="form-inline">
+								<div class="form-group">
+									<div class="input-group" data-step="2" data-intro='在这里添加相似问法，当问到相似的问题时，机器人就会回答出相应的流程项哦！'>
+										<input type="text" placeholder="请输入流程相似问法" class="form-control" id="similarQuestion" maxlength="200">
+										<a href="javascript:;" class="btn btn-primary input-group-addon" onclick="addSimilar()">添加相似问法</a>
+									</div>
+								</div>
+								<div class="form-group pull-right m-l-5">
+									<div class="btn-group">
+										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">默认排序<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li> <a href="javascript:;" onclick="listSimilar(1,4);return false;">默认排序</a> </li>
+											<li> <a href="javascript:;" onclick="listSimilar(1,3);return false;">时间正序</a> </li>
+											<li> <a href="javascript:;" onclick="listSimilar(1,4);return false;">时间倒序</a> </li>
+											<li> <a href="javascript:;" onclick="listSimilar(1,5);return false;">点击次数正序</a> </li>
+											<li> <a href="javascript:;" onclick="listSimilar(1,6);return false;">点击次数倒序</a> </li>
+										</ul>
+									</div>
+								</div>
+								<div class="form-group pull-right">
+									<div class="input-group">
+										<input class="form-control" type="text" placeholder="搜索相似问法" id="searchSimilar">
+										<a href="javascript:;" name="searchInput" class="input-group-addon btn btn-primary" onclick="listSimilar();"><span class="fa fa-search"></span></a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="row">
+							<table class="table" id="similarList">
+								<thead>
+									<tr>
+										<th width="50%">相似问法</th>
+										<th>浏览次数</th>
+										<th>添加时间</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="similarPageList"></div>
+							<input type="hidden" name="orderType" value="4">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addFlowModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加流程项</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="addFlowForm">
+								<fieldset>
+									<div class="form-group">
+										<label class="control-label">流程项描述</label>
+										<input type="text" placeholder="请输入流程项描述" class="form-control" name="info" id="info" maxlength="200">
+									</div>
+									<div class="form-group">
+										<label class="control-label">流程项内容</label>
+										<textarea name="content" class="" id="contentAdd"></textarea>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" onclick="$('#addFlowForm').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editFlowModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改流程项</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editFlowForm">
+								<fieldset>
+									<input type="hidden" name="id" id="flowId">
+									<div class="form-group">
+										<label class="control-label">流程项描述</label>
+										<input type="text" placeholder="请输入流程项描述" class="form-control" name="info" id="infoEdit" maxlength="200">
+									</div>
+									<div class="form-group">
+										<label class="control-label">流程项内容</label>
+										<textarea name="content" class="" id="contentEdit"></textarea>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" onclick="$('#editFlowForm').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="QuestionClassModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择分类</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="treeName">
+							<input type="hidden" name="treeId">
+								<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeQueClass',true);" style="cursor:pointer;"></span>
+								<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeQueClass',false);" style="cursor:pointer;"></span>
+								<div class="treeDivModal">
+									<ul id="treeQueClass" class="ztree"></ul>
+								</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selClassBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowSelectModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择流程项</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_flowItem" class="form-inline text-right">
+								<fieldset>
+									<div class="form-group" style="margin-left:10px;">
+										<input type="text" class="form-control input-sm" name="content">
+										<input type="text" style="display: none;">
+										<input type="hidden" id="flowAnswerId">
+										<button type="button" class="btn btn-primary btn-sm" onclick="listFlowItemModal();"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<table class="table" id="flowList">
+								<thead>
+									<tr>
+										<th>选择</th>
+										<th>流程项描述信息</th>
+										<th>时间</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+							<div id="flowPageList"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selFlowBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delAnsConfirm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title" id="tipTitle"></h4>
+						</div>
+						<div class="modal-body">
+							<p id="tipWord"></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delYes">是</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="labelClassModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择标签</h4>
+						</div>
+						<div class="modal-body">
+							<div id="labelTxt"></div>
+						</div>
+						<div class="modal-footer">
+							<div id="checkLabel"></div>
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selLabelBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade bs-example-modal-lg" id="modal-intelTerm">
+                <div class="modal-lg modal-dialog" style="width: 80%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">设置句式</h4>
+                        </div>
+                        <div class="modal-body">
+                        	<div class="row" style="max-height: 440px;">
+                        		<div class="col-md-3 col-xs-3">
+                        			<input type="hidden" name="solutionId">
+                        			<input type="hidden" name="treeName">
+		                            <input type="hidden" name="treeId">
+		                            <div id="affix1inner">
+			                            <span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeTermClass',true);" style="cursor:pointer;"></span>
+			                            <span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeTermClass',false);" style="cursor:pointer;"></span>
+			                            <div class="treeDivModal">
+			                                <ul id="treeTermClass" class="ztree"></ul>
+			                            </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-md-5 col-xs-5">
+                        			<table class="table" id="termTable">
+                        				<thead>
+                        					<th>选择</th>
+                        					<th>句式组</th>
+                        				</thead>
+                        				<tbody></tbody>
+                        			</table>
+                        			<div id="termPageList" style="margin:0;"></div>
+                        		</div>
+                        		<div class="col-md-4 col-xs-4">
+                        			<div class="form-group" id="intelMatchContainer">
+										<div class="col-md-12" id="intelMatch" style="padding:0;">
+											<!--<div class="col-md-12 m-5">智能匹配的句式：
+												<a data-toggle="tooltip" data-placement="top" title="设置句式后，可关联句式中的多种问法" class="marklpa">
+								                   <i class="fa fa-question-circle" style="font-size: 20px;"></i>
+								                </a>
+											</div>-->
+											<div class="col-md-12 m-5">
+												<div class="col-md-3" style="padding: 0;">是否启用:</div>
+												<div class="col-md-7" style="padding-left: 0;">
+													<input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" value="0" checked/>
+												</div>
+											</div>
+											<div class="col-md-12 m-5" id="EntitysList">
+												<label class="col-md-12 control-label" style="padding:0;text-align: left;">实体<span class="red">&nbsp;*</span></label>
+												<textarea class="form-control entityTio" style="resize:none"></textarea>
+												<p class="help-block">多个实体用“，”隔开</p>
+											</div>
+							                <div class="col-md-12 m-5" id="myTabContent">
+					                     		<!--<div class="col-md-3" style="padding:0;">关联句式:</div>
+					                     		<div class="col-md-9 relation" style="padding-left: 0;"></div>-->
+							                </div>
+							                <div class="col-md-12 m-5">
+							                  <a href="../../web/temp/phraseGroup.html" data-num="0" data-name="句式组列表">新增句式</a>
+							                </div>
+										</div>
+									</div>
+                        		</div>
+                        	</div>
+                        </div>
+                        <div class="modal-footer"style="max-height: 60px;">
+                        	<a href="javascript:;" class="btn btn-sm btn-primary addTerm">确定</a>
+                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+             <div class="modal fade" id="similarAddModal" style="display: none;">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			                <h4 class="modal-title">添加句式组</h4>
+			            </div>
+			            <div class="modal-body">
+							<div class="alert alert-warning fade in m-b-15" style="display:none;">
+								<strong>友情提示：</strong>
+								当前相似问法实体与标准问题中的实体不一致，请谨慎添加！
+								<span class="close" data-dismiss="alert">×</span>
+							</div>
+			               <form id="addSentenceForm" class="form-synonym form-horizontal">
+				                 <div class="form-group">
+				                    <label class="col-md-3 control-label">句式组名称<span class="red">&nbsp;*</span></label>
+				                    <div class="col-md-7">
+				                    	<input type="text" class="form-control" name="sgName" placeholder="请输入句式组名称">
+				                    </div>
+				                </div>
+				                    <input type="hidden" name="level" value="1">
+				                    <input type="hidden" name="classId">
+				                    <input type="hidden" name="id">
+				                <div class="form-group">
+				                	 <label class="col-md-3 control-label">选择分类<span class="red">&nbsp;*</span></label>
+				                     <div class="col-md-7">
+				                     	<a href="javascript:;" class="form-control hasgN" id="phraseTree">全部分类</a>
+				                        <div id="menuContent1" class="yun_menuContent" >
+				                          <ul id="classTree_phrase" class="ztree" >
+				                          </ul>
+				                        </div>
+				                     </div>
+				                </div>
+				                <!--<div class="form-group" id="">
+									<label class="col-md-3 control-label">是否启用</label>
+									<div class="col-md-7">
+										<input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" value="0" />
+									</div>
+								</div>-->
+								<div id="form_entity">
+									<!--<label class="col-md-3 control-label">实体<span class="red">&nbsp;*</span></label>
+									<div class="row">
+										<div class="col-md-5">
+											<input type="text" class="entitys"/>
+										</div>
+										<div class="col-md-2 m-t-5 m-l-5">
+	                                        <a href="javascript:;" name="delentityInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
+	                                        <a href="javascript:;" name="addentityInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
+	                                    </div>
+									</div>-->
+								</div>
+			                </form>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="similarBtn">确定</button>
+			                <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+			            </div>
+			        </div>
+			    </div>
+            </div>
+            
+            <!-- 删除关联流程项 -->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowItemDelModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程项</h4>
+						</div>
+						<div class="modal-body">
+							<p></p>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowItemBtn">删除全部</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+            </div>
+            
+            <!-- 删除关联流程 -->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowDelModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程</h4>
+						</div>
+						<div class="modal-body">
+							<p></p>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowBtn">删除全部</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<link rel="stylesheet" href="../common/css/introjs.css">
+	<script src="../common/js/intro.js"></script>
+	<script src="../common/js/base.js"></script>
+    <script src="../common/js/iframeTab.min.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/faqroboteditor.js"></script>
+	<script type="text/javascript" src="js/jquery.animate-colors-min.js"></script>
+	<script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>
+	<script src="js/editFlow.js"></script>
+</body>
+</html>

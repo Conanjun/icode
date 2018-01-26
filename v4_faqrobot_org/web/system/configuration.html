@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>展示配置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet" />
+	<style>
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		#queDiv .tab-content {
+			padding: 0;
+		}
+		.item{
+		width:100%;
+		overflow:hidden;
+		padding: 10px 10px;
+	}
+	.checkbDiv{
+		float:left;
+		width: 5%;
+	}
+	.itemTxt{
+		float: left;
+		margin-left: 10px;
+		font-size: 12px;
+		width: 90%;
+		cursor: pointer;
+		margin-top: 1px;
+	}
+	#labelTxtPageList{
+		margin-top:10px;
+	}
+	#labelTxt{
+		max-height:400px;
+	}
+	/*去除配置项行的padding*/
+	#moodForm>div:first-child{
+		padding-left: 0;
+	}
+	#moodForm>div:nth-child(2){
+		padding-right: 0;
+	}
+	/*表格的响应式*/
+	.content{
+		min-width: 1400px;
+		overflow: auto;
+	}
+	#moodTab th{
+		word-break:keep-all;
+	}
+	#moodTab td:last-child{
+		white-space: nowrap;
+	}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">展示配置</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">展示配置</h1>
+				<div class="row" style="height:10px;"></div>
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#default-tab-1" aria-expanded="true">配置问题</a></li>
+					<li class=""><a data-toggle="tab" href="#default-tab-2" aria-expanded="false">快捷服务</a></li>
+					<li class=""><a data-toggle="tab" href="#default-tab-3" aria-expanded="false">推荐资讯</a></li>
+					<li class=""><a data-toggle="tab" href="#default-tab-4" aria-expanded="false">配置标签</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="default-tab-1" class="tab-pane fade active in">
+						<input type="hidden" id="configId">
+						<div id="param_con"></div>
+						<div id="btnAuto"></div>
+						
+						<div class="showDiv" id="showDiv" style="margin-top:30px;">
+							<form class="form-horizontal">
+								<div class="form-group">
+									<label class="col-md-1 control-label" style="text-align: left;">选择知识集</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" placeholder="默认不选" readonly="" style="cursor:pointer;" id="knowClassify" data-step="4" data-intro="请选择一个知识集，便于你后期维护和查找！">
+										<input type="hidden" name="knowsIds" id="knowsIds">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-1 control-label" style="text-align: left;">选择分类</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" placeholder="默认全选" readonly="" style="cursor:pointer;" id="queClassify" data-step="4" data-intro="请选择一个分类，便于你后期维护和查找！">
+										<input type="hidden" name="ClassesIds" id="ClassesIds">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-1 control-label" style="text-align: left;">选择标签</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" placeholder="默认不选" readonly="" style="cursor:pointer;" id="labelClassify" data-step="4" data-intro="请选择一个标签，便于你后期维护和查找！">
+										<input type="hidden" name="labelesIds" id="labelesIds">
+									</div>
+								</div>
+							</form>
+						</div>
+						<table class="table" id="QuestionList" style="margin-top:30px;">
+							<thead>
+								<tr>
+								  <th>问题</th>
+								  <th width="100"></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div id="default-tab-2" class="tab-pane fade">
+						<input type="hidden" class="kuaijiefuwu">
+						<div class="quickly row">
+							<div class="upKuai"  style="margin-left:0px;" rel="kuai_1"> <img src="js/add.png" onClick="upIcon(this)" title="点击上传图标">
+								<input type="hidden" name="id">
+								<input type="hidden" name="name">
+								<input type="hidden" name="linkUrl">
+							</div>
+						</div>
+					</div>
+					<div id="default-tab-3" class="tab-pane fade">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModalWord">添加文字资讯</a>
+						<a data-toggle="modal" class="btn btn-primary" href="#addModalPic">添加图片资讯</a>
+						<table class="table" id="recommendTab">
+							<thead>
+								<tr>
+									<th>资讯内容</th>
+									<th>资讯地址</th>
+									<th width="200">时间</th>
+									<th width="100">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="remomendPage"></div>
+					</div>
+					<div id="default-tab-4" class="tab-pane fade">
+						<div id="moodForm">
+							<div class="form-group col-xs-6">
+								<label>配置值</label>
+								<input type="text" class="form-control" name="key" placeholder="请输入配置值">
+							</div>
+							<div class="form-group col-xs-6">
+								<label>配置描述</label>
+								<input type="text" class="form-control" name="keyString" placeholder="请输入配置描述">
+							</div>
+							<div class="form-group">
+								<label>配置内容</label>
+								<textarea id="container" type="text" name="valueString"></textarea>
+							</div>
+							<input type="hidden" name="configId" value="1">
+							<button type="button" class="moodBtn btn btn-primary">保存</button>
+						</div>
+						<table class="table" id="moodTab">
+							<thead>
+								<tr>
+									<th width="150"> 配置值 </th>
+									<th> 配置描述 </th>
+									<th> 配置内容 </th>
+									<th width="60"> 操作</th>
+									<!--<th class="col-xs-1"> 配置值 </th>-->
+									<!--<th class="col-xs-2"> 配置描述 </th>-->
+									<!--<th class="col-xs-8"> 配置内容 </th>-->
+									<!--<th class="col-xs-1"> 操作 </th>-->
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="moodPage"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="addModalWord">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">添加文字资讯</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="recommendForm1" class="form-horizontal">
+						<fieldset>
+							<input type="hidden" name="configId">
+							<div class="form-group">
+								<label class="col-md-3 control-label">文字<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入文字" class="form-control" name="content">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">资讯链接<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入资讯链接" class="form-control" name="linkurl" value="http://">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#recommendForm1').submit()">添加</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="editModalWord">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title" style="display:inline-block;">修改文字资讯</h4>
+					<!--button class="btn btn-xs btn-primary" type="button" onclick="changeToPic()" style="margin-left:10px;">转为图片资讯</button-->
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="recommendForm3" class="form-horizontal">
+						<fieldset>
+							<input type="hidden" name="id">
+							<input type="hidden" name="configId">
+							<div class="form-group">
+								<label class="col-md-3 control-label">文字<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入文字" class="form-control" name="content">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">资讯链接<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入资讯链接" class="form-control" name="linkurl" value="http://">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#recommendForm3').submit()">修改</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="addModalPic">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">添加图片资讯</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="recommendForm2" class="form-horizontal">
+						<fieldset>
+							<input type="hidden" name="configId">
+							<input type="hidden" name="content">
+							<div class="form-group">
+								<span class="btn btn-primary col-md-offset-3 control-label m-r-5 fileinput-button">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>上传图片</span>
+									<input type="file" accept="image/*" name="file" id="recommendImg">
+								</span>
+								<span class="btn btn-primary col-md-offset-3 control-label m-r-5 fileUpLoadingSign" style="display:none;">
+									<i class="glyphicon glyphicon-upload"></i>
+									<span>上传中</span>
+								</span>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">图片<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<img alt="图片资讯" class="img-responsive" id="infoImg">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">资讯链接<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入资讯链接" class="form-control" name="linkurl" value="http://">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#recommendForm2').submit()">添加</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="editModalPic">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title" style="display:inline-block;">修改图片资讯</h4>
+					<!--button class="btn btn-xs btn-primary" type="button" onclick="changeToWord()" style="margin-left:10px;">转为文字资讯</button-->
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="recommendForm4" class="form-horizontal">
+						<fieldset>
+							<input type="hidden" name="id">
+							<input type="hidden" name="configId">
+							<input type="hidden" name="content">
+							<div class="form-group">
+								<span class="btn btn-primary col-md-offset-3 control-label m-r-5 fileinput-button">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>上传图片</span>
+									<input type="file" accept="image/*" name="file" id="editrecommendImg">
+								</span>
+								<span class="btn btn-primary col-md-offset-3 control-label m-r-5 fileUpLoadingSign" style="display:none;">
+									<i class="glyphicon glyphicon-upload"></i>
+									<span>上传中</span>
+								</span>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">图片<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<img alt="图片资讯" class="img-responsive" id="editinfoImg">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">资讯链接<span class="red">&nbsp;*</span></label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入资讯链接" class="form-control" name="linkurl" value="http://">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#recommendForm4').submit()">修改</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="iconModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">快捷服务图标</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="kuaijieForm" class="form-horizontal">
+						<fieldset>
+							<input type="hidden" class="clickPar">
+							<div class="form-group">
+								<label class="col-md-3 control-label">图片</label>
+								<div class="col-md-7">
+									<span class="fileinput-button kuaiIcon">
+										<img src="js/add.png" alt="点我上传图片" class="img-responsive">
+										<input id="fileupload" type="file" name="file" accept="image/*" />
+									</span>
+								</div>
+							</div>
+							<!--input type="hidden" name="name"-->
+							<div class="form-group">
+								<label class="col-md-3 control-label">快捷服务链接名称</label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入快捷服务名称" class="form-control" name="name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">快捷服务链接地址</label>
+								<div class="col-md-7">
+									<input type="text" placeholder="请输入快捷服务链接" class="form-control" name="linkUrl" value="http://">
+									<input type="hidden" name="imageUrl">
+									<input type="hidden" name="id">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="addIcon()">添加</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="comqueModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择问题</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="search_Que" class="form-inline" style="position: relative;">
+						<fieldset>
+							<input type="hidden" name="level" value="1">
+							<input type="hidden" name="groupId" class="selQueX" value="0">
+							<input type="hidden" name="isLeaf" value="0">
+							<div class="form-group">
+								<label class="control-label">选择分类：</label>
+								<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+							</div>
+							<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 0; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+								<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+									<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+								</div>
+							</div>
+							<div class="form-group" style="margin-left:10px; float:right;">
+								<input type="text" style="display:none;">
+								<input type="text" class="form-control input-sm" name="question">
+								<button type="button" class="btn btn-primary btn-sm" onClick="addQueSearch();"><i class="glyphicon glyphicon-search"></i></button>
+							</div>
+						</fieldset>
+					</form>
+					<div id="queDiv" style="margin-top:5px;">
+						<ul class="nav nav-pills" id="queDivNav">
+							<li class="active"><a href="#queManualQue" data-toggle="tab">问题</a></li>
+							<li class=""><a href="#queManualFlow" data-toggle="tab">流程</a></li>
+						</ul>
+						<div class="tab-content" style="margin-bottom:0;">
+							<div class="tab-pane fade active in" id="queManualQue">
+								<div id="queManualQueTable">
+									<table class="table" id="ansList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>问题</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="quepageList" style="margin:0;"></div>
+							</div>
+							<div class="tab-pane fade" id="queManualFlow">
+								<div id="queManualFlowTable">
+									<table class="table" id="flowList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>流程</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="flowpageList" style="margin:0;"></div>
+							</div>
+						</div>
+					</div>
+					<input type="hidden" name="sindex" id="xswfIndex">
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="getQueId();">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--修改配置标签-->
+	<div class="modal fade" style="display: none;" id="editMoodModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">修改配置标签</h4>
+				</div>
+				<div class="modal-body">
+					<div id="moodForm-edit">
+						<div class="form-group">
+							<label>配置值<span class="red">&nbsp;*</span></label>
+							<input type="text" class="form-control" name="key" placeholder="请输入配置值">
+						</div>
+						<div class="form-group">
+							<label>配置描述</label>
+							<input type="text" class="form-control" name="keyString" placeholder="请输入配置描述">
+						</div>
+						<div class="form-group">
+							<label>配置内容</label>
+							<textarea id="container-edit" type="text" name="valueString"></textarea>
+						</div>
+						<input type="hidden" name="configId" value="1">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="editMoodEnsure btn btn-sm btn-primary">确定</a>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" >关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--选择知识集-->
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="KnowClassModel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择知识集</h4>
+				</div>
+				<div class="modal-body" style="overflow: auto;">
+					<div id="knowTxt"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="KnowClassBtn">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--选择分类-->
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="QuestionClassModel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择分类</h4>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="queName">
+					<input type="hidden" name="queId">
+						<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeQueClass',true);" style="cursor:pointer;"></span>
+						<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeQueClass',false);" style="cursor:pointer;"></span>
+						<div class="treeDivModal">
+							<ul id="treeQueClass" class="ztree"></ul>
+						</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="queClassBtn">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--选择标签-->
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="LabelClassModel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择标签</h4>
+				</div>
+				<div class="modal-body" style="overflow: auto;">
+					<div id="labelTxt"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selLabelBtn">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script src="js/configuration.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			$('#ggggg').on('keypress', function(e) {
+				if(e.key == 'Enter') {
+					e.preventDefault();
+					sQue();
+				}
+			})
+			var fromurl = location.href;
+			if(!fromurl || fromurl==""){}
+			var urlId=fromurl.substring(fromurl.indexOf("=")+1,fromurl.length).split("?");
+			getParam(urlId);
+			//资讯链接表单验证
+			$('#recommendForm1').validate({
+				rules:{
+					content:{
+						required:true
+					},
+					linkurl:{
+						required:true,
+						url:true
+					}
+				},
+				messages:{
+					content:{
+						required:"请输入推荐咨询的内容！"
+					},
+					linkurl:{
+						required:"请输入推荐咨询的链接地址！",
+						url:"请输入正确的URL地址！"
+					}
+				},
+				submitHandler: addRecommed1
+			});
+			$('#recommendForm2').validate({
+				rules:{
+					linkurl:{
+						required:true,
+						url:true
+					}
+				},
+				messages:{
+					linkurl:{
+						required:"请输入推荐咨询的链接地址！",
+						url:"请输入正确的URL地址！"
+					}
+				},
+				submitHandler: addRecommed2
+			});
+			$('#recommendForm3').validate({
+				rules:{
+					content:{
+						required:true
+					},
+					linkurl:{
+						required:true,
+						url:true
+					}
+				},
+				messages:{
+					content:{
+						required:"请输入推荐咨询的内容！"
+					},
+					linkurl:{
+						required:"请输入推荐咨询的链接地址！",
+						url:"请输入正确的URL地址！"
+					}
+				},
+				submitHandler: editRecommed1
+			});
+			$('#recommendForm4').validate({
+				rules:{
+					linkurl:{
+						required:true,
+						url:true
+					}
+				},
+				messages:{
+					linkurl:{
+						required:"请输入推荐咨询的链接地址！",
+						url:"请输入正确的URL地址！"
+					}
+				},
+				submitHandler: editRecommed2
+			});
+			//清空表单
+			$('#addModalWord').on('hidden.bs.modal', function () {
+				//不能用$('#recommendForm1')[0].reset();否则会清除configId
+				$('#recommendForm1 input[name=content]').val('');
+				$('#recommendForm1 input[name=linkurl]').val('http://');
+			});
+			$('#editModalWord').on('hidden.bs.modal', function () {
+				$('#recommendForm3')[0].reset();
+			});
+			$('#addModalPic').on('hidden.bs.modal', function () {
+				//不能用$('#recommendForm2')[0].reset();否则会清除configId
+				$('#recommendForm2 input[name=content]').val('');
+				$('#recommendForm2 input[name=linkurl]').val('http://');
+				$('#recommendForm2 #infoImg').attr('src','');
+			});
+			$('#editModalPic').on('hidden.bs.modal', function () {
+				$('#recommendForm4')[0].reset();
+				$('#recommendForm4 #infoImg').attr('src','');
+			});
+			$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+				if(e.target == $('a[href="#default-tab-4"]')[0]) {
+					new Mood();
+				}
+			});
+			$('#queDivNav a').click(function (e) {
+				if($(this).attr('href') == '#queManualQue') {
+					sQue();
+				} else if($(this).attr('href') == '#queManualFlow') {
+					fQue();
+				}
+			});
+			enterSubmit($('#search_Que input[name=question]'),addQueSearch);
+		});
+		function addQueSearch(){
+			if($('#queDivNav li').eq(0).hasClass('active')){
+				sQue();
+			}else if($('#queDivNav li').eq(1).hasClass('active')){
+				fQue();
+			}else{
+				sQue();fQue();
+			}
+		}
+	</script>
+</body>
+</html>

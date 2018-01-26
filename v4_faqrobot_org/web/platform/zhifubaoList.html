@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>支付宝列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<style>
+		.redc{
+			font-size: 30px;
+			color: #e4393c;
+		}
+	</style>
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	<link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/wxNew.css"/>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">支付宝列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">支付宝列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<p class="black mgtop10">添加后你可以使用云问智能客服机器人统一接收与回复咨询</p>
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加支付宝</span>
+						</a>
+						<table class="table" id="listTable">
+							<thead>
+								<tr>
+									<th>支付宝名称</th>
+									<th>知识集</th>
+									<th>信息添加时间</th>
+									<th>信息最后修改时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加支付宝</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="form_zfb" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">支付宝名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入支付宝名称小于20字符" class="form-control" name="name" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">公钥</label>
+										<div class="col-md-7">
+											<textarea rows="5" name="publicKey" id="publicKey" class="form-control" readonly=""></textarea>
+											<input type="hidden" name="id">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">支付宝公钥<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea rows="5" name="alipayPublicKey" id="alipayPublicKey" class="form-control"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-offset-3 col-md-7">
+											<p>支付宝公钥不多于300个字符(字母、数字或者英文符号)</p>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">支付宝服务窗appId<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入支付宝服务窗appId" class="form-control" name="appId" maxlength="16">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-offset-3 col-md-7">
+											<p>支付宝服务窗appId包含16位字符&nbsp;&nbsp;(字母、数字或者英文符号)</p>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<a class="ztreeName" href="javascript:;">选择知识集</a>
+												<input type="hidden" name="themeId" value="0">
+												<div class="ztree" id="tanchutree" style="display: none;margin-top: 15px"></div>
+											</div>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-3" style="text-align: right">
+											<button type="submit" class="btn btn-default" href="javascript:;" onclick="$('#form_zfb').submit()">获取URL</button>
+										</div>
+										<div class="col-md-7">
+											<span>若选择知识集，则只有此知识集中的知识生效。（可不选）</span>
+										</div>
+									</div>
+									<div class="form-group" id="hideUrl">
+
+										<label class="col-md-3 control-label">对接Url</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="backUrl" readonly="">
+										</div>
+
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改支付宝</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">支付宝名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" name="name" id="name" maxlength="20"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea name="helloWord" class="" id="helloWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知说辞<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea name="unknowWord" class="" id="unknowWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<span id="ztreeName1" class="ztreeName1">选择知识集</span>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="../common/js/base.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+
+			//获取问题分类
+			Base.request({
+				url: 'chatlink/listChatLink',
+				params: {
+					m: 0,
+				},
+				callback: function(data) {
+					if (data.status) {
+						Base.gritter(data.message, false);
+					} else {
+						var html = '';
+						if (data.list&&data.list[0]) {
+							var formatData = [],
+								len = data.list.length;
+							for (var key in data.list) {
+								formatData[key] = {};
+								formatData[key]['name'] = data.list[key]['ThemeName'];
+								formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+								formatData[key]['id'] = data.list[key]['Id'] + 1;
+							}
+
+							formatData[len] = {};
+							formatData[len]['name'] = '暂不选择知识集（单击此处）';
+							formatData[len]['pId'] = 0;
+							formatData[len]['id'] = 1;
+							formatData[len]['open'] = true;
+							$.fn.zTree.init($("#tanchutree"), setting, formatData);
+							treeObj = $.fn.zTree.getZTreeObj("tanchutree");
+						} else {
+
+						}
+					}
+				},
+			});
+
+			//配置项
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true,
+					},
+				},
+				view: { //不显示图标
+					showIcon: false
+				},
+				callback: {
+					onClick: function(event, treeId, treeNode) {
+						$('#tanchutree').fadeOut();
+						$('.ztreeName').html(treeNode.name);
+						$('#addModal input[name=themeId]').val(treeNode.id-1);//隐藏表单存当前节点的ID
+					}
+				}
+			};
+
+			//点击弹出树
+			$('.ztreeName').click(function(){
+				$('#tanchutree').toggle();
+			});
+
+			//列出表格
+			listTable(1);
+			UE.getEditor('helloWord', {
+				toolbars: [
+					['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch']
+				],
+				initialFrameHeight: 120
+			});
+			UE.getEditor('unknowWord', {
+				toolbars: [
+					['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch']
+				],
+				initialFrameHeight: 120
+			});
+
+			$('#form_zfb').validate({
+				rules:{
+					name:{
+						required:true,
+						maxlength:20,
+						minlength:1
+					},
+					alipayPublicKey:{
+						required:true,
+						maxlength:300,
+						isZhiFuBao:true
+					},
+					appId:{
+						required:true,
+						maxlength:16,
+						minlength:16,
+						isZhiFuBao:true
+					}
+				},
+				messages:{
+					name:{
+						required:'请输入支付宝名称！',
+						maxlength:'名称不多于20个字符',
+						minlength:'名称不少于1个字符'
+					},
+					alipayPublicKey:{
+						required:'请输入支付宝公钥！',
+						maxlength:'支付宝公钥不多于300个字符',
+						isZhiFuBao:'支付宝公钥包含字母、数字或者英文符号！'
+					},
+					appId:{
+						required:'请输入16位支付宝服务窗appId！',
+						maxlength:'请输入16位支付宝服务窗appId！',
+						minlength:'请输入16位支付宝服务窗appId！',
+						isZhiFuBao:'支付宝服务窗appId包含字母、数字或者英文符号！'
+					}
+				},
+				submitHandler: doNewAdd
+			});
+
+			$('#save_form').validate({
+				rules: {
+					name: {
+						required: true,
+						maxlength: 20,
+						minlength: 1
+					}
+				},
+				messages: {
+					name: {
+						required: '请输入支付宝名称！',
+						maxlength: '名称不多于20个字符',
+						minlength: '名称不少于1个字符'
+					}
+				},
+				submitHandler: editZhiFuBao
+			});
+			$('#addModal').on('show.bs.modal', function () {
+				getzfbKey();
+			})
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#form_zfb')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#save_form')[0].reset();
+				UE.getEditor('helloWord').setContent('');
+				UE.getEditor('unknowWord').setContent('');
+			})
+		});
+
+		//获取对接支付宝key
+		 function getzfbKey(){
+			$.ajax({
+			type:'post',
+			datatype:'json',
+			cache:false,//不从缓存中去数据
+			url:encodeURI('../../ZhifubaoConfig/getPublicKey'),
+			success:
+				function(data){
+					if(data.status==0){
+						 $('#form_zfb #publicKey').val(data.PublicKey);
+						 $('#form_zfb input[name=id]').val(data.Id);
+					 }else{
+						 yunNoty(data);
+					}
+				}
+			});
+		 }
+
+		//修改
+		function editZhiFuBao(){
+			saveModal('../../ZhifubaoConfig/edit','save_form','editModal',listTable);
+		}
+
+
+		//添加支付宝
+		var flag_add=false;
+		function doNewAdd(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../ZhifubaoConfig/addNew'),
+				data:$('#form_zfb').serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#hideUrl').removeClass('hide');
+						$('#form_zfb #backUrl').val('http://'+data.Url);
+						listTable(1);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+//列出数据
+		var listzhifubaoPageData = null;
+		function listTable(){
+			$('#listTable').tableAjaxLoader2(5);
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../ZhifubaoConfig/list'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.list.length>0){
+							listzhifubaoPageData = data.list;
+							var html = "";
+							for(var i=0;i<data.list.length;i++){
+								html += "<tr>";
+								html += "<td>"+(data.list[i].Name==null?'':data.list[i].Name)+"</td>";
+								html += "<td>"+(data.list[i].ThemeName==null?'':data.list[i].ThemeName)+"</td>";
+								html += "<td>"+(data.list[i].DateTime==null?'':data.list[i].DateTime)+"</td>";
+								html += "<td>"+(data.list[i].UpdateTime==null?'':data.list[i].UpdateTime)+"</td>";
+								html += "<td><a href=\"javascript:;\" class=\"sepV_a\" rel=\""+data.list[i].Id+"\" title=\"编辑\" style=\"cursor:pointer\" onclick=\"repModal(this)\"><i class=\"glyphicon glyphicon-pencil\"></i></a>&nbsp;&nbsp;<a href=\"javascript:void(0);\" class=\"m-del\" title=\"删除\" rel=\""+data.list[i].Id+"\" style=\"cursor:pointer;\" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+							}
+							$('#listTable').find('tbody').html(html);
+							//单个删除
+							$('.m-del').on('click',function(){
+								delById(this,'../../ZhifubaoConfig/delete',listTable,'pageList');
+							});
+						}else{
+							$('#listTable').find('tbody').html('<tr><td colspan=\"5\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+
+		function repModal(obj){
+
+			var index = $(obj).parents('tr').index();//下标
+			var curObj=$(obj).parents('tr').children('td');
+			$('#save_form #name').val(curObj.eq(0).html());
+			$('#save_form #ztreeName1').html(curObj.eq(1).html()==''?'暂未选择知识集':curObj.eq(1).html());//将themeid显示到页面上
+			//UE.getEditor('unknowWord').setContent(curObj.eq(1).html());
+			//$('#save_form input[name=helloWord]').val(curObj.eq(0).html());
+			//$('#save_form input[name=unknowWord]').val(curObj.eq(1).html());
+			$('#save_form #hideid').val($(obj).attr('rel'));
+			UE.getEditor('helloWord').setContent(listzhifubaoPageData[index].HelloWord||'');
+			UE.getEditor('unknowWord').setContent(listzhifubaoPageData[index].UnknowWord||'');
+//			$('#save_form input[name=themeId]').val(listzhifubaoPageData[index].ThemeId);
+			$("#editModal").modal('show');
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>展示信息</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">展示信息</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">展示信息</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="search_form">
+							<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+								<i class="glyphicon glyphicon-plus"></i>
+								添加展示信息
+							</a>
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									排序 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li> <a href="javascript:void(0);" onClick="advertisementsList(1,25)">显示正序</a> </li>
+									<li> <a href="javascript:void(0);" onClick="advertisementsList(1,4)">显示倒序</a> </li>
+								</ul>
+							</div>
+							<input type="hidden" name="orderType" value="4">
+						</form>
+						<table class="table" id="showInfoTable">
+							<thead>
+								<tr>
+									<th>类型</th>
+									<th>标题</th>
+									<th width="50%">内容</th>
+									<th>展示</th>
+									<th>排序</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加展示信息</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="showInfoForm" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">类型<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="type">
+												<option value="0">文字</option>
+												<option value="1">链接</option>
+												<option value="2">图片</option>
+												<option value="3">qq在线链接</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">标题<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入标题" class="form-control" name="name" maxlength="25">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">内容<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入内容" class="form-control" name="value">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">展示<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="status">
+												是
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="0" name="status">
+												否
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">排序<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入排序" class="form-control" name="indexNum">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#showInfoForm').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改展示信息</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editshowInfoForm" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">类型<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select class="form-control" name="type">
+												<option value="0">文字</option>
+												<option value="1">链接</option>
+												<option value="2">图片</option>
+												<option value="3">qq在线链接</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">标题<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入标题" class="form-control" name="name" maxlength="25">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">内容<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入内容" class="form-control" name="value">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">展示<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="status">
+												是
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="0" name="status">
+												否
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">排序<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入排序" class="form-control" name="indexNum">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editshowInfoForm').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			advertisementsList();
+
+			$('#showInfoForm').validate({
+				rules:{
+					name:{
+						required:true
+					},
+					value:{
+						required:true
+					},
+					indexNum:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					name:{
+						required:'请输入标题！'
+					},
+					value:{
+						required:'请输入内容！'
+					},
+					indexNum:{
+						required:'请输入本条目展示的顺序，越小越靠前！',
+						number:'请输入数字！'
+					}
+				},
+				submitHandler: addshowInfo
+			});
+			$('#editshowInfoForm').validate({
+				rules:{
+					name:{
+						required:true
+					},
+					value:{
+						required:true
+					},
+					indexNum:{
+						required:true,
+						number:true
+					}
+				},
+				messages:{
+					name:{
+						required:'请输入标题！'
+					},
+					value:{
+						required:'请输入内容！'
+					},
+					indexNum:{
+						required:'请输入本条目展示的顺序，越小越靠前！',
+						number:'请输入数字！'
+					}
+				},
+				submitHandler: editshowInfo
+			});
+
+			//添加和修改表单重置
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#showInfoForm')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#editshowInfoForm')[0].reset();
+			})
+		});
+
+		function advertisementsList(pageNo, orderType) {
+			if (!pageNo) pageNo = 1;
+			if (!orderType) {
+				orderType = $('#search_form input[name=orderType]').val();
+			} else {
+				$('#search_form input[name=orderType]').val(orderType);
+			}
+			$('#showInfoTable').tableAjaxLoader2(6);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI('../../AdvItem/listAdvItem?pageSize=' + 10 + '&pageNo=' + pageNo + '&orderType=' + orderType),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.AdvItems==undefined){
+							$('#showInfoTable').find('tbody').html('<tr><td colspan=\"6\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+							return;
+						}
+						var s = [];
+						if (data.AdvItems.length > 0) {
+							var adcItems = data.AdvItems;
+							for (var i = 0; i < adcItems.length; i++) {
+								s.push('<tr>');
+								var typeCur = adcItems[i].Type;
+								if (typeCur == 0) {
+									s.push('<td>文字</td>');
+								} else if (typeCur == 1) {
+									s.push('<td>链接</td>');
+								} else if (typeCur == 2) {
+									s.push('<td>图片</td>');
+								} else {
+									s.push('<td>qq在线链接</td>');
+								}
+								s.push('<td>' + adcItems[i].Name + '</td>');
+								s.push('<td>' + adcItems[i].Value + '</td>');
+								var staCur = adcItems[i].Status;
+								if (staCur == 1) {
+									s.push('<td>展示</td>');
+								} else if (staCur == 0) {
+									s.push('<td>不展示</td>');
+								}
+								s.push('<td>' + adcItems[i].IndexNum + '</td>');
+								s.push('<td><a href=\"javascript:;\" onClick=\"editAdv(this); return false;\"  rel="' + adcItems[i].Id + '" sel="' + adcItems[i].Type + '" title=\"编辑\"><i class=\"glyphicon glyphicon-pencil\"></i></a>&nbsp;&nbsp;<a href=\"javascript:;\" class=\"m-del\" rel="' + adcItems[i].Id + '" title=\"删除\"><i class=\"glyphicon glyphicon-trash\"></i></a></td>');
+								s.push('</tr>');
+							}
+							$('#showInfoTable').find('tbody').html(s.join(''));
+							//单个删除
+							$('.m-del').on('click',function(){
+								delById(this, '../../AdvItem/doDelById', advertisementsList, 'pageList');
+							});
+							//下面开始处理分页
+							var options = {
+								data: [data, 'AdvItems', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									advertisementsList(page, orderType);
+								}
+							};
+							setPage('pageList', options);
+						} else {
+							$('#showInfoTable').find('tbody').html('<tr><td colspan=\"6\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#pageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+		//添加广告
+		function addshowInfo(){
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../AdvItem/doAddAdvItem'),
+				data:$("#showInfoForm").serialize(),
+				success: function(data){
+					if(data.status==0){
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listCurrentPage(advertisementsList,'pageList');
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//修改广告
+		function editshowInfo(){
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,
+				url:encodeURI('../../AdvItem/doEditAdvItem'),
+				data:$("#editshowInfoForm").serialize(),
+				success: function(data){
+					if(data.status==0){
+						yunNoty(data);
+						$('#editModal').modal('hide');
+						listCurrentPage(advertisementsList,'pageList');
+					 }else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//填写修改广告form
+		function editAdv(obj) {
+			$("#editModal").modal('show');
+			$('#editshowInfoForm input[name=id]').val($(obj).attr('rel'));
+			var curObj = $(obj).parents('tr').children('td');
+			$('#editshowInfoForm select[name=type]').val($(obj).attr('sel'));
+			$('#editshowInfoForm input[name=name]').val(curObj.eq(1).html());
+			$('#editshowInfoForm input[name=value]').val(curObj.eq(2).html());
+			var win = curObj.eq(3).html();
+			if (win == "展示") {
+				$('#editshowInfoForm input[name=status]').eq(0).iCheck('check');
+			}
+			if (win == "不展示") {
+				$('#editshowInfoForm input[name=status]').eq(1).iCheck('check');
+			}
+			$('#editshowInfoForm input[name=indexNum]').val(curObj.eq(4).html());
+
+		}
+	</script>
+</body>
+</html>

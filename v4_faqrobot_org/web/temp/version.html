@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+    <!-- #modal-dialog -->
+    <div class="modal fade" id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">版本管理</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="createForm form-synonym form-horizontal" novalidate="novalidate">
+                        <fieldset>
+                            <!-- <div class="form-group">
+                                <label class="col-md-3 control-label">版本号</label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入版本号" class="input1-synonym form-control" name="vNumber">
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">类别</label>
+                                <div class="col-md-7">
+                                    <select name="category" class="col-md-12" style="padding: 6px; height: 34px;">
+                                        <option value="1">项目</option>
+                                        <option value="2">机器人后台</option>
+                                        <option value="3">核心</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">渠道</label>
+                                <div class="col-md-7">
+                                    <select name="type" class="col-md-12" style="padding: 6px; height: 34px;">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">名称</label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入名称" class="input1-synonym form-control" name="pName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">环境</label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入环境" class="input1-synonym form-control" name="environment">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">所属项目</label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入所属项目" class="input1-synonym form-control" name="project">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">功能点描述</label>
+                                <div class="col-md-7">
+                                    <textarea type="text" placeholder="请输入功能点描述" class="input1-synonym form-control" name="funPoint" class="col-md-12" style="resize: none;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">附件</label>
+                                <div class="col-md-7" class="col-md-12" style="    margin-top: 6px;">
+                                    <input type="file" name="file" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="ensure-synonym btn btn-sm btn-primary">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">知识库管理</a></li>
+                <li>版本管理</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">版本管理</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+								<div class="pull-right search-addSrc" style="width:300px;    padding-bottom: 15px;">
+									<div class="input-group">
+										<input type="text" class="search-input-addSrc form-control" placeholder="输入要搜索的项目名称">
+										<span class="input-group-btn">
+											<button class="btn btn-primary" type="button">
+												<i class="glyphicon glyphicon-search"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<button type="button" class="btn-synonym btn btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span>添加</button>
+								<table class="table" id="ttz">
+									<thead>
+										<tr>
+                                            <th style="width: 120px;">版本号</th>
+                                            <th style="width: 120px;">项目名</th>
+                                            <th style="width: 120px;">渠道</th>
+                                            <th style="width: 120px;">环境</th>
+                                            <th style="width: 120px;">所属项目</th>
+                                            <th>功能点描述</th>
+                                            <th style="width: 120px;">时间</th>
+											<th style="width: 120px;">创建人</th>
+											<th width="120">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="itemContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link rel="stylesheet" href="../common/css/commonCSS.css">
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/version.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+</body>
+</html>

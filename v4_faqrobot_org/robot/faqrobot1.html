@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <title>FaqRobot智能问答机器人</title>
+  <link rel="stylesheet" type="text/css" href="skin/base1/css/style1.css" />
+  <link rel="stylesheet" href="skin/base1/css/jquery.autocomplete.css" />
+  <link rel="stylesheet" href="skin/base1/css/nanoscroller.css" />
+  <link rel="stylesheet" href="skin/base1/css/blue.css" />
+  <script type="text/javascript" src="skin/base1/js/jquery-1.10.1.min.js"></script>
+  <script type="text/javascript" src="skin/base1/js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="skin/base1/js/jquery.autocomplete.js"></script>
+  <script type="text/javascript" src="skin/base1/js/nanoScroller.js"></script>
+  <script type="text/javascript" src="skin/base1/js/jquery.icheck.js"></script>
+  <script type="text/javascript" src="skin/base1/js/jquery.faqrobot.dev.js"></script>
+  <script type="text/javascript" src="skin/base1/js/main1.js"></script>
+ </head>
+ <body>
+ 	<div class="psBarW">
+        <div class="container">
+        <!--离开确认弹框开始-->
+		<div class="cl-ctn">
+			<div id="close">
+				<div class="cl-title">确定要结束对话吗？</div>
+				<div class="cl-body">
+					<input id="cl-yes" type="button" value="确定" />
+					<input id="cl-no" type="button" value="取消" />
+				</div>
+			</div>
+		</div>
+		<!--离开确认弹框结束-->
+        	<!--顶部开始-->
+            <!--<div class="logo"></div>-->
+            <div class="header">
+            	<div class="headerLeft">
+                	<a href="javacript:;" title="云问智能机器人"><img src="skin/base1/images/robotLogo.png" id="weblogo"/></a>
+                </div>
+                <div class="headerRight">
+                	<span class="h-r-close" title="关闭"></span>
+                </div>
+            </div>
+            <!--顶部结束-->
+            <div class="body">
+                <div class="bodyLeft">
+                    <div class="psBarC nano">
+                        <div id="left_content" class="chatCtn content">
+                                
+                        </div>
+                    </div>
+                    <!--输入框开始-->
+                    <div class="bodyFooter">
+                    	<p id="showErrorId" class="error"></p>
+                		<div class="b-f-ctn">
+                            <span class="remainNum">您还可以输入<span id="wordremain">100</span>个字</span>
+                            <span id="clearScreen" class="clRecord" title="清空记录">清空记录</span>
+                        	<textarea id="sendtxt" maxlength="100"></textarea>
+                            <div class="b-f-footer">
+                                <a class="link_a" target="_blank" href="http://www.faqrobot.org">Powered By YunWen</a>
+								<div id="inputPR" class="b-f-f-right">发送</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--输入框结束-->
+                </div>
+                <div class="bodyRight">
+                    <div class="b-r-header">
+                        <div class="b-r-h-ctn">
+                        	<div class="rightBtn1 click" title="常见问题">常见问题</div>
+                            <div class="rightBtn2" title="快捷服务">快捷服务</div>
+                            <div id="fadeBackIdLink" class="rightBtn3" title="意见反馈">意见反馈</div>
+                        </div>
+                    </div>
+                    <div class="b-r-body">
+                    	<div id="topQuestionDiv" class="rightCtn2"></div>
+                        <div class="rightCtn1" id="rservlist">
+                        	<a href="#" class="kjBtn1"></a>
+                            <a href="#" class="kjBtn2"></a>
+                            <a href="#" class="kjBtn3"></a>
+                            <a href="#" class="kjBtn4"></a>
+                        </div>
+                        <div class="rightCtn3">
+                            <form id="c-form" class="c-form">
+                                <span class="radio-title">您对本服务的满意度是：</span>
+                                <span>
+                                    <input type="radio" id="c2" name="level" value="1" checked="checked">
+                                    <label for="c2">满意</label>
+                                </span>
+                                <span>
+                                    <input type="radio" id="c4" name="level" value="0">
+                                    <label for="c4">不满意</label>
+                                </span>
+                                <span class="c-a-comment">写下您的建议吧：</span>
+                                <textarea id="c-textarea" name="content" placeholder="描述您的意见和建议，我们会及时改进，谢谢您！"></textarea>
+                                <input id="submit" type="button" value="提交">
+                            </form>
+                        </div>
+                        <div class="contact">
+                        	<a href="http://www.faqrobot.org/" target="_blank"><img class="img1" src="skin/base1/images/logo.png" width="210" /></a>
+                            <img class="img2" src="skin/base1/images/wc3.gif" width="340" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ <script>
+	//配置faqrobot插件参数
+	var s_tspan=3;//主动请求的时间间隔
+	var s_state=0;//聊天的状态
+	var baseUrl= 'http://127.0.0.1:10098/robot/';
+	baseUrl= '../';
+	var s_q_url="";//问题的url
+	var s_a_url="";//获取相关问题答案的url地址
+	var s_sysNum="";
+	var hkey = "Enter";//hotKey
+	var t_count=0;//运行的代理的次数
+	var dt;//定时器
+	var robotName='FAQRobot';
+	var robot_name = "faqrobot机器人";
+	var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'topQuestionDiv',
+		inputMagOldvalue:'请输入您需要咨询的问题~',
+        sendBtn:'inputPR',
+        inputMsgArea:'sendtxt',
+        clearScreen:'clearScreen',
+        showErrorId:'showErrorId',
+		logoUrl:"robot/skin/base1/images/robotLogo.png",
+		logoDiv:"weblogo",
+		baseInfoDiv :"Contact_us",
+		wordremain:'wordremain',
+		fadeBackId:'submit',
+		teachMetalk:'teachMetalk',
+		fadeBackIdLink:'fadeBackIdLink',
+		quickLink:'rservlist',
+		sourceId:0
+
+	};
+       $("#sendtxt").faqrobot(1000000,option);
+ </script>
+</html>

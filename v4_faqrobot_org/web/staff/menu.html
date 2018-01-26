@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>菜单管理</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.AuthName {
+			width: 30%;
+		}
+		.AuthShow {
+			width: 20%;
+		}
+		.AuthTime {
+			width: 30%;
+		}
+		.AuthClick {
+			width: 20%;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">菜单管理</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">菜单管理</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="col-md-4">
+							<input type="hidden" class="roleIdMenu">
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeClasses',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeClasses',false);" style="cursor:pointer;"></span>
+							<div class="treeDivLeft">
+								<ul id="treeClasses" class="ztree"></ul>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<table class="table table-bordered selRP" id="menuList">
+								<thead>
+									<tr>
+										<th>模块</th>
+										<th>菜单</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//ztree滚动条
+			$('.treeDivLeft').slimScroll({
+				height: '500px'
+			});
+			$.fn.zTree.init($("#treeClasses"), setting, []);
+			//menulist();
+		});
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "Id",
+					pIdKey: "ParentId",
+					rootPId: 0
+				},
+				key: {
+					name: "Name"
+				}
+			},
+			view: {
+				selectedMulti: false,
+				showIcon: false
+			},
+			edit: {
+				enable: true,
+				showRenameBtn: false,
+				showRemoveBtn: false,
+			},
+			async: {
+				enable: true,
+				url: "../../AuthRole/listAll",
+				autoParam: ["id"],
+				dataFilter: ajaxDataFilter
+			},
+			callback: {
+				beforeDrag: beforeDrag,
+				beforeRemove: beforeRemove,
+				onAsyncSuccess: zTreeOnAsyncSuccess,
+				onClick: function(e, treeId, treeNode) {
+					var ZTree = $.fn.zTree.getZTreeObj("treeClasses"),
+					Nodes = ZTree.getSelectedNodes();
+                    $('.roleIdMenu').val(Nodes[0].Id);
+                    pageNo=1;
+					menulist();
+				},
+			}
+		};
+
+		function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+			var treeObj = $.fn.zTree.getZTreeObj("treeClasses");
+			var nodesU = treeObj.getNodes()[0];
+			if (nodesU == undefined) {
+				yunNotyError('角色总览中暂无角色','',true);
+				$('#menuList').find('tbody').html('<tr><td colspan=\"2\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空！</td></tr>');
+			} else {
+				var nodes = treeObj.getNodes()[0].children;
+				if (nodes.length > 0) {
+					treeObj.selectNode(nodes[0]);
+				}
+				$('.roleIdMenu').val(nodes[0].Id);
+				menulist();
+			}
+		}
+
+		//格式化一步获取的json数据
+		function ajaxDataFilter(treeId, parentNode, responseData) {
+			if(responseData.status!=0){
+				yunNoty(responseData);
+				return;
+			}
+			if (responseData) {
+				responseData.list.push({
+					Id: 0,
+					ParentId: 0,
+					Name: "角色总览",
+					open: true
+				});
+				$.each(responseData.list,
+				function(i, Item) {
+					Item.Name = Item.Name + '[ ' + Item.Id + ' ]';
+				});
+				return responseData.list;
+			}
+			return responseData;
+		}
+		function beforeDrag(treeId, treeNodes) {
+			return false;
+		}
+		function beforeRemove(treeId, treeNode) {
+			$('#delpModal').modal('show');
+			$('#delpModal input[name=Id]').val(treeNode.Id);
+			return false;
+		}
+
+		function showAuthList(data) {
+			if (data.list.length > 0) {
+				var authDiv = $('#menuList').find('tbody');
+				authDiv.html('');
+				$.each(data.list,
+				function(i, authItem) {
+					var tr = $('<tr/>').addClass("auth_ul_" + authItem.Id);
+					var td1 = $('<td/>').appendTo(tr);
+					var td2 = $('<td/>').appendTo(tr);
+					if (authItem.SystemId == 0) {
+						tr.children('td').eq(0).html(authItem.Name);
+						var tab = $('<table/>').addClass('yunTable').css('width', '100%').append(createAutnItemLi(authItem));
+						tr.children('td').eq(1).append(tab);
+						authDiv.append(tr);
+					}
+				});
+				$.each(data.list,
+				function(i, authItem) {
+					if (authItem.SystemId !== 0 && authItem.SystemId > 0) {
+						var childObj = authDiv.find(".auth_ul_" + authItem.SystemId).children('td');
+						var tab = $('<table/>').addClass('yunTable').css('width', '100%').append(createAutnItemLi(authItem));
+						childObj.eq(1).append(tab);
+					}
+				});
+				$('.timeTip').tooltip();
+			}
+		}
+		function createAutnItemLi(authItem) {
+			var html = [];
+			html.push('<tr>');
+			html.push("<td class=\"AuthName\">" + authItem.Name + '&nbsp;( ' + authItem.Type + ' )' + "</td>");
+			if (authItem.ShowMenu == 1) {
+				html.push("<td  class=\"AuthShow\">显示</td>");
+			} else {
+				html.push("<td  class=\"AuthShow\" style=\"color:#f00;\">隐藏</td>");
+			}
+			var time = authItem.UpdateTime == null ? '': authItem.UpdateTime;
+			html.push("<td  class=\"AuthTime\">" + time + "</td>");
+			if (authItem.ShowMenu == 1) {
+				html.push('<td class=\"AuthClick\"><a class=\"timeTip\" data-placement=\"top\" data-toggle=\"tooltip\" data-original-title=\"点击隐藏\" href=\"javascript:void(0);\"  rel=\"' + authItem.Id + '\" auth=\"' + 0 + '\" onClick=\"stopStart(this);\"><i class=\"glyphicon glyphicon-eye-close\"></i></a></td>');
+			} else {
+				html.push('<td class=\"AuthClick\"><a class=\"timeTip\" data-placement=\"top\" data-toggle=\"tooltip\" data-original-title=\"点击显示\" href=\"javascript:void(0);\"  rel=\"' + authItem.Id + '\" auth=\"' + 1 + '\" onClick=\"stopStart(this);\"><i class=\"glyphicon glyphicon-eye-open\" style=\"color:#f00;\"></i></a></td>');
+			}
+			html.push('</tr>');
+			return html.join('');
+		}
+		function menulist(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Role/listRoleMenuList?pageSize=' + 20 + '&pageNo=' + pageNo + '&roleId=' + $('.roleIdMenu').val()),
+				success: function(data) {
+					if (data.status == 0) {
+						showAuthList(data);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function stopStart(obj) {
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Role/updateRoleAvaiMenu?roleId=' + $('.roleIdMenu').val() + '&resId=' + $(obj).attr('rel') + '&auth=' + $(obj).attr('auth')),
+				success: function(data) {
+					if (data.status == 0) {
+						yunNoty(data);
+						menulist();
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

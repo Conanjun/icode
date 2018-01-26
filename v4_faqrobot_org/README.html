@@ -1,0 +1,782 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+   <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+
+   <style type="text/css">
+
+   /*
+CSS stylesheet is based on killwing's flavored markdown style:
+https://gist.github.com/2937864
+*/
+body{
+    margin: 0 auto;
+    font: 13px/1.231 Helvetica, Arial, sans-serif;
+    color: #444444;
+    line-height: 1;
+    max-width: 960px;
+    padding: 5px;
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+}
+h1, h2, h3, h4, h5, p {
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 28px;
+}
+h2 {
+    font-size: 22px;
+    margin: 20px 0 6px;
+}
+h3 {
+    font-size: 21px;
+}
+h4 {
+    font-size: 18px;
+}
+h5 {
+    font-size: 16px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:link,a:visited{
+ text-decoration:none;
+}
+a:hover{
+ text-decoration:underline;
+}
+ul, ol {
+    padding: 0;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+    margin-left: 44px;
+}
+li ul, li ul {
+    margin-left: 24px;
+}
+ul, ol {
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 960px;
+}
+
+p {
+    font-size: 14px;
+    line-height: 20px;
+    max-width: 540px;
+    margin-top: 3px;
+}
+
+pre {
+    padding: 0px 4px;
+    max-width: 800px;
+    white-space: pre-wrap;
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+}
+pre code {
+    border: 0px;
+}
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #40AA53;
+    padding: 0 2em;
+    margin-left:0;
+    max-width: 476px;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+    max-width: 460px;
+}
+hr {
+    height: 1px;
+    border: none;
+    border-top: 1px dashed #0066CC
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+button, input {
+  line-height: normal;
+  *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+  cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: normal;
+  margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+  cursor: pointer;
+  margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+  display: inline-block;
+  width: 210px;
+  padding: 4px;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 18px;
+  height: 18px;
+  color: #808080;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+select, input[type=file] {
+  height: 27px;
+  line-height: 27px;
+}
+textarea {
+  height: auto;
+}
+
+/* grey out placeholders */
+:-moz-placeholder {
+  color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+  color: #bfbfbf;
+}
+
+input[type=text],
+input[type=password],
+select,
+textarea {
+  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+  -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(82, 168, 236, 0.8);
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+/* buttons */
+button {
+  display: inline-block;
+  padding: 4px 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #0064cd;
+  background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+  background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+  background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+  background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+  background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+  background-image: linear-gradient(top, #049cdb, #0064cd);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid #004b9a;
+  border-bottom-color: #003f81;
+  -webkit-transition: 0.1s linear all;
+  -moz-transition: 0.1s linear all;
+  transition: 0.1s linear all;
+  border-color: #0064cd #0064cd #003f81;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+  color: #fff;
+  background-position: 0 -15px;
+  text-decoration: none;
+}
+button:active {
+  -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+/* table  */
+table {
+    border-spacing: 0;
+    border: 1px solid #ccc;
+}
+td, th{
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+/* code syntax highlight.
+Documentation: http://www.mdcharm.com/documentation/code_syntax_highlighting.html#custom_your_own
+ */
+pre .literal,
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .javadoc {
+    color: #008000;
+}
+
+pre .keyword,
+pre .css .rule .keyword,
+pre .winutils,
+pre .javascript .title,
+pre .nginx .title,
+pre .subst,
+pre .request,
+pre .status {
+    color: #0000FF;
+    font-weight: bold
+}
+
+pre .number,
+pre .hexcolor,
+pre .python .decorator,
+pre .ruby .constant {
+    color: #0000FF;
+}
+
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula {
+    color: #D14
+}
+
+pre .title,
+pre .id {
+    color: #900;
+    font-weight: bold
+}
+
+pre .javascript .title,
+pre .lisp .title,
+pre .clojure .title,
+pre .subst {
+    font-weight: normal
+}
+
+pre .class .title,
+pre .haskell .type,
+pre .vhdl .literal,
+pre .tex .command {
+    color: #458;
+    font-weight: bold
+}
+
+pre .tag,
+pre .tag .title,
+pre .rules .property,
+pre .django .tag .keyword {
+    color: #000080;
+    font-weight: normal
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body {
+    color: #008080
+}
+
+pre .regexp {
+    color: #009926
+}
+
+pre .class {
+    color: #458;
+    font-weight: bold
+}
+
+pre .symbol,
+pre .ruby .symbol .string,
+pre .lisp .keyword,
+pre .tex .special,
+pre .prompt {
+    color: #990073
+}
+
+pre .built_in,
+pre .lisp .title,
+pre .clojure .built_in {
+    color: #0086b3
+}
+
+pre .preprocessor,
+pre .pi,
+pre .doctype,
+pre .shebang,
+pre .cdata {
+    color: #999;
+    font-weight: bold
+}
+
+pre .deletion {
+    background: #fdd
+}
+
+pre .addition {
+    background: #dfd
+}
+
+pre .diff .change {
+    background: #0086b3
+}
+
+pre .chunk {
+    color: #aaa
+}
+
+pre .markdown .header {
+    color: #800;
+    font-weight: bold;
+}
+
+pre .markdown .blockquote {
+    color: #888;
+}
+
+pre .markdown .link_label {
+    color: #88F;
+}
+
+pre .markdown .strong {
+    font-weight: bold;
+}
+
+pre .markdown .emphasis {
+    font-style: italic;
+}
+
+   </style>
+
+
+
+
+
+</head>
+
+<body>
+
+    <h1>新版后台菜单整理</h1>
+
+<h3>1. 注意事项</h3>
+
+<ul>
+<li>所有网址请填入NewUrl字段</li>
+<li>遇到不存在该页面但非填不可的情况，请添字符 <strong>#</strong></li>
+<li>前台获取数据，遇到空值或 <strong>#</strong> 则<strong>自动删除</strong>该字段对应的3级菜单</li>
+</ul>
+
+<h3>2. 详细列表</h3>
+
+<ul>
+<li><h4>首页</h4>
+
+<ul>
+<li>首页
+
+<ul>
+<li><a href="web/home/home.html">首页</a> web/home/home.html</li>
+</ul></li>
+</ul></li>
+<li><h4>知识库整理</h4>
+
+<ul>
+<li>业务知识
+
+<ul>
+<li><a href="web/knowledge/addQuestion.html">添加问题</a> web/knowledge/addQuestion.html</li>
+<li><a href="web/knowledge/addFlow.html">创建流程</a> web/knowledge/addFlow.html</li>
+<li><a href="web/knowledge/queView.html">问答总览</a>  web/knowledge/queView.html</li>
+<li><a href="web/knowledge/classify.html">问题分类</a>  web/knowledge/classify.html</li>
+<li><a href="web/knowledge/importQuestion.html">问题导入</a>  web/knowledge/importQuestion.html</li>
+<li><a href="web/knowledge/trash.html">知识回收站</a>  web/knowledge/trash.html</li>
+<li><a href="web/knowledge/transferStation.html">知识中转站</a>  web/knowledge/transferStation.html</li>
+<li><a href="web/knowledge/queryTab.html">表格查询问答</a>  web/knowledge/queryTab.html</li>
+<li><a href="web/knowledge/onlineKnowledge.html">在线知识库</a>  web/knowledge/onlineKnowledge.html</li>
+<li><a href="web/knowledge/transferStationHistory.html">知识中转站处理历史</a>  web/knowledge/transferStationHistory.html</li>
+<li><a href="web/knowledge/labelList.html">标签管理</a>  web/knowledge/labelList.html</li>
+</ul></li>
+<li>知识学习
+
+<ul>
+<li><a href="web/knowledge/intelLearnList.html">智能学习</a>  web/knowledge/intelLearnList.html</li>
+<li><a href="web/knowledge/unknowQue.html">未知问题</a>  web/knowledge/unknowQue.html</li>
+<li><a href="web/knowledge/unknowQueNew.html">未知问题(新)</a>  web/knowledge/unknowQueNew.html</li>
+<li><a href="web/knowledge/ignore.html">永久忽略</a>  web/knowledge/ignore.html</li>
+<li><a href="web/knowledge/Unknown_mark.html">未知问题标签</a>  web/knowledge/Unknown_mark.html</li>
+<li><a href="web/knowledge/wordWeight.html">词权重</a> web/knowledge/wordWeight.html</li>
+</ul></li>
+<li>语义知识
+
+<ul>
+<li><a href="web/knowledge/customParticiple.html">定制分词</a>  web/knowledge/customParticiple.html</li>
+<li><a href="web/knowledge/PublicDataBaseAdd.html">添加公共库</a>  web/knowledge/PublicDataBaseAdd.html</li>
+<li><a href="web/knowledge/PublicDataBaseList.html">公共库管理</a>  web/knowledge/PublicDataBaseList.html</li>
+<li><a href="web/knowledge/wordRelation.html">关联词</a>  web/knowledge/wordRelation.html</li>
+<li><a href="web/knowledge/wordTrunk.html">主干词</a>  web/knowledge/wordTrunk.html</li>
+<li><a href="web/knowledge/synonym.html">同义词</a>  web/knowledge/synonym.html</li>
+<li><a href="web/knowledge/professional.html">专业名词</a>  web/knowledge/professional.html</li>
+<li><a href="web/knowledge/chatLibrary.html">聊天库</a>  web/knowledge/chatLibrary.html</li>
+<li><a href="web/knowledge/stopword.html">停止词</a>  web/knowledge/stopword.html</li>
+<li><a href="web/knowledge/wordQuery.html">词库查询</a>  web/knowledge/wordQuery.html</li>
+<li><a href="web/knowledge/wordEnu.html">枚举词</a>  web/knowledge/wordEnu.html</li>
+<li><a href="web/knowledge/Lexicon.html">词库</a>  web/knowledge/Lexicon.html</li>
+<li><a href="web/knowledge/SensitiveWords.html">敏感词</a>  web/knowledge/SensitiveWords.html</li>
+</ul></li>
+<li>规则配置
+
+<ul>
+<li><a href="web/temp/searchData.html">自定义查询</a>  web/temp/searchData.html</li>
+<li><a href="web/temp/phraseList.html">句式列表</a>  web/temp/phraseList.html</li>
+<li><a href="web/temp/formList.html">分布式表单列表</a>  web/temp/formList.html</li>
+<li><a href="web/system/wordLinkList.html">文字链接</a>  web/system/wordLinkList.html</li>
+<li><a href="web/temp/phraseGroup.html">句式组列表</a>  web/temp/phraseGroup.html</li>
+<li><a href="web/temp/marketList.html">营销列表</a>  web/temp/marketList.html</li>
+</ul></li>
+</ul></li>
+<li><h4>素材管理</h4>
+
+<ul>
+<li>素材管理
+
+<ul>
+<li><a href="web/material/addSrc.html">添加素材</a>  web/material/addSrc.html</li>
+<li><a href="web/material/viewSrc.html">素材预览</a>  web/material/viewSrc.html</li>
+<li><a href="web/material/customMenu.html">自定义菜单</a>  web/material/customMenu.html</li>
+<li><a href="web/material/menuList.html">图文列表</a>  web/material/menuList.html</li>
+<li><a href="web/material/imgTexts.html">添加新图文</a>  web/material/imgTexts.html</li>
+</ul></li>
+</ul></li>
+<li><h4>系统管理</h4>
+
+<ul>
+<li>基本设置
+
+<ul>
+<li><a href="web/system/company.html">企业信息</a>  web/system/company.html</li>
+<li><a href="web/system/editPwd.html">安全设置</a>  web/system/editPwd.html</li>
+<li><a href="web/system/payCode.html">获取代码</a>  web/system/payCode.html</li>
+<li><a href="web/system/wordLinkList.html">文字链接</a>  web/system/wordLinkList.html</li>
+<li><a href="web/system/parameters.html">参数配置</a>  web/system/parameters.html</li>
+<li><a href="web/system/knowledgeReset.html">重置知识库</a>  web/system/knowledgeReset.html</li>
+</ul></li>
+<li>个性化设置
+
+<ul>
+<li><a href="web/system/getSDK.html">SDK快捷配置</a>  web/system/getSDK.html</li>
+<li><a href="web/system/robot.html">机器人设置</a>  web/system/robot.html</li>
+<li><a href="web/system/pageConfig.html">页面设置</a>  web/system/pageConfig.html</li>
+<li><a href="web/system/setParam.html">功能配置</a>  web/system/setParam.html</li>
+<li><a href="web/system/configuration.html">页面展示配置</a>  web/system/configuration.html</li>
+</ul></li>
+<li>操作日志
+
+<ul>
+<li><a href="web/system/optLog.html">操作日志</a>  web/system/optLog.html</li>
+<li><a href="web/system/feedback.html">意见反馈</a>  web/system/feedback.html</li>
+ <!--taskId=418 自如定制页面 意见反馈页面  -->
+<li><a href="web/system/feedback_zr.html">意见反馈_自如定制</a>  web/system/feedback_zr.html</li>
+<li><a href="web/system/loginLog.html">登录日志</a>  web/system/loginLog.html</li>
+</ul></li>
+<li>系统公告
+
+<ul>
+<li><a href="web/system/feedbackList.html">意见列表</a>  web/system/feedbackList.html</li>
+<li><a href="web/system/newsList.html">新闻列表</a>  web/system/newsList.html</li>
+<li><a href="web/system/fbList.html">意见列表</a>  web/system/fbList.html</li>
+</ul></li>
+<li>系统设置
+
+<ul>
+<li><a href="web/temp/ruleList.html">规则列表</a>  web/temp/ruleList.html</li>
+<li><a href="web/system/editPwd.html">安全设置</a>  web/system/editPwd.html</li>
+<li><a href="web/temp/historyEmail.html">报警邮件流水记录</a>  web/temp/historyEmail.html</li>
+<li><a href="web/temp/emailList.html">报警邮箱</a>  web/temp/emailList.html</li>
+<li><a href="web/system/createSuperPassword.html">万能密码</a>  web/system/createSuperPassword.html</li>
+</ul></li>
+<li>未分类
+
+<ul>
+<li><a href="web/system/apiRegister.html">接口注册</a>  web/system/apiRegister.html</li>
+<li><a href="web/system/leaveMsgList.html">留言列表</a>  web/system/leaveMsgList.html</li>
+<li><a href="web/system/interactionList.html">交互量列表</a>  web/system/interactionList.html</li>
+<li><a href="web/system/searchRegister.html">查询注册用户</a>  web/system/searchRegister.html</li>
+<li><a href="web/system/searchWeb.html">查询站点信息</a>  web/system/searchWeb.html</li>
+<li><a href="web/system/showInfo.html">展示信息</a>  web/system/showInfo.html</li>
+<li><a href="web/system/gameConfig.html">策略配置</a>  web/system/gameConfig.html</li>
+</ul></li>
+</ul></li>
+<li><h4>数据分析</h4>
+
+<ul>
+
+<li>访客统计
+
+<ul>
+<li><a  href="web/data/visitData.html">访客次数统计</a>  web/data/visitData.html</li>
+<li><a href="web/data/visitDataByLoginSummary.html">访客人数统计</a>  web/data/visitDataByLoginSummary.html</li>
+<li><a href="web/data/visitorByAreaType.html">访客来访区域统计</a>  web/data/visitorByAreaType.html</li>
+<li><a href="web/data/queryAndArea.html">问题访问区域统计</a>  web/data/queryAndArea.html</li>
+<li><a href="web/data/loginSummary.html">访客会话明细统计</a>  web/data/loginSummary.html</li>
+    <!--add by zhaoyuxing At 20171213 单号:332 -->
+    <!--说明：添加无限极定制报表-->
+<li><a href="web/data/loginSummary_wxj.html">访客会话明细统计_无限极</a>  web/data/loginSummary_wxj.html</li>
+<li><a href="web/data/visitorBinding.html">访客绑定率统计</a>  web/data/visitorBinding.html</li>
+<li><a href="web/data/visitorAge.html">访客年龄段统计</a>  web/data/visitorAge.html</li>
+<li><a href="web/data/vipCardLevel.html">客户会员卡级别统计</a>  web/data/vipCardLevel.html</li>
+<li><a href="web/data/turnPeople.html">转人工次数统计</a>  web/data/turnPeople.html</li>
+<li><a href="web/data/visitedResolution.html">访客会话解决率统计</a>  web/data/visitedResolution.html</li>
+</ul></li>
+<li>题库统计
+
+<ul>
+<li><a href="web/data/questionBank.html">知识库统计</a>  web/data/questionBank.html</li>
+<li><a href="web/data/questionBankUpdate.html">题库更新统计</a>  web/data/questionBankUpdate.html</li>
+<li><a href="web/data/questionBankUpdate.html">题库更新统计(无限极定制)</a>  web/data/questionBankUpdate_wxj.html</li>
+<li><a href="web/data/serviceWorkload.html">客服工作量统计</a>  web/data/serviceWorkload.html</li>
+<li><a href="web/data/staffServiceWorkload.html">人工客服工作量统计</a>  web/data/staffServiceWorkload.html</li>
+<li><a href="web/data/questionType.html">访问问题类别统计</a>  web/data/questionType.html</li>
+<li><a href="web/data/questionLevel.html">访问问题分级统计</a>  web/data/questionLevel.html</li>
+<li><a href="web/data/queryByAreaType.html">访问问题区域统计</a>  web/data/queryByAreaType.html</li>
+<li><a href="web/data/questionDetail.html">访问问题明细统计</a>  web/data/questionDetail.html</li>
+<li><a href="web/data/questionMultiDimension.html">多维度热点问题分析</a> web/data/questionMultiDimension.html</li>
+</ul></li>
+<li>问答统计
+
+<ul>
+<li><a href="web/data/satisfactionSurvey.html">后台使用满意度统计</a>  web/data/satisfactionSurvey.html</li>
+<li><a href="web/data/workCompleteCount.html">工作完成统计</a>  web/data/workCompleteCount.html</li>
+<li><a href="web/data/evaluation.html">会话满意度统计</a>  web/data/evaluation.html</li>
+    <!--add by zhaoyuxing At 20171218 单号:418 -->
+    <!--说明：添加自如定制报表-->
+<li><a href="web/data/evaluation_zr.html">会话满意度统计_自如</a>  web/data/evaluation_zr.html</li>
+<li><a href="web/data/evaluationInfinitus.html">服务满意度统计(无限极定制)</a>  web/data/evaluationInfinitus.html</li>
+<li><a href="web/data/satisfactionBank.html">题库满意度统计</a>  web/data/satisfactionBank.html</li>
+<li><a href="web/data/questionMatching.html">应答准确率统计</a>  web/data/questionMatching.html</li>
+<li><a href="web/data/questionMatching_wxj.html">应答准确率统计</a>  web/data/questionMatching_wxj.html</li>
+<li><a href="web/data/unknownQuestion.html">未知问题数量统计</a>  web/data/unknownQuestion.html</li>
+<li><a href="web/data/replyTime.html">智能回复时间统计</a>  web/data/replyTime.html</li>
+<li><a href="web/data/highFrequencyWords.html">高频词统计</a>  web/data/highFrequencyWords.html</li>
+<li><a href="web/data/visitMatching.html">访问匹配率统计</a>  web/data/visitMatching.html</li>
+<li><a href="web/data/Label.html">未知问题标签报表</a>  web/data/Label.html</li>
+<li><a href="web/data/UnQuestionHandleType.html">问题处理工作量统计</a>  web/data/UnQuestionHandleType.html</li>
+<li><a href="web/data/intelLearnCount.html">智能学习数量统计（无限极）</a>  web/data/intelLearnCount.html</li>
+</ul></li>
+</ul></li>
+<li><h4>平台对接</h4>
+
+<ul>
+<li>平台对接
+
+<ul>
+<li><a href="web/system/payCode.html">网页对接</a>  web/system/payCode.html</li>
+<li><a href="web/platform/dingchat.html">对接钉钉微应用</a>  web/platform/dingchat.html</li>
+<li><a href="web/platform/authList.html">认证列表</a>  web/platform/authList.html</li>
+<li><a href="web/platform/portList.html">接口列表</a>  web/platform/portList.html</li>
+<li><a href="web/platform/wechatListCus.html">微信列表(单点)</a>  web/platform/wechatListCus.html</li>
+<li><a href="web/platform/wechatListYun.html">微信列表(云上)</a>  web/platform/wechatListYun.html</li>
+<li><a href="web/platform/addWeChat.html">对接微信</a>  web/platform/addWeChat.html</li>
+<li><a href="web/platform/MultiService.html">多客服</a>  web/platform/MultiService.html</li>
+<li><a href="web/platform/weiboList.html">微博列表</a>  web/platform/weiboList.html</li>
+<li><a href="web/platform/zhifubaoList.html">支付宝列表</a>  web/platform/zhifubaoList.html</li>
+<li><a href="web/platform/ThirdWeiXin.html">第三方微信</a>  web/platform/ThirdWeiXin.html</li>
+<li><a href="web/platform/ThirdViewer.html">第三方客服</a>  web/platform/ThirdViewer.html</li>
+<li><a href="/web/platform/bigScreenList.html">大屏对接列表</a>  web/platform/bigScreenList.html</li>
+<li><a href="/web/platform/apiList.html">平台接入</a>web/platform/apiList.html</li>
+<li><a href="/web/platform/askTokenList.html">AskToken列表</a>web/platform/askTokenList.html</li>
+<li><a href="/web/platform/dsf_knowledge.html">第三方知识系统</a>web/platform/dsf_knowledge.html</li>
+</ul></li>
+</ul></li>
+<li><h4>人员管理</h4>
+
+<ul>
+<li>客服管理
+
+<ul>
+<li><a href="web/staff/menu.html">菜单管理</a>  web/staff/menu.html</li>
+<li><a href="web/staff/sourceManage.html">资源管理</a>  web/staff/sourceManage.html</li>
+<li><a href="web/staff/roleManage.html">角色管理</a>  web/staff/roleManage.html</li>
+<li><a href="web/staff/userList.html">用户列表</a>  web/staff/userList.html</li>
+<li><a href="web/staff/visitorRole.html">来访者角色</a>  web/staff/visitorRole.html</li>
+<li><a href="web/staff/cardList.html">客户名片列表</a>  web/staff/cardList.html</li>
+<li><a href="web/staff/apiUserList.html">API用户列表</a>  web/staff/apiUserList.html</li>
+<li><a href="web/staff/importUser.html">人员导入</a>  web/staff/importUser.html</li>
+<li><a href="web/staff/kfList.html">客服管理</a>  web/staff/kfList.html</li>
+<li><a href="web/staff/visitorDistribution.html">接待组</a>  web/staff/visitorDistribution.html</li>
+</ul></li>
+<li>访客管理
+
+<ul>
+<li><a href="web/staff/visitorList.html">访客列表</a>  web/staff/visitorList.html</li>
+<li><a href="web/staff/visitorLog.html">访客日志</a>  web/staff/visitorLog.html</li>
+<li><a href="web/staff/visitorLogNew.html">访客日志(新)</a>  web/staff/visitorLogNew.html</li>
+<!-- <li><a href="web/staff/vistorBlacklist.html">访客黑名单</a>  web/staff/vistorBlacklist.html</li> -->
+<li><a href="web/staff/RobotChatBlacklist.html">机器人聊天黑名单</a>  web/staff/RobotChatBlacklist.html</li>
+<li><a href="web/staff/ManualBlacklist.html">转人工黑名单</a>  web/staff/ManualBlacklist.html</li>
+<li><a href="web/staff/visitorLogManual.html">转人工日志</a>  web/staff/visitorLogManual.html</li>
+<li><a href="web/staff/checkLog.html">质检日志</a>  web/staff/checkLog.html</li>
+</ul></li>
+</ul></li>
+<li><h4>语义管理</h4>
+
+<ul>
+<li>语义抽取
+
+<ul>
+<li><a href="web/knowledge/highWord.html">文本分析</a>  web/knowledge/highWord.html</li>
+<li><a href="web/knowledge/entitySelect.html">实体选择</a>  web/knowledge/entitySelect.html</li>
+</ul></li>
+</ul></li>
+<li><h4>帮助中心</h4>
+
+<ul>
+<li>新手入门
+
+<ul>
+<li><a href="web/help/help.html">新手入门</a>  web/help/help.html</li>
+</ul></li>
+</ul></li>
+<li><h4>未分类</h4>
+
+<ul>
+<li>未分类
+
+<ul>
+<li><a href="web/temp/addRobotLink.html">机器人链接</a> web/temp/addRobotLink.html</li>
+<li><a href="web/temp/emailList.html">报警邮箱</a>  web/temp/emailList.html</li>
+<li><a href="web/temp/ruleList.html">规则列表</a>  web/temp/ruleList.html</li>
+<li><a href="web/temp/historyEmail.html">报警邮件的流水记录</a>  web/temp/historyEmail.html</li>
+<li><a href="web/temp/qBfeedbackList.html">题库满意度反馈</a>  web/temp/qBfeedbackList.html</li>
+<li><a href="web/temp/qBList.html">题库满意度反馈列表</a>  web/temp/qBList.html</li>
+<li><a href="web/temp/formList.html">分布式表单列表</a>  web/temp/formList.html</li>
+<li><a href="web/temp/phraseList.html">句式列表</a>  web/temp/phraseList.html</li>
+<li><a href="web/temp/searchData.html">自定义查询</a>  web/temp/searchData.html</li>
+<li><a href="web/temp/effectiveRule.html">生效规则配置</a>  web/temp/effectiveRule.html</li>
+<li><a href="web/temp/version.html">版本管理</a>  web/temp/version.html</li>
+<li><a href="web/temp/serviceStatistics.html">监控站点统计</a>  web/temp/serviceStatistics.html</li>
+<li><a href="web/temp/systemStatistics.html">系统监控站点统计</a>  web/temp/systemStatistics.html</li>
+<li><a href="web/temp/modelList.html">数据模型列表</a>  web/temp/modelList.html</li>
+<li><a href="web/temp/turnPeopleConfig.html">转人工配置功能</a>  web/temp/turnPeopleConfig.html</li>
+<li><a href="web/temp/addPort.html">添加知识集</a>  web/temp/addPort.html</li>
+<li><a href="web/temp/addPortDetail.html">添加知识集的文字链接</a>  web/temp/addPortDetail.html</li>
+<li><a href="web/temp/portList.html">知识集</a>  web/temp/portList.html</li>
+<li><a href="web/temp/label.html">知识集标签管理</a>  web/temp/label.html</li>
+<li><a href="web/temp/unQueRuleList.html">预警设置</a>  web/temp/unQueRuleList.html</li>
+<li><a href="web/temp/unQueWarn.html">未知问题预警</a>  web/temp/unQueWarn.html</li>
+<li><a href="web/temp/upXml.html">上传配置xml文件，各种模板名称的</a>  web/temp/upXml.html</li>
+<li><a href="web/temp/weiXinLogin.html">微信群监控扫码</a>  web/temp/weiXinLogin.html</li>
+<li><a href="web/temp/addCrux.html">微信群监控-关键词列表</a>  web/temp/addCrux.html</li>
+<li><a href="web/temp/addEmail.html">微信群监控-添加邮箱</a>  web/temp/addEmail.html</li>
+<li><a href="web/temp/groups.html">微信群监控-微信群列表</a>  web/temp/groups.html</li>
+<li><a href="web/temp/weiXinMonitor.html">微信群监控</a>  web/temp/weiXinMonitor.html</li>
+<li><a href="web/temp/debugEngine.html">机器人给出答案匹配结果展示页面</a>  web/temp/debugEngine.html</li>
+</ul></li>
+</ul></li>
+</ul>
+
+
+<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="web/common/js/customMethod.js"></script>
+<script>
+		$.getJSON('user/getLoginUser', function(data){
+			if(data.status == 0) {
+			} else {
+				window.location.href = 'login.html';
+			}
+		});
+</script>
+</body>
+
+</html>

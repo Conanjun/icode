@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>对接钉钉微应用</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.ctn {
+			text-align: center;
+		}
+		.timeline-body div p img{
+			width:100%;
+		}
+		.timeline-header .username{
+			color:#707478;
+		}
+		.timeline-header .username a{
+			color:#00acac;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div class="row">
+			    <!-- begin col-6 -->
+			  <div id="content" class="content">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">对接钉钉微应用</li>
+			</ol>
+			<!-- end breadcrumb -->
+			<!-- begin page-header -->
+			<h1 class="page-header">对接钉钉微应用</h1>
+			<!-- end page-header -->
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<ul class="timeline">
+			    <li>
+			        
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">1</a>
+			        </div>
+			        <!-- end timeline-icon -->
+			        <!-- begin timeline-body -->
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">访问<a href="https://oa.dingtalk.com" target="_blank">钉钉管理后台</a>，点击右上方的"企业注册"进行注册。</span>
+			            </div>
+						<div class="timeline-content">
+							<p><a href="../common/images/dingchat/1.png" data-lightbox="gallery-group-1"><img src="../common/images/dingchat/1.png" alt="3" data-lightbox="gallery-group-1" ></a></p>
+						</div>
+			            
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+			   
+				 <li>
+			        
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">2</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">创建微应用</span>
+			            </div>
+						
+						<div class="timeline-content">
+							<p>登录<a href="http://v3.faqrobot.org" target="_blank">云问智能机器人</a>，进入系统管理-》获取代码获取首页地址和pc版的首页地址。</p>
+							<p><a href="../common/images/dingchat/5.png" data-lightbox="gallery-group-1"><img src="../common/images/dingchat/5.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+						</div>
+						<div class="timeline-content">
+							<p>返回<a href="https://oa.dingtalk.com" target="_blank">钉钉管理后台</a>-》企业应用-》企业应用，点击新建应用，填写相关信息</p>
+						</div>
+						<div>
+							<p><a href="../common/images/dingchat/4.png" data-lightbox="gallery-group-1"><img src="../common/images/dingchat/4.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+						</div>
+						<div class="timeline-content">
+							<p> 首页地址 : 以http://或者https:// 开头的URL，是微应用的首页地址；在移动设备上打开微应用Tab页，点击微应用列表中的微应用将访问这个URL指向的页面。</p>
+							<p>后台地址 : 以http://或者https:// 开头的URL，是微应用的后台管理页面地址（云问智能机器人后台）；配置后台地址后可以通过应用中心页面进入到微应用的管理后台。 首页地址的URL域名务必保证真实有效，否则会导致钉钉用户无法正常使用微应用，您在应用中心创建微应用后，可获取到微应用的AgentID，AgentID可用于发送企业会话消息等场景 </p>
+						</div>
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+				 <li>
+			        
+			        <!-- begin timeline-icon -->
+			        <div class="timeline-icon">
+			            <a href="javascript:;">3</a>
+			        </div>
+			        <div class="timeline-body">
+			            <div class="timeline-header">
+			                <span class="username">微应用创建成功</span>
+			            </div>
+						<div class="timeline-content">
+							<p>点击提交成功后，微应用创建成功。</p>
+							<p><a href="../common/images/dingchat/6.png" data-lightbox="gallery-group-1"><img src="../common/images/dingchat/6.png" alt="3" data-lightbox="gallery-group-1"></a></p>
+							<p><a href="../common/images/dingchat/7.png" data-lightbox="gallery-group-1"><img src="../common/images/dingchat/7.png" alt="3" data-lightbox="gallery-group-1" style="max-height:300px;width:169px;"></a></p>
+							
+						</div>
+						
+			        </div>
+			        <!-- end timeline-body -->
+			    </li>
+			</ul>
+			</div>
+			<div class="col-md-1"></div>
+			<!-- begin timeline -->
+			
+			<!-- end timeline -->
+		</div>
+			    <!-- end col-6 -->
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+	<script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script>
+		$(function() {
+			App.init();
+			//$("[data-lightbox]").lightbox();	
+		});
+	</script>
+</body>
+</html>

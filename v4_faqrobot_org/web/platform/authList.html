@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>认证列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/wxNew.css"/>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">认证列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">认证列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="alert alert-warning fade in m-b-15">
+                          <strong>友情提示：</strong>第三方认证是指机器人系统完成身份对接后可以更好的服务来访的客户。如在后台系统查询用户列表、聊天记录等请求时可以知道来访客户的真实身份属性，如姓名、年龄、等。并且在做一些业务服务的时候可以提供更精准的反馈结果，如个人订单查询、个人积分查询等等业务扩展功能。
+                          <span class="close" data-dismiss="alert">×</span>
+                        </div>
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加第三方认证</span>
+						</a>
+						<a href="javascript:;" class="btn btn-default pull-right" id="mul-del"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+						<div class="table-responsive">
+							<table class="table" id="ThirdAuthList">
+								<thead>
+									<tr>
+										<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="ThirdAuthList"/></th>
+										<th>认证的简介</th>
+										<th>状态</th>
+										<th>来源</th>
+										<th width="150">更新时间</th>
+										<th width="70">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加第三方认证</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="ThirdAuth_form" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证的地址" class="form-control" name="authUrl">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">登陆的页面地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入登陆的页面地址" class="form-control" name="loginUrl">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证使用的类名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证使用的类名称" class="form-control" name="authClassName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的方法的名字<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证的方法的名字" class="form-control" name="authMethodName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的简介<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证的简介" class="form-control" name="info" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证展示的话语<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证展示的话语" class="form-control" name="authWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">状态<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="status">
+												关闭
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="status">
+												开启
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证方式<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="level">
+												不强制认证
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="level">
+												强制认证
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">来源<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select id="getableSourceAdd" class="form-control" name="sourceId">
+												<option value="0">网页</option>
+												<option value="1">微信</option>
+												<option value="2">API</option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#ThirdAuth_form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="myModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改第三方认证</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证的地址" class="form-control" name="authUrl">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">登陆的页面地址<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入登陆的页面地址" class="form-control" name="loginUrl">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证使用的类名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证使用的类名称" class="form-control" name="authClassName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的方法的名字<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入认证的方法的名字" class="form-control" name="authMethodName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证的简介<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证的简介" class="form-control" name="info" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证展示的话语<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证展示的话语" class="form-control" name="authWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">状态<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												关闭
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												开启
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证方式<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="level">
+												不强制认证
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="level">
+												强制认证
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">来源<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select id="getableSourceEdit" class="form-control" name="sourceId">
+												<option value="0">网页</option>
+												<option value="1">微信</option>
+												<option value="2">API</option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/platform.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Configuration/showSourceByWebId'),
+				success: function(data) {
+					if(data.listSource) {
+						if(data.listSource[0]) {
+							$('#getableSourceAdd').empty();
+							$('#getableSourceEdit').empty();
+							for(var key in data.listSource) {
+								$('#getableSourceAdd').append('<option value="'+data.listSource[key].DicCode+'">'+data.listSource[key].DicDesc+'</option>');
+								$('#getableSourceEdit').append('<option value="'+data.listSource[key].DicCode+'">'+data.listSource[key].DicDesc+'</option>');
+							}
+						}
+					}
+				}
+			});
+			icheckBindInit();
+		  $('#mul-del').on('click', function() {
+		    $(this).adcCreator(function() {
+					selectDel('','../../thirdAuth/deleteThirdAuth',listthirdAuthPage,'pageList')
+		    });
+		  });
+			//列出表格
+			listthirdAuthPage(1);
+			$('#ThirdAuth_form [name="info"]').addWordCount(100);
+			$('#ThirdAuth_form [name="authWords"]').addWordCount(100);
+			$('#save_form [name="info"]').addWordCount(100);
+			$('#save_form [name="authWords"]').addWordCount(100);
+			//添加第三方认证表单验证
+			thaf = $('#ThirdAuth_form').validate({
+				rules:{
+					authUrl:{
+						required:true,
+						url:true
+					},
+					loginUrl:{
+						required:true,
+						url:true
+					},
+					authClassName:{
+						required:true,
+						isABC:true
+					},
+					authMethodName:{
+						required:true,
+						isABC:true
+					},
+					info:{
+						required:true,
+						maxlength:100
+					},
+					authWords:{
+						required:true,
+						maxlength:100
+					}
+				},
+				messages:{
+					authUrl:{
+						required:"请输入您要修改的url！",
+						url:"请输入正确的url！"
+					},
+					loginUrl:{
+						required:"请输入您要修改的url！",
+						url:"请输入正确的url！"
+					},
+					authClassName:{
+						required:"请输入验证使用的类名称并且仅输入英文！",
+						isABC:"验证使用的类名称只能是英文字母！"
+					},
+					authMethodName:{
+						required:"请输入验证的方法的名称并且仅输入英文！",
+						isABC:"验证使用的类名称只能是英文字母！"
+					},
+					info:{
+						required:"请输入验证的简介！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					authWords:{
+						required:"请输入认证展示的话语！",
+						maxlength:"请输入不多于100个字符！"
+					}
+				},
+				submitHandler: addAuth
+			});
+			//修改第三方认证表单验证
+			$('#save_form').validate({
+				rules:{
+					authUrl:{
+						required:true,
+						url:true
+					},
+					loginUrl:{
+						required:true,
+						url:true
+					},
+					authClassName:{
+						required:true
+					},
+					authMethodName:{
+						required:true
+					},
+					info:{
+						required:true,
+						maxlength:100
+					},
+					authWords:{
+						required:true,
+						maxlength:100
+					}
+				},
+				messages:{
+					authUrl:{
+						required:"请输入您要修改的url！",
+						url:"请输入正确的url！"
+					},
+					loginUrl:{
+						required:"请输入您要修改的url！",
+						url:"请输入正确的url！"
+					},
+					authClassName:{
+						required:"请输入验证使用的类名称并且仅输入英文！"
+					},
+					authMethodName:{
+						required:"请输入验证的方法的名称并且仅输入英文！"
+					},
+					info:{
+						required:"请输入验证的简介！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					authWords:{
+						required:"请输入认证展示的话语！",
+						maxlength:"请输入不多于100个字符！"
+					}
+				},
+				submitHandler: savethirthSub
+			});
+			//清空表单
+			$('#addModal').on('hide.bs.modal', function () {
+				$('#ThirdAuth_form input[type=text]').val('');
+				$('#ThirdAuth_form textarea').val('');
+				$('#ThirdAuth_form input[name=status]:eq(1)').iCheck('check');
+				$('#ThirdAuth_form input[name=level]:eq(1)').iCheck('check');
+				$('#ThirdAuth_form input[name=sourceId]:eq(1)').iCheck('check');
+				thaf.resetForm();
+			});
+		});
+	</script>
+</body>
+</html>

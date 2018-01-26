@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>微信列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	<link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/wxNew.css" rel="stylesheet"/>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">微信列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">微信列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<p class="black mgtop10">添加后你可以使用云问智能客服机器人统一接收与回复顾客咨询</p>
+						<div class="row">
+                            <a data-toggle="modal" class="btn btn-success" href="#addModal">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>添加公众号</span>
+                            </a>
+                            <a data-toggle="modal" class="btn btn-success" href="#addModalCo">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>添加企业号</span>
+                            </a>
+                            <a href="javascript:;" class="btn btn-default pull-right" id="mul-del">
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除
+                            </a>
+                        </div>
+						<p class="grey mgtop10">· 你的公众号必须是认证过的微信订阅号、服务号或企业号，否则无法正常回复顾客对话</p>
+						<p class="grey mabot0">· 添加后，之前在公众平台设置好的菜单和自动回复功能将失效，你需要在云问重新设置</p>
+						
+						<div class="table-responsive">
+							<table class="table" id="wxList">
+								<thead>
+									<tr>
+										<th width="50" class="table_checkbox" ><input type="checkbox" name="select_rows" class="select_rows" data-tableid="wxList"/></th>
+										<th>公众号名称</th>
+										<th>知识集</th>
+										<th>类型</th>
+										<th>使用类型</th>
+										<th>获取对接信息</th>
+										<th width="70">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="chooseAdd">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width:490px;height: 170px;">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择添加方式</h4>
+						</div>
+						<div class="modal-body">
+							<a class="btn btn-link" onclick="openWin('http://v4.faqrobot.org/web/platform/wechatChange.html',1024,768);">公众号第三方平台授权（推荐)</a>
+							<a class="btn btn-link" data-toggle="modal" href="#addModal">公众号开发者授权</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加公众号</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="wx_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">公众号名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入公众号名称" class="form-control" name="name" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">AppID(应用ID)<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入AppID(应用ID)" class="form-control" name="appId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">AppSecret(应用密钥)<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入AppSecret(应用密钥)" class="form-control" name="appSecret" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">token<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入token" class="form-control" name="token" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">EncodingAESKey</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入EncodingAESKey" class="form-control" name="encodingAESKey" maxlength="43">
+										</div>
+										<a class="btn btn-sm" id="wx_form_gen">随机生成</a>
+									</div>
+									<div class="form-group">
+										<p class="col-md-12">消息加密秘钥由43位字符组成，可随意修改，字符范围为A-Z,a-z.0-9。</p>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<a class="ztreeName" href="javascript:;">选择知识集</a>
+												<input type="hidden" name="themeId" value="0">
+												<div class="ztree" id="tanchutree" style="display: none;margin-top: 15px"></div>
+											</div>
+											<div class="row m-t-10"><span>若选择知识集，则只有此知识集中的知识生效。（可不选）</span></div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">订阅时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入订阅时的欢迎词" class="form-control helloWord" name="helloWord">你好啊！欢迎关注！我是智能机器人，有什么业务问题就问我吧，我将竭诚为您服务！</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入未知时的欢迎词" class="form-control unknownWord" name="unknownWord">对不起，您把我问倒了~我暂时只能回答您常见的业务问题，此问题暂不在我知识范围内，但我会继续努力学习！您也可以换个简单的问法向我提问，或许我就可以回答您了...</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">消息加解密方式</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="encryptionMode">
+												明文模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="encryptionMode">
+												兼容模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="encryptionMode">
+												安全模式
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否验证</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												未验证过
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												验证过
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="type">
+												订阅号
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="type">
+												服务号
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">使用类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="mode">
+												停止使用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="mode">
+												试用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="mode">
+												正常使用
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#wx_form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModalCo">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加企业号</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="company_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<input type="hidden" name="type" value="2" />
+									<div class="form-group">
+										<label class="col-md-3 control-label">企业号名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入企业号名称" class="form-control" name="name" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">应用ID<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入应用ID" class="form-control" name="agentId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">CorpID<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入CorpID" class="form-control" name="appId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Secret(管理组的凭证密钥)<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入Secret(管理组的凭证密钥)" class="form-control" name="appSecret" maxlength="64">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">token<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入token" class="form-control" name="token" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">EncodingAESKey<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入EncodingAESKey" class="form-control" name="encodingAESKey" maxlength="43">
+										</div>
+										<a class="btn btn-sm" id="company_form_gen">随机生成</a>
+									</div>
+									<div class="form-group">
+										<p class="col-md-offset-3 col-md-7">消息加密秘钥由43位字符组成，可随意修改，字符范围为A-Z,a-z.0-9。</p>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<a class="ztreeName1" href="javascript:;">选择知识集</a>
+												<input type="hidden" name="themeId" value="0">
+												<div class="ztree" id="tanchutree1" style="display: none;margin-top: 15px"></div>
+											</div>
+											<div class="row m-t-10"><span>若选择知识集，则只有此知识集中的知识生效。（可不选）</span></div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">订阅时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入订阅时的欢迎词" class="form-control helloWord" name="helloWord">你好啊！欢迎关注！我是智能机器人，有什么业务问题就问我吧，我将竭诚为您服务！</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入未知时的欢迎词" class="form-control unknownWord" name="unknownWord">对不起，您把我问倒了~我暂时只能回答您常见的业务问题，此问题暂不在我知识范围内，但我会继续努力学习！您也可以换个简单的问法向我提问，或许我就可以回答您了...</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">消息加解密方式</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="encryptionMode">
+												明文模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="encryptionMode">
+												兼容模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="encryptionMode">
+												安全模式
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否验证</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												未验证过
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												验证过
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">使用类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="mode">
+												停止使用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="mode">
+												试用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="mode">
+												正常使用
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#company_form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="myModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal dataSave" style="display:none">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">公众号名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入公众号名称" class="form-control" name="name" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">AppID(应用ID)</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入AppID(应用ID)" class="form-control" name="appId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">AppSecret(应用密钥)</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入AppSecret(应用密钥)" class="form-control" name="appSecret" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">token</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入token" class="form-control" name="token">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">EncodingAESKey</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入EncodingAESKey" class="form-control" name="encodingAESKey" maxlength="43">
+										</div>
+									</div>
+									<p class="col-md-offset-3">消息加密秘钥由43位字符组成，可随意修改，字符范围为A-Z,a-z.0-9。</p>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<span href="javascript:;" class="ztreeName2">选择知识集</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">订阅时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入订阅时的欢迎词" class="form-control helloWord" name="helloWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入未知时的欢迎词" class="form-control unknownWord" name="unknownWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">消息加解密方式</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="encryptionMode">
+												明文模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="encryptionMode">
+												兼容模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="encryptionMode">
+												安全模式
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否验证</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												未验证过
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												验证过
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="type">
+												订阅号
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="type">
+												服务号
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">使用类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="mode">
+												停止使用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="mode">
+												试用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="mode">
+												正常使用
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+							<form method="POST" id="company_form_edit" class="form-horizontal dataSave" style="display:none">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<input type="hidden" name="type" value="2" />
+									<div class="form-group">
+										<label class="col-md-3 control-label">企业号名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入企业号名称" class="form-control" name="name" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">应用ID</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入应用ID" class="form-control" name="agentId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">CorpID</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入CorpID" class="form-control" name="appId" maxlength="18">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Secret(管理组的凭证密钥)</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入Secret(管理组的凭证密钥)" class="form-control" name="appSecret" maxlength="64">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">token</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入token" class="form-control" name="token" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">EncodingAESKey</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入EncodingAESKey" class="form-control" name="encodingAESKey" maxlength="43">
+										</div>
+									</div>
+									<p class="col-md-offset-3">消息加密秘钥由43位字符组成，可随意修改，字符范围为A-Z,a-z.0-9。</p>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<span class="ztreeName3">选择知识集</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">订阅时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入订阅时的欢迎词" class="form-control helloWord" name="helloWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知时的欢迎词<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入未知时的欢迎词" class="form-control unknownWord" name="unknownWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">消息加解密方式</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="encryptionMode">
+												明文模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="encryptionMode">
+												兼容模式
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="encryptionMode">
+												安全模式
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否验证</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												未验证过
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												验证过
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">使用类型</label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="0" name="mode">
+												停止使用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="1" name="mode">
+												试用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="2" name="mode">
+												正常使用
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-sm btn-primary" href="javascript:;" id="repairCompany">修改</a>
+							<a class="btn btn-sm btn-primary" href="javascript:;" id="repairPublic">修改</a>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" aria-hidden="true" id="obtainURL">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4>微信对接信息</h4>
+						</div>
+						<div class="modal-body">
+							<table style="overflow: visible;" class="table table-bordered" id="wx_info"></table>
+						</div>
+						<div class="modal-footer">
+							<a href="#" data-dismiss="modal" class="btn btn-sm btn-white">关闭</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script type="text/javascript" src="../common/js/base.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/platform.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			//获取问题分类
+			Base.request({
+				url: 'chatlink/listChatLink',
+				params: {
+					m: 0,
+				},
+				callback: function(data) {
+					if (data.status) {
+						Base.gritter(data.message, false);
+					} else {
+						var html = '';
+						if (data.list&&data.list[0]) {
+							var formatData = [],
+									len = data.list.length;
+
+							for (var key in data.list) {
+								formatData[key] = {};
+								formatData[key]['name'] = data.list[key]['ThemeName'];
+								formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+								formatData[key]['id'] = data.list[key]['Id'] + 1;
+							}
+
+							formatData[len] = {};
+							formatData[len]['name'] = '暂不选择知识集（单击此处）';
+							formatData[len]['pId'] = 0;
+							formatData[len]['id'] = 1;
+							formatData[len]['open'] = true;
+							$.fn.zTree.init($("#tanchutree"), setting, formatData);
+							$.fn.zTree.init($("#tanchutree1"), setting1, formatData);
+							treeObj = $.fn.zTree.getZTreeObj("tanchutree");
+
+						} else {
+
+						}
+					}
+				},
+			});
+
+			//配置项
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				view: { //不显示图标
+					showIcon: false
+				},
+				callback: {
+					onClick: function(event, treeId, treeNode) {
+						$('#tanchutree').fadeOut();
+						$('.ztreeName').html(treeNode.name);
+						$('#addModal input[name=themeId]').val(treeNode.id-1);//隐藏表单存当前节点的ID
+					}
+				}
+			};
+			var setting1 = {
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				view: { //不显示图标
+					showIcon: false
+				},
+				callback: {
+					onClick: function(event, treeId, treeNode) {
+						$('#tanchutree1').fadeOut();
+						$('.ztreeName1').html(treeNode.name);
+						$('#addModalCo input[name=themeId]').val(treeNode.id-1);//隐藏表单存当前节点的ID
+					}
+				}
+			};
+
+
+			//点击弹出树
+			$('.ztreeName').click(function(){
+				$('#tanchutree').toggle();
+			});
+			$('.ztreeName1').click(function(){
+				$('#tanchutree1').toggle();
+			});
+
+			App.init();
+			icheckBindInit();
+		  $('#mul-del').on('click', function() {
+		    $(this).adcCreator(function() {
+					selectDel('','../../wxConfig/deleteWxConfig',listWeixinPage,'pageList')
+		    });
+		  });
+			//列出表格
+			listWeixinPage(1);
+			//添加公众号表单验证
+			$('#wx_form').validate({
+				rules:{
+					name:{
+						required:true,
+						maxlength:20
+					},
+					appId:{
+						required:true,
+						maxlength:18,
+						minlength:18
+					},
+					appSecret:{
+						required:true,
+						maxlength:32,
+						minlength:32
+					},
+					token:{
+						required:true,
+						maxlength:32,
+						minlength:3
+					},
+					encodingAESKey:{
+						maxlength:43,
+						minlength:43
+					},
+					helloWord:{
+						maxlength:1000
+					},
+					unknownWord:{
+						maxlength:1000
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入公众号名称！",
+						maxlength:"请输入不多于20个字符！"
+					},
+					appId:{
+						required:"请输入AppID！",
+						maxlength:"请输入18个字符！",
+						minlength:"请输入18个字符！"
+					},
+					appSecret:{
+						required:"请输入AppSecret！",
+						maxlength:"请输入32个字符！",
+						minlength:"请输入32个字符！"
+					},
+					token:{
+						required:"请输入token！",
+						maxlength:"请输入不多于32个字符！",
+						minlength:"请输入不少于3个字符！"
+					},
+					encodingAESKey:{
+						maxlength:"请输入43个字符！",
+						minlength:"请输入43个字符！"
+					},
+					helloWord:{
+						maxlength:"请输入不多于1000个字符！"
+					},
+					unknownWord:{
+						maxlength:"请输入不多于1000个字符！"
+					}
+				},
+				submitHandler: setWeChat
+			});
+			//添加企业号表单验证
+			$('#company_form').validate({
+				rules:{
+					name:{
+						required:true,
+						maxlength:20
+					},
+					agentId:{
+						required:true,
+						number:true
+					},
+					appId:{
+						required:true,
+						maxlength:18,
+						minlength:18
+					},
+					appSecret:{
+						required:true,
+						// maxlength:64,
+						SecretLength:true,
+
+					},
+					token:{
+						required:true,
+						maxlength:32,
+						minlength:3
+					},
+					encodingAESKey:{
+						required:true,
+						maxlength:43,
+						minlength:43
+					},
+					helloWord:{
+						maxlength:600
+					},
+					unknownWord:{
+						maxlength:200
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入企业号名称！",
+						maxlength:"请输入不多于20个字符！"
+					},
+					agentId:{
+						required:"请输入应用ID！",
+						number:"请输入数字！"
+					},
+					appId:{
+						required:"请输入CorpID！",
+						maxlength:"请输入18个字符！",
+						minlength:"请输入18个字符！"
+					},
+					appSecret:{
+						required:"请输入管理组的凭证密钥！",
+					},
+					token:{
+						required:"请输入token！",
+						maxlength:"请输入不多于32个字符！",
+						minlength:"请输入不少于3个字符！"
+					},
+					encodingAESKey:{
+						required:"请输入EncodingAESKey！",
+						maxlength:"请输入43个字符！",
+						minlength:"请输入43个字符！"
+					},
+					helloWord:{
+						maxlength:"请输入不多于600个字符！"
+					},
+					unknownWord:{
+						maxlength:"请输入不多于200个字符！"
+					}
+				},
+				submitHandler: setConpany
+			});
+			//修改公众号表单验证
+			$('#save_form').validate({
+				rules:{
+					name:{
+						required:true,
+						maxlength:20
+					},
+					appId:{
+						required:true,
+						maxlength:18,
+						minlength:18
+					},
+					appSecret:{
+						required:true,
+						maxlength:32,
+						minlength:32
+					},
+					token:{
+						required:true,
+						maxlength:32,
+						minlength:3
+					},
+					encodingAESKey:{
+						maxlength:43,
+						minlength:43
+					},
+					helloWord:{
+						maxlength:1000
+					},
+					unknownWord:{
+						maxlength:1000
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入公众号名称！",
+						maxlength:"请输入不多于20个字符！"
+					},
+					appId:{
+						required:"请输入AppID！",
+						maxlength:"请输入18个字符！",
+						minlength:"请输入18个字符！"
+					},
+					appSecret:{
+						required:"请输入AppSecret！",
+						maxlength:"请输入32个字符！",
+						minlength:"请输入32个字符！"
+					},
+					token:{
+						required:"请输入token！",
+						maxlength:"请请输入不多于32个字符！",
+						minlength:"输入不少于3个字符！"
+					},
+					encodingAESKey:{
+						maxlength:"请输入43个字符！",
+						minlength:"请输入43个字符！"
+					},
+					helloWord:{
+						maxlength:"请输入不多于1000个字符！"
+					},
+					unknownWord:{
+						maxlength:"请输入不多于1000个字符！"
+					}
+				},
+				submitHandler: reppublic
+			});
+			//修改企业号表单验证，
+			$('#company_form_edit').validate({
+				rules:{
+					name:{
+						required:true,
+						maxlength:20
+					},
+					agentId:{
+						required:true,
+						number:true
+					},
+					appId:{
+						required:true,
+						maxlength:18,
+						minlength:18
+					},
+					appSecret:{
+						required:true,
+						SecretLength:true
+					},
+					token:{
+						required:true,
+						maxlength:32,
+						minlength:3
+					},
+					encodingAESKey:{
+						required:true,
+						maxlength:43,
+						minlength:43
+					},
+					helloWord:{
+						maxlength:600
+					},
+					unknownWord:{
+						maxlength:200
+					}
+				},
+				messages:{
+					name:{
+						required:"请输入企业号名称！",
+						maxlength:"请输入不多于20个字符！"
+					},
+					agentId:{
+						required:"请输入应用ID！",
+						number:"请输入数字！"
+					},
+					appId:{
+						required:"请输入CorpID！",
+						maxlength:"请输入18个字符！",
+						minlength:"请输入18个字符！"
+					},
+					appSecret:{
+						required:"请输入管理组的凭证密钥！",
+					},
+					token:{
+						required:"请输入token！",
+						maxlength:"请输入不多于32个字符！",
+						minlength:"请输入不少于3个字符！"
+					},
+					encodingAESKey:{
+						required:"请输入EncodingAESKey！",
+						maxlength:"请输入43个字符！",
+						minlength:"请输入43个字符！"
+					},
+					helloWord:{
+						maxlength:"请输入不多于600个字符！"
+					},
+					unknownWord:{
+						maxlength:"请输入不多于200个字符！"
+					}
+				},
+				submitHandler: repCompany
+			});
+
+			$('#wx_form_gen').on('click',function(){
+				$('#wx_form [name=encodingAESKey]').val(generateKey());
+			});
+			$('#company_form_gen').on('click',function(){
+				$('#company_form [name=encodingAESKey]').val(generateKey());
+			});
+			//修改企业号表单提交
+			$('#myModal #repairCompany').on('click',function(){
+				$('#company_form_edit').submit();
+			});
+			//修改公众号表单提交
+			$('#myModal #repairPublic').on('click',function(){
+				$('#save_form').submit();
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#wx_form input[type=text]').val('');
+				$('#wx_form textarea[name=helloWord]').val('你好啊！欢迎关注！我是智能机器人，有什么业务问题就问我吧，我将竭诚为您服务！');
+				$('#wx_form textarea[name=unknownWord]').val('对不起，您把我问倒了~我暂时只能回答您常见的业务问题，此问题暂不在我知识范围内，但我会继续努力学习！您也可以换个简单的问法向我提问，或许我就可以回答您了...');
+				$('#wx_form input[name=status]:eq(0)').iCheck('check');
+				$('#wx_form input[name=type]:eq(1)').iCheck('check');
+				$('#wx_form input[name=mode]:eq(2)').iCheck('check');
+				$('#wx_form input[name=encryptionMode]:eq(2)').iCheck('check');
+				clearfrom()
+
+			});
+			$('#addModalCo').on('hidden.bs.modal', function () {
+				$('#company_form input[type=text]').val('');
+				$('#company_form textarea[name=helloWord]').val('你好啊！欢迎关注！我是智能机器人，有什么业务问题就问我吧，我将竭诚为您服务！');
+				$('#company_form textarea[name=unknownWord]').val('对不起，您把我问倒了~我暂时只能回答您常见的业务问题，此问题暂不在我知识范围内，但我会继续努力学习！您也可以换个简单的问法向我提问，或许我就可以回答您了...');
+				$('#company_form input[name=status]:eq(0)').iCheck('check');
+				$('#company_form input[name=mode]:eq(2)').iCheck('check');
+				$('#company_form input[name=encryptionMode]:eq(2)').iCheck('check');
+				clearfrom()
+			});
+			$('#myModal').on('hidden.bs.modal', function () {
+				$('#myModal').find('input').removeAttr('readonly');
+				$('#myModal').find('input[type=radio]').iCheck('enable');
+				clearfrom()
+			});
+		});
+		function openWin(u, w, h) {
+			var ua = navigator.userAgent.toLowerCase();
+			var s;
+			var Sys;
+			(s = ua.match(/msie ([\d]+)/)) ? Sys = s[1] : 0;
+			if(Sys<9){
+				location.href='wxChange.html';
+				return;
+			}else{
+				var l = (screen.width - w) / 2;
+				var t = (screen.height - h) / 2;
+				var s = 'width=' + w + ', height=' + h + ', top=' + t + ', left=' + l;
+				s += ', toolbar=no, scrollbars=no, menubar=no, location=no, resizable=no';
+				open(u, 'oWin', s);
+			}
+		}
+		// 清除表单验证
+		function clearfrom(){
+			$("input.text-error").removeClass("helper-font-small").removeClass("text-error");
+			$("label.text-error").remove();
+		}
+		// 企业号Secret的字符为44或者64位字符
+		$.validator.addMethod("SecretLength",function(value,element,params){  
+            var SecretFlag=value.length===44||value.length===64;  
+            return this.optional(element)||(SecretFlag);  
+        },"请输入44位或者64位字符");
+	</script>
+</body>
+</html>

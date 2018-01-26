@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>页面设置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">页面设置</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">页面设置</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<form method="POST" class="form-horizontal" id="web_form">
+							<fieldset>
+								<input type="hidden" name="id" id="hid">
+								<div class="form-group hide">
+									<label class="control-label col-md-1">网站类型</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="" class="form-control" name="siteStytle" id="siteStytle" disabled>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">网站简介<span class="red">&nbsp;*</span></label>
+									<div class="col-md-7">
+										<textarea type="text" placeholder="请输入网站简介" class="" name="info" id="info"></textarea>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">客服电话<span class="red">&nbsp;*</span></label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入客服电话" class="form-control" name="serviceTel" id="tel"></input>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1">客服QQ<span class="red">&nbsp;*</span></label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入客服QQ" class="form-control" name="serviceQq"  id="qq">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-offset-1 col-md-7">
+										<button class="m-r-1 btn btn-primary" type="submit">保存</button>
+										<button onclick="clearinput()" class="btn btn-default" type="button">取消</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			setInterval(function() {
+				if($('.edui-editor').css('position') != 'absolute') {
+					$('.edui-editor').css('width', 'auto');
+				}
+			},1000);
+			getInfo();
+			//表单验证
+			$('#web_form').validate({
+				rules:{
+					info:{
+						required:true,
+						minlength:20,
+						maxlength:300
+					},
+					serviceTel:{
+						isTel:true
+					},
+					serviceQq:{
+						required:true,
+						number:true,
+						minlength:5
+					}
+				},
+				messages:{
+					info:{
+						required:"请输入网站简介！",
+						minlength:"请输入不少于20个字符！",
+						maxlength:"请输入不多于300个字符！"
+					},
+					serviceTel:{
+						isTel:"请正确填写您的电话！"
+					},
+					serviceQq:{
+						required:"请输入QQ号！",
+						number:"请输入正确的QQ号！",
+						minlength:"QQ号不少于5个字符！"
+					}
+				},
+				submitHandler: Add
+			});
+		});
+
+		UE.getEditor('info', {
+			toolbars: [
+				['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+			],
+			//initialFrameWidth: $('#info').width(),
+			initialFrameHeight: 240
+		});
+		var flag_add=false;
+		function Add(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../webConfig/editPageSet'),
+				data: $("#web_form").serialize(),
+				success: function(data) {
+					flag_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function clearinput() {
+			$('#web_form').find('input').val('');
+			UE.getEditor('info').setContent('');
+		}
+
+		function getInfo() {
+			$.getJSON("../../webConfig/getWebConfig",
+			function(data) {
+				if (data.status == 0) {
+					if(data.webConfig.Id!=null) $('#hid').val(data.webConfig.Id);
+					if(data.webConfig.SiteStytle!=null) $('#siteStytle').val(data.webConfig.SiteStytle);
+					if(data.webConfig.ServiceTel!=null) $('#tel').val(data.webConfig.ServiceTel);
+					if(data.webConfig.ServiceQq!=null) $('#qq').val(data.webConfig.ServiceQq);
+
+					UE.getEditor('info').ready(function() {
+						UE.getEditor('info').setContent(data.webConfig.Info);
+					});
+				} else {
+					yunNoty(data);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

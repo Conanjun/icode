@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>业务库总览</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		#container input {
+			margin: 0;
+		}
+		#container label {
+			display: inline-block; 
+		}
+		#container2 input {
+			margin: 0;
+		}
+		#container2 label {
+			display: inline-block; 
+		}
+		ol {
+			list-style-type: none;
+			padding-left: 0;
+		}
+		.qlist li {
+			border: 1px solid #ccc;
+			margin-top: 10px;
+			padding: 10px;
+		}
+		.qlist li:hover {
+			border: 1px solid #09F;
+		}
+		.qlist a {
+			cursor: pointer;
+		}
+		.qlist a.text-default {
+			color: #e6e6e6;
+		}
+		body .modal-dialog {
+			width: 80%;
+			margin: 30px auto;
+		}
+	</style>
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">业务库总览</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">业务库总览</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form class="form-inline" id="search_form">
+							<div class="form-group m-r-10">
+								<label class="control-label">状态：</label>
+								<select name="status" id="status" class="form-control">
+									<option value="">全部</option>
+									<option value="1">全部可添加</option>
+									<option value="2">部分可添加</option>
+									<option value="3">不可添加</option>
+								</select>
+								<select name="pType" id="pType" class="form-control">
+									<option value="webId">站点ID</option>
+									<option value="groupName">分类名称</option>
+									<option value="question">问题内容</option>
+								</select>
+								<input type="text" class="form-control" name="searchvalue" id="sinput" placeholder="请输入要搜索的内容">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label">起始时间：</label>
+								<input id="sT" size="16" type="text" value="" readonly class="form_datetime form-control">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label">结束时间：</label>
+								<input id="eT" size="16" type="text" value="" readonly class="form_datetime form-control">
+							</div>
+							<button type="button" class="btn btn-sm btn-info m-r-5" onclick="listQueFlow(1)"><i class="fa fa-search white"></i></button>
+							<button type="button" class="btn btn-sm btn-default" onclick="$('#search_form')[0].reset();"><i class="fa fa-times white"></i></button>
+						</form>
+						<div id="questionList">
+							<ol class="qlist"></ol>
+						</div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="newModal" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">新增</h4>
+				</div>
+				<div class="modal-body">
+					<div id="container">
+						<div class="row">
+							<div class="col-md-5" style="padding: 10px; min-height:300px; border:2px solid #cccccc; border-radius:3px;">
+								<p>客户业务库</p>
+								<div v-for="item in items" v-bind:item="item">
+									<input type="checkbox" :id="item.id" name="newcustomckb" :value="item.name" v-model="checkedNames">
+									<label :for="item.id">{{item.name}}</label>
+								</div>
+							</div>
+							<div class="col-md-2" style="text-align: center;">
+								<button class="btn btn-info btn-sm" style="margin-bottom: 10px;" v-on:click="addAsStandard">添加为标准问题</button>
+								<button class="btn btn-info btn-sm" style="margin-bottom: 10px;" v-on:click="addAsSimilar">添加为相似文法</button>
+							</div>
+							<div class="col-md-5" style="padding: 10px; min-height:300px; border:2px solid #cccccc; border-radius:3px;">
+								<p>公共库</p>
+								<div v-for="(pitem, index) in pubitems" :pitem="pitem" :index="index">
+									<input type="radio" :id="pitem.id+'_copy'" name="newpublicrdo" :value="pitem.name" v-model="selectedStd">
+									<label :for="pitem.id+'_copy'" v-show="!pitem.display" style="width: 150px;">{{pitem.name}}</label>
+									<input v-show="pitem.display" v-model="pitem.name" v-on:input="Srenew(index)"></input>
+									<a href="javascript:;" v-on:click="SrenewBtn(index)"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a href="javascript:;" v-on:click="SremoveBtn(index)"><i class="glyphicon glyphicon-trash"></i></a>
+									<div v-for="(simitem, sindex) in pitem.similars">
+										<label v-show="!simitem.display" :for="pitem.id+'_copy'" style="width: 150px;margin-left: 16px;">{{simitem.name}}</label>
+										<input v-show="simitem.display" v-model="simitem.name" v-on:input="renew(index, sindex)" style="margin-left: 16px;"></input>
+										<a href="javascript:;" v-on:click="renewBtn(index, sindex)"><i class="glyphicon glyphicon-pencil"></i></a>
+										<a href="javascript:;" v-on:click="removeBtn(index, sindex)"><i class="glyphicon glyphicon-trash"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" onclick="subNew()">新增</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="addModal" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">添加</h4>
+				</div>
+				<div class="modal-body">
+					<div id="container2">
+						<div class="row">
+							<div class="col-md-5" style="padding: 10px; min-height:300px; border:2px solid #cccccc; border-radius:3px;">
+								<p>客户业务库</p>
+								<div v-for="item in items" v-bind:item="item">
+									<input type="checkbox" :id="item.id" name="newcustomckb" :value="item.name" v-model="checkedNames" :disabled="item.disabled" >
+									<label :for="item.id">{{item.name}}</label>
+								</div>
+							</div>
+							<div class="col-md-2" style="text-align: center;">
+								<button class="btn btn-info btn-sm" style="margin-bottom: 10px;" v-on:click="addAsStandard">添加为标准问题</button>
+								<button class="btn btn-info btn-sm" style="margin-bottom: 10px;" v-on:click="addAsSimilar">添加为相似文法</button>
+							</div>
+							<div class="col-md-5" style="padding: 10px; min-height:300px; border:2px solid #cccccc; border-radius:3px;">
+								<p>公共库</p>
+								<div v-for="(pitem, index) in pubitems" :pitem="pitem" :index="index">
+									<input type="radio" :id="pitem.id+'_copy'" name="newpublicrdo" :value="pitem.name" v-model="selectedStd">
+									<label :for="pitem.id+'_copy'" v-show="!pitem.display" style="width: 150px;">{{pitem.name}}</label>
+									<input v-show="pitem.display" v-model="pitem.name" v-on:input="Srenew(index)"></input>
+									<a href="javascript:;" v-if="pitem.editable" v-on:click="SrenewBtn(index)"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a href="javascript:;" v-if="pitem.editable" v-on:click="SremoveBtn(index)"><i class="glyphicon glyphicon-trash"></i></a>
+									<div v-for="(simitem, sindex) in pitem.similars">
+										<label v-show="!simitem.display" :for="pitem.id+'_copy'" style="width: 150px;margin-left: 16px;">{{simitem.name}}</label>
+										<input v-show="simitem.display" v-model="simitem.name" v-on:input="renew(index, sindex)" style="margin-left: 16px;"></input>
+										<a href="javascript:;" v-if="simitem.editable" v-on:click="renewBtn(index, sindex)"><i class="glyphicon glyphicon-pencil"></i></a>
+										<a href="javascript:;" v-if="simitem.editable" v-on:click="removeBtn(index, sindex)"><i class="glyphicon glyphicon-trash"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" onclick="subAdd()">添加</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/vue.js"></script>
+	<script src="js/pdbAdd.js"></script>
+</body>
+</html>

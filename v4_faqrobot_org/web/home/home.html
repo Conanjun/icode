@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>首页</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		legend {
+			font-size: 16px;
+			font-family: 'microsoft yahei';
+			font-weight: bold;
+		}
+		p.smTitle {
+      font-size: 18px;
+			color:#999;
+			margin:10px;
+		}
+		span.sp {
+			padding: 10px 0;
+			display: inline-block;
+			font-size: 32px;
+			line-height: 32px;
+		}
+		p.mostAskedItem {
+			font-size: 14px;
+			font-family: 'microsoft yahei';
+			padding: 0 5px;
+			word-wrap: break-word;
+		}
+		a.toLearnItem {
+			font-size: 14px;
+			display: block;
+			font-family: 'microsoft yahei';
+			padding-bottom: 10px;
+			word-wrap: break-word;
+			cursor: pointer;
+		}
+    a.toLearnItem:hover {
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+		p.newsItem {
+			font-size: 14px;
+			font-family: 'microsoft yahei';
+			padding: 0 5px;
+			word-wrap: break-word;
+			position: relative;
+			margin-left: 8px;
+			cursor: pointer;
+		}
+		p.newsItem:before {
+			position: absolute;
+			top: 0px;
+			left: -3px;
+			width: 1px;
+			height: 120%;
+			background-color: #eee;
+			content: '';
+		}
+		p.newsItem:after {
+			position: absolute;
+			top: 8px;
+			left: -6px;
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			background-color: #eee;
+			content: '';
+		}
+		p.newsItem:hover:after {
+			background-color: #57abff;
+		}
+		p.newsItem:hover span{
+			color: #57abff;
+		}
+		p.newsItem:hover{
+			color: #23527c;
+		}
+		p.year {
+			font-size: 20px;
+			font-weight: bold;
+			color: #337ab7;
+		}
+		p.month {
+			font-size: 18px;
+			color: #337ab7;
+		}
+		span.dateSpan {
+			font-size: 14px;
+			color: #ccc;
+		}
+		div.mon {
+			overflow: hidden;
+		}
+		body {
+			font-family: 'microsoft yahei';
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li class="active">首页</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">首页</h1>
+				<div class="panel panel-inverse" style="background-color: transparent;padding: 0;margin: 0;">
+					<div class="panel-body" style="padding: 0;margin-left: -15px;margin-right: -15px;">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="panel">
+                  <div class="panel-body">
+                    <legend>机器人回答匹配率</legend>
+                    <div id="main" style="width:100%;height:300px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" style="padding:0;">
+                <div class="col-md-6" style="padding: 0 10px;">
+                  <div class="panel">
+                    <div class="panel-body" style="height: 178px;">
+                      <div class="cc" >
+                        <span id="userCount" class="sp">0</span>
+                        <p class="smTitle"><span style="color:#5ab1ef;"><i class="fa fa-user"></i></span>&nbsp;历史总访问量（人数）</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" style="padding: 0 10px;">
+                  <div class="panel">
+                    <div class="panel-body" style="height: 178px;">
+                      <div class="cc">
+                        <span id="botCount" class="sp">0</span>
+                        <p class="smTitle"><span style="color:#5ab1ef;"><i class="fa fa-comments"></i></span>&nbsp;历史总提问量（次）</p>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12" style="padding: 0 10px;">
+                  <div class="panel">
+                    <div class="panel-body" style="height: 178px;">
+                        <div class="invoice-price"  style="height: 150px;">
+							<div class="invoice-price-left" style="padding:10px 20px;">
+								<div class="invoice-price-row">
+									<div class="sub-price" id="formatQue"></div>
+									<div class="sub-price" style="vertical-align: bottom">
+										<i class="fa fa-plus"></i>
+									</div>
+									<div class="sub-price" id="simiQue"></div>
+								</div>
+							</div>
+							<!-- <div class="invoice-price-right" style="padding:10px; font-size:20px; text-align:left;vertical-align: middle" id="allQue"></div> -->
+							<div class="invoice-price-right" style="padding:10px; font-size:20px;text-align:left;vertical-align: middle">
+								<div class="sub-price" id="allQue"></div>
+							</div>
+						</div>
+                      <!-- <div class="cc text-center" style="margin-top:25px;">
+                        <div class="progress progress-striped active" style=" background-color: #ccc; ">
+                          <div class="progress-bar" style="width: 0%;" id="baseCount">0%</div>问题总数中标准问题所占百分比
+                        </div> -->
+                        <!-- <p class="smTitle"><span style="color:#08D8D8;"><i class="fa fa-comments"></i></span>&nbsp;知识库使用情况</p> -->
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" id="customQues">
+              <div class="col-md-6">
+                <div class="panel">
+                  <div class="panel-body">
+                    <legend>客户最多提问TOP10 (24小时)</legend>
+                    <div id="mostAsked">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="panel">
+                  <div class="panel-body">
+                    <legend>24小时客户问答情况&nbsp<span class="timeTip" data-original-title="24小时内用户和机器人交互次数"><i class="fa fa-question-circle" id="popi" style="font-size: 20px;position:relative;top:2px"></i></span></legend>
+                    <div id="mainLine" style="width:100%;height:300px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" id="styProm">
+              <div class="col-md-6">
+                <div class="panel">
+                  <div class="panel-body">
+                    <legend>待学习问题
+						<a class="pull-right" href="../../web/knowledge/intelLearnList.html"data-num="0" data-name="智能学习">查看更多</a>
+					</legend>
+                    <div id="toLearn">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="panel">
+                  <div class="panel-body">
+                    <legend>公告栏</legend>
+                    <div id="news">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/echarts/echarts.min.js"></script>
+	<script src="../common/js/echarts/macarons.js"></script>
+	<script src="../common/js/countUp.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="js/home.js?time=20160801"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.timeTip').tooltip();
+			App.init();
+			iframeTab.init({iframeBox: ''});
+			var myChart1 = echarts.init(document.getElementById('main'), 'macarons');
+			var myChart2 = echarts.init(document.getElementById('mainLine'), 'macarons');
+			myChart1.showLoading();
+			myChart2.showLoading();
+			//回答匹配率,24小时问答情况接口
+			$.getJSON("../../HomePage/getNewParams",function(json){
+				if(json.status!=0){
+					//yunNoty(json);
+				} else {
+					showStyle(json);
+				}
+			});
+			
+			
+			//客户最多提问
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../report/DetailQuestion/doShow?timeSelect=2&sourceId=-1'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.List) {
+							var List = data.List;
+							var len = List.length>10?10:List.length;
+							for(var i=0; i < len; i++) {
+								if(List[i].Question) {
+									$('#mostAsked').append('<p class="mostAskedItem">'+(i+1)+'. '+List[i].Question+'--<span style="font-size:10px;color:#ccc;">[提问'+List[i].Hits+'次]</span></p>');
+								}
+							}
+							if(List.length == 0) {
+								$('#mostAsked').append('<div class="col-md-12" style="text-align:center;">暂无客户提问！</div>');
+							}
+						}
+					} else {
+						//yunNoty(data);
+						$(myChart2).resize();
+						$("#customQues").css('display','none');
+					}
+				}
+			});
+
+			//待学习问题
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../LearnQue/listNeedLearn?pageNo=1&pageSize=10&orderType=4&isLeaf=0&groupId=0'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.List) {
+							var List = data.List;
+							for(var i=0; i < List.length; i++) {
+								if(List[i].FormatQue) {
+									$('#toLearn').append('<a class="toLearnItem" href="../../web/knowledge/intelLearnDeal.html?solutionId='+List[i].SolutionId+'" data-num="0" data-name="智能学习">'+(i+1)+'. '+List[i].FormatQue+'</a>');
+								}
+							}
+							if(List.length == 0) {
+								$('#toLearn').append('<div class="col-md-12" style="text-align:center;">暂无待学习问题！</div>');
+							}
+							//老式的跳转标签页的方法，已废弃
+							//$('.toLearnItem').on('click', function() {
+							//	var $document = $(window.parent.document),
+							//		$this = null;
+							//	$('.childLink', $document).each(function() {
+							//		if($(this).attr('href') == '#knowledge/intelLearnList') {
+							//			$this = $(this);
+							//		}
+							//	});
+							//	$('li', $document).removeClass('active');
+							//	if($this) {
+							//		$this.parents('li').addClass('active');
+							//		$this.parents('li[data-link]').children('ul').show();
+							//	}
+							//	document.location.href = $(this).attr('ref');
+							//});
+						}
+					} else {
+						//yunNoty(data);
+						$("#styProm").css('display','none');
+					}
+				}
+			});
+
+			//公告栏
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../News/list'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.list) {
+							var List = data.list;
+							var year = '';
+							var month = '';
+							var HTML = '';
+							for(var i=0; i < List.length; i++) {
+								if(List[i].Time) {
+									if(year != List[i].Time.substring(0,4)) {
+										year = List[i].Time.substring(0,4);
+										HTML += '<p class="year">'+year+'年</p>';
+									}
+									if(month != List[i].Time.substring(5,7)) {
+										if(month == '') {
+											HTML += '<div class="mon">';
+										}
+										month = List[i].Time.substring(5,7);
+										HTML += '</div>';
+										HTML += '<p class="month">'+month+'月</p>';
+										HTML += '<div class="mon">';
+									}
+								}
+								if(List[i].Title) {
+									HTML += '<a href="newDetail.html?id='+ List[i].Id +'" data-num="0" data-name="'+List[i].Title+'"><p class="newsItem"><span class="dateSpan">'+List[i].Time.substring(5,10).split('-').join('.')+'</span>  '+List[i].Title+'</p></a>';
+								}
+								if(i == List.length-1) {
+									HTML += '</div>';
+								}
+							}
+							if(HTML != '') {
+								$('#news').append(HTML);
+							} else {
+								$('#news').append('<div class="col-md-12" style="text-align:center;">暂无公告！</div>');
+							}
+						}
+					} else {
+						//yunNoty(data);
+					}
+				}
+			});
+
+			$('#mostAsked').slimScroll({
+				height: '300px'
+			});
+			$('#toLearn').slimScroll({
+				height: '300px',
+        		allowPageScroll: true
+			});
+			$('#news').slimScroll({
+				height: '300px',
+        		allowPageScroll: true
+			});
+		});
+	</script>
+</body>
+</html>

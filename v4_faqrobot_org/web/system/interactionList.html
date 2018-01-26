@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>交互量列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">交互量列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">交互量列表</h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="registerForm">
+							<div class="form-group m-r-10">
+								<label class="control-label m-r-5">机器人名称：</label>
+								<input type="text" class="form-control" name="robotName">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label m-r-5">网站名称：</label>
+								<input type="text" class="form-control" name="webName">
+							</div>
+							<button class="btn btn-primary m-r-5" type="button" id="searchWebBtn"><i class="glyphicon glyphicon-search"></i></button>
+							<button class="btn btn-default m-r-5" type="button" onclick="$('#registerForm')[0].reset()"><i class="glyphicon glyphicon-remove"></i></button>
+						</form>
+						<table class="table" id="registerWeb">
+							<thead>
+								<tr>
+									<th>网站名称</th>
+									<th>机器人名称</th>
+									<th>站点Id</th>
+									<th>交互总量</th>
+									<th>查看交互量</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="registerWebList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			registerWebList();
+		});
+
+		function registerWebList(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$('#registerWeb').tableAjaxLoader2(7);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../report/WebConfigDetail/getWebVisitData?pageSize=' + 20 + '&pageNo=' + pageNo),
+				data: $("#registerForm").serialize(),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#registerWeb').find('tbody').html('<tr><td colspan="7" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#registerWebList').html('');
+							return;
+						}
+						var s = []; //暂时存储html代码
+						if (data.List.length > 0) {
+							for (var i = 0; i < data.List.length; i++) {
+								s.push('<tr>');
+								s.push('<td>');
+								s.push(data.List[i].WebName == null ? '&nbsp;': data.List[i].WebName);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.List[i].RobotName == null ? '&nbsp;': data.List[i].RobotName);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.List[i].WebId == null ? '&nbsp;': data.List[i].WebId);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.List[i].Sum == null ? '&nbsp;': data.List[i].Sum);
+								s.push('</td>');
+								s.push('<td>');
+								s.push("<a href='interactionDetail.html?webId=" + data.List[i].WebId + "' target='_blank'>交互量详细</a>");
+								s.push('</td>');
+								s.push('</tr>');
+							}
+							$('#registerWeb').find('tbody').html(s.join(''));
+							//下面开始处理分页
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									registerWebList(page);
+								}
+							};
+							setPage('registerWebList', options);
+						} else {
+							$('#registerWeb').find('tbody').html('<tr><td colspan="7" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#registerWebList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		$('#searchWebBtn').click(function() {
+			registerWebList();
+		});
+	</script>
+</body>
+</html>

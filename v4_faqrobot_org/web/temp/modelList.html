@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>数据模型</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">数据模型</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">数据模型</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addfromModal">
+							<span>添加数据模型</span>
+						</a>
+             <table class="table" id="formTabList">
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>简介信息</th>
+                  <th>顶部展示的默认提示语</th>
+                  <th>最大展示的属性数量</th>
+                  <th>是否展示退出标记</th>
+                  <th>在属性列表前的提示语</th>
+                  <th>在属性列表后的提示语</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            <div id="formpage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="addfromModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 class="modal-title">添加数据模型</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="sub_Form" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-md-3 control-label">名称</label>
+            <div class="col-md-7">
+              <input type="text" name="name" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">简介信息</label>
+            <div class="col-md-7">
+              <input type="text" name="info" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">顶部展示的默认提示语</label>
+            <div class="col-md-7">
+              <textarea type="text" name="topWords" class="form-control" style="resize:none;"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">最大展示的属性数量</label>
+            <div class="col-md-7">
+              <input type="text" name="maxShowItemCount" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">是否展示退出标记</label>
+            <div class="col-md-7">
+              <label>
+                <input type="radio" name="outSelect" value="0" checked="checked">
+               	 展示
+              </label>
+              <label>
+                <input type="radio" name="outSelect" value="1">
+                	不展示
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">在属性列表前的提示语</label>
+            <div class="col-md-7">
+              <input type="text" name="beforeWords" value="您是否想问以下内容" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">在属性列表后的提示语</label>
+            <div class="col-md-7">
+              <input type="text" name="afterWords" value="请输入序号选择查看对应内容" class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#sub_Form').submit()">添加</button>
+        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="editfromModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 class="modal-title">修改数据模型</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="edit_Form" class="form-horizontal">
+          <input type="hidden" name="id">
+          <div class="form-group">
+            <label class="col-md-3 control-label">名称</label>
+            <div class="col-md-7">
+              <input type="text" name="name" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">简介信息</label>
+            <div class="col-md-7">
+              <input type="text" name="info" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">顶部展示的默认提示语</label>
+            <div class="col-md-7">
+              <textarea type="text" name="topWords" class="form-control" style="resize:none;"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">最大展示的属性数量</label>
+            <div class="col-md-7">
+              <input type="text" name="maxShowItemCount" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">是否展示退出标记</label>
+            <div class="col-md-7">
+              <label>
+                <input type="radio" name="outSelect" value="0" checked="checked">
+                	展示
+              </label>
+              <label>
+                <input type="radio" name="outSelect" value="1">
+                	不展示
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">在属性列表前的提示语</label>
+            <div class="col-md-7">
+              <input type="text" name="beforeWords" value="您是否想问一下内容" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">在属性列表后的提示语</label>
+            <div class="col-md-7">
+              <input type="text" name="afterWords" value="请输入序号选择查看对应内容" class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#edit_Form').submit()">修改</button>
+        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+  <script src="js/model.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      App.init();
+      formList();
+      $('#sub_Form').validate({
+        rules:{
+            maxShowItemCount:{
+                digits: true,
+            }
+        },
+        messages:{
+            maxShowItemCount:{
+                digits: '请输入大于零的数字',
+            }
+        },
+        submitHandler: addFrom
+      });
+      $('#edit_Form').validate({
+        rules:{
+            maxShowItemCount:{
+                digits: true,
+            }
+        },
+        messages:{
+            maxShowItemCount:{
+                digits: '请输入大于零的数字',
+            }
+        },
+        submitHandler: editFrom
+      });
+    });
+  </script>
+</body>
+</html>

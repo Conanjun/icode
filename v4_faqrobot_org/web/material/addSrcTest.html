@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        div .jp-interface {
+            background-color: #F0F0F0;
+        }
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+        /* .webuploader-pick {
+            width: 100px;
+        }
+        .webuploader-pick:before {
+            position: absolute;
+            left: 15px;
+        }
+        .webuploader-pick div {
+            position: absolute;
+            right: 15px;
+        } */
+    </style>
+</head>
+<body>
+    <!-- #modal-dialog -->
+    <div class="modal fade" id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">视频播放</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="jp_container_video" class="jp-video jp-video-360p" role="application" aria-label="media player">
+                        <div class="jp-type-single">
+                            <div id="jquery_jplayer_video" class="jp-jplayer"></div>
+                            <div class="jp-gui">
+                                <div class="jp-video-play">
+                                    <button class="jp-video-play-icon" role="button" tabindex="0">play</button>
+                                </div>
+                                <div class="jp-interface">
+                                    <div class="jp-progress">
+                                        <div class="jp-seek-bar">
+                                            <div class="jp-play-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                                    <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                                    <div class="jp-controls-holder">
+                                        <div class="jp-controls">
+                                            <button class="jp-play" role="button" tabindex="0">play</button>
+                                            <button class="jp-stop" role="button" tabindex="0">stop</button>
+                                        </div>
+                                        <div class="jp-volume-controls">
+                                            <button class="jp-mute" role="button" tabindex="0">mute</button>
+                                            <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+                                            <div class="jp-volume-bar">
+                                                <div class="jp-volume-bar-value"></div>
+                                            </div>
+                                        </div>
+                                        <div class="jp-toggles">
+                                            <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                            <button class="jp-full-screen" role="button" tabindex="0">full screen</button>
+                                        </div>
+                                    </div>
+                                    <div class="jp-details">
+                                        <div class="jp-title" aria-label="title">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jp-no-solution">
+                                <span>Update Required</span>
+                                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="editClassModel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择分类</h4>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="mId">
+					<input type="hidden" name="treeName">
+					<input type="hidden" name="treeId">
+						<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeEditClass',true);" style="cursor:pointer;"></span>
+						<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeEditClass',false);" style="cursor:pointer;"></span>
+						<div class="treeDivModal">
+							<ul id="treeEditClass" class="ztree"></ul>
+						</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selClassBtn">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addClassModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">新增分类</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="addClassForm" class="form-horizontal">
+								<fieldset>
+									<label class="col-md-3">分类名称</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入分类名称" class="form-control" name="name" maxlength="20">
+										<input type="hidden" name="parentId">
+										<input type="hidden" class="dropClass">
+										<input type="hidden" class="dropClassName">
+										<input type="hidden" name="mode" value="9">
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addClassForm').submit()">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editClassModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改分类名称</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="editClassForm" class="form-horizontal">
+								<fieldset>
+									<label class="col-md-3">分类名称</label>
+									<div class="col-md-7">
+										<input type="text" placeholder="请输入分类名称" class="form-control" name="className">
+										<input type="hidden" name="id">
+										<input type="hidden" name="classhideName">
+										<input type="hidden" class="mode" value="9">
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editClassForm').submit()">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="clearModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">清空素材</h4>
+						</div>
+						<div class="modal-body">
+							<p>您确定要清空该分类下的所有素材吗？</p>
+							<input type="hidden" class="gId">
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="confrimClearQue">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="DelClassModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除分类</h4>
+						</div>
+						<div class="modal-body">
+							<p>您确定要删除该分类吗？</p>
+							<input type="hidden" name="classId">
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="confrimdel">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">素材管理</a></li>
+                <li>添加素材</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">添加素材</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="row">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="">
+                            <div class="table-responsive">
+                                <div class="panel-body">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="panel">
+						<div style="border: 1px solid rgb(217, 224, 231); border-radius: 3px; padding: 5px; overflow: hidden; margin-bottom: 0px; height: auto;">
+							<span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeClasses',true);" style="cursor:pointer;"></span>
+							<span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeClasses',false);" style="cursor:pointer;"></span>
+							<div class="treeDivLeft">
+								<ul id="treeClasses" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-md-9">
+                    <ul class="nav nav-pills">
+                        <li class="active pic"><a class="tabClick-addSrc" href="#default-tab-1" data-toggle="tab">图片</a></li>
+                        <li class="audio"><a class="tabClick-addSrc" href="#default-tab-2" data-toggle="tab">语音</a></li>
+                        <li class="video"><a class="tabClick-addSrc" href="#default-tab-3" data-toggle="tab">视频</a></li>
+                        <li class="doc"><a class="tabClick-addSrc" href="#default-tab-4" data-toggle="tab">文档</a></li>
+                        <li class="etc"><a class="tabClick-addSrc" href="#default-tab-5" data-toggle="tab">其他</a></li>
+                    </ul>
+                    <div class="tab-content" style="position: relative; margin-bottom: -15px; padding-left: 0; padding-right: 0;">
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <div class="tab-addSrc">
+                            <p class="m-t-0"><i class="fa fa-cog"></i> 支持多图片上传，单次最多上传10张图片</p>
+                            <p class="text-left m-b-0">
+                                <a href="javascript:;" class="add-src">添加图片</a>
+                                <a href="javascript:;" class="btn btn-default mult-del pull-right" style="margin-left: -14px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+                            </p>
+                        </div>
+                        <div class="tab-addSrc">
+                            <p class="text-left m-b-0">
+                                <a href="javascript:;" class="add-src">添加语音</a>
+                                <a href="javascript:;" class="btn btn-default mult-del pull-right" style="margin-left: -14px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+                            </p>
+                        </div>
+                        <div class="tab-addSrc">
+                            <p class="text-left m-b-0">
+                                <a href="javascript:;" class="add-src">添加视频</a>
+                                <a href="javascript:;" class="btn btn-default mult-del pull-right" style="margin-left: -14px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+                            </p>
+                        </div>
+                        <div class="tab-addSrc">
+                            <p class="text-left m-b-0">
+                                <a href="javascript:;" class="add-src">添加文档</a>
+                                <a href="javascript:;" class="btn btn-default mult-del pull-right" style="margin-left: -14px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+                            </p>
+                        </div>
+                        <div class="tab-addSrc">
+                            <p class="text-left m-b-0">
+                                <a href="javascript:;" class="add-src">添加其他</a>
+                                <a href="javascript:;" class="btn btn-default mult-del pull-right" style="margin-left: -14px;"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+                            </p>
+                        </div>
+
+
+                        <div class="col-md-3 pull-right search-addSrc" style="padding-bottom: 15px; margin-right: 105px; margin-top: -38px;">
+                            <div class="input-group" style="margin-right: -3px;">
+                                <input type="text" class="search-input-addSrc form-control" placeholder="输入搜索的素材名称">
+                                <span class="searchAddSrc input-group-btn">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="width: 10px;"><input class="multCos" type="checkbox"></th>
+								<th>素材预览</th>
+								<th>名称</th>
+								<th>文件大小</th>
+								<th>添加时间</th>
+								<th>添加人</th>
+								<th style="width: 60px;">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div id="itemContainer"></div>
+                </div>
+			</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/webuploader.css">
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="../common/css/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../common/js/jquery.jplayer.min.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/webuploader.min.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/mainTest.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+
+var INTERVAL;
+$(document).ready(function() {
+	//角色ztree滚动条
+	$('.treeDivLeft').slimScroll({
+		height: '600px'
+	});
+	$('#addClassForm').validate({
+		submitHandler: doAddClasses
+	});
+	$('#editClassForm').validate({
+		submitHandler: editClassify
+	});
+	//清空表单
+	$('#addClassModal').on('hidden.bs.modal', function () {
+		$('#addClassForm input').val('');
+		$('#addClassForm input[name=mode]').val('9');
+	});
+	$('#editClassModal').on('hidden.bs.modal', function () {
+		$("#editClassForm input").val('');
+		$('#editClassForm input[name=mode]').val('9');
+	});
+});
+$('#editreName input[name=className]').keydown(function(event) {
+    if (event.keyCode == 13) {
+        editClassify();
+        return false;
+    }
+})
+//添加子分类表单提交
+function doAddClasses() {
+	//1.获取属性结构当前的Id代号
+	var zTree = $.fn.zTree.getZTreeObj("treeClasses");
+	var nodes = zTree.getSelectedNodes();
+	if (nodes.length == 0) {
+		yunNotyError("请先选择一个分类！");
+		return;
+	}
+	if (nodes[0].level > 4) {
+		yunNotyError("分类的层级最高为5级！");
+		return;
+	}
+	if ($('#addClassForm input[name=name]').val().length < 1) {
+		yunNotyError("分类名称不能少于1个字符！");
+		return;
+	}
+
+	$('#addClassForm input[name=parentId]').val(nodes[0].Id);
+	$.ajax({
+		type: 'get',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../classes/editClassesInfo'),
+		data: $("#addClassForm").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				if (data.classes) {
+					zTree.addNodes(nodes[0], data.classes);
+				}
+				$('#addClassModal').modal('hide');
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//修改子分类表单提交
+function editClassify() {
+	var classId = $('#editClassForm input[name=id]').val();
+	var classHideName = $('#editClassForm input[name=classhideName]').val();
+	var className = $('#editClassForm input[name=className]').val();
+
+	if (className.length < 1) {
+		yunNotyError("分类名称不能少于1个字符！");
+		$('#editClassForm input[name=className]').focus();
+		return;
+	}
+
+	$.ajax({
+		type: 'get',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../classes/doEditClass'),
+		//data:encodeURI(tempcontent),
+		data: $("#editClassForm").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				$('#editClassModal').modal('hide');
+				var treeObj = $.fn.zTree.getZTreeObj("treeClasses");
+				var nodes = treeObj.getNodeByParam("Id", classId, null);
+				nodes.Name = className;
+				treeObj.updateNode(nodes, true);
+				yunNoty(data);
+			} else {
+				yunNoty(data);
+				$('#editClassForm input[name=className]').focus();
+			}
+		}
+	});
+}
+    </script>
+
+</body>
+</html>

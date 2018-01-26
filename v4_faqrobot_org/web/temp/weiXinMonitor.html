@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+	<title>监控列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	
+	<style type="text/css">
+		.panel-body{
+			overflow: hidden;
+		}
+		#left{
+			float:left;
+			width: 20%;
+			border-right: 1px solid #dfdfdf;
+			margin-top: 10px;
+		}
+		#right{
+			float:left;
+			width: 80%;
+		}
+		.hr1{
+			width: 90%;
+			margin: 0 auto;
+		}
+		#head{
+		    font-size: 13px;
+		    font-weight: bold;
+		    color: #333;
+		    padding-left: 20px;
+		    padding-bottom: 10px;
+		}
+		#questionName{
+		    font-size: 20px;
+		    color: #666666;
+		    margin-left: 18px;
+		    margin-top: 3px;
+		    height: 35px;
+		}
+		.hr2{
+			width: 97.5%;
+			margin: 0 auto;
+		}
+		#question{
+			width: 97.5%;
+			margin: 0 auto;
+		}
+		#crux{
+			width: 100%;
+			overflow: hidden;
+		}
+		.cruxText{
+			width: 100%;
+			overflow: hidden;
+			margin: 0 auto;
+		}
+		.cruxText:hover{
+			background-color: #EFF4F5;
+		}
+		.num{
+		    background-color: #BAC3C5;
+		    float: right;
+		    margin-right: 25px;
+		    margin-top: 7px;
+		    padding: 2px 12px;
+		    color: white;
+		    font-weight: bold;
+		    border-radius: 16px;
+		}
+		.crux{
+			float: left;
+		    font-size: 16px;
+		    padding: 8px 0px;
+	        margin-left: 17px;
+		}
+		.left{
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+			margin-top: 15px;
+		}
+		.time{
+		    width: 100%;
+		    margin-bottom: -2px;
+		    text-align: center;
+		}
+		.leftImg{
+			float: left;
+		    margin-top: 10px;
+		}
+		.leftChat{
+			max-width: 200px;
+			padding: 7px 5px;
+			float: left;
+			margin-top: 20px;
+			margin-left: 10px;
+			border-radius:3px;
+			border:1px solid #dfdfdf;
+		}
+		.itemLeft{
+			float: left;
+		}
+		.robot{
+			position: absolute;
+		    margin-top: -15px;
+		    margin-left: 10px;
+		}
+		.chatCtn{
+		    /* max-height: 100px; */
+    		overflow: auto;
+		}
+		.leftChat:before {
+		    content: '';
+		    position: absolute;
+		    top: 37px;
+		    left: 54px;
+		    border: 7px solid transparent;
+		    border-right-color: #ccd0d4;
+		}
+		.record{
+			text-decoration: none;
+		}
+		#revert{
+			float: right!important;
+    		margin-top: -43px;
+		}
+	</style>
+  </head>
+  
+ <body class="pace-done">
+ 
+ 		
+ 	<div class="modal" id="modal-dialog-record">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">聊天记录</h4>
+                </div>
+                <div class="modal-body" style="padding: 5px 15px;">
+
+                    <div class="chatCtn" style="margin-bottom: 24px;">
+                        <div id="chats">
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="modal-footer" style="margin-top: -25px;">
+                	<div id="itemContainerPageList"></div>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+ 
+ 
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">监控列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">监控列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div id="left">
+							<div id="head">关键词</div>
+							<hr style="height:1px;border:none;border-top:1px solid #dfdfdf;" class="hr1"/>
+							<div id="crux">
+							</div>
+						</div>
+						<div id="right">
+							<div id="questionName"></div>
+							<a data-toggle="modal" class="btn btn-primary pull-left m-r-4" href="../../web/temp/groups.html" id="revert">
+								<span>微信群列表</span>
+							</a>
+							<hr style="height:1px;border:none;border-top:1px solid #dfdfdf;" class="hr2"/>
+							<div id="question">
+							<table class="table" id="questionTabList">
+							<thead>
+								<tr>
+									<th style="width:20%;">关键词问题</th>
+									<th style="width:20%;">微信群名</th>
+									<th style="width:20%;">微信昵称</th>
+									<th style="width:20%;">时间</th>
+									<th style="width:20%; text-align:right;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="questionTabBody">
+							</tbody>
+						</table>
+						<div id="questionPageList"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	
+	<script type="text/javascript">
+	
+	 $(document).ready(function() {
+            App.init();
+        });
+    
+		$(function(){
+		
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null)
+					return (r[2]);
+				return null;
+			}
+			
+			var groupsName=decodeURI(GetQueryString("groupsName"));  //从url地址中获取群名
+			
+			$.post("../../WxGroupTask/selectByGroup",{
+					gName:groupsName				
+				},function(json){   //关键词列表
+				if(json.status==0){
+					var renderTo=$("#crux");
+					$("#crux").html("");
+					var html1="";
+					if(json.list.length>0){
+						$(json.list).each(function(i,t){  //生成关键词列表
+						if(t.WxWord!=null){
+							var cruxText=$("<div class='cruxText'></div>").appendTo(renderTo);
+							var crux=$("<div class='crux'></div>").text(t.WxWord).appendTo(cruxText);
+							var num=$("<div class='num'></div>").text(t.Count).appendTo(cruxText);
+							cruxText.data("wxWord",t.WxWord);
+							cruxText.data("Count",t.Count);
+							$(cruxText).click(function(){  //关键字点击事件
+								var wxWord=$(this).data("wxWord");
+								var Count=$(this).data("Count");
+								var questionHeader='关键词 : "'+wxWord+'"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录 : '+Count+'条';
+								$("#questionName").html(questionHeader);  //更改右侧头部文字
+								var initSrc=function(pageNo){
+									$.post("../../WxGroupTask/selectByWord",{   //右侧聊天记录列表
+										wxWord:wxWord,
+										gName:groupsName,
+										pageNo:pageNo,
+										pageSize:20
+									},function(data){
+										if(data.status==0){
+										var renderTo=$("#questionTabBody");
+										$("#questionTabBody").html("");
+										var html="";
+										if(data.list.length>0){
+										$(data.list).each(function(i,t){    //生成右侧聊天记录列表
+											var tr=$("<tr></tr>").appendTo(renderTo);
+											var td=$("<td></td>").text(t.ChatMessage).appendTo(tr);
+											var td=$("<td></td>").text(t.GroupName).appendTo(tr);
+											var td=$("<td></td>").text(t.PersonName).appendTo(tr);
+											var td=$("<td></td>").text(t.DateTime).appendTo(tr);
+											var td1=$("<td style='text-align:right'></td>").appendTo(tr);
+											var a=$("<a data-toggle='modal' href='#modal-dialog-record' class='record'></a>").appendTo(td1);
+											var span=$("<span class='chatLog'></span>").text("查看聊天记录").appendTo(a);
+											span.data("id",t.Id);
+											span.data("GroupName",t.GroupName);
+										});
+										record();  //给查看聊天记录绑定事件
+										}
+										else{
+											html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+				           					$('#questionTabBody').empty().append(html);
+										}
+										
+										var options = {
+							              data: [data, 'list', 'total'],
+							              currentPage: data.currentPage,
+							              totalPages: data.totlePages ? data.totlePages : 1,
+							              alignment: 'right',
+							              onPageClicked: function(event, originalEvent, type, page) {
+							                pageNo = page;
+							                initSrc(pageNo);
+							              }
+							            };
+							            $('#questionPageList').bootstrapPaginator(options);
+										
+										}
+									});
+									};
+								initSrc(1);
+							});
+						}
+					});
+					}
+					else{
+						html1 += '<div style="width:100%;text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</div>';
+			            $('#crux').empty().append(html1);
+					}
+					
+					Count();
+				}
+				else{
+					yunNotyError("关键词列表加载失败!");
+				}
+			});
+			chatCtnHeight();
+			$(window).resize(function(){  //动态控制聊天记录弹出框的大小
+				chatCtnHeight();
+			});
+			
+		});
+		
+		
+		function Count(){  //关键词触发数量hover事件
+			$(".cruxText").each(function(i,t){
+				$(this).hover(function(){
+					$(this).children(".num").css("background-color","#FF595F");
+				},function(){
+					$(this).children(".num").css("background-color","#BAC3C5");
+				});
+			});
+		}
+		
+		
+		function chatCtnHeight(){  //聊天记录窗口高度
+			$(".chatCtn").css("max-height",$(window).height()/2);
+		}
+		
+		function record(){         //聊天记录数据生成
+			$(".chatLog").each(function(i,t){
+				$(t).click(function(){
+				var id=$(t).data("id");
+				var GroupName=$(t).data("GroupName");	
+				$.post("../../WxGroupTask/selectByLevel",{  //生成聊天记录
+						gName:GroupName,
+						id:id,
+						pageNo:1,
+						pageSize:5
+					},function(data){
+					if(data.status==0){
+						var renderTo=$("#chats");
+						$("#chats").html("");
+						if(data.list.length>0){
+							for(var i in data.list){
+								var left=$("<div class='left'></div>").appendTo(renderTo);
+								var leftTime=$("<div class='time'></div>").text(data.list[i].DateTime).appendTo(left);
+								var leftImg=$("<img class='leftImg' src='images/khimg.png'/>").appendTo(left);
+								var leftChat=$("<div class='leftChat'></div>").text(data.list[i].ChatMessage).appendTo(left);
+								var robot=$("<div class='robot'></div>").text(data.list[i].PersonName).appendTo(left);
+							}
+						}
+						else {
+				            html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+				            $('#chats').empty().append(html);
+			          	}
+						
+						var options = {
+			              data: [data, 'list', 'total'],
+			              currentPage: data.currentPage,
+			              totalPages: data.totlePages ? data.totlePages : 1,
+			              alignment: 'right',
+			              onPageClicked: function(event, originalEvent, type, page) {
+			                pageNo = page;
+			                init(pageNo);
+			              }
+			            };
+			            $('#itemContainerPageList').bootstrapPaginator(options);
+					}
+				});
+				
+				
+				
+				var init=function(pageNo){  //聊天记录翻页
+					var GroupName=$(t).data("GroupName");
+					
+					$.post("../../WxGroupTask/selectByLevel",{
+						gName:GroupName,
+						pageNo:pageNo,
+						pageSize:5
+					},function(data){
+					if(data.status==0){
+						var renderTo=$("#chats");
+						$("#chats").html("");
+						if(data.list.length>0){
+							for(var i in data.list){
+								var left=$("<div class='left'></div>").appendTo(renderTo);
+								var leftTime=$("<div class='time'></div>").text(data.list[i].DateTime).appendTo(left);
+								var leftImg=$("<img class='leftImg' src='images/khimg.png'/>").appendTo(left);
+								var leftChat=$("<div class='leftChat'></div>").text(data.list[i].ChatMessage).appendTo(left);
+								var robot=$("<div class='robot'></div>").text(data.list[i].PersonName).appendTo(left);
+							}
+						}
+						else {
+				            html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+				            $('#chats').empty().append(html);
+			          	}
+						
+						var options = {
+			              data: [data, 'list', 'total'],
+			              currentPage: data.currentPage,
+			              totalPages: data.totlePages ? data.totlePages : 1,
+			              alignment: 'right',
+			              onPageClicked: function(event, originalEvent, type, page) {
+			                pageNo = page;
+			                init(pageNo);
+			              }
+			            };
+			            $('#itemContainerPageList').bootstrapPaginator(options);
+					}
+				});
+				};
+				});
+		});
+		}
+		
+	</script>
+  </body>
+</html>

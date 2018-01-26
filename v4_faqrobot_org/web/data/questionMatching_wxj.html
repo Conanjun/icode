@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>应答准确率统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <link rel="shortcut icon" href="/common/images/fav.ico" type="image/x-icon">
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">应答准确率统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">应答准确率统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计智能机器人对客户提问的应答准确率情况"
+                   class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        应答准确率统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/VisitMatchingRate/list"/>
+                    <div style="font-size:0;" class="text-right">
+                        <div class="btn-group m-r-4" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="byisBusiness" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker">
+                                <option value="-1">全部访客</option>
+                                <option value="1">业务</option>
+                                <option value="0">聊天</option>
+                            </select>
+                        </div>
+                        <div id="DataSource" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker" id="selectpicker">
+                                <option value="-2">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <div id="byChatType" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker">
+                                <option value="-1">问题格式</option>
+                                <option value="3">文本类型</option>
+                                <option value="1">图片类型</option>
+                                <option value="2">语音类型</option>
+
+                            </select>
+                        </div>
+                        <div type="button" id="historyCount" class="btn btn-info disabled pull-right f-s-14">历史累计回答：0
+                        </div>
+                        <button type="button" onclick="exportExcel_new3()"
+                                class="btn btn-primary m-r-4 pull-right f-s-14"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main1" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main2" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>渠道&nbsp;<i data-toggle="tooltip" data-placement="right" title="渠道"
+                                           class="fa fa-question-circle"></i></th>
+                            <th>直接回答&nbsp;<i data-toggle="tooltip" data-placement="right" title="机器人直接回答的总数"
+                                             class="fa fa-question-circle"></i></th>
+                            <th>理解回答&nbsp;<i data-toggle="tooltip" data-placement="right" title="机器人理解回答的总数"
+                                             class="fa fa-question-circle"></i></th>
+                            <th>引导确认&nbsp;<i data-toggle="tooltip" data-placement="right" title="机器人给出引导且用户点击相应引导"
+                                             class="fa fa-question-circle"></i></th>
+                            <th>引导未确认&nbsp;<i data-toggle="tooltip" data-placement="right" title="机器人给出引导但用户并未点击"
+                                              class="fa fa-question-circle"></i></th>
+                            <th>触发未知回复&nbsp;<i data-toggle="tooltip" data-placement="right" title="机器人未能回答出问题"
+                                               class="fa fa-question-circle"></i></th>
+                            <th>准确率&nbsp;<i data-toggle="tooltip" data-placement="right" title="（直接回答+理解回答+引导确认）除以总数"
+                                            class="fa fa-question-circle"></i></th>
+                            <th>总计</th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script src="js/util_wxj.js"></script>
+
+
+<script type="text/javascript">
+    //	展示微信 网页 APP 大屏
+    function showdata2 (json) {
+//	各渠道准确率统计
+        var SourceWeb = []//定义网页
+        var SourceWeChat = []//定义微信
+        var SourceApp = []//定义APP
+        var SourceBigScree = []//定义大屏
+
+        var sgsUnSelect = 0
+        var sgsSuc = 0
+        var allCount = 0
+        var allCount2 = 0
+        var matchPercent = 0
+        var matchPercent2 = 0
+        var sum = 0
+        var t = 0
+        var len = json.List.length
+        var value = json.IntervalDays
+        var SourceWebData = []   //定义各渠道准确率统计 的日期存储
+        var DateList = []//时间
+        var Alen = json.List.length
+        var mainChart3 = echarts.init(document.getElementById('main2'), 'macarons')
+        var arr = []
+        var weblist = []
+        var wechatlist = []
+        var applist = []
+        var screenlist = []
+        for (var i = 0; i < Alen; i++) {
+            if (json.List[i].SourceId == 0) {
+                weblist.push(json.List[i])
+            }
+        }
+        for (var i = 0; i < Alen; i++) {
+            if (json.List[i].SourceId == 1) {
+                wechatlist.push(json.List[i])
+            }
+        }
+        for (var i = 0; i < Alen; i++) {
+            if (json.List[i].SourceId == 3) {
+                applist.push(json.List[i])
+            }
+        }
+        for (var i = 0; i < Alen; i++) {
+            if (json.List[i].SourceId == 9) {
+                screenlist.push(json.List[i])
+            }
+        }
+
+//		console.log(applist);
+        if (Alen === 0) {
+            //	各渠道准确率统计
+
+            SourceWeb.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SourceWeChat.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SourceApp.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SourceBigScree.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SourceWebData.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
+        }
+
+        var hourarr = []
+        if (value <= 3) {
+            for (var k = Alen - 1; k > -1; k--) {
+                var date = json.List[k].Day + '/'
+                if (json.List[k].Hour < 10) {
+                    date += '0' + json.List[k].Hour + ':00'
+
+                } else {
+                    date += json.List[k].Hour + ':00'
+                }
+                if (hourarr.indexOf(date) === -1) {
+                    hourarr.push(date)
+                }
+            }
+
+            function gethourcent (arr) {
+                var centarr = []
+                for (var i in hourarr) {
+                    centarr.push(0)
+                }
+                for (var j = 0; j < arr.length; j++) {
+                    var hour = arr[j].Hour < 10 ? '0' + arr[j].Hour + ':00' : arr[j].Hour + ':00'
+                    var time = arr[j].Day + '/' + hour
+                    for (var o = 0; o < hourarr.length; o++) {
+                        if (time == hourarr[o]) {
+                            sgsUnSelect = (arr[j].HourSgsAns) - (arr[j].HourSgsSuc)
+                            if (sgsUnSelect < 0) {
+                                sgsSuc = (arr[j].HourSgsAns)
+                            } else {
+                                sgsSuc = (arr[j].HourSgsSuc)
+                            }
+                            sum = arr[j].HourDtAns + sgsSuc + arr[j].HourGusAns
+                            allCount = (arr[j].HourDtAns) + (arr[j].HourGusAns) + sgsSuc + (sgsUnSelect) + (arr[j].HourUnAns)
+                            matchPercent = Math.round(sum / allCount * 10000) / 100.00
+                            centarr[o] = matchPercent
+                        }
+                    }
+                }
+                return centarr
+            }
+
+            var webcent = gethourcent(weblist)
+            var chatcent = gethourcent(wechatlist)
+            var appcent = gethourcent(applist)
+            var screenchat = gethourcent(screenlist)
+            for (var m in hourarr) {
+                hourarr[m] = hourarr[m].split('/')[1]
+            }
+            SourceWebData = hourarr
+
+            for (var k = Alen - 1; k > -1; k--) {
+                var date = ''
+                if (json.List[k].Hour < 10) {
+                    date = '0' + json.List[k].Hour + ':00'
+
+                } else {
+                    date = json.List[k].Hour + ':00'
+                }
+            }
+        } else {
+            var arr = []
+            for (var i = 0; i < Alen; i++) {
+                sgsUnSelect = (json.List[i].HourSgsAns) - (json.List[i].HourSgsSuc)
+
+                //引导回答分为引导确认和引导未确认，引导未确认有可能出现负数，原因是上一个小时引导下一个小时点击确认
+                //所以会出现引导确认的数字会大于引导回答的数字，如果出现这种情况：
+                //让引导确认的数量等于引导回答的数量
+                if (sgsUnSelect < 0) {
+                    sgsSuc = (json.List[i].HourSgsAns)
+                } else {
+                    sgsSuc = (json.List[i].HourSgsSuc)
+                }
+                allCount = (json.List[i].HourDtAns) + (json.List[i].HourGusAns) + sgsSuc + (sgsUnSelect) + (json.List[i].HourUnAns)
+                sum = json.List[i].HourDtAns + sgsSuc + json.List[i].HourGusAns
+                if (allCount === 0 || allCount == '' || allCount == '-') {
+                    matchPercent = ''
+                } else {
+                    matchPercent = Math.round(sum / allCount * 10000) / 100
+                }
+
+                DateList.push(json.List[i].Day)
+
+                function fn () {
+                    if (arr.indexOf(json.List[i].Day) == -1) {
+                        arr.push(json.List[i].Day)
+                    }
+                }
+
+                fn()
+                SourceWebData = arr
+            }
+            if (value > 3) {
+                function getarr (array1) {
+                    var ap = []
+                    for (var i = 0; i < arr.length; i++) {
+                        ap.push(0)
+                    }
+                    for (var j = 0; j < array1.length; j++) {
+//				console.log(1)
+                        for (var i = 0; i < arr.length; i++) {
+                            if (array1[j].Day == arr[i]) {
+
+                                sgsUnSelect = (array1[j].HourSgsAns) - (array1[j].HourSgsSuc)
+                                if (sgsUnSelect < 0) {
+                                    sgsSuc = (array1[j].HourSgsAns)
+                                } else {
+                                    sgsSuc = (array1[j].HourSgsSuc)
+                                }
+                                sum = array1[j].HourDtAns + sgsSuc + array1[j].HourGusAns
+                                allCount = (array1[j].HourDtAns) + (array1[j].HourGusAns) + sgsSuc + (sgsUnSelect) + (array1[j].HourUnAns)
+
+                                matchPercent = Math.round(sum / allCount * 10000) / 100.00
+                                ap[i] = matchPercent
+                            }
+                        }
+
+                    }
+                    return ap
+                }
+
+                var webcent = getarr(weblist)
+                var chatcent = getarr(wechatlist)
+                var appcent = getarr(applist)
+                var screenchat = getarr(screenlist)
+            }
+            else {
+                function getarr (array1) {
+                    var ap = []
+                    for (var i = 0; i < arr.length; i++) {
+                        ap.push(0)
+                    }
+                    for (var j = 0; j < array1.length; j++) {
+                        for (var i = 0; i < arr.length; i++) {
+                            if (array1[j].Hour == arr[i]) {
+
+                                sgsUnSelect = (array1[j].HourSgsAns) - (array1[j].HourSgsSuc)
+                                if (sgsUnSelect < 0) {
+                                    sgsSuc = (array1[j].HourSgsAns)
+                                } else {
+                                    sgsSuc = (array1[j].HourSgsSuc)
+                                }
+                                sum = array1[j].HourDtAns + sgsSuc + array1[j].HourGusAns
+                                allCount = (array1[j].HourDtAns) + (array1[j].HourGusAns) + sgsSuc + (sgsUnSelect) + (array1[j].HourUnAns)
+
+                                matchPercent = Math.round(sum / allCount * 10000) / 100.00
+                                ap[i] = matchPercent
+                            }
+                        }
+
+                    }
+                    return ap
+                }
+
+                var webcent = getarr(weblist2)
+                var chatcent = getarr(wechatlist2)
+                var appcent = getarr(applist2)
+                var screenchat = getarr(screenlist2)
+            }
+
+        }
+        var str = ''
+//	各渠道准确率统计
+        var option2 = {
+            title: {
+                text: '各渠道准确率统计'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var str = params[0].name + '<br>'
+                    $.each(params, function (i, item) {
+                        str += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + item.color + '"></span>'
+                        if (item.value) {
+                            str += item.seriesName + ' : ' + item.value + '%<br>'
+                        } else {
+                            item.value = 0
+                            str += item.seriesName + ' : ' + item.value + '<br>'
+                        }
+
+                    })
+                    return str
+                }
+
+            },
+            legend: {
+                data: ['网页', '微信', 'APP', '大屏']
+            },
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            xAxis: [{
+                type: 'category',
+                //boundaryGap: false,
+                data: SourceWebData,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 15,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '',
+//				min:-100,
+//				max:100,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value} %',
+                }
+            }],
+            series: [{
+                name: '网页',
+                type: 'line',
+                data: webcent,
+            },
+                {
+                    name: '微信',
+                    type: 'line',
+                    data: chatcent,
+                },
+                {
+                    name: 'APP',
+                    type: 'line',
+                    data: appcent,
+                },
+                {
+                    name: '大屏',
+                    type: 'line',
+                    data: screenchat,
+
+                },
+            ]
+        }
+        mainChart3.hideLoading()
+        mainChart3.setOption(option2)
+    }
+
+    function showdata (json) {
+        var DtAnsList = []//直接回答
+        var SgsAnsSList = []//引导确认
+        var SgsAnsUList = []//引导未确认
+        var GusAnsList = []//理解回答
+        var UnAnsList = []//触发未知回复
+        var DateList = []//时间
+        var Alen = json.listAll.length
+        var value = json.IntervalDays
+        var mainChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var mainChart2 = echarts.init(document.getElementById('main1'), 'macarons')
+        if (Alen === 0) {
+            DtAnsList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SgsAnsSList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            SgsAnsUList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            GusAnsList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            UnAnsList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            DateList.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
+        }
+        if (value > 3) {
+            for (var i = 0; i < Alen; i++) {
+                DtAnsList.push(json.listAll[i].HourDtAns)
+                SgsAnsSList.push(json.listAll[i].HourSgsSuc)
+                SgsAnsUList.push(json.listAll[i].HourSgsAns - json.listAll[i].HourSgsSuc)
+                GusAnsList.push(json.listAll[i].HourGusAns)
+                UnAnsList.push(json.listAll[i].HourUnAns)
+                DateList.push(json.listAll[i].Day)
+            }
+        } else {
+            for (var k = Alen - 1; k >= 0; k--) {
+                var date = ''
+                if (json.listAll[k].Hour < 10) {
+                    date = '0' + json.listAll[k].Hour + ':00'
+                } else {
+                    date = json.listAll[k].Hour + ':00'
+                }
+                DtAnsList.push(json.listAll[k].HourDtAns)
+                SgsAnsSList.push(json.listAll[k].HourSgsSuc)
+                SgsAnsUList.push(json.listAll[k].HourSgsAns - json.listAll[k].HourSgsSuc)
+                GusAnsList.push(json.listAll[k].HourGusAns)
+                UnAnsList.push(json.listAll[k].HourUnAns)
+                DateList.push(date)
+            }
+        }
+        // 初始 option
+        option = {
+            title: {
+                text: '应答准确率统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['直接回答', '理解回答', '引导确认', '引导未确认', '触发未知回复']
+            },
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            xAxis: [{
+                type: 'category',
+                //boundaryGap: false,
+                data: DateList,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 15,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value} 次'
+                }
+            }],
+            series: [{
+                name: '直接回答',
+                type: 'line',
+                data: DtAnsList
+            },
+                {
+                    name: '理解回答',
+                    type: 'line',
+                    data: GusAnsList
+                },
+                {
+                    name: '引导确认',
+                    type: 'line',
+                    data: SgsAnsSList
+                },
+                {
+                    name: '引导未确认',
+                    type: 'line',
+                    data: SgsAnsUList
+                },
+                {
+                    name: '触发未知回复',
+                    type: 'line',
+                    data: UnAnsList
+                }]
+        }
+        mainChart1.hideLoading()
+        mainChart1.setOption(option)
+
+        var len = json.List.length
+        var PieDAns = 0//直接回答
+        var PieSAns = 0//引导确认
+        var PieUAns = 0//引导未确认
+        var PieGAns = 0//理解回答
+        var PieCAns = 0//触发未知回复
+
+        for (var j = 0; j < len; j++) {
+            PieDAns += json.List[j].HourDtAns
+            PieSAns += json.List[j].HourSgsSuc
+            PieUAns += json.List[j].HourSgsAns - json.List[j].HourSgsSuc
+            PieGAns += json.List[j].HourGusAns
+            PieCAns += json.List[j].HourUnAns
+        }
+        var temp = [
+            {
+                name: '直接回答',
+                value: PieDAns
+            },
+            {
+                name: '理解回答',
+                value: PieGAns
+            },
+            {
+                name: '引导确认',
+                value: PieSAns
+            },
+            {
+                name: '引导未确认',
+                value: PieUAns
+            },
+            {
+                name: '触发未知回复',
+                value: PieCAns
+            }
+        ]
+
+        // 初始 option
+        option = {
+            title: {
+                text: '回答类型比例'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c}({d}%)'
+            },
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                radius: '55%',
+                name: '回答类型',
+                data: temp
+            }]
+        }
+        mainChart2.hideLoading()
+        mainChart2.setOption(option)
+
+        $(window).resize(function () {
+            $(mainChart1).resize()
+            $(mainChart2).resize()
+        })
+    }
+
+    /* 表格展示 */
+    function showtable (json) {
+        var table = ''
+        var len = json.List.length
+        var value = json.IntervalDays
+        var sgsUnSelect = 0
+        var sgsSuc = 0
+        var allCount = 0
+        var sum = 0
+        var matchPercent = 0
+        var count1 = 0
+        var count2 = 0
+        var count3 = 0
+        var count4 = 0
+        var count5 = 0
+        var count6 = 0
+        if (len === 0) {
+            table += '<tr >'
+            table += '<td colspan=\'7\' style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+            return
+        }
+        if (value > 3) {
+            for (var t = len - 1; t > -1; t--) {
+                sgsUnSelect = (json.List[t].HourSgsAns) - (json.List[t].HourSgsSuc)
+                //引导回答分为引导确认和引导未确认，引导未确认有可能出现负数，原因是上一个小时引导下一个小时点击确认
+                //所以会出现引导确认的数字会大于引导回答的数字，如果出现这种情况：
+                //让引导确认的数量等于引导回答的数量
+                if (sgsUnSelect < 0) {
+                    sgsSuc = (json.List[t].HourSgsAns)
+                } else {
+                    sgsSuc = (json.List[t].HourSgsSuc)
+                }
+                allCount = (json.List[t].HourDtAns) + (json.List[t].HourGusAns) + sgsSuc + (sgsUnSelect) + (json.List[t].HourUnAns)
+
+                var sourceId = ''
+                if (json.List[t].SourceId == 0) {
+                    sourceId = '网页'
+                } else if (json.List[t].SourceId == 1) {
+                    sourceId = '微信'
+                } else if (json.List[t].SourceId == 2) {
+                    sourceId = 'API'
+                } else if (json.List[t].SourceId == 3) {
+                    sourceId = 'APP'
+                } else if (json.List[t].SourceId == 4) {
+                    sourceId = '微博'
+                } else if (json.List[t].SourceId == 5) {
+                    sourceId = '支付宝'
+                } else if (json.List[t].SourceId == 6) {
+                    sourceId = '手机端'
+                } else if (json.List[t].SourceId == 7) {
+                    sourceId = 'iOS'
+                } else if (json.List[t].SourceId == 8) {
+                    sourceId = 'Android'
+                } else if (json.List[t].SourceId == 9) {
+                    sourceId = '大屏端'
+                } else if (json.List[t].SourceId == 10) {
+                    sourceId = '云问网页'
+                } else if (json.List[t].Type == 11) {
+                    sourceId = '智能学习'
+                }
+                table += '<tr>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Day + '</td>'
+                table += '<td class="tab_tr_bg">' + sourceId + '</td>'
+                table += '<td class="tab_tr_bg">' + (json.List[t].HourDtAns) + '</td>'
+                table += '<td class="tab_tr_bg">' + (json.List[t].HourGusAns) + '</td>'
+                table += '<td class="tab_tr_bg">' + sgsSuc + '</td>'
+                table += '<td class="tab_tr_bg">' + (sgsUnSelect) + '</td>'
+                table += '<td class="tab_tr_sec_bg">' + (json.List[t].HourUnAns) + '</td>'
+                //匹配率 = （引导确认 + 直接回答 + 理解回答） / 总计
+                sum = json.List[t].HourDtAns + sgsSuc + json.List[t].HourGusAns
+                if (allCount === 0) {
+                    matchPercent = '0.00%'
+                } else {
+                    matchPercent = Math.round(sum / allCount * 10000) / 100.00 + '%'
+                }
+                table += '<td class="tab_tr_sec_bg">' + matchPercent + '</td>'
+                table += '<td class="">' + allCount + '</td>'
+                table += '</tr>'
+                count1 += (json.List[t].HourDtAns)
+                count2 += (json.List[t].HourGusAns)
+                count3 += sgsSuc
+                count4 += (sgsUnSelect)
+                count5 += (json.List[t].HourUnAns)
+                count6 += matchPercent
+            }
+        } else {
+            for (var t = 0; t < len; t++) {
+                sgsUnSelect = (json.List[t].HourSgsAns) - (json.List[t].HourSgsSuc)
+                //引导回答分为引导确认和引导未确认，引导未确认有可能出现负数，原因是上一个小时引导下一个小时点击确认
+                //所以会出现引导确认的数字会大于引导回答的数字，如果出现这种情况：
+                //让这个小时引导确认的数量等于这个小时引导回答的数量
+                if (sgsUnSelect < 0) {
+                    sgsSuc = (json.List[t].HourSgsAns)
+                } else {
+                    sgsSuc = (json.List[t].HourSgsSuc)
+                }
+                allCount = (json.List[t].HourDtAns) + (json.List[t].HourGusAns) + sgsSuc + (sgsUnSelect) + (json.List[t].HourUnAns)
+
+                var date = ''
+                if (json.List[t].Hour < 10) {
+                    date = json.List[t].Day + ' 0' + json.List[t].Hour + ':00'
+                } else {
+                    date = json.List[t].Day + ' ' + json.List[t].Hour + ':00'
+                }
+
+                table += '<tr>'
+                table += '<td class="tab_tr_bg">' + date + '</td>'
+
+                var sourceId = ''
+                if (json.List[t].SourceId == 0) {
+                    sourceId = '网页'
+                } else if (json.List[t].SourceId == 1) {
+                    sourceId = '微信'
+                } else if (json.List[t].SourceId == 2) {
+                    sourceId = 'API'
+                } else if (json.List[t].SourceId == 3) {
+                    sourceId = 'APP'
+                } else if (json.List[t].SourceId == 4) {
+                    sourceId = '微博'
+                } else if (json.List[t].SourceId == 5) {
+                    sourceId = '支付宝'
+                } else if (json.List[t].SourceId == 6) {
+                    sourceId = '手机端'
+                } else if (json.List[t].SourceId == 7) {
+                    sourceId = 'iOS'
+                } else if (json.List[t].SourceId == 8) {
+                    sourceId = 'Android'
+                } else if (json.List[t].SourceId == 9) {
+                    sourceId = '大屏端'
+                } else if (json.List[t].SourceId == 10) {
+                    sourceId = '云问网页'
+                } else if (json.List[t].Type == 11) {
+                    sourceId = '智能学习'
+                }
+                if (json.List[t].SourceId == null) {
+                    table += '<td class="tab_tr_bg"></td>'
+                }
+                else {
+                    table += '<td class="tab_tr_bg">' + sourceId + '</td>'
+                }
+                table += '<td class="tab_tr_bg">' + (json.List[t].HourDtAns) + '</td>'
+                table += '<td class="tab_tr_bg">' + (json.List[t].HourGusAns) + '</td>'
+                table += '<td class="tab_tr_bg">' + sgsSuc + '</td>'
+                table += '<td class="tab_tr_bg">' + (sgsUnSelect) + '</td>'
+                table += '<td class="tab_tr_sec_bg">' + (json.List[t].HourUnAns) + '</td>'
+                //匹配率 = （引导确认 + 直接回答 + 理解回答） / 总计
+                sum = json.List[t].HourDtAns + sgsSuc + json.List[t].HourGusAns
+                if (allCount === 0) {
+                    matchPercent = '0.00%'
+                } else {
+                    matchPercent = Math.round(sum / allCount * 10000) / 100.00 + '%'
+                }
+
+                table += '<td class="tab_tr_sec_bg">' + matchPercent + '</td>'//定义准确率
+                table += '<td class="">' + allCount + '</td>'
+                table += '</tr>'
+                count1 += (json.List[t].HourDtAns)
+                count2 += (json.List[t].HourGusAns)
+                count3 += sgsSuc
+                count4 += (sgsUnSelect)
+                count5 += (json.List[t].HourUnAns)
+            }
+        }
+        var tmpAll = count1 + count2 + count3 + count4 + count5,
+            count6 = Math.round((count1 + count2 + count3) / tmpAll * 10000) / 100.00 + '%'
+
+        if (tmpAll == 0) count6 = '0.00%'
+        table += '<tr><td>总计</td><td></td><td>' + count1 + '</td><td>' + count2 + '</td><td>' + count3 + '</td><td>' + count4 + '</td><td>' + count5 + '</td><td>' + count6 + '</td><td>' + (count1 * 1 + count2 * 1 + count3 * 1 + count4 * 1 + count5 * 1) + '</td></tr>'
+        $('#visitDataTable').html(table)
+    }
+
+    /* 如果数字为空或小于0，则转换为0 */
+    function toZero (number) {
+        if (number === null) {
+            number = 0
+        }
+        if (number < 0) {
+            number = 0
+        }
+        return number
+    }
+
+    function getChatNum (json) {
+        if (json.top_record) {
+            var value = json.top_record.AllCount
+            $('#historyCount').html('历史累计回答：' + value)
+        } else {
+            $('#historyCount').html('历史累计回答：0')
+        }
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        getChatNum(json)
+        showdata(json)
+        showdata2(json)
+        showtable(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        $('#byisBusiness .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#byisBusiness .selectpicker').on('change', function () {
+            queryAll()
+        })
+//			语音类型
+        $('#byChatType .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#byChatType .selectpicker').on('change', function () {
+            queryAll()
+        })
+//问题格式
+        $('#questionType .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#questionType .selectpicker').on('change', function () {
+            queryAll()
+        })
+
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var myChart2 = echarts.init(document.getElementById('main1'), 'macarons')
+        var myChart3 = echarts.init(document.getElementById('main2'), 'macarons')
+        myChart1.showLoading()
+        myChart2.showLoading()
+        myChart3.showLoading()
+        //列出图表
+        queryAll()
+    })
+</script>
+
+</body>
+</html>

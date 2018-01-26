@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>知识集管理</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.wbbr {
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+		.imgContainer {
+			height: 100px;
+			overflow: hidden;
+			margin: 5px 0;
+			padding: 3px;
+			border: 1px solid #eee;
+		}
+		.qrcode img {
+			margin: 0 auto;
+		}
+		.imgTitle,.imgTime {
+			font-size: 18px;
+			text-align: center;
+		}
+		.imgUrl {
+			display: none;
+		}
+		.bootstrap-select.btn-group:not(.input-group-btn), .bootstrap-select.btn-group[class*="span"] {
+			margin-bottom: 0px;
+		}
+		.dpd {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			z-index: 1000;
+			display: none;
+			min-width: 400px;
+			padding: 5px 0;
+			margin: 0;
+			text-align: left;
+			list-style: none;
+			background-color: #fff;
+			-webkit-background-clip: padding-box;
+			background-clip: padding-box;
+			border: 0;
+			border-radius: 4px;
+			-webkit-box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+			box-shadow: 0 2px 5px -1px rgba(0,0,0,.2);
+		}
+		.dpd.see {
+			display: block;
+		}
+		.labelDiv {
+			display: inline-block;
+			padding: 8px;
+		}
+		td {
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">知识集管理</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">知识集管理</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="row">
+							<div class="alert alert-warning fade in m-b-15">
+			                    <strong>友情提示：</strong>
+			                			在选择标签与分类时，取之并集，其下所有的知识都会添加到该知识集中！
+			                    <span class="close" data-dismiss="alert">×</span>
+		                    </div>
+							<div class="m-b-5">
+								<button type="button" class="btn btn-primary" id="addPortLi"><i class="glyphicon glyphicon-plus"></i>&nbsp;添加知识集</button>
+								<button type="button" class="pull-right btn btn-default m-l-4" id="mul-del"><span class="glyphicon glyphicon-trash"style="display: inline-block;margin-top:2px"></span>&nbsp;批量删除</button>
+								<div id="byTimePiece" class="pull-right m-l-4">
+									<select class="selectpicker">
+										<option value="6">时间倒序</option>
+										<option value="5">时间正序</option>
+									</select>
+								</div>
+								<div id="dpc" class="pull-right m-l-4" style="position: relative;">
+									<button id="labelChoose" type="button" class="btn btn-primary">标签筛选</button>
+									<ul class="dpd">
+										<div id="labelDiv">
+										</div>
+									</ul>
+								</div>
+								<div class="input-group pull-right" style="width:250px;">
+									<input type="text" class="search-input-addSrc form-control" placeholder="搜索知识集" id="sip">
+									<span class="search-addSrc input-group-btn" style="padding-bottom: 0;" onclick="listPorts();">
+										<button class="btn btn-primary" type="button">
+											<i class="glyphicon glyphicon-search"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div id="listContainer" class="row"></div>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	<script src="../common/js/intro.js"></script>
+    <script src="../common/js/base.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/qrcode.min.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script id="list-item-template" type="text/x-handlebars-template">
+		<table class="table" id="proList">
+			<thead>
+				<tr>
+					<th class="table_checkbox" width="50"><input id="ckAll" type="checkbox"></th>
+					<th width="100">知识集名称</th>
+					<th style="white-space: nowrap;">标签</th>
+					<th style="white-space: nowrap;">分类</th>
+					<th width="150">添加时间</th>
+					<th width="90">添加人</th>
+					<th width="90">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each list}}
+					<tr id="{{ Id }}">
+						<td><input class="ckb" type="checkbox" data-id="{{ Id }}"></td>
+						<td>{{ ThemeName }}</td>
+						<td>{{ LabelName }}</td>
+						<td>{{ GroupName }}</td>
+						<td>{{ CreateTime }}</td>
+						<td>{{ CreateUserName }}</td>
+						<td>
+							<a target="_blank" style="cursor: pointer;" data-toggle="tooltip" title="问答体验" data-placement="top" class="timeTip"><img src="images/preview2.png" class="previewBtn" style="width: 15px;height: 15px;margin-top: -3px;" rel="{{ Id }}" /></a>
+							<a href="javascript:;" data-toggle="tooltip" title="编辑" class="timeTip"><i class="glyphicon glyphicon-pencil edit" title="编辑" rel="{{ Id }}"></i></a>
+							<a href="javascript:;" data-toggle="tooltip" title="删除" class="timeTip"><i class="glyphicon glyphicon-trash m-del" title="删除" rel="{{ Id }}"></i></a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</script>
+	<script id="list-item-template-bak" type="text/x-handlebars-template">
+		{{#each list}}
+			<div class="col-md-3 p-t-10">
+				<div class="imgTitle">
+					<input class="ckb" type="checkbox" data-id="{{ Id }}"><span class="p-l-3" style="vertical-align:middle;">{{ ThemeName }}</span>
+				</div>
+				{{!--<div class="imgContainer">
+					<img src="{{ ThemePicPath }}" class="img-responsive">
+				</div>--}}
+				<div class="imgTime">
+					{{ CreateTime }}
+				</div>
+				<div class="imgBtn" style="text-align:center;">
+					<button type="button" class="btn btn-primary btn-sm edit" rel="{{ Id }}">编辑</button>
+					<button type="button" class="btn btn-default btn-sm m-del" rel="{{ Id }}">删除</button>
+				</div>
+				{{!--<div class="imgUrl">
+					<span class="url wbbr">{{ KhPic }}</span>
+				</div>
+				<div class="qrcode m-t-5">
+				</div>--}}
+			</div>
+		{{/each}}
+	</script>
+	<script src="js/portList.js"></script>
+</body>
+
+</html>

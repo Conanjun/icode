@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <link rel="stylesheet" href="../common/css/introjs.css">
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+
+<style>
+    .iyunwen_js_class {
+        z-index: 9999;
+    }
+
+    .nav-pills>li.active>a,
+    .nav-pills>li.active>a:focus,
+    .nav-pills>li.active>a:hover {
+        background: #fff;
+        border: #2A72B5 1px solid;
+        color: #2a72b5;
+    }
+
+    .iconImgSel {
+        display: none;
+    }
+	
+	.tab-content {
+		padding: 0;
+	}
+</style>
+
+<body>
+    <div class="modal " id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">选择图标</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="panel-body">
+                            <div class="loadImg-payCode"></div>
+                            <div id="itemContainer" style="float: right;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer1">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">系统管理</a></li>
+                <li>获取代码</li>
+            </ol>
+            <h1 class="page-header">获取代码</h1>
+            <div>
+                <div class="panel">
+					<div class="panel-body">
+						<div class="itemCtn-payCode">
+							<h5 class="media-heading"><span class="num-payCode">1</span>选择知识集</h5>
+							<p>选择知识集后，通过此网页进入的访客只具有此知识集的知识权限。</p>
+							<select class="form-control" id="enterReception">
+								<option value="">默认知识集</option>
+							</select>
+						</div>
+						<h5 class="media-heading"><span class="num-payCode">2</span>选择入口样式</h5>
+                        <ul class="nav nav-pills" data-step="1" data-intro='这里是设置找到机器人的快捷入口哦！'>
+                            <li class="active"><a class="tabClick-addSrc" href="#default-tab-1" data-toggle="tab">链接式</a></li>
+                            <li><a class="tabClick-addSrc" href="#default-tab-2" data-toggle="tab">图标式</a></li>
+                            <li><a class="tabClick-addSrc" href="#default-tab-3" data-toggle="tab">浮窗式</a></li>
+                            <li><a class="tabClick-addSrc" href="#default-tab-4" data-toggle="tab">自定义</a></li>
+                        </ul>
+						<div class="tab-content">
+							<div class="tab-pane active in" id="default-tab-1">
+								<div class="itemCtn-payCode">
+									<div id="editor"></div>
+								</div>
+							</div>
+							<div class="tab-pane in" id="default-tab-2">
+								<div class="itemCtn-payCode">
+									<span>
+										<input type="radio" value="0" name="styleRdo" checked>
+										<a href="http://www.faqrobot.org/chatIcon/chatp3.png" data-lightbox="gallery-group-2"><img class="picUrl" src="http://www.faqrobot.org/chatIcon/chatp3.png" style="width: 120px;"></a>
+									</span>
+									<span>
+										<input type="radio" value="1" name="styleRdo">
+										<a href="http://www.faqrobot.org/chatIcon/chatp5.png" data-lightbox="gallery-group-2"><img class="picUrl" src="http://www.faqrobot.org/chatIcon/chatp5.png" style="width: 120px;"></a>
+									</span>
+								</div>
+							</div>
+							<div class="tab-pane in" id="default-tab-3">
+								<div class="itemCtn-payCode">
+									<span>
+										<input type="radio" value="0" name="styleR" checked>
+										<a href="http://www.faqrobot.org/chatIcon/chatp6.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp6.png" style="width: 120px;"></a>
+									</span>
+									<span>
+										<input type="radio" value="2" name="styleR">
+										<a href="http://www.faqrobot.org/chatIcon/chatp8.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp8.png" style="width: 120px;"></a>
+									</span>
+									<span>
+										<input type="radio" value="1" name="styleR">
+										<a href="http://www.faqrobot.org/chatIcon/chatp7.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp7.png" style="width: 120px;margin-top:10px;"></a>
+									</span>
+								</div>
+							</div>
+							<div class="tab-pane in" id="default-tab-4">
+								<div class="itemCtn-payCode">
+									<div>
+										<div class="cosImgBtn-payCode btn btn-primary" data-toggle="modal" data-target="#modal-dialog" type="button">
+											<span class="glyphicon glyphicon-plus"></span> 自定义图标
+										</div>
+										<div class="cosImg-payCode"></div>
+										<div class="input-payCode">
+											模式：
+											<input id="dir3" class="dir3" type="radio" name="mode" value="0" checked>
+											<label for="dir3">静态</label>
+											<input id="dir4" class="dir4" type="radio" name="mode" value="1">
+											<label for="dir4">漂浮</label>
+										</div>
+										<div class="input-payCode">
+											<div class="input-group">
+												<span class="width-payCode input-group-addon">图标宽度</span>
+												<input type="text" class="form-control" name="width" value="50">
+												<span class="input-group-addon">px</span>
+											</div>
+										</div>
+										<div class="input-payCode">
+											<div class="input-group">
+												<span class="input-group-addon">图标高度</span>
+												<input type="text" class="form-control" name="height" value="50">
+												<span class="input-group-addon">px</span>
+											</div>
+										</div>
+
+										<div class="cosImgBtn-payCode1 btn btn-primary" data-toggle="modal" data-target="#modal-dialog" type="button">
+											<span class="glyphicon glyphicon-plus"></span> 客服图标
+										</div>
+										<div class="cosImg-payCode1 cosImg-payCode3">
+											<img src="images/logo.png">
+										</div>
+
+										<div class="cosImgBtn-payCode2 btn btn-primary" data-toggle="modal" data-target="#modal-dialog" type="button">
+											<span class="glyphicon glyphicon-plus"></span> 客户图标
+										</div>
+										<div class="cosImg-payCode2 cosImg-payCode3">
+											<img src="images/robot_askicon.png">
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+                        <div class="itemCtner">
+                            <div class="itemCtn-payCode" data-step="2" data-intro='给机器人选择一款合适的皮肤吧！'>
+                                <h5 class="media-heading"><span class="num-payCode">3</span>选择聊天皮肤</h5>
+                                <div class="skinctn-payCode">
+									<ul class="nav nav-pills">
+										<li class="active iconImgSel1"><a href="#wy-tab" data-toggle="tab">网页</a></li>
+										<li class="iconImgSel3"><a href="#app-tab" data-toggle="tab">APP</a></li>
+										<li class="iconImgSel2"><a href="#wx-tab" data-toggle="tab">微信</a></li>
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane active in" id="wy-tab">
+											<span class="iconImgSel iconImgSel1">
+												<input type="radio" value="chat1" name="pageName" checked>
+												<a href="images/chat11.png" data-lightbox="gallery-group-1">
+													<img src="images/chat11.png">
+												</a>
+											</span>
+											<span class="iconImgSel iconImgSel1">
+												<input type="radio" value="chat2" name="pageName">
+												<a href="images/chat2.png" data-lightbox="gallery-group-1">
+													<img src="images/chat2.png">
+												</a>
+											</span>
+											<span class="iconImgSel iconImgSel1">
+												<input type="radio" value="chat3" name="pageName">
+												<a href="images/chat3.png" data-lightbox="gallery-group-1">
+													<img src="images/chat3.png">
+												</a>
+											</span>
+										</div>
+										<div class="tab-pane in" id="app-tab">
+											<span class="iconImgSel iconImgSel3">
+												<input type="radio" value="appChat" name="pageName">
+												<a href="images/appChat.png" data-lightbox="gallery-group-1">
+													<img src="images/appChat.png">
+												</a>
+											</span>
+										</div>
+										<div class="tab-pane in" id="wx-tab">
+											<span class="iconImgSel iconImgSel2">
+												<input type="radio" value="wxChat" name="pageName">
+												<a href="images/appChat.png" data-lightbox="gallery-group-1">
+													<img src="images/appChat.png">
+												</a>
+											</span>
+										</div>
+									</div>
+                                    <span style="display: none;">
+                                        <input type="radio" value="faqrobot1" name="pageName">
+                                        <a href="images/faqrobot1.png" data-lightbox="gallery-group-1">
+                                            <img src="images/faqrobot1.png">
+                                        </a>
+                                    </span>
+                                    <span style="display: none;">
+                                        <input type="radio" value="faqrobot2" name="pageName">
+                                        <a href="images/faqrobot2.png" data-lightbox="gallery-group-1">
+                                            <img src="images/faqrobot2.png">
+                                        </a>
+                                    </span>
+                                    <span style="display: none;">
+                                        <input type="radio" value="faqrobot3" name="pageName">
+                                        <a href="images/faqrobot3.png" data-lightbox="gallery-group-1">
+                                            <img src="images/faqrobot3.png">
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="itemCtn-payCode">
+                                <h5 class="media-heading"><span class="num-payCode">4</span>设置图标位置</h5>
+                                <div>
+                                    <div class="input-payCode">
+                                        位置：
+                                        <input id="dir1" class="dir1" type="radio" name="direction" value="1">
+                                        <label for="dir1">左侧</label>
+                                        <input id="dir2" class="dir2" type="radio" name="direction" value="0" checked>
+                                        <label for="dir2">右侧</label>
+                                    </div>
+                                    <div class="input-payCode">
+                                        <div class="input-group col-md-6 col-md-12">
+                                            <span class="dir-payCode input-group-addon">距离浏览器左侧</span>
+                                            <input type="text" class="form-control" name="mLeft" value="50">
+                                            <span class="input-group-addon">px</span>
+                                        </div>
+                                    </div>
+                                    <div class="input-payCode">
+                                        <div class="input-group col-md-6 col-md-12">
+                                            <span class="input-group-addon">距离浏览器底部</span>
+                                            <input type="text" class="form-control" name="mBtom" value="50">
+                                            <span class="input-group-addon">px</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row itemCtn-payCode">
+                                <h5 class="media-heading"><span class="num-payCode">5</span>生成代码</h5>
+                                <div class="col-md-6 col-md-12">
+                                    <textarea id="code-payCode" class="code-payCode form-control" placeholder="点击下方按钮在这里生成代码"></textarea>
+                                    <button type="button" class="btn btn-sm btn-success" id="editCode" style="display:none;">修改代码</button>
+                                    <div class="btn btn-sm btn-primary" id="addCode" data-step="3" data-intro='选择好各项配置后，点击这里，生成相应的代码！'>生成代码</div>
+                                    <div class="copy-payCode btn btn-sm btn-primary pull-right" data-clipboard-target="code-payCode" data-step="5" data-intro='这里可以快捷复制生成后的代码哦！'>复制</div>
+                                    <div class="prev-payCode btn btn-sm btn-primary pull-right" style="margin-right: 4px;" data-step="4" data-intro='点击这里，可以预览你配置好的机器人！'>预览</div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+                </div>
+            </div>
+        </div>
+        <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+    </div>
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <script src="../../assets/js/apps.min.js"></script>
+    <script src="../common/js/intro.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/ZeroClipboard.min.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/base.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+</body>
+
+</html>

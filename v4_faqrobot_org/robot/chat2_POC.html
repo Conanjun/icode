@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="images/logo_min.png" type="/image/x-icon">
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>FaqRobot智能问答机器人</title>
+    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/minichat.css?time=1513">
+    <link rel="stylesheet" href="skin/chat2_POC/css/app.css?time=1513">
+    <link href="../web/common/css/radioskin/blue.css" rel="stylesheet">
+
+
+    <script src="../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../web/common/js/customMethod.js"></script>
+    <script src="skin/chat2_POC/minichat.js?time=1513"></script>
+    <script src="skin/chat2_POC/js/app.js?time=1513"></script>
+    <style type="text/css">
+        .form-horizontal .form-group{
+            margin-right: 0;
+            margin-left: 0;
+        }
+        .modal{
+            background: rgba(0,0,0,0.3);
+        }
+        @media (min-width: 768px){
+            .modal-dialog{
+                margin: 200px auto;
+            }
+        }
+
+        input[name=satis],input[name=ckb]{
+            opacity: 0;
+        }
+
+        .rad a{
+            display: inline-block;
+            width: 16px;
+            height: 17px;
+            background: url(images/blue.png) -96px -15px;
+            vertical-align: text-bottom;
+            margin-right:5px;
+        }
+        .muiSel a{
+            display: inline-block;
+            width: 16px;
+            height: 17px;
+            vertical-align: text-bottom;
+            background: url(images/blue.png) 145px 17px;
+            margin-right:5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="whole">
+    <div class="head">
+        <div class="headLeft">
+            <img id="logo" class="logo" src="skin/chat2/images/close.png" alt="logo">
+            <div class="titleCtn">
+                <p id="title" class="title">云问科技</p>
+                <p class="intro" id="robotInfo">唯一的不同是处处不同</p>
+            </div>
+        </div>
+        <div class="headRight">
+            <span class="close3 head_icon"></span>
+            <span class="close2 head_icon"></span>
+            <span class="close1 head_icon"></span>
+            <span id="close" class="close head_icon"></span>
+        </div>
+    </div>
+    <div class="body">
+        <div class="bodyLeft">
+            <div class="bodyLeftTop">
+                <div id="chatCtn" class="chatCtn"></div>
+            </div>
+            <div class="bodyLeftBottom">
+                <div class="inputCtn">
+                    <p id="inputTip" class="inputTip">请输入</p>
+                    <textarea id="input" class="input" autocomplete="off"></textarea>
+                </div>
+                <div class="sendCtn">
+                    <span id="clearMsg" class="clearMsg"></span>
+                    <a id="power" target="_blank" href="http://www.iyunwen.com"><span class="power">Powered By YunWen</span></a>
+                    <span id="sendBtn" class="sendBtn">发送</span>
+                </div>
+            </div>
+        </div>
+        <div class="bodyRight">
+            <div class="bodyRightCtx">
+                <div class="itemBtnCtn">
+                    <div class="commonQue itemCtn">
+                        <div class="itemHead1 itemHead itemHeadFocus" index="1">热点问题</div>
+                    </div>
+                    <div class="quickLink itemCtn">
+                        <div class="itemHead2 itemHead" index="2">快捷服务</div>
+                    </div>
+                    <div class="feedBack itemCtn">
+                        <div class="itemHead3 itemHead" index="3">意见反馈</div>
+                    </div>
+                    <div class="artiSearch itemCtn artiSearchHide">
+                        <div class="itemHead4 itemHead" index="4">智能搜索</div>
+                    </div>
+                    <div class="thirdURL itemCtn thirdURLRecommend">
+                        <div class="itemHead5 itemHead" index="5">推荐链接</div>
+                    </div>
+                </div>
+                <div class="itemCtxCtn">
+                    <div id="commonQue" class="itemCtx" index="1"></div>
+                    <div id="quickLink"  class="itemCtx" index="2"></div>
+                    <form id="feedBackForm" class="itemCtx" index="3" autocomplete="off">
+                        <div class="feedBackCtn">
+                            <p>您对本次的服务满意吗？</p>
+                            <span class="servYes_hover servCos servYes">满意</span>
+                            <input class="servYesInput" type="radio" name="level" value="1" checked="">
+                            <span class="servCos servNo">不满意</span>
+                            <input class="servNoInput" type="radio" name="level" value="0">
+                            <div class="servNoReason">
+                                <p>不满意的原因？</p>
+                                <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+                                <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+                                <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+                            </div>
+                            <div class="feedBackWordCtn">
+                                <p id="feedBackTip" class="feedBackTip">您的意见</p>
+                                <textarea id="feedBackInput" class="feedBackInput" name="content"></textarea>
+                                <span id="feedBackBtn" class="feedBackBtn">提交</span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="artiSearch" class="itemCtx" index="4"></div>
+                    <div id="thirdUrl" class="itemCtx" index="5">
+                        <iframe frameborder="0" width="100%" height="100%" src="thirdUrlDemo.html"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" aria-hidden="true" id="dialogFeedModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close closepage1" type="button">×</button>
+                <h4 class="modal-title">会话满意度评价</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="saveDialogform" class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="rad"><a><input type="radio" name="satis" value="满意" checked/></a>满意</label>
+                            <label class="rad"><a><input type="radio" name="satis" value="不满意" /></a>不满意</label>
+                        </div>
+                        <div class="form-group" id="muiList">
+
+                        </div>
+                        <div class="form-group">
+                            <textarea id="stapin" name="" style="min-width: 100%;min-height: 100px;max-width: 100%;max-height: 100px;" placeholder="请描述你的意见和建议，以便提高我们的服务，谢谢！"></textarea>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" id="dialogStaBtn">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("[name=satis]").eq(0).parent().css('background-position','-111px -15px');
+        $("[name=satis]").unbind('click').bind('click',function(){
+            if($(this).prop('checked')){
+                $(this).parent().css('background-position','-111px -15px');
+                $(this).parents('.rad').siblings().find('a').css('background-position','-96px -15px');
+            }
+            if($(this).val() == '不满意'){
+                Faqrobot.prototype.muiItem();
+            }else{
+                $('#muiList').html('');
+            }
+        });
+        $(document).delegate('[name=ckb]','click',function(){
+            if($(this).prop('checked')){
+                $(this).parent().css('background-position','129px 17px');
+            }else{
+                $(this).parent().css('background-position','145px 17px');
+            }
+
+        })
+
+    })
+</script>
+</body>
+</html>

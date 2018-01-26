@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>修改知识</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/skin/blue.monday/jplayer.blue.monday.css" type="text/css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+	<style>
+		/* knowledge/addQuestion.addFlow.editAnswer start */
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		.overdueImg {
+			height: 20px;
+		}
+		.tab-content{
+			padding: 0;
+		}
+		div.delAble {
+			display: inline-block;
+			position: relative;
+		}
+		div.delAble span{
+			width: 20px;
+			height: 18px;
+			color: #4cae4c;
+			position: absolute;
+			right: -4px;
+			top: -5px;
+			cursor: pointer;
+			background-image: url(../common/images/close.png);
+		}
+		#AddQuesForm div label {
+			font-size: 16px;
+		}
+		#AddQuesForm .tab-content {
+			margin-bottom: 0;
+		}
+		#queManual .form-group {
+			padding: 0 15px;
+		}
+		#otherList td {
+		    word-wrap: break-word;
+			word-break: break-all;
+		}
+		/* knowledge/addQuestion.addFlow.editAnswer end */
+		.helpa {
+		  position: absolute;
+		  left: 16%;
+		  top: 6px;
+		  z-index: 2;
+		}
+		#op{
+			width:100%;
+		}
+		#op ul{
+			overflow:hidden;
+			padding-left:0px;
+		}
+		#op ul li{
+			float:left;
+			list-style-type: none;
+		}
+		#op ul li img{
+			width:245px;
+			height:150px;
+			margin-right:35px;
+			margin-bottom: 15px;
+		}
+		#onlyImgChoice{
+			overflow:hidden;
+		}
+		#onlyImgUpload{
+			padding: 5px 12px;
+			width: 110px;
+			border-radius: 8px;
+			margin-bottom: 6px;
+			margin-left: 3px;
+			font-size: 14px;
+		}
+		#videoBody{
+			width:100%;
+		}
+		#videoBody ul{
+			overflow:hidden;
+			padding-left:2px;
+		}
+		#videoBody ul li{
+			float:left;
+			list-style-type: none;
+		}
+		#videoBody ul li video{
+			width:245px;
+			height:150px;
+			margin-right:44px;
+			margin-bottom: 15px;
+		}
+		#videoUpload{
+			padding: 5px 12px;
+			width: 110px;
+			border-radius: 8px;
+			margin-bottom: 6px;
+			font-size: 14px;
+		}
+		.webuploader-pick{
+			padding: 7px 15px!important;
+		}
+		.item{
+			width:100%;
+			overflow:hidden;
+			padding: 10px 10px;
+		}
+		.checkbDiv{
+			float:left;
+			width: 5%;
+		}
+		.itemTxt{
+			float: left;
+			margin-left: 10px;
+			font-size: 12px;
+			width: 90%;
+			cursor: pointer;
+			margin-top: 1px;
+		}
+		#labelTxtPageList{
+			margin-top:10px;
+		}
+		#labelTxt{
+			max-height:400px;
+		}
+
+		.QueContainer .zntjo{
+			width:80%;
+			padding: 6px 0px;
+		}
+
+		.leftItem > div {
+			margin-bottom: 15px;
+		}
+		.leftItem:first-child {
+			margin-top: 15px;
+		}
+		.ansItemFrom {
+			margin-bottom: 10px;
+		}
+		.leftItem img {
+			max-width: 100%;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">修改知识</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">修改知识</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="row" style="border: 1px solid #E2E7EB;">
+							<div class="col-md-6 leftSame">
+								<form class="form-horizontal">
+									<legend></legend>
+									<div id="left-container"></div>
+								</form>
+							</div>
+							<div class="col-md-6 rightSame" style="border-left: 1px solid #E2E7EB;">
+								<form class="form-horizontal">
+									<legend></legend>
+									<div id="right-container"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/base.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script src="js/jquery.jplayer.min.js"></script>
+	<link rel="stylesheet" href="../common/css/webuploader.css">
+	<script src="../common/js/webuploader.min.js"></script>
+	<script src="js/transferStationEdit.js"></script>
+
+    <script id="left-template" type="text/x-handlebars-template">
+        <div class="leftItem row">
+			<div>
+				<span>问题 : </span>
+				<span>{{ Question }}</span>
+			</div>
+			<div>
+				<span class="ansIndex" style="margin-bottom:0">答案</span>
+				<span>{{ Answer }}</span>
+			</div>
+			<div>
+				<span>适用渠道 : </span>
+				<span>{{{ Other }}}</span>
+			</div>
+			<div>
+				<span>分类 : </span>
+				<span>{{ ComeGroupName }}</span>
+			</div>
+			<div>
+				<span>问题来源：</span>
+				<span>第三方知识库</span>
+			</div>
+			<div>
+				<span>操作方式：</span>
+				{{#ifCond}}
+				<span>{{ TypeValue }}</span>
+				{{/ifCond}}
+			</div>
+        </div>
+    </script>
+    <script id="right-template" type="text/x-handlebars-template">
+		<div>
+			<div class="titleCtn row" style="margin-top:10px;padding: 5px 0;border:1px solid #e2e7eb;">
+				<div class="col-md-2 question">
+					问题
+				</div>
+				<div class="col-md-10">
+					<span class="queTitle" style="color: #666;">{{ Question }}</span>
+					<div class="queRight">
+						<span style="float: right;">{{ AddTime }}</span>
+						<span>来自 : <em>{{ UserName }}</em></span><span class="dot">|</span>
+						<span>分类 : <em>{{ GroupName }}</em></span><span class="dot">|</span>
+						<span>浏览 <em>{{ Hits }}</em> 次</span><span class="dot">|</span>
+						<span>{{ StatusValue }}</span><span class="dot">|</span>
+						<span>
+							<span class="glyphicon glyphicon-thumbs-up" title="赞"></span> <em>{{ Usefull }}</em> 次
+							<span class="dot">|</span>
+							<span class="glyphicon glyphicon-thumbs-down" title="踩"></span> <em>{{ Useless }}</em> 次
+						</span>
+					</div>
+				</div>
+			</div>
+			{{#each ListAnswer}}
+				<div class="queCtn row {{ Id }}" rel="{{ Id }}" style="margin-top:10px">
+					<div class="col-md-2">
+						答案
+					</div>
+					<div class="col-md-8">
+						<div>
+							<div class="ansItemCtn">
+								{{#if isTextArea}}
+									<textarea value="{{ Answer }}" id="{{ Id }}"></textarea>
+								{{else}}
+									{{{ Answer }}}
+								{{/if}}
+							</div>
+							{{#if UserName}}
+							<div class="ansItemFrom">
+								<span>来自 : <em>{{ UserName }}</em></span>
+								<span class="dot">|</span>
+								<span>浏览 <em>
+									{{#if Hits}}
+										{{ Hits }}
+									{{else}}
+										0
+									{{/if}}
+								</em> 次</span>
+								<span class="dot">|</span>
+								<span>{{ AnswerStatusValue }}</span>
+								<span class="dot">|</span>
+								<span><span class="glyphicon glyphicon-thumbs-up" title="赞"></span> <em>
+									{{#if Usefull}}
+										{{ Usefull }}
+									{{else}}
+										0
+									{{/if}}
+								</em> 次</span>
+								<span class="dot">|</span>
+								<span><span class="glyphicon glyphicon-thumbs-down" title="踩"></span> <em>
+									{{#if Useless}}
+										{{ Useless }}
+									{{else}}
+										0
+									{{/if}}
+								</em> 次</span>
+							</div>
+							{{/if}}
+						</div>
+					</div>
+					{{#if isTextArea}}
+						<div class="col-md-2">
+							<button class="btn btn-primary save">保存</button>
+						</div>
+					{{/if}}
+					{{#if isDel}}
+						<div class="col-md-2">
+							<button class="btn btn-primary saveDD">删除</button>
+						</div>
+					{{/if}}
+				</div>
+			{{/each}}
+		</div>
+    </script>
+    <script id="right-del-template" type="text/x-handlebars-template">
+		<div>
+			<div class="titleCtn row" style="margin-top:10px;padding: 5px 0;border:1px solid #e2e7eb;">
+				<div class="col-md-2 question">
+					问题
+				</div>
+				<div class="col-md-10">
+					<span class="queTitle" style="color: #666;">{{ Question }}</span>
+					<div class="queRight">
+						<span style="float: right;">{{ AddTime }}</span>
+						<span>来自 : <em>{{ UserName }}</em></span><span class="dot">|</span>
+						<span>分类 : <em>{{ GroupName }}</em></span><span class="dot">|</span>
+						<span>浏览 <em>{{ Hits }}</em> 次</span><span class="dot">|</span>
+						<span>{{ StatusValue }}</span><span class="dot">|</span>
+						<span>
+							<span class="glyphicon glyphicon-thumbs-up" title="赞"></span> <em>{{ Usefull }}</em> 次
+							<span class="dot">|</span>
+							<span class="glyphicon glyphicon-thumbs-down" title="踩"></span> <em>{{ Useless }}</em> 次
+						</span>
+					</div>
+				</div>
+			</div>
+			{{#each ListAnswer}}
+				<div class="queCtn row {{ Id }}" rel="{{ Id }}" style="margin-top:10px">
+					<div class="col-md-2">
+						答案
+					</div>
+					<div class="col-md-10">
+						<div>
+							<div class="ansItemCtn">
+								{{{ Answer }}}
+							</div>
+							{{#if UserName}}
+							<div class="ansItemFrom">
+								<span>来自 : <em>{{ UserName }}</em></span>
+								<span class="dot">|</span>
+								<span>浏览 <em>{{ Hits }}</em> 次</span>
+								<span class="dot">|</span>
+								<span>{{ AnswerStatusValue }}</span>
+								<span class="dot">|</span>
+								<span><span class="glyphicon glyphicon-thumbs-up" title="赞"></span> <em>{{ Usefull }}</em> 次</span>
+								<span class="dot">|</span>
+								<span><span class="glyphicon glyphicon-thumbs-down" title="踩"></span> <em>{{ Useless }}</em> 次</span>
+							</div>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+			{{/each}}
+			<div class="row">
+				<div class="col-md-offset-2">
+					<button class="btn btn-primary del">删除</button>
+				</div>
+			</div>
+		</div>
+    </script>
+	<script>
+		Handlebars.registerHelper('ifCond', function(options) {
+			if(this.Type == 1){
+				this.TypeValue = '新增';
+				return options.fn(this);
+			}else if(this.Type == 2){
+				this.TypeValue = '修改';
+				return options.fn(this);
+			}else if(this.Type == 3){
+				this.TypeValue = '删除';
+				return options.fn(this);
+			}
+		});
+	UE.registerUI('wfque', function (editor, uiName) {
+		//创建dialog
+		var dialog = new UE.ui.Dialog({
+				//指定弹出层中页面的路径，这里只能支持页面,因为跟addCustomizeDialog.js相同目录，所以无需加路径
+				iframeUrl: editor.options.UEDITOR_HOME_URL + 'dialogs/wfque/wflink.html',
+				//需要指定当前的编辑器实例
+				editor: editor,
+				//指定dialog的名字
+				name: '新增知识',
+				//dialog的标题
+				title: "添加标准问题",
+				//指定dialog的外围样式
+				cssRules: "width:800px;height:480px;",
+				//如果给出了buttons就代表dialog有确定和取消
+				buttons: [{
+						className: 'edui-okbutton',
+						label: '确定',
+						onclick: function () {
+							dialog.close(true);
+						}
+					}, {
+						className: 'edui-cancelbutton',
+						label: '取消',
+						onclick: function () {
+							dialog.close(false);
+						}
+					}
+				]
+			});
+
+		//参考addCustomizeButton.js
+		var btn = new UE.ui.Button({
+				name: '添加标准问题',
+				title: '关联标准问题',
+				//需要添加的额外样式，指定icon图标，这里默认使用一个重复的icon
+				cssRules: 'background-position: -30px -76px;',
+				onclick: function () {
+					//渲染dialog
+					dialog.render();
+					dialog.open();
+				}
+			});
+		return btn;
+	});
+		if(window.location.host == 'v3.faqrobot.org') {
+			$('#moreform').hide();
+		}
+	</script>
+</body>
+</html>

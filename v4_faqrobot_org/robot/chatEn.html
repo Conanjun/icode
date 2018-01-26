@@ -1,0 +1,106 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="images/logo_min.png" type="/image/x-icon">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>FaqRobot</title>
+
+    <link rel="stylesheet" href="css/minichat.css?time=1513">
+	<link rel="stylesheet" href="skin/chat2/css/app.css?time=1513">
+
+    <script src="js/minichat.js?time=1513"></script>
+    <script src="skin/chat2/js/app.js?time=1513"></script>
+	<style>
+	.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead{
+		font-size:11px;
+	}
+	.MN_reasonSend, .MN_yes, .MN_no {
+		width:80px;
+	}
+    .MN_kftime, .MN_khtime, .MN_record{width: 125px;}
+	</style>
+</head>  
+<body>  
+    <div class="whole">
+        <div class="head">
+            <div class="headLeft">
+                <img id="logo" class="logo" src="skin/chat2/images/close.png" alt="logo">
+                <div class="titleCtn">
+                    <p id="title" class="title">云问科技</p>
+                    <p class="intro">The only difference is everywhere </p>
+                </div>
+            </div>
+            <div class="headRight">
+               <!-- <span class="close3 head_icon"></span>
+                <span class="close2 head_icon"></span>
+                <span class="close1 head_icon"></span>-->
+                <span id="close" class="close head_icon"></span>
+            </div>
+        </div>
+        <div class="body">
+            <div class="bodyLeft">
+                <div class="bodyLeftTop">
+                    <div id="chatCtn" class="chatCtn"></div>
+                </div>
+                <div class="bodyLeftBottom">
+                    <div class="inputCtn">
+                        <p id="inputTip" class="inputTip">please input here</p>
+                        <textarea id="input" class="input"></textarea>
+                    </div>
+                    <div class="sendCtn">
+                        <span id="clearMsg" class="clearMsg"></span>
+                        <a id="power" target="_blank" href="http://www.faqrobot.org"><span class="power">Powered By YunWen</span></a>
+                        <span id="sendBtn" class="sendBtn">Send</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyRight">
+                <div class="bodyRightCtx">
+                    <div class="itemBtnCtn">
+                        <div class="commonQue itemCtn">
+                            <div class="itemHead1 itemHead itemHeadFocus" index="1">Top spotlight</div>
+                        </div>
+                        <div class="quickLink itemCtn">
+                            <div class="itemHead2 itemHead" index="2"> clipper service </div>
+                        </div>
+                        <div class="feedBack itemCtn">
+                            <div class="itemHead3 itemHead" index="3">Feedback</div>
+                        </div>
+                        <div class="artiSearch itemCtn artiSearchHide">
+                            <div class="itemHead4 itemHead" index="4">Intelligent search</div>
+                        </div>
+                    </div>
+                    <div class="itemCtxCtn">
+                        <div id="commonQue" class="itemCtx" index="1"></div>
+                        <div id="quickLink"  class="itemCtx" index="2"></div>
+                        <form id="feedBackForm" class="itemCtx" index="3">
+                            <div class="feedBackCtn">
+                                <p>Are you satisfied with the service?</p>
+                                <span class="servYes_hover servCos servYes">YES </span>
+                                <input class="servYesInput" type="radio" name="level" value="1" checked="">
+                                <span class="servCos servNo">NO</span>
+                                <input class="servNoInput" type="radio" name="level" value="0">
+                                <div class="servNoReason">
+                                    <p>Not satisfied with the reason? </p>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="The answer is not accurate"> The answer is not accurate</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="Wrong answer"> Wrong answer</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="unpolite"> unpolite</label>
+                                </div>
+                                <div class="feedBackWordCtn">
+                                    <p id="feedBackTip" class="feedBackTip">Your opinion</p>
+                                    <textarea id="feedBackInput" class="feedBackInput" name="content"></textarea>
+                                    <span id="feedBackBtn" class="feedBackBtn">Submit</span>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="artiSearch" class="itemCtx" index="4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>  
+</html>

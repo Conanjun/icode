@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>质检日志</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../common/css/radioskin/blue.css">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.nav-pills>li.active>a,
+		.nav-pills>li.active>a:focus,
+		.nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+
+		.btns {
+			margin: 0 2px;
+		}
+
+		.chatCtnDetail {
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			padding: 5px 10px;
+			margin: 5px 0;
+		}
+
+		#chatCheckModal {
+			width: 1000px;
+		}
+
+		.a {
+			max-height: 650px;
+		}
+
+		.a:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+
+		.wrap {
+			position: relative;
+		}
+		.mb10{
+			margin-bottom: 10px;
+		}
+		.wrapInner {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #000;
+			opacity: .1;
+			filter: alpha(opacity=10);
+			z-index: 1;
+		}
+
+		.wrapBtn {
+			display: none;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			z-index: 2;
+		}
+		.hasTest{
+			display:block;
+		
+		}
+		.minheight{
+			max-height: 100px;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+		.modalRight {
+			position: relative;
+		}
+		table td{
+			padding: 10px 15px;
+			border-bottom: 1px solid #efefef;
+		}
+		.pauseBtn {
+			vertical-align: middle;
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			background: url(images/start.png) no-repeat center;
+			background-size: contain;
+			cursor: pointer;
+		}
+		.max370{
+			max-height: 282px;
+			overflow:auto;
+		}
+		.sendCheck {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height:100%;
+			z-index: 199;
+			padding: 20px;
+			box-sizing: border-box;
+			background: #fff;
+		}
+		.tri {
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			position: absolute;
+			top: 250px;
+			left: -18px;
+			z-index: 189;
+			cursor: pointer;
+		}
+		.tanchu{
+			z-index:99;
+			background:#fff;
+			position:absolute;
+			height: 300px;
+			overflow-y: scroll;
+		}
+		.leftTri {
+			border-right: 8px solid #aaa;
+		}
+
+		.rightTri {
+			border-left: 8px solid #aaa;
+		}
+
+		* {
+			outline: none;
+		}
+
+		select {
+			width: 100px;
+		}
+
+		.go {
+			cursor: pointer;
+		}
+
+		.page {
+			cursor: pointer;
+			color: #35a2d8;
+		}
+
+		.b {
+			float: right;
+			vertical-align: middle;
+			margin-left: 15px;
+		}
+
+		.c {
+			margin-top: 10px;
+		}
+
+		.d {
+			margin-top: 8px;
+		}
+
+		.e {
+			display: inline-block;
+			margin-left: 10px;
+		}
+		.red{
+			color:red;
+		}
+		#logpageList span {
+			display: block;
+			margin-top: 30px;
+		}
+
+		.SC_backClass2 {
+			background: #fff;
+			width: 4px;
+			border-radius: 20px;
+		}
+
+		.SC_frontClass2 {
+
+			background: #999;
+			width: 4px;
+			height: 30px;
+			border-radius: 5px;
+		}
+
+		.extend {
+			display: block;
+			cursor: pointer;
+		}
+		/* 查看聊天记录头像样式 */
+
+		#chatCon .chats .image {
+			width: 30px;
+			height: 30px;
+		}
+		.greyRow{
+			width: 100%;
+			margin: 10px 0 0 0;
+			padding: 10px;
+			background: #e2e7eb;
+		}
+		.padRow{
+			padding: 5px 0;
+			border-bottom: 1px solid #efefef;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<!-- 质检类型 -->
+	<div class="modal fade" id="modal-type">
+		<div class="modal-video-addSrc modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">质检类型</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row-fluid">
+						<div>
+							<label class="bold">名称</label>
+							<input class="col-md-12 form-control" type="text" name="value">
+							<div>
+								<button href="javascript:;" class="ensure-type btn  btn-primary" style="margin-top: 10px; margin-bottom: 5px;">添加</button>
+							</div>
+						</div>
+						<div class="tab-pane" id="checkType">
+							<!--查询结束-->
+							<table class="table" style="margin-bottom: 0;margin-top: 10px;">
+								<thead>
+									<tr>
+										<th>名称</th>
+										<th>添加时间</th>
+										<th style="width: 10px;">操作</th>
+									</tr>
+								</thead>
+								<tbody class="yun_table_size_v"></tbody>
+							</table>
+							<div id="checkTypePage"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn  btn-white" data-dismiss="modal">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- 质检框 -->
+	<div class="modal fade" id="chatCheckModal" style="width: auto;">
+		<div class="modal-dialog" style="width:1000px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+					<h4>聊天质检</h4>
+				</div>
+				<div class="a modal-body" style="width: 100%; box-sizing: border-box;">
+					<div class="row-fluid sendCheck" style="display: none;">
+						<div class="row">
+							<form id="qualityForm">
+                                <input type="hidden" name="uuid">
+                                <input type="hidden" name="chatVersion">
+                                <input type="hidden" name="chatlogId">
+                                <label class="bold">问题</label>
+                                <input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue" style="margin-bottom: 10px;">
+                                <div  style="padding-left: 0" class="col-md-3">
+                                    质检类型 <b class="red">*</b><select name="qualityModeId" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
+                                    <input type="hidden" name="recheckModeId">
+                                </div>
+                                <div class="col-md-3">
+                                    质检评分<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score" style="margin-bottom: 10px;">
+                                </div>
+                                <div class="col-md-6" style="padding-right:0px">
+                                    质检评语<input type="text" placeholder="质检评语" class="col-md-12 form-control" name="qualityContent" style="resize: none; height: 34px;margin-bottom: 10px;">
+                                </div>
+                             </form>
+						</div>
+
+
+						<div class="row">
+							<ul class="nav nav-pills">
+							  <li status="3" class="active"><a href="#nav-pills-tab-1" data-toggle="tab" >相似问题答案回答</a></li>
+							  <li status="1"><a href="#nav-pills-tab-2" data-toggle="tab" aria-expanded="true">已有答案回答</a></li>
+							  <li status="2"><a href="#nav-pills-tab-3" data-toggle="tab" aria-expanded="false">编辑答案回答</a></li>
+							</ul>
+							<!--切换的内容-->
+							<div style="padding: 0" class="tab-content">
+								<!-- 点击切换1-->
+								<div class="tab-pane  active" id="nav-pills-tab-1">
+									<form id="nav-pills-tab-1-form" >
+                                        <input type="hidden" name="pageNo" value="1">
+                                        <input type="hidden" name="isLeaf" value="1">
+                                        <input type="hidden" name="status" value="0">
+                                        <input type="hidden" name="level" value="1">
+                                        <input type="hidden" name="pageSize" value="5">
+                                        <div class="row">
+                                            <span class="col-md-5">选择分类：
+                                                <a href="#" class="ztreeName1">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+                                            <div class="ztree tanchu" id="tanchutree1" style="display: none;margin-top: 15px"></div>
+                                            <div class="input-group col-md-4 pull-right">
+                                                <input type="text" class="form-control toggle1-search" name="question">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary searchSimiQue">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+									</form>
+									<div class="max370">
+                                        <table style="width:100%;margin: 10px 0">
+                                            <thead>
+                                                <tr class="row greyRow">
+                                                    <td>问题详细</td>
+                                                    <td width="120">时间</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody1"></tbody>
+                                        </table>
+                                    </div>
+									<div id="itemContainer" style="margin-bottom: -20px;"></div>
+
+								</div>
+
+								<!-- 点击切换2-->
+								<div class="tab-pane " id="nav-pills-tab-2">
+									<form id="nav-pills-tab-2-form">
+                                    	<input type="hidden" name="pageNo" value="1">
+                                        <input type="hidden" name="isLeaf" value="1">
+                                        <input type="hidden" name="status" value="0">
+                                        <input type="hidden" name="level" value="1">
+                                        <input type="hidden" name="pageSize" value="5">
+                                        <input type="hidden"  class="searchInput" name="question">
+                                        <div class="row">
+                                            <span class="col-md-5">选择分类：
+                                                <a href="#" class="ztreeName2">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+    
+                                            <div class="ztree tanchu" id="tanchutree2" style="display: none;margin-top: 15px"></div>
+                                            <div class="input-group col-md-4 pull-right">
+                                                <input type="text" class="form-control">
+                                                <div class="input-group-btn">
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a href="#">问题</a></li>
+                                                        <li><a href="#">答案</a></li>
+                                                    </ul>
+                                                    <button type="button" class="btn-toggle btn btn-primary dropdown-toggle curHtml" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">问题<span class="caret"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary searchHasAns">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="max370">
+                                        <table style="width:100%;margin: 10px 0">
+                                            <thead>
+                                            <tr class="row greyRow">
+                                                <td>答案</td>
+                                                <td width="120">时间</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbody2"></tbody>
+                                        </table>
+                                    </div>
+									<div id="itemContainer2" style="margin-bottom: -20px;"></div>
+								</div>
+
+								<!-- 点击切换3-->
+								<div class="tab-pane " id="nav-pills-tab-3">
+									<div class="col-md-12">
+                                    	<div class="row mb10">
+                                            <span class="col-md-2" style="padding-left: 0;">问题分类<b class="red">*</b>：
+                                                <a class="ztreeName3" href="javascript:;">全部分类</a>
+                                                <input type="hidden" name="groupId" value="0">
+                                            </span>
+                                            <div class="ztree tanchu" id="tanchutree3" style="display: none;margin-top: 15px"></div>
+                                        </div>
+    
+                                        <div class="row mb10" id="warpRoles">
+                                            <span>生效角色：</span>&nbsp;&nbsp;
+                                            <a id="juese" href="#QuestionClassModel" data-toggle="modal" >来访者角色</a>
+                                        </div>
+                                        <div class="row mb10" id="warpRules">
+                                            <div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
+                                            	<span>生效渠道：</span>&nbsp;
+                                            </div>
+                                            <div class="col-md-10" style="margin-left:-20px;">
+                                            	<div id="chooseAll"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <span>输入答案<b class="red">*</b>：</span>
+                                        </div>
+                                        <div style="padding: 0" class="row">
+                                                <textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5"  name="title"></textarea>
+                                        </div>
+                                    </div>
+								</div>
+
+							</div>
+
+							<!-- 底部3按钮-->
+							<div style="position: absolute;bottom: 15px;right:30px" class="row">
+								<a href="javascript:;" class="cancel btn btn-sm btn-white">取消</a>
+								<a href="javascript:;"  class="testOnly btn btn-sm btn-primary" >仅质检</a>
+								<a href="javascript:;"  class="testAndlearn btn btn-sm btn-white btn-primary">质检并学习</a>
+							</div>
+						</div>
+					</div>
+					<div class="modalTop">
+						<div class="pauseCtn">
+							<form id="visiterForm" style="margin-bottom:0">
+								<table>
+									<tr>
+										<td style="padding-right: 5px;">起始时间</td>
+										<td>
+											<div class="input-append date form_datetime">
+												<input size="16" type="text" readonly class="yun_search_input form-control" style="width:132px;" name="startTime">
+												<span class="add-on yun_timer"><i class="icon-remove"></i></span> <span class="add-on yun_timer"><i class="icon-calendar"></i></span> </div>
+										</td>
+										<td>&nbsp;&nbsp;</td>
+										<td style="padding-right: 5px;">结束时间</td>
+										<td>
+											<div class="input-append date form_datetime">
+												<input size="16" type="text" readonly class="yun_search_input  form-control" style="width:132px;" name="endTime">
+												<span class="add-on yun_timer"><i class="icon-remove"></i></span> <span class="add-on yun_timer"><i class="icon-calendar"></i></span> </div>
+										</td>
+										<td style="padding: 0 5px;">
+											<select name="isChecked" class="form-control">
+												<option value="0">未质检</option>
+												<option value="1">已质检</option>
+											</select>
+										</td>
+										<td style="padding: 0 5px;">
+											<select name="sourceId" class="form-control">
+											</select>
+										</td>
+										<td colspan="3">
+											<button type="button" class="btn  btn-primary " style="margin-left:-16px;" id="searchChatRe2"><i class="glyphicon glyphicon-search"></i></button>
+											<button type="button" class="btn  btn-default " style="margin-left:1px;" id="resetBtn"><i class="glyphicon glyphicon-remove"></i></button>
+										</td>
+									</tr>
+								</table>
+								<input type="hidden" class="recordsChatUserId" name="chatUserId">
+								<input type="hidden" class="tempValue">
+								<input type="hidden" class="chatV" name="chtvs">
+							</form>
+						</div>
+					</div>
+					<div class="modalLeft" style="width: 25%; box-sizing: border-box; display: inline-block; float: left;max-height: 500px;overflow: auto;position: relative;">
+						<div class="slim">
+							<table class="table" id="visiterlogList">
+								<thead>
+								<tr>
+									<th style="width:40px">来源</th>
+									<th>次数</th>
+									<th style="width: 60px;">停留时间</th>
+								</tr>
+								</thead>
+								<tbody class="yun_table_size_v"></tbody>
+							</table>
+							<div id="logpageList"></div>
+						</div>
+					</div>
+					<div class="modalRight" style="width: 73%; box-sizing: border-box; display: inline-block; float: right;">
+						<i class="leftTri tri"></i>
+						<div id="chatCon">
+							<section>
+								<div class="editRight">
+									<div class="startCtn b d" style="display: none;">
+										<select class="col-md-2 form-control" name="speed" style=" z-index:10px; width:85px;">
+											<option value="1">速率x1</option>
+											<option value="2">速率x2</option>
+											<option value="4">速率x4</option>
+											<option value="6">速率x6</option>
+										</select>
+									</div>
+									<div class="nextPage page b c pauseCtn">下一组</div>
+									<div class="pauseBtn b" isPause="1"></div>
+									<div class="prevPage page b c pauseCtn">上一组</div>
+								</div>
+
+								<div class="row-fluid">
+									<div class=" has-scrollbar" style="height: 400px;">
+										<div class="content" tabindex="0" style="right: -17px;">
+											<div class="scrollbar col-md-12" style="height:356px;width:100%;" id="chatLogList">
+												<ul class="chats" style="width: 100%;">
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="pauseCtn">
+										<div id="chatpageList" style="margin-top:10px;"></div>
+									</div>
+								</div>
+								<div class="row-fluid sendCheck2">
+									<div class="">
+										<div class="pull-left m-r-3" style="width: 90px;">
+											<label class="e bold" style="width: 65px;">质检类型</label>
+											<select name="qualityModeId2" class="col-md-2 form-control" style="padding: 6px; height: 34px;"></select>
+										</div>
+										<div class="pull-left m-r-3">
+											<label class="e bold" style="width: 65px;">质检评分</label>
+											<input type="text" placeholder="质检评分" class="col-md-2 form-control" name="score2">
+										</div>
+										<div class="pull-left m-r-3">
+											<label class="e bold" style="width: 65px;">质检评语</label>
+											<input type="text" placeholder="质检评语" class="col-md-3 form-control" name="qualityContent2" style="resize: none;">
+										</div>
+										<div class="e" style="margin: 22px 0 0;">
+											<a href="javascript:;" class="ensure-check22 btn  btn-primary">确认</a>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+</div>
+
+
+
+	<!--生效角色模态框-->
+	<div class="modal" style="display: none;" aria-hidden="true" id="QuestionClassModel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">选择生效角色</h4>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="treeName">
+					<input type="hidden" name="treeId">
+					<input type="hidden" name="hasCheckedId">
+					<div class="treeDivModal">
+						<ul id="treeQueClass" class="ztree"></ul>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" data-dismiss="modal" >确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;" id="selClassBtn">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- #modal-dialog -->
+	<div class="modal fade" id="modal-edit" style="display: none;">
+		<div class="modal-video-addSrc modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">处理质检</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div style="display:none;" class="chatCtn col-md-12">
+							<div class="chatCtnHead">
+								<label class="bold">质检内容</label>
+								<div class="question"></div>
+								<label class="bold">质检次数</label>
+								<div class="count"></div>
+								<label class="bold">处理状态</label>
+								<div class="isDeal"></div>
+							</div>
+							<div class="chatCtnBody">
+							</div>
+						</div>
+						<div class="chatCtnEdit" style="margin-bottom: 50px;">
+							<div class="">
+								<label class="bold">处理</label>
+								<select name="type" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;">
+		                      <option value="1">已处理</option>
+		                      <option value="0">未处理</option>
+		                  </select>
+							</div>
+							<div class="">
+								<label class="bold">处理意见</label>
+								<input type="text" placeholder="请输入处理意见" class="col-md-12 form-control" name="content" style="margin-bottom: 10px;">
+							</div>
+							<div class="">
+								<label class="bold">处理结果</label>
+								<textarea type="text" placeholder="请输入处理结果" class="col-md-12 form-control" name="result" style="resize: none;margin-bottom: 10px;"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="ensure-check btn  btn-primary">确认</a>
+					<a href="javascript:;" class="btn  btn-white" data-dismiss="modal">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---- -->
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">质检日志</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">质检日志</h1>
+				<div class="panel">
+					<div class="panel-body" style="padding-bottom: 0;">
+						<!--查询开始-->
+						<div>
+							<form class="form-inline" action="">
+								<input type="text" style="display: none;" />
+
+								<button type="button" class="addCheck btn btn-primary"><i class="glyphicon glyphicon-plus"></i> 新增质检</button>
+								<button type="button" class="addCheckType btn btn-primary m-r-3"><i class="glyphicon glyphicon-pencil"></i> 质检类型</button>
+
+								<div class="col-md-3 pull-right" style="padding: 0; text-align:right;">
+									<div class="input-group">
+										<input style="border-top-right-radius:0;border-bottom-right-radius:0;" class="form-control" type="text" name="content2" placeholder="请根据质检原因查询">
+										<span class="input-group-btn">
+	                                            <button class="search btn btn-primary" type="button" style="border-radius: 3px;border-bottom-left-radius:0;border-top-left-radius:0;">
+	                                                <i class="glyphicon glyphicon-search"></i>
+	                                            </button>
+                                                <button type="button" class="sortWord btn-toggle btn btn-primary m-l-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认状态&nbsp;<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+											<li><a class="sort1">默认状态</a></li>
+											<li><a class="sort2">未处理状态</a></li>
+											<li><a class="sort3">已处理状态</a></li>
+										</ul>
+										</span>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<ul class="nav nav-pills listUl" style="margin-top: 15px;">
+							<li class="active"><a href="#chatCheck" data-toggle="tab">聊天质检</a></li>
+							<li><a href="#dialogCheck" data-toggle="tab">会话质检</a></li>
+						</ul>
+
+						<div class="tab-content" style="padding: 0;">
+							<div class="tab-pane active" id="chatCheck">
+								<!--查询结束-->
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="min-width:120px;">质检内容</th>
+											<th width="80">得分</th>
+											<th style="min-width:120px;">质检类型</th>
+											<th style="min-width:200px;">原因</th>
+											<th style="min-width:120px;">质检次数</th>
+											<th>来源 </th>
+											<th width="80">状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody class="yun_table_size_v"></tbody>
+								</table>
+								<div id="logpageListChat"></div>
+							</div>
+
+							<div class="tab-pane" id="dialogCheck">
+								<!--查询结束-->
+								<table class="table">
+									<thead>
+										<tr>
+											<th>得分</th>
+											<th>质检类型</th>
+											<th>原因</th>
+											<th>来源</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody class="yun_table_size_v"></tbody>
+								</table>
+								<div id="logpageListDialog"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a data-click="scroll-top" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+		</div>
+		<!-- ================== BEGIN BASE JS ================== -->
+		<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+		<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+		<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+		<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+		<script src="../../assets/js/apps.min.js"></script>
+		<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+		<!-- ================== END BASE JS ================== -->
+
+		<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="../common/js/bootstrap-paginator.js"></script>
+		<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+		<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+		<script src="../common/js/jquery.validate.js"></script>
+		<script src="../common/js/icheck.js"></script>
+		<script src="../common/js/customMethod.js"></script>
+		<script src="../common/js/base.js"></script>
+		<script src="../common/js/jquery.scrollbar.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				App.init();
+				icheckInit();
+				//点击取消 隐藏页面
+				$('.cancel').click(function(){$('.sendCheck').hide()});
+				//默认全选
+				$('.qqq').click(function(){$(this).toggleClass('btn-primary')});
+				$('#quanxuan').on('ifChecked', function(event){
+					$('.qqq').addClass('btn-primary')
+				}).on('ifUnchecked',function(event){
+					$('.qqq').removeClass('btn-primary')
+				});
+				$('#quanxuan').iCheck('check');
+
+				// 渠道
+				Base.request({
+					url: 'Configuration/showSourceByWebId',
+					callback: function(data) {
+						if (data.status) {
+							Base.gritter(data.message, false);
+						} else {
+							if (data.listSource) {
+								if (data.listSource[0]) {
+									var html = '';
+									for (var i = 0; i < data.listSource.length; i++) {
+										html += '<option value="' + data.listSource[i].DicCode + '">' + data.listSource[i].DicDesc + '</option>';
+									}
+									$('[name=sourceId]').empty().append(html);
+								}
+							}
+							window.data = data;
+							go();
+						}
+					},
+				});
+
+				function toRoad(dicCode) {
+					if (window.data.listSource) {
+						if (window.data.listSource[0]) {
+							var html = '';
+							for (var i = 0; i < window.data.listSource.length; i++) {
+								if (window.data.listSource[i].DicCode == dicCode) {
+									return window.data.listSource[i].DicDesc;
+									break;
+								}
+							}
+						}
+					}
+				}
+
+				// 断点
+				function go() {
+					var pageNo = 1,
+						pageSize = 20,
+						mode = 2; // 1会话质检结果 2聊天质检结果
+					$tr = null; // 当前tr
+
+					//ENTER
+					$(document).on('keyup', function(e) {
+						var $activeEl = $(document.activeElement);
+
+						if ($activeEl.is('[name=content2]') && (e.keyCode == 13 || e.keyCode == 108)) {
+							$('.search').trigger('click');
+						}
+					});
+					//ENTER
+					$(document).on('keyup', function(e) {
+						var $activeEl = $(document.activeElement);
+
+						if ($activeEl.is('[name=value]') && (e.keyCode == 13 || e.keyCode == 108)) {
+							$('.ensure-type').trigger('click');
+						}
+					});
+
+					var status = '';
+					//状态
+					$('.sort1').on('click', function() { //默认状态
+						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+						status = '';
+						listCheckLogItem();
+					});
+					$('.sort2').on('click', function() { //未处理状态
+						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+						status = 0;
+						listCheckLogItem();
+					});
+					$('.sort3').on('click', function() { //已处理状态
+						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+						status = 1;
+						listCheckLogItem();
+					});
+
+					listCheckLogItem();
+					// 聊天质检
+					function listCheckLogItem() {
+						Base.request({
+							url: 'QualityCheck/listCheckLogItem',
+							params: {
+								pageNo: pageNo,
+								pageSize: pageSize,
+								status: status,
+								content: $('[name=content2]').val(),
+							},
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+								} else {
+									var html = '';
+									if (data.list[0]) {
+										$('.currPage').text(data.list.length || 0);
+										$('.pageTotal').text(data.total || 0);
+										for (var i = 0; i < data.list.length; i++) {
+											var params = '';
+											for (var key in data.list[i]) {
+												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+											}
+											html += '<tr ' + params + ' ListChatlogQualityCheck2="' + ('' + JSON.stringify(data.list[i].ListChatlogQualityCheck).replace(/\"/g, '\'')) + '"><td>' + (data.list[i].Question || '') + '</td><td>' + (data.list[i].Average || '') +
+												'</td><td>' + (data.list[i].TypeName || '') + '</td><td>' + (data.list[i].QualityContent || '') + '</td><td>' + (data.list[i].Count || '') + '</td><td>' + toRoad(data.list[i].SourceId || '') + '(Id=' + (data.list[i].ChatUserId || '') +
+												')</td>';
+											html +='<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">未处理</a>') + '</td>';
+											html +='<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a><a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
+										}
+
+										var options = {
+											data: [data, 'list', 'total'],
+											currentPage: data.currentPage,
+											totalPages: data.totlePages,
+											alignment: 'right',
+											onPageClicked: function(event, originalEvent, type, page) {
+												pageNo = page;
+												listCheckLogItem(); // 后台为返回分页
+											}
+										};
+										$('#logpageListChat').bootstrapPaginator(options);
+									} else {
+										html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+										$('#logpageListChat').empty();
+									}
+									$('#chatCheck tbody').empty().append(html);
+								}
+							},
+						});
+					}
+
+					// 会话质检
+					function listCheckLoginSummary() {
+						Base.request({
+							url: 'QualityCheck/listCheckLoginSummary',
+							params: {
+								pageNo: pageNo,
+								pageSize: pageSize,
+								status: status,
+								content: $('[name=content2]').val(),
+							},
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+								} else {
+									var html = '';
+									if (data.list[0]) {
+										$('.currPage').text(data.list.length || 0);
+										$('.pageTotal').text(data.total || 0);
+										for (var i = 0; i < data.list.length; i++) {
+											var params = '';
+											for (var key in data.list[i]) {
+												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+											}
+											html += '<tr ' + params + ' ListChatlogQualityCheck2="' + ('' + JSON.stringify(data.list[i].ListLoginsummaryQualityCheck).replace(/\"/g, '\'')) + '"><td>' + (data.list[i].Score || '') + '</td><td>' + (data.list[i].TypeName || '') +
+												'</td><td>' + (data.list[i].QualityContent || '') + '</td><td>' + toRoad(data.list[i].SourceId || '') + '(Id=' + (data.list[i].ChatUserId || '') + ')</td>';
+											html +='<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">处理</a>') +'</td>';
+											html +='<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a><a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
+										}
+
+										var options = {
+											data: [data, 'list', 'total'],
+											currentPage: data.currentPage,
+											totalPages: data.totlePages,
+											alignment: 'right',
+											onPageClicked: function(event, originalEvent, type, page) {
+												pageNo = page;
+												listCheckLoginSummary(); // 后台为返回分页
+											}
+										};
+										$('#logpageListDialog').bootstrapPaginator(options);
+									} else {
+										html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+										$('#logpageListDialog').empty();
+									}
+									$('#dialogCheck tbody').empty().append(html);
+
+
+								}
+							},
+						});
+					}
+
+					// 处理聊天质检
+					function addCheckResult() {
+						Base.request({
+							url: 'QualityCheck/addCheckResult',
+							params: {
+								mode: mode,
+								modeValue: mode == 1 ? $tr.attr('lsId') : $tr.attr('chatlogId'), // 1会话质检结果 2聊天质检结果
+								type: $('[name=type]').val(),
+								content: $('[name=content]').val(),
+								result: $('[name=result]').val(),
+							},
+							callback: function(data) {
+								yunNoty(data);
+								
+								if (data.status) {} else {
+									$('#modal-edit').modal('hide');
+								}
+							},
+						});
+					}
+
+					// 搜索
+					$('.search').on('click', function() {
+						if (mode == 1) { // 1会话质检结果
+							listCheckLoginSummary();
+						} else { // 2聊天质检结果
+							listCheckLogItem();
+						}
+					})
+
+					// 切换tab
+					$('[href*=chatCheck]').on('click', function() {
+						mode = 2; // 1会话质检结果 2聊天质检结果
+						listCheckLogItem();
+					})
+					$('[href*=dialogCheck]').on('click', function() {
+						mode = 1; // 1会话质检结果 2聊天质检结果
+						listCheckLoginSummary();
+					})
+
+					// 处理/详情
+					$('body').on('click', '.chatEdit, .chatDetail', function(e) {
+						$tr = $(this).parents('tr');
+						// 处理
+						if ($(e.target).is('.chatEdit')) {
+							$('.chatCtnEdit').show();
+							$('.ensure-check').show();
+							$('.chatCtn').hide();
+						}
+						// 详情
+						if ($(e.target).is('.chatDetail')) {
+							$('.ensure-check').hide();
+							$('.chatCtnEdit').hide();
+							$('.chatCtn').show();
+						}
+						$('.question').text($tr.attr('question') || '');
+						$('.count').text($tr.attr('count') || '');
+						$('.isDeal').text(($tr.attr('isDeal') || '') ? '已处理' : '未处理');
+						/*if (+($tr.attr('isDeal') || '')) {
+							$('.chatCtnEdit').hide();
+						} else {
+							$('.chatCtnEdit').show();
+						}*/
+
+						var html = '';
+						var ListChatlogQualityCheck2 = JSON.parse(('' + $tr.attr('ListChatlogQualityCheck2')).replace(/\'/g, '\"'));
+						if (ListChatlogQualityCheck2) {
+							if (ListChatlogQualityCheck2[0]) {
+								for (var i = ListChatlogQualityCheck2.length - 1; i >= 0; i--) {
+									html += '<div class="chatCtnDetail"><label class="extend bold">第' + (ListChatlogQualityCheck2.length - i) + '次质检</label><div style="display: none;" class="chatCtnDetailCtn"><label class="bold">质检人</label><div>' +
+										ListChatlogQualityCheck2[i].Username + '</div><label class="bold">质检得分</label><div>' + ListChatlogQualityCheck2[i].Score + '</div><label class="bold">质检类型</label><div>' + ListChatlogQualityCheck2[i].TypeName +
+										'</div><label class="bold">质检时间</label><div>' + ListChatlogQualityCheck2[i].DateTime + '</div><label class="bold">质检评语</label><div>' + ListChatlogQualityCheck2[i].QualityContent + '</div></div></div>';
+								}
+							}
+						}
+						html += '<div class="chatCtnDetail"><label class="extend bold">第' + (ListChatlogQualityCheck2 ? (ListChatlogQualityCheck2.length + 1) : 1) + '次质检</label><div class="chatCtnDetailCtn"><label class="bold">质检人</label><div>' + $tr.attr(
+								'Username') + '</div><label class="bold">质检得分</label><div>' + $tr.attr('Score') + '</div><label class="bold">质检类型</label><div>' + $tr.attr('TypeName') + '</div><label class="bold">质检时间</label><div>' + $tr.attr('DateTime') +
+							'</div><label class="bold">质检评语</label><div>' + $tr.attr('QualityContent') + '</div></div></div>';
+						$('.chatCtnBody').empty().append(html);
+						$('#modal-edit').modal('show');
+					})
+
+					// 显隐质检详细
+					$('body').on('click', '.extend', function() {
+						$(this).siblings().slideDown().parents('.chatCtnDetail').siblings().find('.chatCtnDetailCtn').slideUp();
+					})
+
+					// 确认处理
+					$('.ensure-check').on('click', function() {
+						addCheckResult();
+						$('.chatCtnEdit input').val('');
+						$('.chatCtnEdit textarea').val('');
+						
+						if($('#page-container .listUl li').eq(0).hasClass('active')){
+							listCheckLogItem();
+						}else{
+							listCheckLoginSummary();
+						}
+					})
+					var firstTime = true;
+					// 聊天记录
+					$('body').on('click', '.chatRead', function() {
+						firstTime = true;
+						$tr = $(this).parents('tr');
+						$('[name=chtvs]').val($tr.attr('ChatVersion') || '');
+						$('[name=chatUserId]').val($tr.attr('ChatUserId') || '');
+						$('#chatCheckModal').modal('show');
+					})
+
+					var pageNo2 = 1,
+						pageSize2 = 10,
+						$li = null,
+						$tr2 = null,
+						checkItemCount = 0;
+
+					// 弹出框
+					$('#chatCheckModal').on('shown.bs.modal', function() {
+						findQualityType();
+						getList();
+						chatRecords(1);
+						$('.sendCheck2').hide();
+						$('#visiterForm input').val('');
+					});
+					// 隐藏框 #1
+					$('#chatCheckModal').on('hidden.bs.modal', function() {
+						$('.sendCheck').hide();
+					});
+					// 隐藏框
+					$('#chatModal').on('hidden.bs.modal', function() {
+						$('[name=chtvs]').val('');
+						$('[name=chatUserId]').val('');
+					});
+
+					// 弹出质检框
+					$('.addCheck').on('click', function() {
+						$('#chatCheckModal').modal('show');
+					})
+
+					var $tr3 = null;
+
+					findQualityType();
+
+					function findQualityType() {
+						Base.request({
+							url: 'QualityCheck/findQualityType',
+							params: {},
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+									$('.addCheckType').trigger('click');
+									$('#chatCheckModal').modal('hide');
+									var _html = '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+									$('#checkType tbody').empty().append(_html);
+								} else { //
+									var html = '',
+										_html = '';
+									if (data.list[0]) {
+										for (var i = 0; i < data.list.length; i++) {
+											html += '<option value="' + data.list[i].Id + '">' + data.list[i].Value + '</option>';
+
+											var params = '';
+											for (var key in data.list[i]) {
+												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+											}
+											var tmpValue=data.list[i].Value;
+											_html += '<tr ' + params + '><td>' + (tmpValue || '') + '</td><td>' + (data.list[i].AddTime || '') +
+												'</td>';
+											if(tmpValue=='句子重点匹配错误' || tmpValue=='未考虑上下文' || tmpValue=='缺乏语义层面匹配' || tmpValue=='缺乏相似问法/模板' || tmpValue=='缺乏近义词/等价词' || tmpValue=='核心实体匹配失败'){										
+												_html+='<td style="white-space: nowrap;">系统默认</td>';
+											}else{
+												_html+='<td style="white-space: nowrap;"><a class="typeEdit btns" href="javascript:;" title="">修改</a><a class="typeDel btns" href="javascript:;" title="">删除</a></td>';
+											}
+											
+											_html +='</tr>';
+										}
+									} else {
+										_html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+									}
+									$('[name=qualityModeId]').empty().append(html);
+									$('[name=qualityModeId2]').empty().append(html);
+									$('#checkType tbody').empty().append(_html);
+								}
+							},
+						});
+					}
+
+					// 删除质检类型
+					$('body').on('click', '.typeDel', function() {
+						$tr3 = $(this).parents('tr');
+						Base.request({
+							url: 'QualityCheck/delQualityType',
+							params: {
+								id: $tr3.attr('id'),
+							},
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+								} else { //
+									$tr3=null;
+									findQualityType();
+								}
+							},
+						});
+					})
+
+					// 修改质检类型
+					$('body').on('click', '.typeEdit', function() {
+						$tr3 = $(this).parents('tr');
+						$('[name=value]').val($tr3.attr('Value'));
+						$('.ensure-type').text('修改');
+					})
+
+					// 弹出质检类型框
+					$('.addCheckType').on('click', function() {
+						$('#modal-type').modal('show');
+					})
+					// 确认添加质检类型
+					$('.ensure-type').on('click', function() {
+						var id = '';
+						if ($tr3) {
+							id = $tr3.attr('id');
+						}
+						Base.request({
+							url: 'QualityCheck/addOrEditQualityType',
+							params: {
+								value: $('[name=value]').val(),
+								id: id,
+							},
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+								} else { //
+									$tr3=null;
+									findQualityType();
+									$('#modal-type').modal('hide');
+								}
+							},
+						});
+					})
+
+					// 质检类型框消失后
+					$('#modal-type').on('hidden.bs.modal', function() {
+						$tr3 = null;
+						$('[name=value]').val('');
+						$('.ensure-type').text('添加');
+					});
+
+					// 生成质检框 #1
+					$('body').on('click', '.wrapBtn', function(){
+						if(!$(this).hasClass('hasTest')){
+							$li = $(this).prevAll('.out');
+							var	inN = $li.attr('question');
+							$('[name=formatQue]').val(inN);
+							$('.sendCheck').show();
+							$('.wrap').trigger('mouseleave');
+							if (!+$('.pauseBtn').attr('isPause')){ // start
+								$('.pauseBtn').trigger('click');
+							}
+							$('#qualityForm input[name=uuid]').val($li.attr('uid'));
+							$('#qualityForm input[name=chatVersion]').val($li.attr('chatversion'));
+							$('#qualityForm input[name=chatlogId]').val($li.attr('id'));
+							hasAns();
+							simiQue();
+							getRule();
+						}
+						
+					})
+					// 隐藏质检框
+					$('.closeCheck').on('click', function() {
+						$('.sendCheck').hide();
+					})
+
+					// 确认会话质检
+					$('.ensure-check22').on('click', function() {
+						Base.request({
+							url: 'QualityCheck/checkLoginSummary',
+							params: {
+								lsId: $tr2.attr('id'),
+								chatVersion: $tr2.attr('chatVersion'),
+								checkItemCount: checkItemCount,
+								timeSpan: $tr2.attr('staytime'),
+								qualityModeId: $('[name=qualityModeId2]').val(),
+								score: $('[name=score2]').val(),
+								qualityContent: $('[name=qualityContent2]').val(),
+							},
+							callback: function(data) {
+								yunNoty(data);
+								if (data.status) {} else { //
+									$('.closeCheck').trigger('click');
+									$('[name=score2]').val('');
+									$('[name=qualityContent2]').val('');
+								}
+							},
+						});
+						
+					})
+
+					// 确认聊天质检
+					$('.ensure-check2').on('click', function() {
+						Base.request({
+							url: 'QualityCheck/checkLogItem',
+							params: {
+								uuid: $li.attr('Uid'),
+								chatVersion: $li.attr('chatVersion'),
+								chatlogId: $li.attr('Id'),
+								qualityModeId: $('[name=qualityModeId]').val(),
+								score: $('[name=score]').val(),
+								qualityContent: $('[name=qualityContent]').val(),
+							},
+							callback: function(data) {
+								yunNoty(data);
+								if (data.status) {} else { //
+									$('.closeCheck').trigger('click');
+									$('[name=score]').val('');
+									$('[name=qualityContent]').val('');
+									$('.ensure-type').text('添加');
+									listCheckLogItem();
+								}
+							},
+						});
+					})
+					// 会话质检
+					$('.dialogCheckBtn').on('click', function() {
+						if (!$tr2) {
+							yunNoty({
+								'status': 1,
+								'message': '请在左侧选择一个记录进行质检'
+							});
+							return;
+						}
+						$('.sendCheck').show();
+					})
+
+					// 收缩聊天区
+					$('.tri').on('click', function() {
+						if ($(this).is('.leftTri')) {
+							$('.modalLeft').hide();
+							$('.modalRight').css('width', '99%');
+							$(this).removeClass('leftTri').addClass('rightTri');
+						} else {
+							$('.modalLeft').show();
+							$('.modalRight').css('width', '73%');
+							$(this).removeClass('rightTri').addClass('leftTri');
+						}
+					})
+
+					// 悬浮生成框
+					$('body').on('mouseenter', '.wrap', function() {
+						if($(this).attr('ischecked')=='1'){}else{
+							$(this).find('.wrapInner').show().siblings('.wrapBtn').show();
+						}
+					})
+					$('body').on('mouseleave', '.wrap', function() {
+						if($(this).attr('ischecked')=='1'){}else{
+							$(this).find('.wrapInner').hide().siblings('.wrapBtn').hide();
+						}
+					})
+					var timer = null;
+
+					// 生成滚动条
+					var scrollbar = $('.scrollbar').scrollbar({
+						backClass: 'SC_backClass2',
+						frontClass: 'SC_frontClass2',
+						autoBottom: false, //内容改变，是否自动滚动到底部
+						moveCallback: function(top, direction) { // 运动时事件回调
+							if (!+$('.pauseBtn').attr('isPause')) { // start
+								$('.pauseBtn').trigger('click');
+							}
+						},
+					});
+
+
+					// 暂停播放
+					$('.pauseBtn').on('click', function() {
+						if (+$(this).attr('isPause')) { // start
+							$(this).attr('isPause', 0).css({
+								'background': 'url(images/pause.png) no-repeat center',
+								'background-size': 'contain',
+							});
+							$('.startCtn').show();
+							$('.pauseCtn').hide();
+
+							timer = setInterval(function() {
+								if (scrollbar.maxScroll > -scrollbar.curPos) {
+									scrollbar.scrollTo(-scrollbar.curPos + 1 * parseInt($('[name=speed]').val()), true)
+								} else {
+									$('.pauseBtn').trigger('click');
+								}
+							}, 20);
+
+						} else { // pause
+							$(this).attr('isPause', 1).css({
+								'background': 'url(images/start.png) no-repeat center',
+								'background-size': 'contain',
+							});
+							$('.startCtn').hide();
+							$('.pauseCtn').show();
+							clearInterval(timer);
+						}
+					})
+
+					// 上一组
+					$('.prevPage').on('click', function() {
+						if ($('[cur]')[0]) {
+							$('[cur]').prev().trigger('click');
+						} else {
+							$('.go:last').trigger('click');
+						}
+					})
+					// 下一组
+					$('.nextPage').on('click', function() {
+						if ($('[cur]')[0]) {
+							$('[cur]').next().trigger('click');
+						} else {
+							$('.go:first').trigger('click');
+						}
+					})
+
+
+					// 切换质检
+					$('body').on('click', '.go', function() {
+						firstTime = false;
+						$tr2 = $(this);
+						$tr2.css('background', '#eee').attr('cur', 1).siblings().removeAttr('style').removeAttr('cur');
+						chatRecords(1);
+						$('.sendCheck2').show();
+					})
+					
+					// 搜索
+					$('#searchChatRe2').on('click', function() {
+						getList();
+					})
+					// 清空
+					$('#resetBtn').on('click', function() {
+						$('#visiterForm')[0].reset();
+					})
+
+					// 访客日志(仅)
+					function getList() {
+						var STime = $('#visiterForm input[name=startTime]').val();
+						var ETime = $('#visiterForm input[name=endTime]').val();
+						var d1 = new Date(STime.replace(/\-/g, "\/")).getTime();
+						var d2 = new Date(ETime.replace(/\-/g, "\/")).getTime();
+						if(STime || ETime){
+							if (STime === "" || ETime === "") {
+								Base.gritter('请输入完整的时间段！', false);
+								return false;
+							}
+							if (STime !== "" && ETime !== "" && d1 >= d2) {
+								Base.gritter('开始时间不能大于结束时间！', false);
+								return false;
+							}
+						}
+						Base.request({
+							url: 'loginsummary/getList',
+							params: {
+								pageNo: pageNo2,
+								pageSize: pageSize2,
+								logItems: 1, // #1
+							},
+							$formObj: $('#visiterForm'),
+							callback: function(data) {
+								if (data.status) {
+									yunNoty(data);
+								} else {
+									var html = '';
+									if (data.list[0]) {
+										for (var i = 0; i < data.list.length; i++) {
+											var params = '';
+											for (var key in data.list[i]) {
+												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+											}
+											html += '<tr class="go" ' + params + '><td>' + toRoad(data.list[i].SourceId || '') + '(Id=' + (data.list[i].ChatUserId || '') + ')</td><td>' + (data.list[i].LoadTimes || '') + '</td><td>' + (data.list[i].StayTime || 0) +
+												'秒</td></tr>';
+										}
+										var options = {
+											data: [data, 'list', 'total'],
+											currentPage: data.currentPage,
+											totalPages: data.totlePages,
+											alignment: 'right',
+											onPageClicked: function(event, originalEvent, type, page) {
+												pageNo2 = page;
+												getList(); // 后台为返回分页
+											}
+										};
+										$('#logpageList').bootstrapPaginator(options);
+									} else {
+										html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
+										$('#logpageList').empty();
+									}
+									$('#visiterlogList tbody').empty().append(html);
+									if ($('.go:first')[0]) {
+									} else {
+										$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空</li>');
+									}
+
+									$('.modalLeft .slim').slimScroll({
+										height: 500
+									});
+									//$('#visiterlogList tbody').children('.go').eq(0).trigger('click');
+								}
+							},
+						});
+					}
+
+					//访客聊天记录(由于聊天记录结构不同)
+					function chatRecords(pageNo) {
+						if (!pageNo) pageNo = 1;
+						$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><img src=\"../common/images/ajax_loader.gif\"></li>');
+						$.ajax({
+							type: 'get',
+							datatype: 'json',
+							cache: false, //不从缓存中去数据
+							url: encodeURI('../../chatlog/findLog?pageSize=' + pageSize + '&pageNo=' + pageNo + '&chatUserId=' + (firstTime ? ($tr ? $tr.attr('chatUserId') : '') : ($tr2 ? $tr2.attr('chatUserId') : '')) + '&chtvs=' + (firstTime ? ($tr ? $tr.attr(
+								'chatversion') : '') : ($tr2 ? $tr2.attr('chatversion') : ''))),
+							success: function(data) {
+								if (data.status === 0) {
+									if (data.list[0]) {
+										var visiterInfo = '';
+										if (typeof data.userCard != 'undefined' && data.userCard !== null) {
+											if (data.userCard.Name !== null) {
+												visiterInfo = data.userCard.Name + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											} else if (data.userCard.UserName !== null) {
+												visiterInfo += data.userCard.Name + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											}
+										}
+										if (typeof data.chatUser != 'undefined' && data.chatUser !== null) {
+											if (data.chatUser.SysInfo !== null) {
+												visiterInfo += data.chatUser.SysInfo + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											}
+											if (data.chatUser.Broswer !== null) {
+												visiterInfo += data.chatUser.Broswer + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											}
+											if (data.chatUser.Address !== null) {
+												visiterInfo += data.chatUser.Address + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											}
+											if (data.chatUser.HostIp !== null) {
+												visiterInfo += data.chatUser.HostIp;
+											}
+										}
+										$('#visiterForm .visiterInfo').html(visiterInfo);
+
+										var html = '';
+										if (data.list[0]) {
+											for (var i = 0; i < data.list.length; i++) {
+												var reply = data.list[i].Reply;
+												if (data.list[i].Reply) {
+													var src = data.list[i].Reply.match(/src=\"([^\"]+)/);
+													if (src) {
+														reply = '<a href="' + src[1] + '" data-lightbox="gallery">' + (data.list[i].Reply || '　') + '</a>';
+													}
+												}
+
+												// 我的话添加参数
+												var params = '';
+												for (var key in data.list[i]) {
+													params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+												}
+												if(data.list[i].Question){
+													html += '<li class="right out" ' + params + '><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">访客</a><a class="image"><img src="../common/images/user.png" alt=""></a><div class="message">' + data.list[i].Question+ '</div></li>';
+												}
+												if(reply){
+													html += '<li class="left in"><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">机器人</a><a class="image"><img src="../common/images/robot.png" alt=""></a><div class="message">' + reply + '</div>';
+												}
+											}
+										} else {
+											html += '<div colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</div>';
+										}
+										$('#chatLogList').find('ul').html(html);
+										//下面开始处理分页
+										var options = {
+											currentPage: data.currentPage,
+											totalPages: data.totlePages,
+											onPageClicked: function(event, originalEvent, type, page) {
+												chatRecords(page);
+											}
+										};
+										setPage('chatpageList', options);
+									} else {
+										$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空</li>');
+										$('#chatpageList').html('');
+									}
+								} else {
+									yunNoty(data);
+								}
+
+								// 给我的话和机器人的话加父级
+								$('.out').each(function() {
+									$(this).add($(this).next('.in')).wrapAll('<div class="wrap" ischecked="'+$(this).attr('ischecked')+'"></div>');
+								})
+								$('.wrap').each(function() {
+									if($(this).attr('ischecked')==1){
+										$(this).append('<button type="button" class="wrapBtn btn  btn-default hasTest">已质检</button><div class="wrapInner hasTest"></div>');
+									}else{
+										$(this).append('<button type="button" class="wrapBtn btn  btn-primary">聊天质检</button><div class="wrapInner"></div>');
+									}
+								})
+								$(".form_datetime").datetimepicker({
+									language: "zh-CN",
+									format: "yyyy-mm-dd hh:ii",
+									autoclose: true,
+									todayBtn: true,
+									minuteStep: 10,
+									initialDate: new Date()
+								});
+							}
+						});
+					};
+					//提示还可以输入多少字
+					$('#insert').addWordCount(200);
+
+					//相似问法分类
+					var setting1 = {
+						data: {
+							simpleData: {
+								enable: true,
+							},
+						},
+						view: { //不显示图标
+							showIcon: false
+						},
+						callback: {
+							onClick: function(event, treeId, treeNode) {
+								//获取当前分类的ID
+								$('#nav-pills-tab-1 input[name=groupId]').val(treeNode.id-1);
+								$('#tanchutree1').fadeOut();
+								$('#nav-pills-tab-1 .ztreeName1').html(treeNode.name);
+								simiQue();
+							}
+						}
+					};
+					//已有答案分类
+					var setting2 = {
+						data: {
+							simpleData: {
+								enable: true,
+							},
+						},
+						view: { //不显示图标
+							showIcon: false
+						},
+						callback: {
+							onClick: function(event, treeId, treeNode) {
+								$('#tanchutree2').fadeOut();
+								$('#nav-pills-tab-2 .ztreeName2').html(treeNode.name);
+								$('#nav-pills-tab-2 input[name=groupId]').val(treeNode.id-1);
+								hasAns();
+							}
+						}
+					};
+
+					//编辑答案
+					var setting3 = {
+						data: {
+							simpleData: {
+								enable: true,
+							},
+						},
+						view: { //不显示图标
+							showIcon: false
+						},
+						callback: {
+							onClick: function(event, treeId, treeNode) {
+								$('#nav-pills-tab-3 input[name=groupId]').val(treeNode.id-1);
+								$('#tanchutree3').fadeOut();
+								$('.ztreeName3').html(treeNode.name);
+							},
+							onCheck: function(event, treeId, treeNode) {
+								if (isMove) {
+									if (treeNode.checked) {
+										Base.request({
+											url: 'LearnQue/ensureGroup',
+											params: {
+												groupId: treeNode.id - 1,
+												id: $move.attr('id'),
+											},
+											callback: function(data) {
+												if (data.status) {
+													Base.gritter(data.message, false);
+												} else {
+													Base.gritter(data.message, true);
+												}
+												isMove = false;
+												$move.remove();
+												$('#' + treeNode.tId + '_check').trigger('click');
+											},
+										});
+									}
+								}
+							},
+						}
+					};
+					//获取问题分类
+					Base.request({
+						url: 'classes/listClasses',
+						params: {
+							m: 0,
+						},
+						callback: function(data) {
+							if (data.status) {
+								Base.gritter(data.message, false);
+							} else {
+								var html = '';
+								if (data.list[0]) {
+									var formatData = [],
+											len = data.list.length;
+
+									for (var key in data.list) {
+										formatData[key] = {};
+										formatData[key]['name'] = data.list[key]['Name'];
+										formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+										formatData[key]['id'] = data.list[key]['Id'] + 1;
+									}
+
+									formatData[len] = {};
+									formatData[len]['name'] = '全部分类';
+									formatData[len]['pId'] = 0;
+									formatData[len]['id'] = 1;
+									formatData[len]['open'] = true;
+									$.fn.zTree.init($("#tanchutree1"), setting1, formatData);
+									$.fn.zTree.init($("#tanchutree2"), setting2, formatData);
+									$.fn.zTree.init($("#tanchutree3"), setting3, formatData);
+								} else {
+
+								}
+
+							}
+						},
+					});
+
+					//点击弹出树
+					$('.ztreeName1').click(function(){
+						$('#tanchutree1').toggle();
+					});
+
+					$('.ztreeName2').click(function(){
+						$('#tanchutree2').toggle();
+					});
+
+					$('.ztreeName3').click(function(){
+						$('#tanchutree3').toggle();
+					});
+					//生效角色
+					//生效角色树
+					var setting = {
+						check: {
+							enable: true,
+							chkboxType: { "Y" : "ps", "N" : "ps" }
+						},
+						data : {
+							simpleData : {
+								enable : true,
+								idKey : "Id",
+								pIdKey : "ParentId",
+								rootPId : 0
+							},
+							key : {
+								name : "Name"
+							}
+						},
+						view : {
+							dblClickExpand: false,
+							selectedMulti : false,
+							showIcon: false
+						},
+						async : {
+							enable: true,
+							url: "../../comb/loadCombs",
+							autoParam: ["id"],
+							dataFilter: function(treeId, parentNode, responseData) {
+								if (responseData) {
+									return responseData.list;
+								}
+								return responseData;
+							}
+						},
+						callback : {
+							beforeClick: function(treeId, treeNode) {
+								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
+								zTree.checkNode(treeNode, !treeNode.checked, null, true);
+								return false;
+							},
+							onCheck: function(e, treeId, treeNode) {
+								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
+								nodes = zTree.getCheckedNodes(true);
+								v = "";
+								I = "";
+								for (var i=0, l=nodes.length; i<l; i++) {
+									if (nodes[i].Leaf == 1) {
+										v += nodes[i].Name + ",";
+										I += nodes[i].Id + "~";
+									}
+								}
+								if (v.length > 0 ) v = v.substring(0, v.length-1);
+								if (I.length > 0 ) I = I.substring(0, I.length-1);
+
+								$("#juese").html(v);
+								$("#QuestionClassModel input[name=hasCheckedId]").val(I);
+								
+							},
+							onAsyncSuccess: function(event, treeId, treeNode) {
+								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
+								var IdString = $("#QuestionClassModel input[name=hasCheckedId]").val();
+								if(IdString) {
+									var Ids = IdString.split('~');
+									var node = null;
+									for(i = 0 ; i < Ids.length; i ++ ) {
+										zTree.checkNode( zTree.getNodeByParam( "Id", Ids[i] ), true );
+									}
+								}
+							}
+						}
+					};
+
+					$('#QuestionClassModel').on('show.bs.modal',function(){
+						$.fn.zTree.init($("#treeQueClass"), setting);
+					})
+					// 点击td自动选中input
+					$('body').on('click', 'td', function() {
+						$(this).parents('tr').find('input').iCheck('check');
+					});
+					
+							//取消选择生效角色
+					$('#selClassBtn').click(function(){
+						$("#QuestionClassModel input[name=hasCheckedId]").val('');
+						$("#juese").html('来访者角色');
+					})
+					$('#nav-pills-tab-2 .dropdown-menu li>a').click(function(){
+						var tmpHtml=$(this).html();
+						if(tmpHtml=='问题'){
+							$('#nav-pills-tab-2 input[class=searchInput]').attr('name','question');
+							$('#nav-pills-tab-2 .curHtml').html('问题');
+						}else if(tmpHtml=='答案'){
+							$('#nav-pills-tab-2 .curHtml').html('答案');
+							$('#nav-pills-tab-2 input[class=searchInput]').attr('name','answer');
+						}
+					})
+					//质检得分只只能输入数字
+					$("#qualityForm input[name=score]").keyup(function(){ 
+						var tmptxt=$(this).val();       
+            			$(this).val(tmptxt.replace(/\D|^0/g,''));  
+					})
+					$(".sendCheck2 input[name=score2]").keyup(function(){ 
+						var tmptxt=$(this).val();       
+            			$(this).val(tmptxt.replace(/\D|^0/g,''));  
+					})
+					
+					$('#nav-pills-tab-2 .searchHasAns').click(function(){
+						searchHasAns();
+					})
+					
+					//已有答案回答
+					function hasAns(pageNo2) {
+						if(!pageNo2){pageNo2=1}
+						$("#nav-pills-tab-2-form input[name=pageNo]").val(pageNo2);
+						$.ajax({
+							type: 'post',
+							datatype: 'json',
+							cache: false,
+							url: encodeURI('../../question/listAns'),
+							data: $("#nav-pills-tab-2-form").serialize(),
+							success: function(data) {
+								if (data.status == 0) {
+									if (data.ListQue && data.ListQue.length>0) {
+										var html='';
+										for (var i = 0; i < data.ListQue.length; i++) {
+											html += '<tr Id="' + (data.ListQue[i].Id || '') + '"  SolutionId="' + (data.ListQue[i].SolutionId || '') + '">';
+											html += '<td width="50"><input class="singleAnsCos" type="radio" name="ansQue"></td>';
+											html += '<td class="cosInput" ><div class="minheight">' + (data.ListQue[i].Answer || '') + '</div></td>';
+											html += '<td class="cosInput" style="white-space: nowrap;">' + (data.ListQue[i].Time || '') + '</td>';
+											html += '</tr>';
+										}
+		
+										var options = {
+											currentPage: data.currentPage,
+											totalPages: data.totlePages ? data.totlePages : 1,
+											alignment: 'right',
+											onPageClicked: function(event, originalEvent, type, page) {
+												hasAns(page);
+											}
+										};
+										$('#itemContainer2').bootstrapPaginator(options);
+									} else {
+										html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+										$('#itemContainer2').empty();
+									}
+									$('#nav-pills-tab-2 .tbody2').empty().append(html);
+									icheckInit();
+								} else {
+									yunNoty(data);
+								}
+							}
+						});
+					}
+		
+					$('#nav-pills-tab-1-form .searchSimiQue').click(function(){
+						simiQue();
+					})
+					// 相似问题答案回答
+					function simiQue(pageNo2) {
+						if(!pageNo2)pageNo2=1
+						$("#nav-pills-tab-1-form input[name=pageNo]").val(pageNo2);
+						$.ajax({
+							type: 'post',
+							datatype: 'json',
+							cache: false,
+							url: encodeURI('../../question/listQue'),
+							data: $("#nav-pills-tab-1-form").serialize(),
+							success: function(data) {
+								if (data.status == 0) {
+									if (data.ListQue && data.ListQue.length>0) {
+										var html='';
+										for (var i = 0; i < data.ListQue.length; i++) {
+											html += '<tr Id="' + (data.ListQue[i].Id || '') + '"  SolutionId="' + (data.ListQue[i].SolutionId || '') + '">';
+											html += '<td width="50"><input class="singleAnsCos" type="radio" name="ansQue"></td>';
+											html += '<td class="cosInput" ><div class="minheight">' + (data.ListQue[i].Question || '') + '</div></td>';
+											html += '<td class="cosInput" style="white-space: nowrap;">' + (data.ListQue[i].Time || '') + '</td>';
+											html += '</tr>';
+										}
+										var options = {
+											currentPage: data.currentPage,
+											totalPages: data.totlePages ? data.totlePages : 1,
+											alignment: 'right',
+											onPageClicked: function(event, originalEvent, type, page) {
+												simiQue(page);
+											}
+										};
+										$('#itemContainer').bootstrapPaginator(options);
+									} else {
+										html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+										$('#itemContainer').empty();
+									}
+									$('#nav-pills-tab-1 .tbody1').empty().append(html);
+									icheckInit();
+								} else {
+									yunNoty(data);
+								}
+							}
+						});
+					}
+					//编辑答案中的生效渠道
+					function getRule() {
+						$.ajax({
+							type: 'post',
+							datatype: 'json',
+							cache: false,
+							//不从缓存中去数据
+							url: encodeURI('../../Configuration/listAllItem'),
+							success: function(data) {
+								if(data.status === 0) {
+									var List = [];
+									if(data.listItem) {
+										List = data.listItem;
+									} else {
+										return;
+									}
+									for(var i in List) {
+										if(List[i].ConfigItemDesc == '生效渠道') {
+											if(List[i].IsDisplay === 1) {
+												$('#warpRules').remove();
+											} else if(List[i].IsDisplay === 0) {
+												$.ajax({
+													type: 'post',
+													datatype: 'json',
+													cache: false,
+													//不从缓存中去数据
+													url: encodeURI('../../Configuration/listValue'),
+													data: {
+														itemId: List[i].Id
+													},
+													success: function(data) {
+														if(data.status === 0) {
+															if(data.listValue) {
+																$('#chooseAll').empty();
+																$('#chooseAll').append('<input id="wayAll" type="checkbox"><label for="wayAll" style="margin: 5px;">全选</label>');
+																$('#wayAll').iCheck({
+																	checkboxClass: 'icheckbox_flat-blue',
+																	radioClass: 'iradio_flat-blue',
+																	cursor: true
+																});
+																for(var key in data.listValue) {
+																	$('#chooseAll').append('<a class="btn btn-white m-r-5 m-b-5" fid="'+data.listValue[key].DicCode+'">'+data.listValue[key].DicDesc+'</a>');
+																}
+															}
+														}
+													}
+												});
+											}
+										} else if(List[i].ConfigItemDesc == '生效角色') {
+											if(List[i].IsDisplay === 1) {
+												$('#warpRoles').remove();
+											}
+										}
+									}
+								}
+							}
+						});
+					}
+					//生效渠道
+					$('body').on('click', 'a[fid]', function(e) {
+						if($(e.target).hasClass('btn-primary')) {
+							$(e.target).removeClass('btn-primary');
+							$(e.target).attr('ckb', 0);
+						} else {
+							$(e.target).addClass('btn-primary');
+							$(e.target).attr('ckb', 1);
+						}
+					});
+					$('body').on('ifClicked', '#wayAll', function() {
+						if ($(this)[0].checked) {
+							$('a[fid]').removeClass('btn-primary');
+							$('a[fid]').attr('ckb', 0);
+						} else {
+							$('a[fid]').addClass('btn-primary');
+							$('a[fid]').attr('ckb', 1);
+						}
+					});
+					
+					$('body').on('click','.testOnly',function(){
+						replayTest(0);
+					})
+					$('body').on('click','.testAndlearn',function(){
+						replayTest(1);
+					})
+		
+					//仅质检 点击提交到后台
+					function replayTest(learnFlag){
+						var qId='',sId='',effectiveRules = [],tmpUrl='';//相似问题的问题id和答案的solutionId
+						var tmpStatus=$('.nav-pills li.active').attr('status');
+						if(tmpStatus==1 || tmpStatus==3){
+							//当前的答案模式是相似问题答案回答或者是已有答案回答
+							$('.tab-content .singleAnsCos').each(function() {
+								if ($(this).prop('checked')) {
+									qId = $(this).parents('tr').attr('id');
+									sId = $(this).parents('tr').attr('solutionId');
+								}
+							});
+							
+							tmpUrl='&id='+qId+'&solutionId='+sId;
+							//相似和已有答案的区分
+							if(tmpStatus==3){
+								if(!qId && !sId){
+									var tmpData={"message":"请选择问题","status":1}
+									yunNoty(tmpData);
+									return;
+								}
+								tmpUrl=tmpUrl+'&groupId='+$('#nav-pills-tab-1 input[name=groupId]').val();
+							}else if(tmpStatus==1){
+								if(!qId && !sId){
+									var tmpData={"message":"请选择答案","status":1}
+									yunNoty(tmpData);
+									return;
+								}
+								tmpUrl=tmpUrl+'&groupId='+$('#nav-pills-tab-2 input[name=groupId]').val();
+							}
+						}else if(tmpStatus==2){
+							//编辑答案回答
+							
+							var effectiveRule1 = {
+								'type' : 1,
+								'roleIds' : ""
+							};
+							$('#warpRules a.btn-primary').each(function() {
+								effectiveRule1.roleIds += $(this).attr('fid')+",";
+							});
+							if(effectiveRule1.roleIds === "") {
+								effectiveRule1.roleIds = "-1";
+							} else {
+								effectiveRule1.roleIds = effectiveRule1.roleIds.substring(0,effectiveRule1.roleIds.length-1);
+							}
+							var effectiveRule2 = {
+								'type' : 2,
+								'roleIds' : ""
+							};
+							if($('#QuestionClassModel input[name=hasCheckedId]').val()) {
+								effectiveRule2.roleIds = $('#QuestionClassModel input[name=hasCheckedId]').val().split('~').join(',');
+							}
+							if(effectiveRule2.roleIds === "") {
+								effectiveRule2.roleIds = "-1";
+							}
+							effectiveRules.push(effectiveRule1);
+							effectiveRules.push(effectiveRule2);
+							effectiveRules = JSON.stringify(effectiveRules);
+							if($('#nav-pills-tab-3 input[name=groupId]').val()==0){
+								var tmpData={"message":"请选择分类","status":1}
+								yunNoty(tmpData);
+								return;
+							}
+							tmpUrl='&groupId='+$('#nav-pills-tab-3 input[name=groupId]').val()+'&effectiveRules='+effectiveRules+'&answer='+$('#nav-pills-tab-3 #insert').val()
+							
+						}
+						$.ajax({
+							type: 'post',
+							datatype: 'json',
+							cache: false,
+							url: encodeURI('../../QualityCheck/checkLogItemByAnswer'),
+							data: $("#qualityForm").serialize()+'&learnFlag='+learnFlag+'&status='+tmpStatus+tmpUrl,
+							success: function(data) {
+								if (data.status == 0) {
+									yunNoty(data);
+									$('.sendCheck .cancel').trigger('click');
+									$('#qualityForm input').val('');
+									if(tmpStatus==3){
+										$('#nav-pills-tab-1 input[name=groupId]').val('0');
+										$('#nav-pills-tab-1 input[name=question]').val('0');
+										$('#nav-pills-tab-1 .ztreeName1').html('全部分类');
+									}else if(tmpStatus==1){
+										$('#nav-pills-tab-2 input[name=groupId]').val('0');
+										$('#nav-pills-tab-2 input[class=form-control]').val('');
+										$('#nav-pills-tab-2 .ztreeName2').html('全部分类');
+									}else if(tmpStatus==2){
+										$('#nav-pills-tab-3 input').val('');
+										$('#nav-pills-tab-3 textarea').val('');
+										$('#nav-pills-tab-3 .ztreeName3').html('全部分类');
+									}
+									if($('#page-container .panel-body>nav-pills li').eq(0).hasClass('.active')){
+										listCheckLogItem();
+									}else{
+										listCheckLoginSummary();
+									}
+									chatRecords();
+								} else {
+									yunNoty(data);
+								}
+							}
+						});
+					}
+					
+					
+					
+				}
+			});
+			
+		</script>
+</body>
+
+</html>

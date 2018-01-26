@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>实体选择</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+  <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+  <style>
+  .labelDiv {
+    display:inline-block; padding:8px;
+  }
+  .select_all {
+    margin-left:6px;
+  }
+  #sal {
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .label {
+    font-size: 120%;
+    font-weight: 600;
+  }
+  </style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">实体选择</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">实体选择</h1>
+				<div class="panel">
+					<div class="panel-body">
+            <input type="checkbox" id="select_all"><label for="select_all" class="select_all">全选</label>
+            <div id="words" style="min-height:300px;padding:15px;">
+            </div>
+						<div id="pageList"></div>
+            <div style="text-align:center;">
+              <span>添加至：</span><select id="sal" class="form-control"></select><button type="button" class="btn btn-primary m-l-4" onclick="saveword()">保存</button>
+            </div>
+					</div>
+				</div>
+			</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+  <script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+      listWords();
+      $('#select_all').on('ifClicked', function(){
+        var ckbs = $('.label');
+        if ($(this)[0].checked) {
+          ckbs.removeClass('label-primary').addClass('label-default');
+        } else {
+          ckbs.removeClass('label-default').addClass('label-primary');
+        }
+      });
+      $.getJSON('../../WordsProcess/wordsProcessResultMode', function(data){
+        if (data.status == 0) {
+          data.list.forEach(function(el){
+            $('#sal').append('<option value="'+el.Id+'">'+el.CodeDesc+'</option>');
+          });
+        }
+      });
+    });
+		function listWords(pageNo) {
+			//不勾选全选
+			//$('.select_rows').iCheck('uncheck');
+			if (!pageNo) pageNo = 1;
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../WordsProcess/WordsProcessResultList?pageSize=50&pageNo=' + pageNo),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.questionList==undefined){
+							$('#words').html('<div><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+							$('#pageList').html('');
+							return;
+						}
+						if (data.questionList.length > 0) {
+							listWordsData = data.questionList;
+							var html = "";
+							for (var i = 0; i < data.questionList.length; i++) {
+                html += '<div class="labelDiv"><span class="label label-default" style="cursor:pointer;">'+data.questionList[i].Words+'</span></div>';
+							}
+							$('#words').empty().html(html);
+              $('#select_all').iCheck('uncheck');
+							$('#words .label').click(function(){
+								if($(this).hasClass('label-default')){
+                  $(this).removeClass('label-default').addClass('label-primary');
+                } else {
+                  $(this).removeClass('label-primary').addClass('label-default');
+                  $('#select_all').iCheck('uncheck');
+                }
+							});
+							//icheckListInit();
+							//下面开始处理分页
+							var options = {
+								data: [data, 'questionList', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									listWords(page);
+								}
+							};
+							setPage('pageList', options);
+						} else {
+							$('#words').html('<div><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</div>');
+							$('#pageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		var flag_ww_add=false;
+		function saveword(){
+      var wType = $('#sal').val(),
+          url = '',
+          mode = null,
+          words = '';
+      $('#words .label-primary').each(function(i){
+        words += $(this).html() + ',';
+      });
+      if(words.length > 0) {
+        words = words.substr(0, words.length-1);
+      }
+      switch(wType){
+        case '10'://停止词
+          url = '../../wordDoc/editProfessionWordInfo';
+          mode = 1;
+          break;
+        case '11'://专业名词
+          url = '../../wordDoc/editProfessionWordInfo';
+          mode = 4;
+          break;
+      }
+			if(flag_ww_add){
+				return;
+			}
+			flag_ww_add=true;
+			$.ajax({
+				type:'post',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI(url),
+				data:{
+          word: words,
+          mode: mode
+        },
+				success:
+				function(data){
+					flag_ww_add=false;
+					if(data.status===0){
+						yunNoty(data);
+						listCurrentPage(listWords,'pageList');
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

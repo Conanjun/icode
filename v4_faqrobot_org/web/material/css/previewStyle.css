@@ -1,0 +1,337 @@
+/*预览功能样式*/
+.preview_phone{
+    display:none;
+    width:550px;
+    height:680px;
+    position:fixed;
+    z-index:210;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    margin:auto;
+    color:#333 !important;
+}
+.phone-img{
+    width:360px;
+    height:680px;
+    background:url("../images/wx_phone_preview_z35e455.png") no-repeat;
+    position:absolute;
+    left:115px;
+    margin-left:30px;
+}
+.preview_operate ul{
+    position:absolute;
+    top:80px;
+    left:0;
+    overflow:hidden;
+    min-width:120px;
+    border-radius:5px;
+}
+.preview_operate .preview_close{
+    min-width:120px;
+    background:#f0eff4;
+    position:absolute;
+    bottom:100px;
+    left:0;
+    border-radius:5px;
+}
+.preview_operate ul li{
+    background:#f0eff4;
+    border-bottom:1px solid #dfdfe4;
+    padding:5px 10px;
+    text-align:center;
+    cursor:pointer;
+}
+.preview_operate ul li.active{
+    background:#47b54a;
+    color:#fff;
+    border-bottom-color:#5bab5e;
+}
+
+.preview_operate .operate_5{
+    display:none;
+    position:absolute;
+    top:210px;
+    left:0;
+}
+.preview_operate .operate_5 button{
+    background:#f0eff4;
+    border-radius:5px;
+    padding:7px;
+    width:58px;
+}
+
+
+.preview_content{
+    position: absolute;
+    top:85px;
+    left:165px;
+    z-index:11;
+    width:282px;
+    height:500px;
+    background:#fff;
+}
+.preview_content > div{
+    display:none;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+.preview_content > div.active{
+    display:block;
+}
+.preview_content div.content_1{
+    background:#f2f2f2;
+}
+
+.content_head{
+    background:#333;
+    color:#fff;
+    text-align:center;
+    line-height: 40px;
+}
+.content_body{
+    height:460px;
+}
+.content_1_msg{
+    margin:15px;
+    padding:10px;
+    background:#fff;
+    border:1px solid #e7e7eb;
+    cursor:pointer;
+}
+.content_1_msg > .msg_bd{
+    padding:5px 0;
+}
+.content_1_msg > .msg_bd > div{
+    text-align:center;
+    margin-bottom:5px;
+}
+.content_1_msg > .msg_bd > div.msg_title{
+    text-align:left;
+    font-size:14px;
+}
+.content_1_msg > .msg_bd > div.msg_time{
+    text-align:left;
+    color:#8d8d8d;
+}
+.content_1_msg > .msg_bd > div.msg_pic{
+    width:230px;
+    height:120px;
+}
+.content_1_msg > .msg_bd > div.msg_pic>img{
+    width:100%;
+    height:100%;
+}
+.content_1_msg > .msg_bd > div.msg_desc{
+    font-size:12px;
+    text-align:left;
+    max-height: 35px;
+    overflow: hidden;
+}
+.content_1_msg > .msg_ft{
+    border-top:1px solid #eee;
+    padding-top:10px;
+}
+.content_1_msg > .msg_ft span:last-child{
+    float:right;
+}
+
+.content_1_more{
+    margin:15px;
+    background:#fff;
+    border:1px solid #e7e7eb;
+    cursor:pointer;
+}
+.content_1_more > .artical_1{
+    padding:10px;
+    width:250px;
+    height:140px;
+    position: relative;
+}
+.content_1_more > .artical_1 > img{
+    width:100%;
+    height:100%;
+}
+.content_1_more > .artical_1 > .artical_1_title{
+    width:230px;
+    height:40px;
+    background:rgba(0,0,0,0.7);
+    color:#fff;
+    line-height:40px;
+    text-align:center;
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.content_1_more > .artical_2{
+    overflow: hidden;
+    padding:10px;
+    border-top: 1px solid #e7e7eb;
+}
+.content_1_more > .artical_2 > img{
+    float: right;
+    margin-left: 10px;
+    width: 45px;
+    height: 45px;
+}
+.content_1_more > .artical_2 > .sub_artical_title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height:45px;
+}
+
+.content_2_body{
+    height:460px;
+    overflow: auto;
+}
+.content_2_body::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: red;
+    border: 0px solid #fff;
+}
+.content_2_msg{
+    display:none;
+    padding:15px 10px;
+}
+.content_2_msg.active{
+    display:block;
+}
+.content_2_msg > .msg_bd > div{
+    text-align:center;
+    margin-bottom:10px;
+}
+.content_2_msg > .msg_bd > div.msg_title{
+    text-align:left;
+    font-size:16px;
+}
+.content_2_msg > .msg_bd > div.msg_info{
+    text-align:left;
+    color:#8d8d8d;
+}
+.content_2_msg > .msg_bd > div.msg_info>.msg_user{
+    margin-left:10px;
+}
+.content_2_msg > .msg_bd > div.msg_pic{
+    margin-top:10px;
+    width:262px;
+    height:173px;
+}
+.content_2_msg > .msg_bd > div.msg_pic>img{
+    width:100%;
+    height:100%;
+}
+.content_2_msg > .msg_bd > div.msg_desc{
+    font-size:14px;
+    text-align:left;
+}
+.content_2_msg > .msg_bd > div.msg_desc>p>img{
+    width:262px;
+    height:173px;
+}
+.content_3_msg{
+    padding:15px;
+    overflow: hidden;
+}
+.content_3_msg>img{
+    width:28px;
+    height:28px;
+    float:left;
+    margin-right:15px;
+}
+.content_3_msg>.msg_moments>.moments_nickname{
+    font-size:12px;
+    padding-bottom:5px;
+}
+.content_3_msg>.msg_moments>.moments_content{
+    background:#f0eff4;
+    padding:8px 10px;
+    overflow: hidden;
+    cursor:pointer;
+}
+.moments_content>.moments_appmsg_img{
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.moments_content>.moments_appmsg_title{
+    font-size:14px;
+    width:135px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.content_4{
+    background:#f2f2f2;
+}
+.content_4_msg{
+    padding:15px;
+    overflow: hidden;
+}
+.content_4_msg>img{
+    width:28px;
+    height:28px;
+    float:left;
+    margin-right:15px;
+}
+.content_4_msg>.chat_msg{
+    position:relative;
+}
+.content_4_msg>.chat_msg>i{
+    position:absolute;
+    top:5px;
+    left:36px;
+    color:#fff;
+    font-size:20px;
+}
+.chat_content_wrap{
+    overflow: hidden;
+    background:#fff;
+    padding:10px;
+    margin-right:25px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+.chat_content_wrap>.chat_appmsg_title{
+    font-size:14px;
+    width:150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom:5px;
+}
+.chat_content_wrap>.chat_content{
+    overflow: hidden;
+}
+.chat_content_wrap>.chat_content>img.chat_appmsg_img{
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+.chat_content_wrap>.chat_content>.chat_appmsg_desc{
+    font-size: 12px;
+    color: #8d8d8d;
+    margin-top: 3px;
+    max-height: 37px;
+    overflow: hidden;
+}
+.chat_content_wrap>.chat_content>.chat_appmsg_desc>p{
+    color: #8d8d8d;
+}
+.preview_shadow{
+    display:none;
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    z-index:200;
+}

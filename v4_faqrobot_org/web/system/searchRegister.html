@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>查询注册用户</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">查询注册用户</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">查询注册用户</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="registerForm">
+							<div class="form-group m-r-10">
+								<label class="control-label m-t-5 m-r-5">开始时间：</label>
+								<input size="16" type="text" class="form-control form_datetime" readonly name="startT" id="startT">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label m-t-5 m-r-5">结束时间：</label>
+								<input size="16" type="text" class="form-control form_datetime" readonly name="endT" id="endT">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label m-t-5 m-r-5">用户名：</label>
+								<input type="text" class="form-control" name="userName">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label m-t-5 m-r-5">邮箱：</label>
+								<input type="text" class="form-control" name="email">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label m-t-5 m-r-5">电话号码：</label>
+								<input type="text" class="form-control" name="telNum">
+							</div>
+							<div class="form-group m-r-10">
+								<select class="selectpicker" name="mailChecked">
+									<option value="0">注册未激活</option>
+									<option value="1" selected>注册并激活</option>
+								</select>
+							</div>
+							<button class="btn btn-primary m-r-5" type="button" id="searchReBtn"><i class="glyphicon glyphicon-search"></i></button>
+							<button class="btn btn-default" type="button" onclick="$('#registerForm')[0].reset()"><i class="glyphicon glyphicon-remove"></i></button>
+						</form>
+						<table class="table" id="registerUser">
+							<thead>
+								<tr>
+									<th>用户名</th>
+									<th>电话</th>
+									<th>QQ</th>
+									<th>邮箱</th>
+									<th>注册时间</th>
+									<th>站点详情</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="registerUserList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			registerList();
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate:new Date(),
+				zIndex: 1500
+			});
+			$('.selectpicker').selectpicker({
+				style: 'btn-primary',
+				size: 4,
+				width: '150px',
+			});
+		});
+
+		function registerList(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$('#registerUser').tableAjaxLoader2(6);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Register/list?pageSize=' + 20 + '&pageNo=' + pageNo),
+				data: $("#registerForm").serialize(),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.Users==undefined){
+							$('#registerUser').find('tbody').html('<tr><td colspan="6" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#registerUserList').html('');
+							return;
+						}
+						var s = []; //暂时存储html代码
+						if (data.Users.length > 0) {
+							for (var i = 0; i < data.Users.length; i++) {
+								s.push('<tr>');
+								s.push('<td>');
+								s.push(data.Users[i].UserName == null ? '&nbsp;': data.Users[i].UserName);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.Users[i].TelNum == null ? '&nbsp;': data.Users[i].TelNum);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.Users[i].Qq == null ? '&nbsp;': data.Users[i].Qq);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.Users[i].Email == null ? '&nbsp;': data.Users[i].Email);
+								s.push('</td>');
+								s.push('<td>');
+								s.push(data.Users[i].DateTime == null ? '&nbsp;': data.Users[i].DateTime);
+								s.push('</td>');
+								var webID = data.Users[i].WebId == null ? '&nbsp;': data.Users[i].WebId;
+								s.push('<td>');
+								s.push('<a href="detailWeb.html?webId=' + webID + '" target="_blank">站点详情</a>');
+								s.push('</td>');
+								s.push('</tr>');
+							}
+							$('#registerUser').find('tbody').html(s.join(''));
+							//下面开始处理分页
+							var options = {
+								data: [data, 'Users', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									registerList(page);
+								}
+							};
+							setPage('registerUserList', options);
+						} else {
+							$('#registerUser').find('tbody').html('<tr><td colspan="6" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空</td></tr>');
+							$('#registerUserList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+
+		$('#searchReBtn').click(function() {
+			if (!checkTimeSearch('startT', 'endT')) {
+				return;
+			}
+			registerList();
+		})
+
+		function checkTimeSearch(sId, eId) {
+			var sValue = $('#' + sId).val();
+			var eValue = $('#' + eId).val();
+			if (sValue == '' && eValue != '') {
+				yunNotyError('请输入起始时间！');
+				return false;
+			}
+			if (sValue != '' && eValue == '') {
+				yunNotyError('请输入结束时间！');
+				return false;
+			}
+			var startgST = new Date(sValue.replace("-", "/").replace("-", "/"));
+			var endgEt = new Date(eValue.replace("-", "/").replace("-", "/"));
+			if (endgEt < startgST) {
+				yunNotyError('起始时间不能小于结束时间！！');
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>

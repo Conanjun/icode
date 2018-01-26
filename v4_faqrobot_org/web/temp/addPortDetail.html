@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>知识集文字链接</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.DR_select{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		.pictip {
+position: absolute;
+top: 61px;
+left: 38px;
+padding: 6px;
+font-size: 14px;
+border-bottom: 1px solid #fff;
+color: #fff;
+cursor: pointer;
+
+		}
+		.pictipdot {
+position: absolute;
+right: -15px;
+bottom: -7px;
+background-color: #fff;
+width: 14px;
+height: 14px;
+border-radius: 50%;
+font-size: 14px;
+text-align: center;
+z-index: 1;
+		}
+		.pictipdot.left {
+left: -15px;
+		}
+		.pictipdot:before {
+top: -3px;
+left: -3px;
+vertical-align: middle;
+padding: 0;
+z-index: 2;
+pointer-events: none;
+position: absolute;
+width: 12px;
+height: 12px;
+display: inline-block;
+content: '';
+-webkit-box-sizing: content-box;
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+border: 4px solid #bdbdbd;
+border-radius: 50%;
+opacity: 0.75;
+}
+		.pictipdot.left:before {
+top: -3px;
+right: -3px;
+		}
+		.pictip span.d {
+    width: 20px;
+    height: 20px;
+    background-image: url(images/close.png);
+    position: absolute;
+    right: -15px;
+    top: 5px;
+    cursor: pointer;
+}
+
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">知识集文字链接</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">知识集文字链接</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="col-md-6">
+							<div id="container" style="position:relative;overflow:hidden;">
+								<img id="portImg" src="" alt="接口图片" class="img-responsive" />
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-primary" type="button" onclick="addPortDetail()">完成链接添加/更改</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+	<div class="modal fade" style="display: none;" aria-hidden="true" id="queManualModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+					<h4 class="modal-title">智能推荐</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="search_Que" class="form-horizontal" style="position: relative;">
+						<fieldset>
+							<div class="form-group">
+                                <label class="col-md-3 control-label">链接名称</label>
+                                <div class="col-md-9">
+                                    <input placeholder="请输入链接名称" class="form-control" id="word" type="text">
+                                </div>
+                            </div>
+							<input type="hidden" name="level" value="1">
+							<input type="hidden" name="groupId" class="selQueX" value="0">
+							<input type="hidden" name="isLeaf" value="0">
+							<div style="margin-left:10px; float:left;">
+								<label class="control-label">选择分类：</label>
+								<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+							</div>
+							<div id="menuContent" style="display: inline-block; position: absolute; left: 0; top: 75px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+								<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+									<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+								</div>
+							</div>
+							<div style="margin-left:10px; float:right;">
+								<input type="text" style="display:none;">
+								<input type="text" class="input-sm" name="question" style="border: 1px solid #ccd0d4;">
+								<button type="button" class="btn btn-primary btn-sm" onClick="addQueSearch();" style="vertical-align: top;"><i class="glyphicon glyphicon-search"></i></button>
+							</div>
+						</fieldset>
+					</form>
+					<div id="queDiv" style="margin-top:5px;">
+						<ul class="nav nav-pills" id="queDivNav">
+							<li class="active"><a href="#queManualQue" data-toggle="tab">问题</a></li>
+							<li class=""><a href="#queManualFlow" data-toggle="tab">流程</a></li>
+						</ul>
+						<div class="tab-content" style="margin-bottom:0;padding:0">
+							<div class="tab-pane fade active in" id="queManualQue">
+								<div id="queManualQueTable">
+									<table class="table" id="ansList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>问题</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="quepageList" style="margin:0;"></div>
+							</div>
+							<div class="tab-pane fade" id="queManualFlow">
+								<div id="queManualFlowTable">
+									<table class="table" id="flowList">
+										<thead>
+											<tr>
+												<th width="75">选择</th>
+												<th>流程</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+								<div id="flowpageList" style="margin:0;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="queManualConfirm">确定</button>
+					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/addPortDetail.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+		});
+	</script>
+</body>
+</html>

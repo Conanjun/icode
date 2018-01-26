@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>访客年龄段统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">访客年龄段统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">访客年龄段统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计访客年龄段统计" class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        访客年龄段统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/VisitorAge/list"/>
+                    <div style="font-size:0;" class="text-right">
+                        <div class="btn-group m-r-4 f-s-14" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="DataSource" style="display:inline-block;vertical-align: top;" class="f-s-14 m-r-4">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary m-r-5 pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>年龄段</th>
+                            <th>访问次数</th>
+                            <th>交互次数</th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script type="text/javascript">
+    /**
+     定义全局变量，其他方法可以调用
+     */
+    var ageStrList = []
+    var dataList = []
+    var logItemsList = []
+    var perList
+    var arrlist = []
+
+    function showLine (json) {
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        ageStrList = []
+        dataList = []
+        logItemsList = []
+        var len = json.ageVisitList.length
+        /**
+         定义横坐标
+         */
+        for (var j = 0; j < 16; j++) {
+            if (j === 0) {
+                ageStrList.push('未知年龄')
+            } else if (j === 1) {
+                ageStrList.push('16岁以下')
+            } else if (j === 15) {
+                ageStrList.push('80岁以上')
+            } else {
+                var end = (16 + j * 5)
+                ageStrList.push((end - 5) + '-' + (end - 1) + '岁')
+            }
+            ageStrList.join(',')
+        }
+        var visitAgeMap = {}
+        var ageLogItemsMap = {}
+        /**
+         定义数组，且大小为15，全部初始化为0
+         */
+        var data = new Array()
+        var ageLogItemsList = new Array()
+        perList = new Array()
+        for (var k = 0; k < 16; k++) {
+            data.push(0)
+            ageLogItemsList.push(0)
+        }
+        for (var r = 0; r < 16; r++) {
+            perList.push(0 + '%')
+        }
+        for (var i = 0; i < len; i++) {
+            if (json.ageVisitList[i].Age < 0 || !json.ageVisitList[i].Age || json.ageVisitList[i].Age === 0) {
+                data[0] += json.ageVisitList[i].Num === null ? 0 : json.ageVisitList[i].Num
+                visitAgeMap[0] = data[0]
+            } else if (json.ageVisitList[i].Age < 16) {
+                data[1] += json.ageVisitList[i].Num === null ? 0 : json.ageVisitList[i].Num
+                visitAgeMap[1] = data[1]
+            } else if (json.ageVisitList[i].Age > 80) {
+                data[15] += json.ageVisitList[i].Num === null ? 0 : json.ageVisitList[i].Num
+                visitAgeMap[15] = data[15]
+            } else {
+                var idx = parseInt((json.ageVisitList[i].Age - 16) / 5 + 1)
+                data[idx] += json.ageVisitList[i].Num === null ? 0 : json.ageVisitList[i].Num
+                visitAgeMap[idx] = data[idx]
+            }
+        }
+
+        /*获取每个年龄段的交互量*/
+        for (var i = 0; i < len; i++) {
+            if (json.ageVisitList[i].Age < 0 || !json.ageVisitList[i].Age || json.ageVisitList[i].Age === 0) {
+                ageLogItemsList[0] += json.ageVisitList[i].LogItems === null ? 0 : json.ageVisitList[i].LogItems
+                ageLogItemsMap[0] = ageLogItemsList[0]
+            } else if (json.ageVisitList[i].Age < 16) {
+                ageLogItemsList[1] += json.ageVisitList[i].LogItems === null ? 0 : json.ageVisitList[i].LogItems
+                ageLogItemsMap[1] = ageLogItemsList[1]
+            } else if (json.ageVisitList[i].Age > 80) {
+                ageLogItemsList[15] += json.ageVisitList[i].LogItems === null ? 0 : json.ageVisitList[i].LogItems
+                ageLogItemsMap[15] = ageLogItemsList[15]
+            } else {
+                var idx = parseInt((json.ageVisitList[i].Age - 16) / 5 + 1)
+                ageLogItemsList[idx] += json.ageVisitList[i].LogItems === null ? 0 : json.ageVisitList[i].LogItems
+                ageLogItemsMap[idx] = ageLogItemsList[idx]
+            }
+        }
+
+        /**
+         遍历map，没有的时间段赋值为0
+         */
+        for (var r = 0; r < 16; r++) {
+            var has = r in visitAgeMap
+            if (!has) {
+                visitAgeMap[r] = 0
+            }
+        }
+        /**
+         遍历ageLogItemsMap，没有的时间段赋值为0
+         */
+        for (var r = 0; r < 16; r++) {
+            var has = r in ageLogItemsMap
+            if (!has) {
+                ageLogItemsMap[r] = 0
+            }
+        }
+        /**
+         遍历map，获得各各时间段的数据
+         */
+        for (var key in visitAgeMap) {
+            dataList.push(visitAgeMap[key])
+        }
+        for (var key in ageLogItemsMap) {
+            logItemsList.push(ageLogItemsMap[key])
+        }
+
+        /**重新定义图表显示的数组*/
+        var dataListForLine = []
+        var logItemsListForLine = []
+        var ageStrListForLine = []
+
+        /**未知年龄不显示在图表上，删除List中的第一个“未知年龄”*/
+        for (var i = 1; i < dataList.length; i++) {
+            dataListForLine[i - 1] = dataList[i]
+            arrlist.push(dataList[i])
+        }
+        for (var i = 1; i < logItemsList.length; i++) {
+            logItemsListForLine[i - 1] = logItemsList[i]
+            arrlist.push(logItemsList[i])
+        }
+        for (var i = 1; i < ageStrList.length; i++) {
+            ageStrListForLine[i - 1] = ageStrList[i]
+        }
+
+        /**
+         当返回的List大于0时
+         计算总计,求占比
+         */
+        if (len > 0) {
+            var sum = 0
+            for (var i = 0; i < len; i++) {
+                sum += json.ageVisitList[i].Num === null ? 0 : json.ageVisitList[i].Num
+            }
+            for (var i = 0; i < data.length; i++) {
+                var per = Math.round(data[i] / sum * 10000) / 100.00 + '%'
+                perList[i] = per
+            }
+        }
+        var maxY = Math.max.apply(null, arrlist) < 5 ? 5 : Math.max.apply(null, arrlist)
+        // 初始 option1
+        option1 = {
+            title: {
+                text: '访客年龄段统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['访问次数', '交互次数']
+            },
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: ageStrListForLine,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 45,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '',
+                max: maxY,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value} 次'
+                }
+            }],
+            series: [{
+                name: '访问次数',
+                type: 'line',
+                data: dataListForLine
+            },
+                {
+                    name: '交互次数',
+                    type: 'line',
+                    data: logItemsListForLine
+                }]
+        }
+
+        myChart1.hideLoading()
+        myChart1.setOption(option1)
+        window.onresize = myChart1.resize
+    }
+
+    function showtable (json) {
+        var table = ''
+        var Nlen = ageStrList.length
+        if (Nlen == 0) {
+            table += '<tr >'
+            table += '<td colspan=3 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+        }
+        for (var t = 0; t < Nlen; t++) {
+            table += '<tr>'
+            table += '<td class="tab_tr_bg">' + ageStrList[t] + '</td>'
+            table += '<td class="tab_tr_sec_bg"">' + dataList[t] + '</td>'
+            table += '<td class="tab_tr_sec_bg"">' + logItemsList[t] + '</td>'
+            table += '</tr>'
+        }
+        $('#visitDataTable').html(table)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        showLine(json)
+        showtable(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        //列出图表
+        queryAll()
+    })
+</script>
+</body>
+</html>

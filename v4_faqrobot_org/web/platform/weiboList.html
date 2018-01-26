@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>微博列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	<link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/wxNew.css" rel="stylesheet"/>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">微博列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">微博列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<p class="black mgtop10">添加后你可以使用云问智能客服机器人统一接收与回复粉丝的私信</p>
+						<a data-toggle="modal" class="btn btn-danger" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加微博</span>
+						</a>
+						<p class="grey mgtop10">· 由于微博开放平台 API 的限制，只有企业微博「 蓝V 」才能正常接入云问</p>
+						<p class="grey mabot0">· 添加后，所有粉丝消息会被转发到云问，但这并不影响微博客户端中正常使用私信功能</p>
+						<table class="table" id="listTable">
+							<thead>
+								<tr>
+									<th>微博名称</th>
+									<th>知识集</th>
+									<th width="150">信息添加时间</th>
+									<th width="150">信息最后修改时间</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加微博</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="form_weibo" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">微博名称<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入微博名称小于20个字符" class="form-control" name="weiboName" maxlength="20">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">微博APPKEY<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入微博APPKEY" class="form-control" name="appId">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<a href="javascript:;" class="ztreeName1">选择知识集</a>
+												<input type="hidden" name="themeId" value="0">
+												<div class="ztree" id="tanchutree1" style="display: none;margin-top: 15px"></div>
+											</div>
+											<div class="row m-t-10"><span>若选择知识集，则只有此知识集中的知识生效。（可不选）</span></div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">微博应用密码<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入微博应用密码" class="form-control" name="appsecret" maxlength="32">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-3">
+											<button type="button" class="btn btn-default pull-right" onClick="getweiBoUrl()">获取对接Url</button>
+										</div>
+										<div class="col-md-7">
+											<p>微博应用密码包含32位字符&nbsp;&nbsp;(字母、数字或者英文符号)</p>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">对接URL<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请点击获取对接Url按钮" class="form-control" name="appUrl" readonly>
+											<input type="hidden" name="id">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">微博应用验证码<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入微博应用验证码" class="form-control" name="accessToken" maxlength="32">
+										</div>
+									</div>
+
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#form_weibo').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改微博</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">微博名</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" name="name" id="name"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">欢迎词</label>
+										<div class="col-md-7">
+											<textarea name="helloWord" class="" id="helloWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">未知说辞</label>
+										<div class="col-md-7">
+											<textarea name="unknowWord" class="" id="unknowWord"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">知识集</label>
+										<div class="col-md-7">
+											<div class="row m-t-10">
+												<span class="ztreeName2"></span>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="../common/js/base.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var setting1 = {
+				data:{
+					simpleData: {
+						enable: false
+					}
+				},
+				view: { //不显示图标
+					showIcon: false
+				},
+				callback: {
+					onClick: function(event, treeId, treeNode) {
+						$('#form_weibo input[name=themeId]').val(treeNode.id-1);
+						$('#tanchutree1').fadeOut();
+						$('.ztreeName1').html(treeNode.name);
+					}
+				}
+			};
+
+			//获取问题分类
+			Base.request({
+				url: 'chatlink/listChatLink',
+				params: {
+					m: 0,
+				},
+				callback: function(data) {
+					if (data.status) {
+						Base.gritter(data.message, false);
+					} else {
+						var html = '';
+						if (data.list[0]) {
+							var formatData = [],
+									len = data.list.length;
+
+							for (var key in data.list) {
+								formatData[key] = {};
+								formatData[key]['name'] = data.list[key]['ThemeName'];
+								formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+								formatData[key]['id'] = data.list[key]['Id'] + 1;
+							}
+
+							formatData[len] = {};
+							formatData[len]['name'] = '暂不选择知识集（单击此处）';
+							formatData[len]['pId'] = 0;
+							formatData[len]['id'] = 1;
+							formatData[len]['open'] = true;
+							$.fn.zTree.init($("#tanchutree1"), setting1, formatData);
+							treeObj = $.fn.zTree.getZTreeObj("tanchutree1");
+
+						} else {
+
+						}
+					}
+				},
+			});
+
+			//点击弹出树
+			$('.ztreeName1').click(function(){
+				$('#tanchutree1').toggle();
+			});
+
+			App.init();
+			//列出表格
+			listTable(1);
+			UE.getEditor('helloWord', {
+				toolbars: [
+					['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch']
+				],
+				initialFrameHeight: 120
+			});
+			UE.getEditor('unknowWord', {
+				toolbars: [
+					['source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch']
+				],
+				initialFrameHeight: 120
+			});
+            
+			$('#form_weibo').validate({
+				rules:{
+					weiboName:{
+						minlength:1,
+						maxlength:20,
+						required:true
+					},
+					  appId:{
+						required:true
+					  },
+					appsecret:{
+						required:true,
+						maxlength:32,
+						minlength:32,
+						isWeiBo:true
+                    },
+					accessToken:{
+						required:true,
+						maxlength:32,
+						minlength:32,
+						isWeiBo:true
+					}
+				},
+				messages:{
+				   appId:{
+					 required:'请输入微博APPKEY！',
+				   },
+					weiboName:{
+						maxlength:'请输入小于20位字符的微博名称！',
+						minlength:'请输入大于1位字符的微博名称！',
+						required:'请输入微博名称！'
+					},
+					appsecret:{
+						required:'请输入32位字符的微博应用密码！',
+						maxlength:'请输入32位字符的微博应用密码！',
+						minlength:'请输入32位字符的微博应用密码！',
+						isWeiBo:'微博应用密码包含字母、数字或者英文符号！'
+                    },
+					accessToken:{
+						required:'请输入32位字符的微博应用验证码！',
+						maxlength:'请输入32位字符的微博应用验证码！',
+						minlength:'请输入32位字符的微博应用验证码！',
+						isWeiBo:'微博应用验证码包含字母、数字或者英文符号！'
+					}
+				},
+				submitHandler: doNewAdd
+			});
+
+			$('#save_form').validate({
+				rules: {
+					weiboName: {
+						minlength: 1,
+						maxlength: 20,
+						required: true
+					},
+				},
+				messages:{
+					weiboName:{
+						maxlength:'请输入小于20位字符的微博名称！',
+						minlength:'请输入大于1位字符的微博名称！',
+						required:'请输入微博名称！'
+					}
+				},
+				submitHandler: editWeiBo
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+                $('#form_weibo')[0].reset();
+                $('#form_weibo').validate().resetForm();
+                $('.text-error').removeClass('text-error helper-font-small');
+                $('#form_weibo input[name=id]').val('');
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#save_form')[0].reset();
+				UE.getEditor('helloWord').setContent('');
+				UE.getEditor('unknowWord').setContent('');
+			})
+		});
+
+		//修改
+		function editWeiBo(){
+			saveModal('../../WeiboConfig/edit','save_form','editModal',listTable);
+		}
+
+
+		//添加微博
+		var flag_add=false;
+		function doNewAdd(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI('../../WeiboConfig/addEnd'),
+				data: 'name=' + $('#form_weibo input[name=weiboName]').val()+'&id=' + $('#form_weibo input[name=id]').val() + '&accessToken=' + $('#form_weibo input[name=accessToken]').val()+'',
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listTable(1);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//获得URL
+		function getweiBoUrl() {
+			var appsecretcur = $('#form_weibo input[name=appsecret]').val();
+			var appidcur = $('#form_weibo input[name=appId]').val();
+			var themeIdcur = $('#form_weibo input[name=themeId]').val();
+			var reg = /^[^\u4e00-\u9fa5]{0,}$/;
+			if (!reg.test(appsecretcur)) {
+				yunNotyError('微博应用密码包含字母、数字或者英文符号');
+				return false;
+			}
+			if (appsecretcur.length != 32) {
+				yunNotyError('请输入32位字符的微博应用密码');
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../WeiboConfig/addNew'),
+				data: 'appSecret=' + appsecretcur + '&appId=' + appidcur+'&themeId='+themeIdcur,
+				success: function(data) {
+					if (data.status == 0) {
+						$('#form_weibo input[name=appUrl]').val(data.Url);
+						$('#form_weibo input[name=id]').val(data.Id);
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//获取表格数据
+		var listweiboPageData = null;
+		function listTable(){
+			$('#listTable').tableAjaxLoader2(5);
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../WeiboConfig/list'),
+				success:
+				function(data){
+					if(data.status==0){
+						if(data.list.length>0){
+							listweiboPageData =data.list;
+							var html = "";
+							for(var i=0;i<data.list.length;i++){
+								html += "<tr>";
+								html += "<td>"+(data.list[i].Name==null?'':data.list[i].Name)+"</td>";
+								html += "<td>"+(data.list[i].ThemeName==null?'':data.list[i].ThemeName)+"</td>";
+								html += "<td>"+(data.list[i].DateTime==null?'':data.list[i].DateTime)+"</td>";
+								html += "<td>"+(data.list[i].UpdateTime==null?'':data.list[i].UpdateTime)+"</td>";
+								html += "<td><a href=\"javascript:;\" class=\"sepV_a\" rel=\""+data.list[i].Id+"\" title=\"编辑\" style=\"cursor:pointer\" onclick=\"repModal(this)\"><i class=\"glyphicon glyphicon-pencil\"></i></a>&nbsp;&nbsp;<a href=\"javascript:void(0);\" class=\"m-del\" title=\"删除\" rel=\""+data.list[i].Id+"\" style=\"cursor:pointer;\" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+							}
+							$('#listTable').find('tbody').html(html);
+							//单个删除
+							$('.m-del').on('click',function(){
+								delById(this,'../../WeiboConfig/delete',listTable,'pageList');
+							});
+						}else{
+							$('#listTable').find('tbody').html('<tr><td colspan=\"5\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+						}
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		function repModal(obj){
+			var index = $(obj).parents('tr').index();//下标
+			var curObj=$(obj).parents('tr').children('td');
+			$('#save_form input[name=name]').val(curObj.eq(0).html());
+			$('#save_form .ztreeName2').html(curObj.eq(1).html()==''?'暂未选择知识集':curObj.eq(1).html());//将themeid显示到页面上
+			$('#save_form #hideid').val($(obj).attr('rel'));
+			UE.getEditor('helloWord').setContent(listweiboPageData[index].HelloWord||'');
+			UE.getEditor('unknowWord').setContent(listweiboPageData[index].UnknowWord||'');
+//			$('#save_form input[name=themeId]').val(listweiboPageData[index].ThemeId);
+			$("#editModal").modal('show');
+		}
+	</script>
+</body>
+</html>

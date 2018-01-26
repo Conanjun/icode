@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导航列表</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="../common/css/radioskin/blue.css" rel="stylesheet" />
+    <link href="../common/css/zTreeStyleTest.css" rel="stylesheet" />
+    <link href="../common/css/commonCSS.css" rel="stylesheet" />
+    <style>
+        ul{
+            list-style: none;
+            padding:0;
+        }
+       #default-tab-2 .nav_item{
+           border:1px solid #348fe2;
+           text-align:center;
+           width:120px;
+           padding:10px;
+       }
+       #default-tab-2 .nav_item span{
+            display:block;
+       }
+
+    </style>
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">系统管理</a></li>
+            <li class="active">导航列表</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">导航列表</h1>
+            <div class="row" style="height:10px;"></div>
+            <ul class="nav nav-tabs">
+                <li class=""><a data-toggle="tab" href="#default-tab-1" aria-expanded="true">添加文字导航</a></li>
+                <li class="active"><a data-toggle="tab" href="#default-tab-2" aria-expanded="false">添加图文导航</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="default-tab-1" class="tab-pane fade">
+                    <form method="POST" class="form-horizontal">
+                        <fieldset>
+                            <legend>添加文字导航</legend>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">文字导航名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" maxlength="200">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">备注</label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">最多展示数量<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" maxlength="20">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">导航设置<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-primary">添加一级导航</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">导航设置<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-8">
+                                    <div id="c1" style="border:1px solid #ccd0d4"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-7">
+                                    <button class="btn btn-primary" type="submit">保存</button>
+                                    <button onclick="clearinput()" class="btn btn-white" type="button">取消</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="default-tab-2" class="tab-pane fade active in">
+                    <form method="POST" class="form-horizontal">
+                        <fieldset>
+                            <legend>添加图文导航</legend>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">图文导航名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" maxlength="200">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">备注</label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">导航设置<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <ul>
+                                        <li class="nav_item">
+                                            <span class="item_img">
+                                               <img src="images/user.png" alt="">
+                                            </span>
+                                            <span class="item_title">
+                                                <h2>主标题</h2>
+                                            </span>
+                                            <span class="item_sub_title">
+                                                副标题
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-7">
+                                    <button class="btn btn-primary" type="submit">保存</button>
+                                    <button onclick="clearinput()" class="btn btn-white" type="button">取消</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+</div>
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+<script src="../common/js/jquery.validate.js"></script>
+<script src="../common/js/jquery.validate.custom.js"></script>
+<script src="../common/js/bootstrap-paginator.js"></script>
+<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+<script src="../common/js/icheck.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<!--编辑器-->
+<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="js/g6-1.1.2.js"></script>
+
+<script type="text/javascript">
+
+    // 生成一个流程
+    var tree = new G6.Tree({
+            id: 'c1',
+            height: 250,
+            //fitView: 'lc',
+            fitView: 'autoSize',
+            layoutCfg: {
+                getHGap: function() {
+                    return 40;
+                },
+                getVGap: function() {
+                    return 10;
+                },
+            },
+        });
+
+    // 注册定制节点
+    G6.registNode('customNode', {
+        draw: function(cfg, group){
+            return group.addShape('rect', {
+                attrs: {
+                    x: cfg.x-cfg.size*0.5,
+                    y: cfg.y-cfg.size*0.15,
+                    width: cfg.size,
+                    height: cfg.size*0.3,
+                    fill: 'rgba(52,142,226,1)',
+                    stroke: 'rgba(52,142,226,1)',
+                    radius: 3
+                }
+            });
+        },
+        // 绘制后执行
+        afterDraw: function(cfg, group, keyShape){
+            var origin = cfg.origin;
+            var labelAttrs = {
+                text: origin.name,
+                fill: '#fff',
+                textAlign: 'center',
+                textBaseline: 'middle',
+                fontSize: 15,
+                x: cfg.x,
+                y: cfg.y,
+            };
+            group.addShape('text', {
+                attrs: labelAttrs,
+            });
+        }
+    });
+
+    tree.source({
+        name: 'G6',
+        children: [{
+            name: '图类',
+            children: [
+                {
+                    name: 'Graph'
+                },
+                {
+                    name: 'Net'
+                },
+                {
+                    name: 'Tree'
+                },
+                {
+                    name: '……'
+                }
+            ]
+        },
+            {
+                name: '基础类',
+                isCollapsed: true,
+                children: [
+                    {
+                        name: 'Canvas'
+                    },
+                    {
+                        name: 'Handler'
+                    },
+                    {
+                        name: 'Layout'
+                    },
+                    {
+                        name: 'Global'
+                    }
+                ]
+            }]
+    });
+
+    tree.node()
+        .shape('customNode')
+        .label(function (obj) {
+            return obj.name;
+        })
+        .style({
+            fillOpacity: 1
+        })
+        .size(100);
+    tree.edge().shape('smoothArrow');
+    tree.render();
+        // 右键菜单
+       /* tree.on('contextmenu', function(ev){
+            ev.domEvent.preventDefault();
+            if(G6.Util.isNode(ev.item)) {
+                var x = ev.domEvent.clientX,
+                    y = ev.domEvent.clientY,
+                    windowWidth = window.innerWidth,
+                    contextmenu = '<div id="tabContextmenu" class="tab-contextmenu open">' +
+                        '<ul class="dropdown-menu">' +
+                        '<li><a href="javascript: void(0)" data-btn="addChildNode">创建子节点</a></li>' +
+                        '<li><a href="javascript: void(0)" data-btn="removeExceptAct">删除当前节点</a></li>' +
+                        '</ul>' +
+                        '</div>',
+                    contextmenuWidth = 180;
+                if (isOpen) {
+                    $('#tabContextmenu').addClass('open');
+                } else {
+                    $('body').after(contextmenu);
+                    isOpen = true;
+                }
+                if (windowWidth - x > contextmenuWidth) {
+                    $('#tabContextmenu').css('left', x);
+                } else {
+                    $('#tabContextmenu').css('right', contextmenuWidth);
+                }
+                $('#tabContextmenu').css('top', y);
+                function closeContextMenu () { // 关闭右键菜单
+                    $('body').off('click.hide.context');
+                    $('#tabContextmenu').removeClass('open');
+                    $(document).off('click.context.remove.pl', '[data-btn="addChildNode"]').off('click.context.remove.sing', '[data-btn="removeExceptAct"]');
+                }
+                $(document).on('click.context.remove.pl', '[data-btn="addChildNode"]', function () { // 创建子节点
+                    isAddNew = false;
+                    $('#addFlowModal').modal('show');
+                    var newModel = ev.item.get('model');
+                    itemg = ev.item;
+                    treeg = tree;
+                    closeContextMenu();
+                });
+                $(document).on('click.context.remove.sing', '[data-btn="removeExceptAct"]', function () {
+                    //var treetemp = trees[$(ev.domEvent.target).parents('.treeCav').attr('id')].treeObj;
+                    // 删除父级富文本中的超链接
+                    itemg = ev.item;
+                    treeg = tree;
+                    infoEditg = itemg.get('model').title;
+                    var pid = getParentId(itemg.get('model').id, treeg.save().source);
+                    var itemp = treeg.find(pid);
+                    if(itemp) {
+                        var richtexttemp = itemp.get('model').richtext;
+                        var regex = new RegExp('<a href="javascript:void\\(0\\);" class="wflink" rel="'+infoEditg+'" name="wfl_([\\u0000-\\uFFFF]+?)" title="点击查看具体信息">([\\u0000-\\uFFFF]+?)<\\/a>', 'g');
+                        itemp.get('model').richtext = richtexttemp.replace(regex, '');
+                        treeg.update(itemp, itemp.get('model'));
+                        // 删除当前节点
+                        tree.remove(ev.item.get('model'));
+                    } else {
+                        yunNotyError('流程第一项不可删除!');
+                    }
+                    itemg = null;
+                    treeg = null;
+                    closeContextMenu();
+                });
+                $('body').on('click.hide.context', closeContextMenu);
+            }
+        });*/
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>公共库总览</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active">公共库总览</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">公共库总览</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form class="form-inline" id="search_form">
+							<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+								添加标准问法
+							</a>
+							<div class="form-group m-r-10">
+								<label class="control-label">状态：</label>
+								<select name="status" id="status" class="form-control">
+									<option value="">全部</option>
+									<option value="1">全部可添加</option>
+									<option value="2">部分可添加</option>
+									<option value="3">不可添加</option>
+								</select>
+								<select name="pType" id="pType" class="form-control">
+									<option value="webId">站点ID</option>
+									<option value="groupName">分类名称</option>
+									<option value="question">问题内容</option>
+								</select>
+								<input type="text" class="form-control" name="searchvalue" id="sinput" placeholder="请输入要搜索的内容">
+							</div>
+							<div class="form-group m-r-10">
+								<label class="control-label">起始时间：</label>
+								<input id="sT" size="16" type="text" value="" readonly class="form_datetime form-control">
+							</div>
+							<div class="form-group">
+								<label class="control-label">结束时间：</label>
+								<input style="border-top-right-radius: 0;border-bottom-right-radius: 0;" id="eT" size="16" type="text" value="" readonly class="form_datetime form-control">
+							</div>
+							<button style="border-top-left-radius:0;border-bottom-left-radius:0;margin-left: -4px" type="button" class="btn btn-search btn-primary" onclick="listQueFlow(1)"><i class="fa fa-search white"></i></button>
+							<button type="button" class="btn btn-search btn-default" onclick="$('#search_form')[0].reset();"><i class="fa fa-times white"></i></button>
+						</form>
+						<div class="row">
+							<div class="col-md-12" id="questionList" style="padding: 15px 0;">
+								<div class="row">
+									<div class="col-md-9" style="border:none;"> 问题 </div><div class="col-md-3" style="border:none;"> 操作 </div>
+								</div>
+								<div v-for="(item, index) in list" v-bind:item="item">
+									<div class="row" style="padding:10px 0;">
+										<div class="col-md-9">
+											<a href="javascript:;" v-on:click="toggle(index)" v-show="!item.display"><i class="glyphicon glyphicon-plus"></i></a>
+											<a href="javascript:;" v-on:click="toggle(index)" v-show="item.display"><i class="glyphicon glyphicon-minus"></i></a>
+											<span v-show="!item.editdisplay">{{item.Question}}</span>
+											<div style="display: inline-block;" v-show="item.editdisplay">
+												<input v-model="item.editWord" >
+												<a href="javascript:;" v-on:click="toggle1(index, 1)"><i class="glyphicon glyphicon-ok"></i></a>
+												<a href="javascript:;" v-on:click="toggle1(index, 2)"><i class="glyphicon glyphicon-remove"></i></a>
+											</div>
+										</div><div class="col-md-3">
+											<a href="javascript:;" v-on:click="addBtn(index)"><i class="glyphicon glyphicon-plus"></i></a>
+											<a href="javascript:;" v-on:click="toggle1(index, 3)"><i class="glyphicon glyphicon-pencil"></i></a>
+											<a href="javascript:;" v-on:click="removeBtn(index)"><i class="glyphicon glyphicon-trash"></i></a>
+										</div>
+									</div>
+									<div v-for="(similar, sindex) in item.SimilarList" v-show="item.display" class="row" style="padding:10px 0;">
+										<div class="col-md-9">
+											<span v-show="!similar.editdisplay" style="display: inline-block;margin-left:20px;">{{similar.Question}}</span>
+											<div style="display: inline-block;" v-show="similar.editdisplay">
+												<input v-model="similar.editWord" style="display: inline-block;margin-left:20px;" >
+												<a href="javascript:;" v-on:click="toggle2(index, sindex, 1)"><i class="glyphicon glyphicon-ok"></i></a>
+												<a href="javascript:;" v-on:click="toggle2(index, sindex, 2)"><i class="glyphicon glyphicon-remove"></i></a>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<a href="javascript:;" v-on:click="toggle2(index, sindex, 3)"><i class="glyphicon glyphicon-pencil"></i></a>
+											<a href="javascript:;" v-on:click="SremoveBtn(index, sindex)"><i class="glyphicon glyphicon-trash"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="pageList"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="addModal" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">添加标准问题</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" id="addForm">
+						<fieldset>
+							<div class="form-group">
+								<label class="col-md-3 control-label">问题</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" placeholder="请输入标准问题" name="question">
+									<input type="hidden" name="isExist" value="0" />
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" onclick="add()">添加</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="addSModal" aria-hidden="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">添加相似问法</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" id="addSForm">
+						<fieldset>
+							<div class="form-group">
+								<label class="col-md-3 control-label">问题</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" placeholder="请输入标准问题" name="question">
+									<input type="hidden" name="solutionId" value="" />
+									<input type="hidden" name="index" value="" />
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:;" class="btn btn-sm btn-primary" onclick="addS()">添加</a>
+					<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/vue.js"></script>
+	<script src="js/pdbList.js"></script>
+	<script>
+		$(document).ready(function() {
+			App.init();
+		});
+	</script>
+</body>
+</html>

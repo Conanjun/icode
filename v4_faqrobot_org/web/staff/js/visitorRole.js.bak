@@ -1,0 +1,669 @@
+
+//角色
+var setting = {
+	edit: {
+		enable: true,
+		showRemoveBtn: setRemoveBtn,
+		showRenameBtn: setRenameBtn,
+		removeTitle: '删除',
+		renameTitle: '修改'
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "Id",
+			pIdKey: "ParentId",
+			rootPId: 0
+		},
+		key: {
+			name: "Name"
+		}
+	},
+	view: {
+		selectedMulti: false,
+		showIcon: false
+	},
+	async: {
+		enable: true,
+		url: "../../comb/loadCombs",
+		autoParam: ["id"],
+		dataFilter: ajaxDataFilter
+	},
+	callback: {
+		beforeDrag: beforeDrag,
+		onClick: function(e, treeId, treeNode) {
+			$('#addparNode input[name=pId]').val(treeNode.Id);
+			$('#addchildNode input[name=pId]').val(treeNode.Id);
+
+		},
+		beforeRemove: beforeRemove,
+		beforeEditName: beforeRename,
+		onAsyncSuccess: zTreeOnAsyncSuccess
+	}
+};
+
+function beforeDrag(treeId, treeNodes) {
+	return false;
+}
+
+//如果节点下面有子节点则不显示删除按钮
+function setRemoveBtn(treeId, treeNode) {
+//判断为顶级节点则不显示删除按钮
+	return ! treeNode.isParent;　　　
+}
+function setRenameBtn(treeId, treeNode) {
+	if (treeNode.level == 0) {
+		return false;
+	}
+	return true;
+}
+//重命名节点
+function beforeRename(treeId, treeNode, newName, isCancel) {
+	if (treeNode.isParent) {
+		$('#editpnModal').modal('show');
+		$('#editpnModal input[name=pId]').val(treeNode.ParentId);
+		$('#editpnModal input[name=name]').val(treeNode.Name);
+		$('#editpnModal input[name=combId]').val(treeNode.Id);
+
+	} else {
+		$('#editcnModal').modal('show');
+		$.ajax({
+			type: 'get',
+			async: false,
+			datatype: 'json',
+			cache: false,
+			//不从缓存中去数据
+			url: encodeURI('../../comb/loadComb?combId=' + treeNode.Id),
+			success: function(data) {
+				if (data.status == 0) {
+					$('#editcnModal input[name=pId]').val(data.comb.ParentId);
+					$('#editcnModal input[name=combId]').val(data.comb.Id);
+					$('#editcnModal input[name=name]').val(data.comb.Name);
+					var objList = data.comb.Elements;
+					if (objList) {
+						if (objList[1] || objList[2]) {
+							if (objList[1]) {
+								var countJ = '';
+								for (var j = 0; j < objList[1].length; j++) {
+									countJ += objList[1][j] + ',';
+								}
+								$('#editcnModal input[class=elementIdDept]').val(countJ);
+							} else {
+								$('#editcnModal input[class=elementIdDept]').val('');
+							}
+							if (objList[2]) {
+								var count = '';
+								for (var i = 0; i < objList[2].length; i++) {
+									count += objList[2][i] + ',';
+								}
+								$('#editcnModal input[class=elementIdUser]').val(count);
+							} else {
+								$('#editcnModal input[class=elementIdUser]').val('');
+							}
+						}
+					}
+				} else {
+					yunNoty(data);
+				}
+			}
+		});
+	}
+	return false;
+}
+$('#confrimdel').click(function() {
+	var classId = $('#DelClassModal input[name=classId]').val();
+	$.ajax({
+		type: 'get',
+		async: false,
+		datatype: 'json',
+		cache: false,
+		// 不从缓存中去数据
+		url: encodeURI('../../comb/deleteComb?combId=' + classId),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+				var node = treeObj.getNodeByParam('Id', classId);
+				treeObj.removeNode(node, false);
+				$('#DelClassModal').modal('hide');
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+});
+//删除节点
+function beforeRemove(treeId, treeNode) {
+	$('#DelClassModal').modal('show');
+	$('#DelClassModal [name=classId]').val(treeNode.Id);
+	return false;
+}
+function ajaxDataFilter(treeId, parentNode, responseData) {
+	if (responseData.status != 0) {
+		yunNoty(responseData);
+		return;
+	}
+	if (responseData) {
+		// if(responseData.list && responseData.list.length === 0) {
+		// 	return [{
+		// 		'Id': 0,
+		// 		'ParentId': 0,
+		// 		'Name': "来访者角色",
+		// 		'open': true
+		// 	}];
+		// }
+		return responseData.list;
+	}
+	return responseData;
+};
+function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+	treeObj.expandAll(true);
+};
+//角色结束
+
+//部门属性
+var settingDept = {
+	check: {
+		enable: true,
+		chkboxType: {
+			"Y": "ps",
+			"N": "ps"
+		}
+	},
+	edit: {
+		enable: true,
+		showRemoveBtn: false,
+		showRenameBtn: false,
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "Id",
+			pIdKey: "ParentId",
+			rootPId: 0
+		},
+		key: {
+			name: "Name"
+		}
+	},
+	view: {
+		selectedMulti: false,
+		showIcon: false
+	},
+	async: {
+		enable: true,
+		url: "../../comb/loadGroups",
+		autoParam: ["id"],
+		dataFilter: ajaxDataFilterDept
+	},
+	callback: {
+		onCheck: onCheckDept,
+	}
+};
+function onCheckDept(e, treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj("treeDept"),
+	nodes = zTree.getCheckedNodes(true),
+	I = "";
+	for (var i = 0,
+	l = nodes.length; i < l; i++) {
+		I += nodes[i].Id + ",";
+	}
+	$("#addchildNode input[class=elementIdDept]").val(I);
+}
+//格式化一步获取的json数据
+function ajaxDataFilterDept(treeId, parentNode, responseData) {
+	if (responseData.status != 0) {
+		yunNoty(responseData);
+		return;
+	}
+	if (responseData.list) {
+		for (var i=0; i < responseData.list.length; i++) {
+			if(responseData.list[i].Id == '1') {
+				return responseData.list[i].GroupElements;
+			}
+		}
+	}
+};
+//部门属性结束
+
+//人员属性
+var settingUser = {
+	check: {
+		enable: true,
+		chkboxType: {
+			"Y": "ps",
+			"N": "ps"
+		}
+	},
+	edit: {
+		enable: true,
+		showRemoveBtn: false,
+		showRenameBtn: false,
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "Id",
+			pIdKey: "ParentId",
+			rootPId: 0
+		},
+		key: {
+			name: "Name"
+		}
+	},
+	view: {
+		selectedMulti: false,
+		showIcon: false
+	},
+	async: {
+		enable: true,
+		url: "../../comb/loadGroups",
+		autoParam: ["id"],
+		dataFilter: ajaxDataFilterUser
+	},
+	callback: {
+		onCheck: onCheckUser
+	}
+};
+
+function onCheckUser(e, treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj("treeUser"),
+	nodes = zTree.getCheckedNodes(true),
+	I = "";
+	for (var i = 0,
+	l = nodes.length; i < l; i++) {
+		I += nodes[i].Id + ",";
+	}
+	$("#addchildNode input[class=elementIdUser]").val(I);
+}
+//格式化一步获取的json数据
+function ajaxDataFilterUser(treeId, parentNode, responseData) {
+	if (responseData.status != 0) {
+		yunNoty(responseData);
+		return;
+	}
+	if (responseData.list) {
+		for (var i=0; i < responseData.list.length; i++) {
+			if(responseData.list[i].Id == '2') {
+				return responseData.list[i].GroupElements;
+			}
+		}
+	}
+};
+//人员属性结束
+
+//修改人员属性
+var editsettingUser = {
+	check: {
+		enable: true,
+		chkboxType: {
+			"Y": "ps",
+			"N": "ps"
+		}
+	},
+	edit: {
+		enable: true,
+		showRemoveBtn: false,
+		showRenameBtn: false,
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "Id",
+			pIdKey: "ParentId",
+			rootPId: 0
+		},
+		key: {
+			name: "Name"
+		}
+	},
+	view: {
+		selectedMulti: false,
+		showIcon: false
+	},
+	async: {
+		enable: true,
+		url: "../../comb/loadGroups",
+		autoParam: ["id"],
+		dataFilter: ajaxDataFilterUserEdit
+	},
+	callback: {
+		onCheck: onCheckUserEdit
+	}
+};
+
+function onCheckUserEdit(e, treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj("edittreeUser"),
+	nodes = zTree.getCheckedNodes(true),
+	I = "";
+	for (var i = 0,
+	l = nodes.length; i < l; i++) {
+		I += nodes[i].Id + ",";
+	}
+	$("#editChildNode input[class=elementIdUser]").val(I);
+}
+//格式化一步获取的json数据
+function ajaxDataFilterUserEdit(treeId, parentNode, responseData) {
+	if (responseData.status != 0) {
+		yunNoty(responseData);
+		return;
+	}
+	if (responseData.list) {
+		for (var i=0; i < responseData.list.length; i++) {
+			if(responseData.list[i].Id == '2') {
+				var listUser = responseData.list[i].GroupElements;
+				var ids = $('#editcnModal input[class=elementIdUser]').val();
+				var id = ids.split(',');
+				var temp = true;
+				for (var i = 0; i < listUser.length; i++) {
+					var role = listUser[i];
+					var idstr = role.Id;
+					if (contains(id, idstr)) {
+						listUser[i].checked = true;
+					} else {
+						temp = false;
+					}
+				}
+				return listUser;
+			}
+		}
+	}
+};
+//修改人员属性结束
+
+//修改部门属性
+var editsettingDept = {
+	check: {
+		enable: true,
+		chkboxType: {
+			"Y": "ps",
+			"N": "ps"
+		}
+	},
+	edit: {
+		enable: true,
+		showRemoveBtn: false,
+		showRenameBtn: false,
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "Id",
+			pIdKey: "ParentId",
+			rootPId: 0
+		},
+		key: {
+			name: "Name"
+		}
+	},
+	view: {
+		selectedMulti: false,
+		showIcon: false
+	},
+	async: {
+		enable: true,
+		url: "../../comb/loadGroups",
+		autoParam: ["id"],
+		dataFilter: ajaxDataFilterDeptEdit
+	},
+	callback: {
+		onCheck: onCheckDeptEdit
+	}
+};
+
+function onCheckDeptEdit(e, treeId, treeNode) {
+	var zTree = $.fn.zTree.getZTreeObj("edittreeDept"),
+	nodes = zTree.getCheckedNodes(true),
+	I = "";
+	for (var i = 0,
+	l = nodes.length; i < l; i++) {
+		I += nodes[i].Id + ",";
+	}
+	$("#editChildNode input[class=elementIdDept]").val(I);
+}
+//格式化一步获取的json数据
+function ajaxDataFilterDeptEdit(treeId, parentNode, responseData) {
+	if (responseData.status != 0) {
+		yunNoty(responseData);
+		return;
+	}
+	if (responseData.list) {
+		for (var i=0; i < responseData.list.length; i++) {
+			if(responseData.list[i].Id == '1') {
+				var listDept = responseData.list[i].GroupElements;
+				var ids = $('#editcnModal input[class=elementIdDept]').val();
+				var id = ids.split(',');
+				var temp = true;
+				for (var i = 0; i < listDept.length; i++) {
+					var role = listDept[i];
+					var idstr = role.Id;
+					if (contains(id, idstr)) {
+						listDept[i].checked = true;
+					} else {
+						temp = false;
+					}
+				}
+				return listDept;
+			}
+		}
+	}
+}
+//修改部门属性结束
+
+//添加父节点
+function doAddNodes() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var nodes = zTree.getSelectedNodes();
+	if (nodes.length == 0) {
+		yunNotyError("请先选择一个来访角色！");
+		return;
+	}
+	var nameValue = $('#addparNode input[name=name]').val();
+	if (nameValue.length <= 0) {
+		yunNotyError("请输入父节点名称！");
+		return;
+	}
+	$.ajax({
+		type: 'post',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../comb/addComb'),
+		data: $("#addparNode").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				$('#addparNode')[0].reset();
+				if (data.comb) {
+					zTree.addNodes(nodes[0], data.comb);
+				}
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//修改父节点
+function editNodes() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var nodes = zTree.getSelectedNodes();
+	$.ajax({
+		type: 'post',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../comb/editComb'),
+		data: $("#editParNode").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				$('#editParNode')[0].reset();
+				$('#editpnModal').modal('hide');
+				zTree.reAsyncChildNodes(null, "refresh");
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+$('#editcnModal').on('show.bs.modal', function () {
+	$.fn.zTree.init($("#edittreeUser"), editsettingUser, []);
+	$.fn.zTree.init($("#edittreeDept"), editsettingDept, []);
+})
+
+//修改子节点
+function editChlidNodes() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var nodes = zTree.getSelectedNodes();
+	var uValue = $("#editChildNode input[class=elementIdUser]").val();
+	var dValue = $("#editChildNode input[class=elementIdDept]").val();
+	$("#editChildNode input[name=elementId]").val(uValue + '' + dValue);
+	$.ajax({
+		type: 'post',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../comb/editFullComb'),
+		data: $("#editChildNode").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				$('#editChildNode')[0].reset();
+				$('#editcnModal').modal('hide');
+				zTree.reAsyncChildNodes(null, "refresh");
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//添加子节点
+function doAddChildNodes() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var nodes = zTree.getSelectedNodes();
+	if (nodes.length == 0) {
+		yunNotyError("请先选择父节点！");
+		return;
+	}
+	var nameValue = $('#addchildNode input[name=name]').val();
+	if (nameValue.length <= 0) {
+		yunNotyError("请输入节点名称！");
+		return;
+	}
+	var uV = $('#addchildNode input[class=elementIdUser]').val();
+	var dV = $('#addchildNode input[class=elementIdDept]').val();
+	$('#addchildNode input[name=elementId]').val(uV + '' + dV);
+	$.ajax({
+		type: 'post',
+		datatype: 'json',
+		cache: false,
+		//不从缓存中去数据
+		url: encodeURI('../../comb/addFullComb'),
+		data: $("#addchildNode").serialize(),
+		success: function(data) {
+			if (data.status == 0) {
+				yunNoty(data);
+				$('#addchildNode')[0].reset();
+				if (data.comb) {
+					zTree.addNodes(nodes[0], data.comb);
+				}
+			} else {
+				yunNoty(data);
+			}
+		}
+	});
+}
+
+//显示属性导入
+var liTitle = $('#navPill').find('li');
+liTitle.eq(0).click(function() {
+	liTitle.eq(2).addClass('hide');
+});
+liTitle.eq(1).click(function() {
+	liTitle.eq(2).removeClass('hide');
+	$.fn.zTree.init($("#treeDept"), settingDept, []);
+	$.fn.zTree.init($("#treeUser"), settingUser, []);
+});
+
+//人员属性导入
+//上传
+$(function() {
+	'use strict';
+	$('#exlfileupload').fileupload({
+		url: '../../comb/importPersonProperty',
+		dataType: 'json',
+		change: function(e, data) {
+			var flag = true;
+			$.each(data.files,
+			function(index, file) {
+				var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+				if (str == "xls" || str == "xlsx") {
+					flag = true;
+				} else {
+					flag = false;
+					yunNotyError("请上传xls或xlsx格式的文件！");
+				}
+			});
+			return flag;
+		},
+		done: function(e, data) {
+			yunNoty(data.result);
+			if (data.result.status == 0) {
+				$.fn.zTree.init($("#treeUser"), settingUser, []);
+			}
+		},
+		progressall: function(e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#exlProgress .progress-bar').css('width', progress + '%');
+		}
+	}).bind('fileuploadstart',
+	function(e) {
+		$('#exlProgress').show();
+	}).bind('fileuploadstop',
+	function(e) {
+		$('#exlProgress').hide();
+	});
+})
+
+//部门属性导入
+$(function() {
+	'use strict';
+	$('#exlfileuploadDept').fileupload({
+		url: '../../comb/importDeptProperty',
+		dataType: 'json',
+		change: function(e, data) {
+			var flag = true;
+			$.each(data.files,
+			function(index, file) {
+				var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+				if (str == "xls" || str == "xlsx") {
+					flag = true;
+				} else {
+					flag = false;
+					yunNotyError("请上传xls或xlsx格式的文件！");
+				}
+			});
+			return flag;
+		},
+		done: function(e, data) {
+			yunNoty(data.result);
+			if (data.result.status == 0) {
+				$.fn.zTree.init($("#treeDept"), settingDept, []);
+			}
+		},
+		progressall: function(e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#exlProgressDept .progress-bar').css('width', progress + '%');
+		}
+	}).bind('fileuploadstart',
+	function(e) {
+		$('#exlProgressDept').show();
+	}).bind('fileuploadstop',
+	function(e) {
+		$('#exlProgressDept').hide();
+	});
+})

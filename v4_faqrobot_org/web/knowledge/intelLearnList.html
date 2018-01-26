@@ -1,0 +1,813 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>智能学习</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+        @media screen and (max-width: 1290px) {
+            .search-addSrc {
+                margin: 5px 0 15px 0;
+            }
+        }
+
+        @media screen and (max-width: 865px) {
+            .aa {
+                margin: 5px 0 15px 0;
+                width: 100%;
+            }
+        }
+
+        #tm1,
+        #tm2 {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="javascript:;">首页</a>
+                </li>
+                <li>
+                    <a href="javascript:;">知识库管理</a>
+                </li>
+                <li>智能学习</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">智能学习</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin col-12 -->
+                <div>
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body">
+                            <div class="alert alert-warning fade in m-b-15">
+                                <strong>友情提示：</strong> 这里收集的是所有机器人学到的标准问题可能对应的相似问法哦，目前还有
+                                【<span id="Unlearn" style="color:red">0</span>】
+                                个问题待处理，快帮助他学习吧！
+                                <span class="close" data-dismiss="alert">×</span>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="col-md-12 " style="padding:0">
+                                        <form id="timeSearchForm" class="form-inline pull-right">
+
+
+                                            <!--<input style="margin-right:-4px" type="text" class="search-input-addSrc form-control" id="searchQueInput" placeholder="输入问题详细">-->
+                                            <!--<button class="btnSearch btn btn-primary m-r-4" type="button" style="border-radius: 3px;">-->
+                                            <!--<i class="glyphicon glyphicon-search"></i>-->
+                                            <!--</button>-->
+                                            <div class="input-group" style="width:250px; margin-right:-12px;">
+                                                <input id="searchQueInput" type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词">
+                                                <span class="input-group-btn">
+                                                    <button class="btnSearch btn btn-primary" type="button" id="btnSearchDate">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div class="btn-group" style="margin-right:1px;">
+                                                <button id="myDropdown" type="button" class="m-l-2 ttw btn-toggle btn btn-primary dropdown-toggle fsortgo" aria-haspopup="true"
+                                                    aria-expanded="false">最近七天&nbsp;
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" style="min-width: 275px;">
+                                                    <li>
+                                                        <a class="ttw0" data-p="" href="#" id="fsort1">昨天</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="ttw1" data-p="" href="#" id="fsort2">今天</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="ttw2" data-p="" href="#" id="fsort3">最近七天</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="ttw3" data-p="" href="#" id="fsort4">最近一个月</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="ttw4" data-p="" href="#" id="fsort5">全部时间</a>
+                                                    </li>
+                                                    <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                                        <span style="margin-left: 15px">自定义时间范围：</span>
+                                                        <div style="text-align: center">
+                                                            <input id="tm1" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm tml" name="startT">
+                                                            <input id="tm2" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm tmr" name="endT">
+                                                        </div>
+                                                        <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">
+                                                            <button style="width:97%;" class="btn confirm btn-primary" type="button" id="datesort">确认</button>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div id="DataSource" class="btn-group" style="cursor:pointer; margin-right:-3px;" role="group" aria-label="...">
+                                                <a class="sourceType btn btn-toggle dropdown-toggle btn-primary tsortgo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部渠道&nbsp;
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" id="DataSourceUL">
+                                                    <!--  <li><a class="sol" href="javascript:;">全部渠道</a></li>
+                                                <li><a class="sol" href="javascript:;">网页</a></li>
+                                                <li><a class="sol" href="javascript:;">微信</a></li> -->
+                                                </ul>
+                                            </div>
+
+                                            <div class="aa btn-group">
+
+                                                <button type="button" class="sortgo btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false" style="margin-left: 3px; border-radius: 3px; border-left-color: transparent;">默认排序&nbsp;
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+                                                    <li>
+                                                        <a class="sort1">默认排序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort2">时间正序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort3">时间倒序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort4">待学习数量正序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort5">待学习数量倒序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort6">访问量正序&nbsp;</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="sort7">访问量倒序&nbsp;</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+
+                                    <div class="col-md-12" style="padding: 0">
+                                        <div class="col-md-3 col-sm-3" style="border: 1px solid #D9E0E7; border-radius: 3px; padding: 5px; overflow: hidden; margin-top: 15px;">
+                                            <div class="toShow">
+                                                <div>
+                                                    <span class="openAll glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                                                    <span class="closeAll glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+                                                </div>
+                                                <div id="ztree1" class="ztree" style="position: relative; overflow: auto; border: none;z-index: 39;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 toHide" style="padding-right: 0">
+                                            <table class="table table1" id="xcd">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:800px">问题详细</th>
+                                                        <th style="min-width:70px">访问量</th>
+                                                        <th style="min-width:90px">待学习数量</th>
+                                                        <th class="col-md-1" style="min-width: 150px;">时间</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody1">
+                                                </tbody>
+                                            </table>
+                                            <div id="itemContainer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+
+                </div>
+                <!-- end col-12 -->
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+    <link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+    <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+    <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/iframeTab.min.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/main.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+
+        var tmpNum = parent.$('#tabHeader li[data-tab="' + location.href + '"]').attr('data-num');//获取当前url中的data-num
+        var selectSourceFlag = true;
+        $(document).ready(function () {
+            $('.toShow').slimScroll({
+                height: $(window).height() - 240 + 'px',
+                allowPageScroll: false
+            });
+            $('.confirm').click(function () {
+                $('.btnSearch').trigger('click');
+            });
+            //全局变量 获得当前时间
+            var myDate = new Date();
+            var myDateM = myDate.getMonth() + 1;//月
+            var myDateD = myDate.getDate();//日
+            var myDateHou = myDate.getHours();//时
+            var myDateMin = myDate.getMinutes() + 1;//分
+
+            //每次点击获取当前时间
+            function updateTime() {
+                myDate = new Date();
+                myDateM = myDate.getMonth() + 1;//月
+                myDateD = myDate.getDate();//日
+                myDateHou = myDate.getHours();//时
+                myDateMin = myDate.getMinutes() + 1;//分
+            }
+
+            if (myDateM < 10) {//判断现在月份格式
+                myDateM = "0" + myDateM;
+            }
+            if (myDateD < 10) {//判断现在日期格式
+                myDateD = "0" + myDateD;
+            }
+            if (myDateHou < 10) {//判断现在小时格式
+                myDateHou = "0" + myDateHou;
+            }
+            if (myDateMin < 10) {//判断现在分钟格式
+                myDateMin = "0" + myDateMin;
+            }
+
+            //页面初始化 默认一周自动填充时间
+            function apply(pp) {//获取一周前时间
+                var newDatew = new Date();
+                newDatew.setTime(newDatew.getTime() - 7 * 24 * 60 * 60 * 1000);//此时newDatew变成了一周前的时间
+                var weekMon = newDatew.getMonth() + 1;//一周前的月份
+                if (weekMon < 10) { weekMon = '0' + (newDatew.getMonth() + 1) };
+                var weekDay = newDatew.getDate();//一周前的日
+                if (weekDay < 10) { weekDay = '0' + newDatew.getDate() };
+                var week = newDatew.getFullYear() + "-" + weekMon + "-" + weekDay;
+                $('#tm1').val(week + ' ' + myDateHou + ':' + myDateMin);//一周前的现在
+                $('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin);//今天的时间
+                if (pp == undefined) {
+                    // initSrc();
+                }
+            }
+
+            apply(0);
+            //获得上月今天的方法
+            function lastMonthDate() {
+                var vYear = myDate.getFullYear();
+                var vMon = myDate.getMonth() + 1;
+                var vDay = myDate.getDate();
+                //每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+                var daysInMonth = new Array(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+                if (vMon == 1) {
+                    vYear = myDate.getFullYear() - 1;
+                    vMon = 12;
+                } else {
+                    vMon = vMon - 1;
+                }
+                //若是闰年，二月最后一天是29号
+                if (vYear % 4 == 0 && vYear % 100 != 0) {
+                    daysInMonth[2] = 29;
+                }
+                if (daysInMonth[vMon] < vDay) {
+                    vDay = daysInMonth[vMon];
+                }
+                if (vDay < 10) {
+                    vDay = "0" + vDay;
+                }
+                if (vMon < 10) {
+                    vMon = "0" + vMon;
+                }
+                var LastMonthDate = vYear + "-" + vMon + "-" + vDay;
+                return LastMonthDate;
+            }
+
+
+            //点击弹出下拉菜单
+            $('#myDropdown').on('click', function () {
+                $(this).parent().toggleClass('open');
+            });
+
+            $('body').on('click', function (e) {
+                if (!$('#myDropdown').parent().find($(e.target)).length) {
+                    $('#myDropdown').parent().removeClass('open');
+                }
+            });
+
+
+            $('.ttw0').on('click', function () { //昨天
+                updateTime();
+                $('#myDropdown').parent().removeClass('open');
+                $('.ttw').html($(this).text() + '&nbsp;' + '<span class="caret"></span>');
+                var newDate1 = new Date();//获取当前时间
+                newDate1.setTime(newDate1.getTime() - 24 * 60 * 60 * 1000);//当前时间设置成昨天时间
+                var yestM = newDate1.getMonth() + 1; //昨天的月
+                if (yestM < 10) {
+                    yestM = "0" + yestM;
+                }
+                var yestD = newDate1.getDate();//昨天的日
+                if (yestD < 10) {
+                    yestD = "0" + yestD;
+                }
+                pageNo = 1;
+                var yesterday = newDate1.getFullYear() + "-" + yestM + "-" + yestD;
+                $('#tm1').val(yesterday + ' ' + '00' + ':' + '00');//昨天的时间
+                $('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00');//现在的时间
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                initSrc();
+            });
+
+            $('.ttw1').on('click', function () { //今天
+                updateTime();
+                $('#myDropdown').parent().removeClass('open');
+                $('.ttw').html($(this).text() + '&nbsp;' + '<span class="caret"></span>');
+                pageNo = 1;
+                $('#tm1').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00');//今天零点
+                $('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin);//现在时间
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                initSrc();
+            });
+
+            $('.ttw2').on('click', function () { //最近七天
+                updateTime();
+                $('#myDropdown').parent().removeClass('open');
+                $('.ttw').html($(this).text() + '&nbsp;' + '<span class="caret"></span>');
+                apply();
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                initSrc();
+            });
+            $('.ttw3').on('click', function () { //最近一个月
+                updateTime();
+                $('#myDropdown').parent().removeClass('open');
+                $('.ttw').html($(this).text() + '&nbsp;' + '<span class="caret"></span>');
+                pageNo = 1;
+                $('#tm1').val(lastMonthDate() + ' ' + myDateHou + ':' + myDateMin);//一月前的今天
+                $('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin);//现在时间
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                initSrc();
+            });
+            $('.ttw4').on('click', function () { //全部
+                updateTime();
+                $('#myDropdown').parent().removeClass('open');
+                $('.ttw').html($(this).text() + '&nbsp;' + '<span class="caret"></span>');
+                pageNo = 1;
+                $('#tm1').val('');
+                $('#tm2').val('');
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                initSrc();
+            });
+
+            App.init();
+            iframeTab.init({ iframeBox: '' });
+            var This = this,
+                pageNo = 1, //当前页
+                pageSize = 20, //每页数量
+                orderType = 32,
+                isLeaf = 0,
+                groupId = 0,
+                question = '', //搜索的问题
+                isJpage = 0, //是否已实例化jpage
+                delPage = 0, //是否删除jpage
+                sourceType = -1,
+                go = 0; //断点
+
+            if (getSessionStorage("il_sortgoDate")) {
+                $('.fsortgo').html(getSessionStorage("il_sortgoDate"));
+            }
+
+            if (getSessionStorage("il_sortgo")) {
+                $('.sortgo').html(getSessionStorage("il_sortgo"));
+            }
+
+            if (getSessionStorage("il_sortgoChannel")) {
+                $('.sourceType').html(getSessionStorage("il_sortgoChannel"));
+            }
+
+            // 读取渠道
+            if (sessionStorage.getItem("ChannelType")) {
+                sourceType = sessionStorage.getItem("ChannelType")
+            }
+            // 读取时间排序
+            if (sessionStorage.getItem("paixuType")) {
+                orderType = sessionStorage.getItem("paixuType")
+            }
+            // 读取开始时间
+            if (sessionStorage.getItem("startTime") || sessionStorage.getItem("startTime") === "") {
+                $('[name=startT]').val(sessionStorage.getItem("startTime"))
+            }
+            // // 读取结束时间
+            if (sessionStorage.getItem("endTime") || sessionStorage.getItem("endTime") === "") {
+                $('[name=endT]').val(sessionStorage.getItem("endTime"))
+            }
+
+            function initSrc(confirmBtn) {
+                if (confirmBtn) {
+                    var sValue = $('#tm1').val().split('-');
+                    var eValue = $('#tm2').val().split('-');
+                    var startT = $('[name=startT]').val();
+                    var endT = $('[name=endT]').val();
+                    if (startT && endT) {
+                        if ($('#tm1').val() && $('#tm2').val()) {
+                            $('.ttw').html(sValue[1] + '月' + sValue[2].split(' ')[0] + '日' + '-' + eValue[1] + '月' + eValue[2].split(' ')[0] + '日' + '&nbsp;<span class="caret"></span>');
+                        }
+                    } else if (!(startT || endT)) {
+                        //两个时间框均为空
+                    } else {
+                        //单个时间框为空
+                        yunNotyError("请填写完整时间范围");
+                        return;
+                    }
+                }
+
+                $('#xcd').tableAjaxLoader2(7);
+
+                Base.request({
+                    url: 'LearnQue/listNeedLearn',
+                    params: {
+                        pageNo: pageNo,
+                        pageSize: pageSize,
+                        orderType: orderType,
+                        isLeaf: isLeaf,
+                        groupId: groupId,
+                        question: question,
+                        startT: $('[name=startT]').val(),
+                        endT: $('[name=endT]').val(),
+                        source: sourceType
+                    },
+                    callback: function (data) {
+                        if (data.status) {
+                            Base.gritter(data.message, false);
+                        } else {
+                            //加载未处理数量
+                            if(data.needLearnSum){
+                                $('#Unlearn').html(data.needLearnSum);
+                            }
+                            if (data.sourceList) {
+                                if (data.sourceList[0]) {
+                                    if (selectSourceFlag) {
+                                        var html = '<li ><a class="sol" href="#" data-sol="-1">全部渠道</a></li>';
+                                        for (var m in data.sourceList) {
+                                            html += '<li ><a class="sol" href="javascript:;" data-sol="' + data.sourceList[m].DicCode + '">' + data.sourceList[m].DicDesc + '</a></li>';
+                                        }
+                                        $('#DataSourceUL').empty().append(html);
+                                        if (sessionStorage) {
+                                            sessionStorage.setItem("il_orderTypeChannel", orderType);
+                                        }
+                                        $('#DataSourceUL a').on('click', function () {
+                                            pageNo = 1;
+                                            sourceType = $(this).attr('data-sol');
+                                            if (sessionStorage) {
+                                                sessionStorage.setItem("il_sortgoChannel", $(this).text() + '&nbsp<span class="caret"></span>')
+                                            }
+                                            if (sourceType == '-1') {
+                                                $('.sourceType').html('全部渠道' + ' ' + '<span class="caret"></span>');
+                                            } else {
+                                                $('.sourceType').html(getSourceName(sourceType) + '&nbsp;<span class="caret"></span>');
+                                            }
+                                            initSrc();
+                                        });
+                                        selectSourceFlag = false;
+                                    }
+                                }
+
+                            }
+                            go++;
+                            if (go == 1) {
+                                initTree();
+                            }
+
+                            var html = '';
+                            if (data.List[0]) {
+                                for (var i = 0; i < data.List.length; i++) {
+                                    html += '<tr Id="' + data.List[i].Id + '" GroupId="' + data.List[i].GroupId + '" SolutionId="' + data.List[i].SolutionId + '"><td><a href="../../web/knowledge/intelLearnDeal.html?tmpNum=' + tmpNum + '&solutionId=' + data.List[i].SolutionId + '&startT=' + $('[name=startT]').val() + '&endT=' + $('[name=endT]').val() + '" class="look" data-num="0" data-name="智能学习详细">' + (data.List[i].FormatQue || '') + '</a></td><td>' + (data.List[i].ViewCount || 0) + '</td><td>' + (data.List[i].SiblingCount || 0) + '</td><td class="minwidth95">' + data.List[i].DateTime + '</td></tr>';
+                                }
+                                var options = {
+                                    data: [data, 'List', 'total'],
+                                    currentPage: data.currentPage,
+                                    totalPages: data.totlePages ? data.totlePages : 1,
+                                    alignment: 'right',
+                                    onPageClicked: function (event, originalEvent, type, page) {
+                                        pageNo = page;
+                                        initSrc();
+                                    }
+                                };
+                                $('#itemContainer').bootstrapPaginator(options);
+                            } else {
+                                html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+                                $('#itemContainer').empty();
+                            }
+                            // 对排序进行存储
+                            if (sessionStorage) {
+                                sessionStorage.setItem("paixuType", orderType);
+                            }
+                            // 对渠道进行存储
+                            if (sessionStorage) {
+                                sessionStorage.setItem("ChannelType", sourceType);
+                            }
+                            // 对时间进行存储
+                            if (sessionStorage) {
+                                sessionStorage.setItem("startTime", $('[name=startT]').val());
+                            }
+                            if (sessionStorage) {
+                                sessionStorage.setItem("endTime", $('[name=endT]').val());
+                            }
+
+                            $('.tbody1').empty().append(html);
+                            $('.timeTip').tooltip();
+
+
+                        }
+                    },
+                });
+            }
+
+            function initTree() {
+                //断点
+                var setting1 = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                        },
+                    },
+                    view: { //不显示图标
+                        showIcon: false
+                    },
+                    check: {
+                        //enable: true,
+                    },
+                    callback: {
+                        onClick: function (event, treeId, treeNode) {
+                            groupId = treeNode.id - 1;
+                            pageNo = 1;
+                            initSrc();
+                        },
+                    }
+                };
+
+                //获取问题分类
+                Base.request({
+                    url: 'classes/listClasses',
+                    params: {
+                        m: 0,
+                    },
+                    callback: function (data) {
+                        if (data.status) {
+                            Base.gritter(data.message, false);
+                        } else {
+                            var html = '';
+                            if (data.list[0]) {
+                                var formatData = [],
+                                    len = data.list.length;
+
+                                for (var key in data.list) {
+                                    formatData[key] = {};
+                                    formatData[key]['name'] = data.list[key]['Name'];
+                                    formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+                                    formatData[key]['id'] = data.list[key]['Id'] + 1;
+                                }
+
+                                formatData[len] = {};
+                                formatData[len]['name'] = '全部分类';
+                                formatData[len]['pId'] = 0;
+                                formatData[len]['id'] = 1;
+                                formatData[len]['open'] = true;
+                                $.fn.zTree.init($("#ztree1"), setting1, formatData);
+                                treeObj = $.fn.zTree.getZTreeObj("ztree1");
+
+                            } else {
+
+                            }
+
+                        }
+                    },
+                });
+            }
+            initSrc();
+            //对选择的日期进行存储
+            $('#fsort1').on('click', function () { // 昨天
+                $('.fsortgo').html($(this).text() + '&nbsp;<span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+            });
+            $('#fsort2').on('click', function () { //今天
+                $('.fsortgo').html($(this).text() + '&nbsp;<span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+
+            });
+            $('#fsort3').on('click', function () { //默认  最近七天
+                $('.fsortgo').html($(this).text() + '&nbsp;<span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                // initSrc();
+            });
+            $('#fsort4').on('click', function () { //最近一个月
+                $('.fsortgo').html($(this).text() + '&nbsp;<span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                // initSrc();
+            });
+            $('#fsort5').on('click', function () { //全部
+                $('.fsortgo').html($(this).text() + '&nbsp; <span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                // initSrc();
+            });
+            $('#datesort').on('click', function () { // 自定义时间
+                $('.fsortgo').html($(".fsortgo").text() + '&nbsp;<span class="caret"></span>');
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgoDate", $('.fsortgo').html());
+                }
+                //initSrc();
+            });
+            //排序
+            $('.sort1').on('click', function () { //默认
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 32;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort2').on('click', function () { //时间正序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 3;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort3').on('click', function () { //时间倒序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 4;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort4').on('click', function () { //待学习数量正序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 31;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort5').on('click', function () { //待学习数量倒序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 32;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort6').on('click', function () { //浏览量正序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 33;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+            $('.sort7').on('click', function () { //浏览量倒序
+                $('.sortgo').html($(this).text() + '<span class="caret"></span>');
+                orderType = 34;
+                pageNo = 1;
+                if (sessionStorage) {
+                    sessionStorage.setItem("il_sortgo", $('.sortgo').html());
+                }
+                initSrc();
+            });
+
+            enterSubmit($('#searchQueInput'), function () {
+                pageNo = 1;
+                isJpage = 0;
+                question = $('.search-input-addSrc').val();
+                initSrc();
+            });
+
+            // 按时间搜索
+            $('.timeSearch').on('click', function () {
+
+            })
+
+            //搜索
+            $('.btnSearch').on('click', function () {
+                pageNo = 1;
+                isJpage = 0;
+                question = $('.search-input-addSrc').val();
+                initSrc(1);
+            });
+
+            //跳转
+            $('.goPage-addSrc a').on('click', function () {
+                $('.holder').jPages(parseInt($('.goPage-addSrc input').val()));
+                return false;
+            });
+
+            //全选
+            $('.goPage-addSrc input').on('focus', function () {
+                $(this).select();
+            });
+
+            //展开所有
+            $('.openAll').on('click', function () {
+                var treeObj = $.fn.zTree.getZTreeObj("ztree1");
+                treeObj.expandAll(true);
+            });
+            //折叠所有
+            $('.closeAll').on('click', function () {
+                var treeObj = $.fn.zTree.getZTreeObj("ztree1");
+                treeObj.expandAll(false);
+            });
+
+        })
+    </script>
+
+</body>
+
+</html>

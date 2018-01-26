@@ -1,0 +1,618 @@
+@charset "utf-8";
+body, html {
+    width: 100%;
+    height: 100%;
+	background: #F8F8F8;
+}
+/**/
+.MN_kfImg {
+    left: -55px;
+}
+.MN_khImg {
+    right: -55px;
+}
+.MN_answer, .MN_ask {
+    padding: 5px 60px;
+}
+.MN_answer {
+    padding: 5px 20px 5px 60px;
+}
+.MN_ask {
+    padding: 5px 60px 5px 20px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+    width: 40px;
+    height: 40px;
+}
+.MN_kfCtn, .MN_khCtn {
+    margin: 2px 0;
+}
+.MN_kfCtn {
+}
+.MN_khCtn {
+    border: 1px solid #bd1173;
+    background: #bd1173;
+    color: #222;
+}
+.MN_khTriangle1 {
+    border-left: 10px solid #bd1173;
+}
+.MN_khTriangle2 {
+    border-left: 10px solid #bd1173;
+}
+.MN_reasonSend, .MN_yes {
+    background: #bd1173;
+}
+.MN_reasonItem {
+    color: #bd1173;
+}
+.MN_kfCtn a {
+    color: #bd1173;
+}
+/**/
+.view {
+    width: 1rem;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.back {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #d6d6d6;
+}
+.back p {
+    color: #ccc;
+}
+.back .logo {
+    max-width: 1rem;
+    max-height: 80px;
+}
+
+/**/
+.front {
+    height: 100%;
+    position: relative;
+    
+}
+.front .chatScroll {
+    position: relative;
+    overflow: hidden;
+    
+}
+.front .chatScroll .chatCtn {
+    padding: 10px 0;
+    position: absolute;
+    top: 0;
+    left: 0;    
+    background: #F8F8F8;
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+/**/
+.MN_gusList, .MN_relateList, .FA_star {
+    color: #bd1173;
+}
+.MN_khCtn {
+    border: 1px solid #E7D8E1;
+    background: #E7D8E1;
+}
+.MN_khTriangle1 {
+    border-left: 10px solid #E7D8E1;
+}
+.MN_khTriangle2 {
+    border-left: 10px solid #E7D8E1;
+}
+.editCtn {
+    background: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.editCtn .editShow {
+    position: relative;
+    height: 0.133rem;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+}
+.editCtn .editShow:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.editCtn .editShow .cosSome {
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+.editCtn .editShow .cosStyle {
+    width: 15%;
+    margin-top: 0.02rem;
+}
+.editCtn .editShow .cosStyle .goVideo {
+    display: none;
+    width: 0.075rem;
+    height: 0.075rem;
+    background: url(../images/voice@2x.png) no-repeat center;
+    background-size: contain;
+
+}
+.editCtn .editShow .cosStyle .goinput {
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/keyboard@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput {
+    width: 85%;
+    margin-top: 0.021rem;
+    
+}
+.editCtn .editShow .cosInput .textareaCtn {
+    margin-left: 0.03rem;
+}
+.editCtn .editShow .cosInput .textareaCtn .textarea {
+    width: 100%;
+    height: 0.09rem;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    padding: 0.013rem 0.027rem;
+    padding-right: 0.087rem;
+    overflow: auto;
+    border: none;
+    border-bottom: 1px solid #bd1173;
+	border-radius: 0;
+}
+.editCtn .editShow .cosInput .textareaCtn .faceBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* display: inline-block; */
+    display: none;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/expression@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput .textareaCtn .faceBtn_focus {
+    background: url(../images/expression_click@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput .inputBtn {
+    display: none;
+    width: 100%;
+    height: 0.093rem;
+    line-height: 0.083rem;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+}
+.editCtn .editShow .cosBtn {
+    width: 15%;
+    margin-top: 0.02rem;
+}
+.editCtn .editShow .cosBtn .addbtn {
+    display: inline-block;
+	display: none;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/add@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosBtn .sendBtn {
+    display: inline-block;
+    width: 100%;
+    height: 0.09rem;
+    line-height: 0.09rem;
+    background: #bd1173;
+    color: #fff;
+    border-radius: 3px;
+}
+.editCtn .editHide {
+    display: none;
+    position: relative;
+    height: 0.573rem;
+    padding: 0 0.05rem;
+    box-sizing: border-box;
+}
+.editCtn .editHide .editCtn_com {
+    float: left;
+    text-align: center;
+    width: 20%;
+    height: 100%;
+}
+.editCtn .editHide .sendPicCtn {
+    display: none;
+}
+.editCtn .editHide .takePhotoCtn {
+    display: none;
+}
+.editCtn .editHide .commonQueCtn {
+    display: none;
+}
+.editCtn .editHide .feedbackCtn {
+    display: none;
+}
+.editCtn .editHide .leaveMsgCtn {
+    display: none;
+}
+.editCtn .editHide .editCtn_com span {
+    display: inline-block;
+    width: 0.12rem;
+    height: 0.12rem;
+    margin: 0.16rem 0 0.05rem 0;
+}
+.editCtn .editHide .editCtn_com p {
+    white-space: nowrap;
+    font-size: 12px;
+}
+.editCtn .editHide .editCtn_com .newHelp {
+    background: url(../images/newHelp@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .meHelp {
+    background: url(../images/meHelp@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendPic {
+    background: url(../images/picture@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .takePhoto {
+    background: url(../images/camera@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .commonQue {
+    background: url(../images/problems@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .feedback {
+    background: url(../images/advice@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .leaveMsg {
+    background: url(../images/message@2x.png) no-repeat center;
+    background-size: contain;
+}
+
+.layui-layer-ico {
+    background: url(../images/icon.png) no-repeat;
+}
+.commonQueLayer {
+    display: none;
+}
+.MN_queList {
+    padding: 0.024rem 0.032rem;
+}
+.feedbackLayer {
+    display: none;
+    padding: 0.024rem 0 0.048rem 0;
+}
+.MN_marginCtnRadio {
+    margin-left: 0.032rem;
+    margin-top: 0.032rem;
+}
+.noSatiCtn {
+    padding: 0 0.032rem;
+}
+.noSatiCtn label {
+    padding: 0 0.032rem;
+}
+.leaveMsgLayer {
+    display: none;
+    padding: 0.024rem 0 0.048rem 0;
+}
+.leaveMsgLayer input {
+    width: 100%;
+    height: 0.107rem;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    margin: 0.024rem 0;
+    padding: 0 0.032rem;
+}
+.leaveMsgLayer textarea, .feedbackLayer textarea {
+    margin: 0.024rem 0;
+    border: none;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 0.02rem 0.032rem;
+    height: 0.213rem;
+    box-sizing: border-box;
+}
+.MN_commentBtn {
+    width: 0.936rem;
+    height: 0.12rem;
+    line-height: 0.12rem;
+    margin: 0.024rem auto;
+}
+.layui-layer-title {
+    padding: 0 80px 0 0.032rem;
+    background: #fff;
+}
+.layui-layer-setwin {
+    top: 0px;
+    right: 0.032rem;
+    padding: 12px 0px 12px 12px;
+}
+.layui-layer-page .layui-layer-content {
+    background: #f8f8f8;
+}
+
+.SC_frontCtn {
+    width: 4px;
+}
+
+.upFile {
+    display: none;
+}
+
+/* 后加样式 */
+.msg-item-wrapper {
+	background-color: #f4f4f4;
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	margin-bottom: 26px;
+	position: relative;
+}
+.msg-item {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	padding: 10px 0 0 0;
+}
+.multi-msg .msg-meta {
+	line-height: 28px;
+	margin: 0 14px;
+}
+.msg-meta {
+	font-size: 13px;
+}
+.cover {
+	font-size: 0;
+	margin: 0 14px 12px;
+	overflow: hidden;
+	position: relative;
+}
+.cover .msg-t {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+	bottom: 0;
+	color: #fff;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.msg-t {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	line-height: 28px;
+	margin: 6px 14px 0;
+	max-height: 56px;
+	overflow: hidden;
+}
+.cover .i-title {
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.cover img {
+	width: 100%;
+}
+img {
+	border: 0 none;
+	height: auto;
+	max-width: 100%;
+	vertical-align: middle;
+}
+.sub-msg-item {
+	border-top: 1px solid #c6c6c6;
+	overflow: hidden;
+	padding: 12px 14px;
+	background-color: #fff;
+}
+.rel {
+	position: relative;
+}
+.thumb {
+	float: right;
+	font-size: 0;
+}
+.thumb img {
+	border: 1px solid #b2b8bd;
+	height: 70px;
+	width: 70px;
+}
+.sub-msg-item .msg-t {
+	font-size: 14px;
+	line-height: 24px;
+	margin-left: 0;
+	margin-right: 85px;
+	margin-top: 0;
+	max-height: 48px;
+	overflow: hidden;
+	padding-left: 4px;
+	padding-top: 12px;
+}
+.defultImg {
+	border: 1px solid #b2b8bd;
+	color: #c0c0c0;
+	font-size: 14px;
+	line-height: 70px;
+	width: 70px;
+	display: block;
+	text-align: center;
+	text-shadow: 0 1px 0 #fff;
+	margin-left: 120px;
+}
+.codeIcon {
+	width: 160px;
+	float: left;
+	height: 160px;
+	margin: 10px;
+	overflow: hidden;
+	position: relative;
+}
+.i_margin-top {
+	margin-top: 3px;
+}
+.msg-meta {
+	margin: 0 14px 6px;
+	font-size: 13px
+}
+.msg-col {
+	font-size: 14px;
+	width: 350px;
+}
+.vt {
+	vertical-align: top;
+}
+.ie_input_28 {
+	line-height: 28px !important;
+}
+.ie_input_20 {
+	line-height: 20px !important;
+}
+.margin-left-30 {
+	margin-left: 30px;
+}
+/*.flowItemLast {
+	background-color: #e8e9ee;
+}*/
+.queGuoqi {
+	color: #ccc;
+}
+.overdue {
+	width: 100px;
+	right: 130px;
+	clear: both;
+	height: 55px;
+	position: absolute;
+	top: 35px;
+}
+.overdueImg{
+	width: 50px;
+	margin-left: 15px
+}
+.label_margin_btn{
+	margin-top:-10px;
+}
+.queBgP{
+	 background-color:#e8e9ee;
+	  position:relative
+}
+.dueLi{
+	color:#ccc;
+	 position:relative
+}
+.dueLi a{
+	color:#ccc;
+}
+.dueTd{
+	color:#ccc;
+}
+.functionIcon td img{
+	width:70px;
+}
+.pfont{
+	color:#ccc; font-size:10px;
+}
+.iconImgSel a{
+	width:200px;
+}
+.iconImgSel div{
+	float:left;
+	margin-left:10px;
+}
+.kehIcon{
+	list-style:none;
+}
+.kehIcon li{
+	float:left;
+	margin-left:10px;
+}
+.kehIcon .iconTitle {
+	font-weight:bold;
+	line-height:60px;
+}
+.kehIcon .iconImg div{
+	width:50px;
+	height:50px;
+	border:1px solid #CCC;
+	border-radius:4px;
+	padding:5px;
+}
+.kehIcon .iconImg img{
+	max-width:100%;
+	overflow:hidden;
+}
+.words_help_success{color:#ccc;}.words_help_error{color:red;}.hasgN{cursor:pointer;}
+.appmsgItem .i-img:first-child {
+	min-width: 100%;
+}
+
+.MN_kfTriangle1 {
+    top: -1px;
+	bottom: none;
+}
+.MN_kfTriangle2 {
+    top: -1px;
+	bottom: none;
+}
+.MN_khTriangle1 {
+    top: -1px;
+	bottom: none;
+}
+.MN_khTriangle2 {
+    top: -1px;
+	bottom: none;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+	top: 0;
+    bottom: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

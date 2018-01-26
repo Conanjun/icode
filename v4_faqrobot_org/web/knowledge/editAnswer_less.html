@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>修改答案</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<link href="css/skin/blue.monday/jplayer.blue.monday.css" type="text/css" rel="stylesheet" />
+	<style>
+		/* knowledge/addQuestion.addFlow.editAnswer start */
+		.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+			background: #fff;
+			border: #2A72B5 1px solid;
+			color: #2a72b5;
+		}
+		.overdueImg {
+			height: 20px;
+		}
+		.tab-content{
+			padding: 0;
+		}
+		div.delAble {
+			display: inline-block;
+			position: relative;
+		}
+		div.delAble span{
+			width: 20px;
+			height: 18px;
+			color: #4cae4c;
+			position: absolute;
+			right: -4px;
+			top: -5px;
+			cursor: pointer;
+			background-image: url(../common/images/close.png);
+		}
+		#AddQuesForm div label {
+			font-size: 16px;
+		}
+		#otherList td {
+		    word-wrap: break-word;
+			word-break: break-all;
+		}
+		/* knowledge/addQuestion.addFlow.editAnswer end */
+	</style>
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">知识库管理</a></li>
+				<li class="active"></li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header"></h1>
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="row">
+							<form class="form-horizontal" id="AddQuesForm">
+								<div class="form-group">
+									<label class="col-md-2 control-label" id="labelAoF">答案<span class="red">&nbsp;*</span></label>
+									<div class="col-md-8">
+										<ul class="nav nav-pills" id="AnswerNav">
+											<li class="active"><a href="#text" data-toggle="tab">文本</a></li>
+											<li class="hide"><a href="#richtext" data-toggle="tab">富文本</a></li>
+											<li class=""><a href="#picture" data-toggle="tab">图文</a></li>
+											<li class=""><a href="#voice" data-toggle="tab">语音</a></li>
+											<li class=""><a href="#other" data-toggle="tab">第三方</a></li>
+											<li class=""><a href="#flow" data-toggle="tab">流程</a></li>
+											<li class=""><a href="#form" data-toggle="tab">场景式问答</a></li>
+											<li class="hide"><a href="#rg" data-toggle="tab">转人工</a></li>
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane fade active in" id="text">
+												<textarea name="ans_text" class="form-control" id="ans_text" style="height:300px;" maxlength="20000"></textarea>
+											</div>
+											<div class="tab-pane fade" id="richtext">
+												<textarea name="ans_richtext" class="" id="ans_richtext" maxlength="20000"></textarea>
+											</div>
+											<div class="tab-pane fade" id="picture">
+												<a data-toggle="modal" href="#pictureModel" class="btn btn-primary">选择图文</a>
+												<div name="ans_picture" class="" id="ans_picture">
+													<div id="pictureShow" class="m-t-5" style="height: auto; padding: 0; overflow: hidden; display:inline-block;"></div>
+													<input type="hidden" id="pictureId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="voice">
+												<a data-toggle="modal" href="#voiceModel" class="btn btn-primary">选择语音</a>
+												<div name="ans_voice" id="ans_voice">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="voiceId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="other">
+												<a data-toggle="modal" href="#otherModel" class="btn btn-primary">选择第三方</a>
+												<div name="ans_other" id="ans_other">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="otherName">
+													<input type="hidden" id="otherId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="flow">
+												<textarea name="ans_flow" class="" id="ans_flow" maxlength="20000"></textarea>
+											</div>
+											<div class="tab-pane fade" id="form">
+												<a data-toggle="modal" href="#formModel" class="btn btn-primary">选择表单</a>
+												<div name="ans_form" id="ans_form">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="formId">
+												</div>
+											</div>
+											<div class="tab-pane fade" id="rg">
+												<textarea name="ans_rg" class="form-control" id="ans_rg" style="height:300px;" maxlength="200"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">生效规则</label>
+									<div class="col-md-10 m-b-10">
+										<a data-toggle="modal" href="#ansRuleModal" class="btn btn-primary">生效规则</a>
+										<div id="ruleDiv" class="m-t-10">
+										</div>
+										<input type="hidden" id="ansRuleStartTime">
+										<input type="hidden" id="ansRuleEndTime">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-offset-2 col-md-4">
+										<button type="button" class="btn btn-primary m-r-5" id="formSubmit">确定</button>
+										<button type="button" class="btn btn-default m-r-15" id="formCancel">取消</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="ansRuleModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">生效规则</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="ansRuleForm" class="form-horizontal">
+								<fieldset>
+									<div class="form-group" id="DivRule_Way">
+										<label class="col-md-2 control-label">生效渠道</label>
+										<div class="col-md-8" id="DivRule_WayItem">
+											<a class="btn btn-white m-r-5" fid="0">网页</a>
+											<a class="btn btn-white m-r-5" fid="1">微信</a>
+										</div>
+									</div>
+									<div class="form-group" id="DivRule_Role">
+										<label class="col-md-2 control-label">生效角色</label>
+										<div class="col-md-8">
+											<input type="button" value="请选择角色" class="form-control btn btn-white btn-block" name="resName" id="btnRole">
+											<!-- 存确定选择的Id和Name -->
+											<input type="hidden" name="roleIds">
+											<input type="hidden" name="roleNames">
+											<div id="selectedRole"></div>
+											<div id="tree">
+												<!-- 存树中勾选的Id和Name -->
+												<input type="hidden" name="hasChecked">
+												<input type="hidden" name="hasCheckedId">
+												<span class="expandURA glyphicon glyphicon-plus-sign" style="cursor:pointer;"></span>
+												<span class="expandURN glyphicon glyphicon-minus-sign" style="cursor:pointer;"></span>
+												<div class="treeDiv">
+													<ul id="treeUserRole" class="ztree"></ul>
+												</div>
+												<div style="width:100%; text-align:right; margin-top:5px;">
+													<a id="choose" class="btn btn-primary m-r-5 btn-xs" href="javascript:;">确认</a>
+													<a id="cancel" class="btn btn-primary m-r-5 btn-xs" href="javascript:;">取消</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group" id="DivRule_Time">
+										<label class="col-md-2 control-label">生效时间</label>
+										<div class="col-md-8">
+											<input class="form-control" type="checkbox" name="timeLiness_temp" id="timePicker" value="0">
+											<label class="control-label">启用</label>
+										</div>
+									</div>
+									<div class="form-group" id="dateTime" style="display: none;">
+										<div class="col-md-offset-2 col-md-8">
+											<div class="input-group" style="float: left; width: 50%; padding-right: 5px;">
+												<input size="16" type="text" readonly class="form-control form_datetime" placeholder="启用时间" name="StartTime">
+												<span class="input-group-addon" style="cursor:pointer;" onclick="$('#ansRuleForm [name=StartTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+											</div>
+											<div class="input-group" style="float: left; width: 50%; padding-right: 5px;">
+												<input size="16" type="text" readonly class="form-control form_datetime" placeholder="失效时间" name="EndTime">
+												<span class="input-group-addon" style="cursor:pointer;" onclick="$('#ansRuleForm [name=EndTime]').val(''); return false;"><i class="glyphicon glyphicon-remove"></i></span>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="ansRuleModalComfirm">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="pictureModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择图文</h4>
+						</div>
+						<div class="modal-body">
+							<div id="pictureDiv" style="margin-top:5px;">
+								<div id="img_boxs" style="margin-bottom:0;"></div>
+								<div id="picturepageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="voiceModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择语音</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Voice" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input type="text" class="form-control input-sm" name="name">
+										<button type="button" class="btn btn-primary btn-sm" onclick="voiceList(1);"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="voiceDiv" style="margin-top:5px;">
+								<table class="table" id="voiceList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>文件名</th>
+											<th>播放</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="voicepageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selVoiceBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="otherModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择第三方</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="search_Other" class="form-inline">
+								<fieldset>
+									<div class="form-group pull-right" style="margin-left:10px;">
+										<input type="text" class="form-control input-sm" name="info">
+										<input type="text" style="display:none;">
+										<button type="button" class="btn btn-primary btn-sm" onclick="otherList(1);"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+								</fieldset>
+							</form>
+							<div id="otherDiv" style="margin-top:5px;">
+								<table class="table" id="otherList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>url测试</th>
+											<th>简介</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="otherpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selOtherBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="formModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择表单</h4>
+						</div>
+						<div class="modal-body">
+							<div id="formDiv" style="margin-top:5px;">
+								<table class="table" id="formList">
+									<thead>
+										<tr>
+											<th width="75">选择</th>
+											<th>表单名称</th>
+											<th>添加时间</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="formpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selFormBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+  <script src="../common/js/iframeTab.min.js"></script>
+	<!--编辑器-->
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+	<script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script src="js/jquery.jplayer.min.js"></script>
+	<script src="js/editAnswer.js"></script>
+</body>
+</html>

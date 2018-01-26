@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>扫码页面</title>
+<meta charset="UTF-8">
+
+<style type="text/css">
+#box {
+	height: 475px;
+	width: 302px;
+	margin-top: -300px;
+	margin-left: -150px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+#head{
+	width:100%;
+	font-size: 20px;
+	text-align: center;
+}
+#code{
+	width: 100%;
+	height: 300px;
+	overflow: hidden;
+	text-align: center;
+	margin-top: 21px;
+}
+#footTitle{
+	width: 100%;
+	font-size: 18px;
+	color: #666666;
+	margin-top: 35px;
+	text-align: center;
+}
+#footTitle-1{
+	width: 100%;
+	font-size: 14px;
+	text-align: center;
+	margin-top: 10px;
+	color: #999999;
+}
+#success{
+	width:100%;
+	overflow: hidden;
+	margin-top: 22px;
+	text-align: center;
+}
+.hidden{
+	display: none;
+}
+
+.qrcode{
+	position: absolute;
+	top:-5%;
+	width: 302px;
+	height: 500px;
+	background: rgba(255,255,255,0.8);
+	display: none;
+}
+.icon-refresh{
+	width: 96px;
+    background: url(images/refresh.png) no-repeat;
+    background-position: 0 -150px;
+    -webkit-background-size: 487px 462px;
+    background-size: 487px 462px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -48px;
+    margin-top: -48px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    height: 96px;
+    transform:rotate(0deg);
+    transition:transform 2s;
+}
+.qrcode .refresh_qrcode_mask{
+    position: absolute;
+    left: 0;
+    top: 12%;
+    width: 100%;
+    height: 270px;	
+}
+.qrcode .refresh_tips{
+	color: #000;
+	position: absolute;
+    bottom: 17%;
+    left: 20%;
+}
+</style>
+
+</head>
+<body>
+<div id="box">
+	<div id="head">微信登录</div>
+	<div id="code">
+		<img src="">
+	</div>
+	<div id="footTitle">
+		请使用微信扫描二维码登录
+	</div>
+	<div id="footTitle-1">从微信主界面右上角+号进入扫一扫开启扫描</div>
+	
+	<div id="success">
+		<img src="images/success.png" class="hidden">
+	</div>
+	<div class="qrcode">
+        <div class="refresh_qrcode_mask">
+            <i class="icon-refresh"></i>
+        </div>
+        <p class="refresh_tips">二维码失效，点击刷新</p>
+    </div>
+</div>
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+
+	$(function(){
+		initImg();//初始化登录状态
+		setTimer();//定时获取接口数据
+	})	
+	
+	//初始化登录状态
+	function initImg(){
+		$.ajax({
+			url: '../../WechatRobot/getLoginStatus',
+			type: 'post',
+			dataType: 'json',
+			async: true,
+			cache: true,
+			success: function(data){
+				if(data.loginStatus){
+					$("img","#success").removeClass("hidden");  //显示登录成功图片
+					setTimeout(function(){
+						location.href = "../../web/temp/groups.html";  //页面跳转
+					},100);
+				}else{
+					QRcode();//获取二维码图片
+				}
+			}
+		});
+	};
+	
+	//获取二维码图片
+	function QRcode(){
+		$.ajax({
+			url: '../../WechatRobot/getLoginQRCode',
+			type: 'post',
+			dataType: 'json',
+			async: true,
+			cache: true,
+			success: function(data){
+				if(data.status==0){
+					$("img","#code").attr("src","");
+					$("img","#code").attr("src","../../"+data.path); //给页面添加二维码地址	
+				}
+			}
+		});
+	};
+	
+	//只监测登录状态
+	function setTimer(){
+		var timer = setInterval(function(){
+            /*TaskId = 414   微信群监控页面单独打开会报错
+             *原因：判断时仅判断页面在框架内时的情况，当页面单独打开时则获取不到iframe标签
+             *修改：增加判断页面单独打开时的情况，判断最外层url是否含有weiXinLogin
+            */  
+			if(window.top.location.href.indexOf('weiXinLogin')>-1 || window.top.$('.tab-panel.active').find('iframe').attr('src').indexOf('weiXinLogin')>-1){
+				loginStatus();
+			}else{
+				clearInterval(timer);
+			}
+		},10000);
+	}
+	//监测登录状态
+	function loginStatus(){
+		$.ajax({
+			url: '../../WechatRobot/getLoginStatus',
+			type: 'post',
+			dataType: 'json',
+			async: true,
+			cache: true,
+			success: function(data){
+				if(data.loginStatus){
+					$("img","#success").removeClass("hidden");  //显示登录成功图片
+					setTimeout(function(){
+						location.href = "../../web/temp/groups.html";  //页面跳转
+					},100);
+				}else{
+					setTimeout(function(){
+						$('.qrcode').css('display','block');
+					},60000);
+				}
+			}
+		});
+	};
+	$('.icon-refresh').click(function(){
+		$('.icon-refresh').css('transform','rotate('+360+'deg)');
+		setTimeout(function(){
+			$('.qrcode').css('display','none');
+			window.location.reload();
+		},2000)
+	})
+//	$(function(){
+//		QRcode();
+//	})
+//	function QRcode(){
+//		$.post("/WechatRobot/getLoginQRCode",function(json){
+//			if(json.status==0){
+//				$("img","#code").attr("src","");
+//				$("img","#code").attr("src","../../"+json.path); //给页面添加二维码地址	
+//				times();
+//			}
+//		});
+//	}
+//
+//	function times(){
+//		var times=setInterval(function(){  //启动定时器
+//					timer();
+//				},2000);
+//		setTimeout(function(){  //清除计时器s
+//			clearInterval(times);
+//		},10000);
+//	}
+//	var count=0;	//声明次数变量ssss	
+//	function timer(){
+//			count++;
+//			$.post("/WechatRobot/getLoginStatus",function(json){  //接收后台验证是否登录成功
+//			if(json.loginStatus){
+//				console.log(json.loginStatus);
+//				$("img","#success").removeClass("hidden");  //显示登录成功图片
+//				setTimeout(function(){
+//					location.href = "/web/temp/groups.html";  //页面跳转
+//				},1000);
+//			}
+//		});
+//		if(count==5){
+//			window.location.reload();
+//		}
+//	}
+</script>
+
+</body>
+</html>

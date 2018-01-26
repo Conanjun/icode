@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <title>知识中转站</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        a:hover {
+          text-decoration: none;
+        }
+    
+        .queCtn,
+        .queRight {
+          margin-left: -50px;
+        }
+    
+        .queRight div {
+          display: inline-block;
+        }
+    
+        .search-addSrc {
+          padding: 0;
+        }
+    
+        .grey {
+          color: #666;
+        }
+    
+        .tb-head {
+          vertical-align: middle;
+          cursor: pointer;
+        }
+    
+        #ztree1,
+        #ztree2,
+        #ztree3 {
+          z-index: 10;
+        }
+        #tabd {
+    		overflow: visible;
+    	}
+    	#tabd td {
+    		border-top-style: none;
+    	}
+    	#tabd tr {
+    		border: 1px solid #d9e0e7;
+    		border-radius: 2px;
+    	}
+    	#tabd .gg0 {
+    		border: none;
+    	}
+    	#tabd>tbody>tr.gg0>td {
+    		padding: 5px;
+    	}
+    	#tabd tr:nth-child(even):hover {
+    	    background: #f5f8fe;
+    	}
+		.temItem {
+			border: 1px solid #d9e0e7;
+			border-radius: 2px;
+		}
+		.temItem:hover {
+			background: #f5f8fe;
+		}
+		.temAns {
+			background: #348FE4;
+			color: #fff;
+			border-radius: 3px;
+			padding: 0 4px;
+			font-size: 14px;
+			margin-right: 5px;
+		}
+		.leftItem img {
+			max-width: 100%;
+		}
+    </style>
+
+</head>
+
+<body>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">知识库管理</a></li>
+                <li>知识中转站</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">知识中转站</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                <!-- begin col-12 -->
+                <div>
+                    <!-- begin panel -->
+                    <div class="panel">
+                        <div class="panel-body1 panel-body">
+                            <div>
+                                <div class="panel-body">
+                                    <div class="m-b-5 text-right">
+                                        <div class="input-group search-addSrc" style="max-width: 250px;display:inline-table;">
+                                            <input type="text" class="searchBy form-control" placeholder="输入问题或答案">
+                                            <div class="input-group-btn">
+                                                <ul class="dropdown-menu pull-right" style="min-width: 105px;">
+                                                    <li><a class="sortQue" href="#">问题</a></li>
+                                                    <li><a class="sortAns" href="#">答案</a></li>
+                                                    <li class="hide"><a class="sortKf" href="#">客服名称</a></li>
+                                                </ul>
+                                                <button type="button" class="sortWord2 btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <span>问题</span>&nbsp;<span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+										<button class="btnSearch btn btn-primary" type="button" style="vertical-align: top;"><i class="glyphicon glyphicon-search"></i></button>
+                                        <div id="queSource" class="btn-group hide" style="cursor:pointer; vertical-align: top;">
+                                            <a class="queSourceType btn btn-toggle dropdown-toggle btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部问题来源&nbsp;<span class="caret"></span></a>
+                                            <ul class="dropdown-menu" id="queSourceUL">
+                                                <li><a class="sol" href="javascript:;" data-sol="-1">全部问题来源</a></li>
+                                                <li><a class="sol" href="javascript:;" data-sol="0">客服</a></li>
+                                                <li><a class="sol" href="javascript:;" data-sol="1">第三方知识同步</a></li>
+                                                <li><a class="sol" href="javascript:;" data-sol="2">第三方知识系统回答</a></li>
+                                            </ul>
+                                        </div>
+										<div class="btn-group" style="vertical-align:top;">
+										  <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span class="caret"></span></button>
+										  <ul class="dropdown-menu dropdown-menu-right" style="min-width: 275px;">
+											<li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+											<li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+											<li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+											<li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+											<li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li>
+											<li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+												<span style="margin-left: 15px">自定义时间范围：</span>
+											  <div class="form-inline text-center">
+												<input id="tm1" size="16" readonly="" class="form-control form_datetime m-2 input-sm" name="startT" type="text">
+												<input id="tm2" size="16" readonly="" class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+											  </div>
+											  <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center">
+												<button class="confirm btn btn-primary m-2" style="width:97%;" type="button" onclick="$('#myDropdown').parent().removeClass('open');listPorts(1);">确认</button>
+											  </div>
+											</li>
+										  </ul>
+										</div>
+                                        <a href="./transferStationHistory.html" data-num="0" data-name="处理历史" class="btn btn-primary" style="vertical-align: top;">处理历史</a>
+                                    </div>
+
+                                    <div class="row" id="moveTo">
+                                        <div id="affix1" class="col-md-3 col-sm-3 toShow affixing" style="border: 1px solid #D9E0E7; border-radius: 3px; padding: 5px; overflow: hidden; margin-bottom: 0;">
+                                            <div id="affix1inner">
+                                                <div>
+                                                    <span class="openAll glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                                                    <span class="closeAll glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+                                                </div>
+                                                <div id="ztree1" class="ztree" style="position: relative; overflow: auto; border: none;"></div>
+                                            </div>
+                                        </div>
+                                        <a class="closeIt hide" href="javascript:;" style="cursor:pointer;position: absolute;top: 100px;z-index:3;padding: 10px 0px;background-color: rgb(226, 231, 235);border-radius: 3px;left: 16.7%;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                        <div id="affixM" class="col-md-9 col-sm-9 toHide" style="padding: 0 0 0 15px">
+                                            <div id="affix2" class="affixing" style="background-color:#E2E7EB;height:38px;padding: 10px 15px;z-index: 2;">
+                                                <span class="allQueView" style="white-space: nowrap;color: #242a30;font-weight: 600;margin-left: 27px;font-size: 14px;">问题详细</span>
+                                                <div class="pull-right">
+                                                    <a class="multYDQue grey tb-head hide">修改问题分类</a>
+													<a class="multDelQue grey tb-head m-l-20 hide">批量删除</a>
+                                                    <div id="DataSource" class="btn-group m-l-20 hide" style="cursor:pointer;" role="group" aria-label="...">
+                                                        <a class="sourceType btn-toggle dropdown-toggle grey" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部渠道<span class="caret"></span></a>
+                                                        <ul class="dropdown-menu pull-right" id="DataSourceUL">
+                                                            <li><a class="sol" href="javascript:;">全部渠道</a></li>
+                                                            <li><a class="sol" href="javascript:;">网页</a></li>
+                                                            <li><a class="sol" href="javascript:;">微信</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div id="stateSource" class="btn-group m-l-20" style="cursor:pointer;" role="group" aria-label="...">
+                                                        <a class="stateType btn-toggle dropdown-toggle grey" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部状态<span class="caret"></span></a>
+                                                        <ul class="dropdown-menu pull-right" id="stateSourceUL">
+                                                            <li><a class="sol" href="javascript:;" data-sol="-1">全部状态</a></li>
+                                                            <li><a class="sol" href="javascript:;" data-sol="1">新增</a></li>
+                                                            <li><a class="sol" href="javascript:;" data-sol="2">修改</a></li>
+                                                            <li><a class="sol" href="javascript:;" data-sol="3">删除</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="btn-group m-l-20 hide" style="cursor:pointer;" role="group" aria-label="...">
+                                                        <a class="sortWord btn-toggle dropdown-toggle grey" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">默认排序<span class="caret"></span></a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li><a class="sort1" href="javascript:;">默认排序</a></li>
+                                                            <li><a class="sort2" href="javascript:;">时间正序</a></li>
+                                                            <li><a class="sort3" href="javascript:;">时间倒序</a></li>
+                                                            <li><a class="sort4" href="javascript:;">客服名称正序</a></li>
+                                                            <li><a class="sort5" href="javascript:;">客服名称倒序</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="somecroll">
+                                                <div id="listContainer"></div>
+                                            </div>
+                                            <div id="pageList" style="padding-top:10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="YDConfirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">移动问题分类</h4>
+                </div>
+                <div class="modal-body">
+                    <span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeeClasses',true);" style="cursor:pointer;"></span>
+                    <span class="glyphicon glyphicon-minus-sign" onclick="showTree('treeeClasses',false);" style="cursor:pointer;"></span>
+                    <input type="hidden" id="YDGroupId" />
+                    <ul id="treeeClasses" class="ztree"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="YDYes">是</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="pcConfirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">批量删除</h4>
+                </div>
+                <div class="modal-body">
+                    是否批量删除所选问题
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="pcYes">是</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="delAnsConfirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title" id="tipTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <p id="tipWord"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delYes">是</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="similarQuestion">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">相似问法</h4>
+                </div>
+                <div class="modal-body">
+					<div id="similarQuestionContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../../assets/js/apps.min.js"></script>
+    <!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+    <!-- ================== END BASE JS ================== -->
+
+    <script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/handlebars-v4.0.5.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/iframeTab.min.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/transferStation.js"></script>
+    <script id="list-item-template" type="text/x-handlebars-template">
+        {{#each list}}
+        <div class="temItem row m-t-10 p-l-5 p-r-5 p-t-10 p-b-10">
+            <div class="col-md-12 m-b-10">
+				<span class="p-l-3" style="vertical-align:middle;">{{ Question }}</span>
+				<span class="pull-right" style="vertical-align:middle;">{{ CreateTime }}</span>
+            </div>
+            <div class="col-md-12 m-b-10">
+                <div>
+					<span class="temAns">答案</span>
+					<span>{{{ Answer }}}</span>
+				</div>
+            </div>
+            <div class="col-md-12">
+				{{!-- <span>问题来源渠道：</span><span class="p-l-3">{{ QaSource }}</span> --}}
+				{{#if ComeGroupName}}
+					<span>分类：</span><span class="p-l-3">{{ ComeGroupName }}</span>
+				{{/if}}
+				{{#if customServiceName}}
+				<span class="p-l-10">客服名称：</span><span class="p-l-3">{{ CustomServiceName }}</span>
+				{{/if}}
+                {{#ifCond}}
+				<span class="p-l-10">问题来源：</span><span class="p-l-3">{{ ComeFromName }}</span>
+                {{/ifCond}}
+				{{#if TypeValue}}
+				<span class="p-l-10">操作方式：</span><span class="p-l-3">{{ TypeValue }}</span>
+				{{/if}}
+				{{#if AnswerTypeValue}}
+				<span class="p-l-10" style="display:none;">答案操作方式：</span><span class="p-l-3" style="display:none;">{{ AnswerTypeValue }}</span>
+				{{/if}}
+                {{#if Cue}}
+                <span class="p-l-10" style="color:red">提示：</span><span class="p-l-3" style="color:red">{{ Cue }}</span>
+                {{/if}}
+				<div style="float:right;">
+                    {{#if AddKnowledge}}
+                    <a href="javascript:;" class="add" data-id="{{ Id }}" data-comefrom="{{ComeFrom}}"><i class="timeTip glyphicon glyphicon-ok" title="" data-original-title="添加到知识库"></i>&nbsp</a>
+                    
+                    {{else}}
+                    <a href="javascript:;" data-id="{{ Id }}" data-comefrom="{{ComeFrom}}"><i class="timeTip glyphicon glyphicon-ok" title="" data-original-title="添加到知识库" style="cursor: not-allowed; color: rgb(170, 170, 170);"></i>&nbsp</a>
+
+                    {{/if}}
+                    <a href="javascript:;" class="edit" data-id="{{ Id }}" data-learnQueId="{{ LearnqueId }}"><i class="timeTip glyphicon glyphicon-pencil" data-original-title="处理"></i>&nbsp</a>
+                    <a href="javascript:;" class="del" data-id="{{ Id }}"><i class="timeTip glyphicon glyphicon-eye-close" title="" data-original-title="忽略"></i>&nbsp</a>
+                    {{#if FindSimilarQue}}
+                    <a href="javascript:;" class="searchSi" data-id="{{ Id }}" style="margin-right: 30px"><i class="timeTip  glyphicon glyphicon-search" title="" data-original-title="查询相似问法"></i></a>
+                    {{else}}
+
+                    <a href="javascript:;" data-id="{{ Id }}" style="margin-right: 30px"><i class="timeTip  glyphicon glyphicon-search" title="" data-original-title="查询相似问法" style="cursor: not-allowed; color: rgb(170, 170, 170);" ></i></a>
+
+                    {{/if}}
+				</div>
+            </div>
+        </div>
+        {{/each}}
+
+
+    </script>
+    <script>
+
+        Handlebars.registerHelper('ifCond', function(options) {
+            if(this.ComeFrom == 1){
+                this.ComeFromName = '第三方知识同步';
+                return options.fn(this);
+            }else if(this.ComeFrom == 2){
+                this.ComeFromName = '第三方知识系统回答';
+                return options.fn(this);
+            }else if(this.ComeFrom == 0){
+                this.ComeFromName = '客服';
+                return options.fn(this);
+            }
+            //options.inverse()这个方法就是取反的意思，相当于if的else
+            //return options.inverse(this);
+        });
+
+
+        var tmpNum=''//用于获取当前url中唯一标识，用户编辑或者修改之后依然跳转到这个页面来
+        $(document).ready(function() {
+              App.init();
+              iframeTab.init({
+                iframeBox: ''
+              });
+    		$(".form_datetime").datetimepicker({
+    			language: "zh-CN",
+    			format: "yyyy-mm-dd hh:ii",
+    			autoclose: true,
+    			todayBtn: true,
+    			minuteStep: 10,
+    			initialDate:new Date()
+    		});
+            tmpNum=parent.$('#tabHeader li[data-tab="'+location.href+'"]').attr('data-num');//获取当前url中的data-num
+
+        });
+    </script>
+
+</body>
+
+</html>

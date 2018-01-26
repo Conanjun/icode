@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>customMenu</title>
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+    <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+    <link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/grey.css">
+    <link rel="stylesheet" href="css/style-texts.css">
+    <style>
+        .gritter-item p {
+          color: #fff;
+        }
+        .w-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .w-masked {
+            display: inline-block;
+        }
+        .pagination {
+            margin: 0!important;
+        }
+        .pagination a {
+            margin-top: 8px;
+        }
+        .content {
+            background: #D9E0E7;
+        }
+        .edui-default .edui-editor-toolbarboxouter {
+            box-shadow: none!important;
+            background-image: none!important;
+            border-bottom: 1px solid #e7e7eb!important;
+        }
+        .body {
+            background: #F8F8F8;
+        }
+        .body-mid {
+            background: #fff;
+        }
+        .edui-default .edui-editor-iframeholder {
+            border-left: 1px solid #e7e7eb!important;
+            border-right: 1px solid #e7e7eb!important;
+		}
+    </style>
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet">
+    <link href="css/previewStyle.css" rel="stylesheet">
+</head>
+<body>
+    <!--序列化的id开始-->
+    <form id="submitDetail" class="submitDetail"></form>
+    <!--序列化的id结束-->
+
+    <div class="noty"></div>
+    <!------提示框开始------>
+    <div class="popup">
+        <div class="mask"></div>
+        <!--图片框开始-->
+        <div class="pic-ctx">
+            <div class="head">
+                <span>选择图片</span>
+                <i></i>
+            </div>
+            <div class="body">
+                <div class="bodyleft">
+                    <div class="group group-focus">
+                        <span class="groupName">你好啊我很好</span>
+                        <span class="groupNum">(<em>9</em>)</span>
+                    </div>
+                    <div class="group">
+                        <span class="groupName">未分组</span>
+                        <span class="groupNum">(<em>9</em>)</span>
+                    </div>
+                    <div class="group">
+                        <span class="groupName">未分组</span>
+                        <span class="groupNum">(<em>9</em>)</span>
+                    </div>
+                </div>
+                <div class="bodyRight">
+                    <div class="bodyTop-ctn">
+                        <div class="bodyTop">
+                            <span class="newPic">
+                                <i></i>
+                                <p>本地上传</p>
+                            </span>
+                            <span class="tip">
+                                <span class="tipWord">大小不超过5M，已关闭图片水印</span>
+                                <i class="tip-btn">
+                                    <div class="tip-ctn">
+                                        <div>
+                                            <i class="triangle triangle1"></i>
+                                            <i class="triangle triangle2"></i>
+                                            <p>不添加水印</p>
+                                            <span>已关闭水印， 所有上传的图片都不会带有水印。若需修改请前往 <a>公众号设置/功能设置</a> 设置图片水印</span>
+                                        </div>
+                                        
+                                    </div>
+                                </i>
+                                
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <div class="bodyMiddle-ctn">
+                        <div class="bodyMiddle">
+                            <!--替换图文开始
+                            <div class="show">
+                                <img src="images/1.jpg" alt="">
+                                <div class="nameCtn">
+                                    <p class="name">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+                                </div>
+                            </div>
+                            替换图文结束-->
+                        </div>
+                    </div>
+                    <div class="pageNav-ctn">
+                        <div id="itemContainer" style="margin: 0;"></div> 
+                        <!-- <div class="pageNav">
+                            <span class="pageChange">
+                                <i class="prevPage"></i>
+                            </span>
+                            <span class="pageNum">
+                                <label></label>
+                                <span>/</span>
+                                <label></label>
+                            </span>
+                            <span class="pageChange">
+                                <i class="nextPage"></i>
+                            </span>
+                            <input type="text">
+                            <p class="pageGo btn btn-sm btn-white">跳转</p>
+                        </div> -->
+                    </div>
+                </div>
+                
+            </div>
+            <div class="foot">
+                <span class="confirm-pic btn btn-sm btn-primary">确定</span>
+                <span class="cancel btn btn-sm btn-white">取消</span>
+            </div>
+        </div>
+        <!--图片框结束-->
+
+        <!--语音框开始-->
+        <div class="audio-ctx">
+            <div class="head">
+                <span>选择语音</span>
+                <i></i>
+            </div>
+            <div class="body">
+                <div class="bodyTop-ctn">
+                    <div class="bodyTop">
+                        <span class="tipWord">由于版本兼容的原因,你暂时只可以选择60秒内的语音发送</span>
+                        <a href="web/material/sucai_up.html" target="_blank">
+                            <span class="newAudio">
+                                <i></i>
+                                <p>新建语音</p>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bodyMiddle-ctn">
+                    <div class="bodyMiddle">
+                        <!--替换语音开始
+                        <div class="show">
+                            <label for="audio1">
+                                <input id="audio1" type="radio" name="audioGroup">
+                                <p class="title">122222222222222222222222222</p>
+                                <p class="time">2015-12-28</p>
+                                <p class="duration">00:11</p>
+                                <i></i>
+                            </label>
+                        </div>
+                        替换语音结束-->
+                    </div>
+                </div>
+                <div class="pageNav-ctn">
+                    <div id="itemContainer3" style="margin: 0;"></div> 
+                    <!-- <div class="pageNav">
+                        <span class="pageChange">
+                            <i class="prevPage"></i>
+                        </span>
+                        <span class="pageNum">
+                            <label>1</label>
+                            <span>/</span>
+                            <label>1</label>
+                        </span>
+                        <span class="pageChange">
+                            <i class="nextPage"></i>
+                        </span>
+                        <input type="text">
+                        <p class="pageGo btn btn-sm btn-white">跳转</p>
+                    </div> -->
+                </div>
+            </div>
+            <div class="foot">
+                <span class="confirm-audio btn btn-sm btn-primary">确定</span>
+                <span class="cancel btn btn-sm btn-white">取消</span>
+            </div>
+        </div>
+        <!--语音框结束-->
+
+        <!--视频框开始-->
+        <div class="video-ctx">
+            <div class="head">
+                <span>选择视频</span>
+                <i></i>
+            </div>
+            <div class="body">
+                <div class="bodyTop-ctn">
+                    <div class="bodyTop">
+                        <span class="tipWord">视频</span>
+                        <a href="web/material/sucai_up.html" target="_blank">
+                            <span class="newVideo">
+                                <i></i>
+                                <p>新建视频</p>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bodyMiddle-ctn">
+                    <div class="bodyMiddle">
+                        <div class="showLeft">
+                            <!--替换视频开始
+                            <div class="show">
+                                <p class="title">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+                                <p class="time">昨天 23:37</p>
+                                <div class="pic">
+                                    <img src="images/1.jpg" alt="">
+                                </div>
+                                <p class="desc">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+                            </div>
+                            替换视频结束-->
+                        </div>
+                        <div class="showRight">
+                            <!--替换视频开始
+                            <div class="show">
+                                <p class="title">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+                                <p class="time">昨天 23:37</p>
+                                <div class="pic">
+                                    <img src="images/1.jpg" alt="">
+                                </div>
+                                <p class="desc">wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>
+                            </div>
+                            替换视频结束-->
+                        </div>
+                    </div>
+                </div>
+                <div class="pageNav-ctn">
+                    <div id="itemContainer2" style="margin: 0;"></div> 
+                    <!-- <div class="pageNav">
+                        <span class="pageChange">
+                            <i class="prevPage"></i>
+                        </span>
+                        <span class="pageNum">
+                            <label>1</label>
+                            <span>/</span>
+                            <label>1</label>
+                        </span>
+                        <span class="pageChange">
+                            <i class="nextPage"></i>
+                        </span>
+                        <input type="text">
+                        <p class="pageGo btn btn-sm btn-white">跳转</p>
+                    </div> -->
+                </div>
+            </div>
+            <div class="foot">
+                <span class="confirm-video btn btn-sm btn-primary">确定</span>
+                <span class="cancel btn btn-sm btn-white">取消</span>
+            </div>
+        </div>
+        <!--视频框结束-->
+        <!--发布框开始-->
+        <div class="release-ctx">
+            <div class="head">
+                <span>温馨提示</span>
+                <i></i>
+            </div>
+            <div class="body">
+                <div class="msgCtn">
+                    <i></i>
+                    <span>
+                        <p class="title">保存确认</p>
+                        <p class="msg">即将保存当前所有编辑内容，确认保存？</p>
+                    </span>
+
+                </div>
+            </div>
+            <div class="foot">
+                <span class="confirm-release btn btn-sm btn-primary">确定</span>
+                <span class="cancel btn btn-sm btn-white">取消</span>
+            </div>
+        </div>
+        <!--发布框结束-->
+        <!--清空框开始-->
+        <div class="clear-ctx">
+            <div class="head">
+                <span>温馨提示</span>
+                <i></i>
+            </div>
+            <div class="body">
+                <div class="msgCtn">
+                    <i></i>
+                    <span>
+                        <p class="title">确认清空</p>
+                        <p class="msg">本页内容将全部清空，确认清空？</p>
+                    </span>
+
+                </div>
+            </div>
+            <div class="foot">
+                <span class="confirm-clear btn btn-sm btn-primary">确定</span>
+                <span class="cancel btn btn-sm btn-white">取消</span>
+            </div>
+        </div>
+        <!--清空框结束-->
+    </div>
+
+    <div id="page-container" class="fade in">
+            <div id="content" class="content">
+                <!-- begin breadcrumb -->
+                <ol class="breadcrumb pull-right">
+                    <li><a href="javascript:;">首页</a></li>
+                    <li><a href="javascript:;">素材管理</a></li>
+                    <li>新建图文消息</li>
+                </ol>
+                <!-- end breadcrumb -->
+                <!-- begin page-header -->
+                <h1 class="page-header">新建图文消息</h1>
+                <!-- end page-header -->
+
+
+                <div class="ctner">
+                    <div class="body">
+                        <div class="body-left">
+                            <div class="nano1">
+                                <div class="left-ctn">
+                                    <p class="title">图文列表</p>
+                                    <div class="msg-ctn">
+                                        <!--第一条开始-->
+                                        <div class="msgBtn-first">
+                                            <div class="msgBtn-ctn">
+                                                <i></i>
+                                                <img src="" alt="" onerror="this.onerror=''; this.src='images/space.png'">
+                                                <div class="msgMask"></div>
+                                                <div class="msgTitle-ctn">
+                                                    <p class="msgTitle">标题</p>
+                                                </div>
+                                            </div>
+                                            <div class="cMask-ctn">
+                                                <i class="cMask"></i>
+                                                <i class="cUp"></i>
+                                                <i class="cDown"></i>
+                                                <i class="cDelete"></i>
+                                            </div>
+                                        </div>
+                                        <!--第一条结束-->
+                                        <!--下一条开始
+                                        <div class="msgBtn">
+                                            <div class="msgBtn-ctn">
+                                                <p class="msgTitle">qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq</p>
+                                                <span class="img-ctn">
+                                                    <i></i>
+                                                    <img src="images/2.jpg" alt="" onerror="this.onerror=''; this.src='images/space.png'">
+                                                </span>
+                                            </div>
+                                            <div class="cMask-ctn">
+                                                <i class="cMask"></i>
+                                                <i class="cUp"></i>
+                                                <i class="cDown"></i>
+                                                <i class="cDelete"></i>
+                                            </div>
+                                        </div>
+                                        下一条结束-->
+                                        <!--新建开始-->
+                                        <div class="msgBtn-last">
+                                            <i></i>
+                                        </div>
+                                        <!--新建结束-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body-mid" style="background: #F8F8F8;">
+
+                            <div class="mid-body">
+                                <div class="nano2">
+                                    <div class="mid-body-top">
+                                        <div class="iTitle-ctn" style="border: 1px solid #e7e7eb">
+                                            <input id="iTitle" type="text" placeholder="请必须输入标题">
+                                            <label for="iTitle">请必须输入标题</label>
+                                            <span class="remainWords1">0/64</span>
+                                        </div>
+                                        <div class="iAuthor-ctn" style="border: 1px solid #e7e7eb">
+                                            <input id="iAuthor" type="text" placeholder="请输入作者">
+                                            <label for="iAuthor">请输入作者</label>
+                                            <span class="remainWords2">0/8</span>
+                                        </div>
+
+                                        <div id="mid-head" class="mid-head">
+
+                                        </div>
+                                        <div class="iCtx-ctn">
+
+                                        </div>
+                                        <div class="link-ctn">
+                                            <input id="linkBtn" type="checkbox">
+                                            <label for="linkBtn">原文链接</label>
+                                            <input class="link form-control" type="text" style="display:inline-block;" placeholder="设置原文链接后，图文中的内容将会失效">
+                                        </div>
+                                    </div>
+                                    <div class="mid-body-bottom">
+                                        <div class="mid-body-bottom-ctn">
+                                            <p class="title">发布样式编辑</p>
+                                            <div class="cover-ctn">
+                                                <span class="title-ctn">
+                                                    <p class="title">封面</p>
+                                                    <p class="tip">大图片建议尺寸：900像素 * 500像素</p>
+                                                </span>
+                                                <span class="input-ctn">
+                                                    <span class="localLoad btn btn-sm btn-white">本地上传</span>
+                                                    <span class="cosImage btn btn-sm btn-white">从图片库选择</span>
+                                                </span>
+                                                <div class="cover-ctx">
+                                                    <div class="cover"></div>
+                                                    <p class="vDelete">删除</p>
+
+                                                </div>
+                                                <input id="coverBtn" type="checkbox">
+                                                <label for="coverBtn">封面图片显示在正文中</label>
+                                            </div>
+                                            <div class="abstract-ctn">
+                                                <span class="title-ctn">
+                                                    <p class="title">摘要</p>
+                                                    <p class="tip">选填</p>
+                                                </span>
+                                                <textarea id="abstract" style="margin-top: 0"></textarea>
+                                                <span class="remainWords3">0/120</span>
+                                            </div>
+                                        </div>
+
+                                        <div style="margin-top: 10px">
+                                            <button type="button" class="save btn btn-sm btn-primary" >保存图文</button>
+                                            <button type="button" class="preview_btn btn btn-sm btn-primary" >预览</button>
+                                            <a class="clear btn btn-sm btn-white" href="javascript:;">清空全部</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- <div class="body-right">
+                            <div class="right-ctn">
+                                <p class="title">多媒体</p>
+                                <div class="btn-ctn">
+                                    <span class="btn-img">
+                                        <i></i>
+                                        <p>图片</p>
+                                    </span>
+                                    <span class="btn-video">
+                                        <i></i>
+                                        <p>视频</p>
+                                    </span>
+                                    <span class="btn-audio">
+                                        <i></i>
+                                        <p>音频</p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+
+
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+
+    <!--=================== PREVIEW ========================-->
+    <div class="preview_phone">
+        <div class="phone-img"></div>
+        <div class="preview_operate">
+            <ul>
+                <li class="operate_1 active">图文消息</li>
+                <li class="operate_2">消息正文</li>
+                <li class="operate_3">分享至朋友圈</li>
+                <li class="operate_4">发送给朋友</li>
+            </ul>
+            <div class="operate_5">
+                <button type="button" class="btn prev_btn">上一篇</button>
+                <button type="button" class="btn next_btn">下一篇</button>
+            </div>
+            <button class="preview_close btn" type="button">关闭</button>
+        </div>
+        <div class="preview_content">
+            <div class="content_1 active">
+                <div class="content_head content_1_head"></div>
+                <div class="content_body content_1_body">
+                    <div class="bind_scroll"></div>
+                </div>
+            </div>
+            <div class="content_2">
+                <div class="content_head content_2_head"></div>
+                <div class="content_body content_2_body">
+                    <div class="bind_scroll"></div>
+                </div>
+            </div>
+            <div class="content_3">
+                <div class="content_head content_3_head">朋友圈</div>
+                <div class="content_body content_3_body">
+                    <div class="bind_scroll"></div>
+                </div>
+            </div>
+            <div class="content_4">
+                <div class="content_head content_4_head">云问科技</div>
+                <div class="content_body content_4_body">
+                    <div class="bind_scroll"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="preview_shadow"></div>
+
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+
+    <script type="text/javascript" src="../common/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="../common/js/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" src="../common/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <script src="../common/js/icheck.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="js/jquery.noty.packaged.js"></script>
+    <script src="js/webuploader.min.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="../common/js/iframeTab.min.js"></script>
+    <script src="js/main-texts.js"></script>
+    <!-- ================== BEGIN PREVIEW JS ================== -->
+    <script>
+        /*==========程序入口==========*/
+        $(function(){
+            bindPlugin();
+            previewOperate_click();
+            showPic();
+        });
+        /*==========插件绑定==========*/
+        function bindPlugin(){
+            $('.content_body').mCustomScrollbar({
+                theme: "dark-thin",
+                autoHideScrollbar: true,
+                mouseWheelPixels:260,
+                scrollButtons:{
+                    scrollType:'pixels',
+                    enable:true,
+                    scrollAmount:80
+                },
+            });
+        }
+        /*==========注册预览操作点击事件==========*/
+        function previewOperate_click(){
+            $(".preview_btn").unbind("click").bind("click",function(){
+
+                $.each($(".bind_scroll"), function(k, v){
+                    $(v).html("");
+                });
+                if($('.msgBtn').length>0){
+                    var count = 1;//记录点击到哪篇文章
+                    isCanClick(count);
+                    $(".preview_operate .operate_5>button").unbind("click").bind("click",function(){
+                        if($(this).hasClass("prev_btn") && count > 1){
+                            count--;
+                            $('.content_2_msg[index="'+parseInt(count-1)+'"]').addClass('active').siblings(".content_2_msg").removeClass('active');
+                        }else if($(this).hasClass("next_btn") && count < $('.content_2_msg').length){
+                            count++;
+                            $('.content_2_msg[index="'+parseInt(count-1)+'"]').addClass('active').siblings(".content_2_msg").removeClass('active');
+                        }
+                        isCanClick(count);
+                    });
+
+                    morePreview();
+                    moreArticalContent();
+                    //多图文点击事件
+                    $('.content_1_body').undelegate(".artical",'click').delegate('.artical','click',function(){
+                        $('.operate_2').addClass("active").siblings("li").removeClass("active");
+                        $(".preview_content>div.content_2").addClass("active").siblings("div").removeClass("active");
+                        $(".content_2_msg[index='"+parseInt($(this).index())+"']").addClass("active").siblings(".content_2_msg").removeClass("active");
+                        $('.preview_operate .operate_5').show();
+                        count = parseInt($(this).index() + 1);
+                        isCanClick(count);
+                    });
+                    $(".content_3_body").undelegate(".moments_content","click").delegate(".moments_content","click",function(){
+                        $('.operate_2').addClass("active").siblings("li").removeClass("active");
+                        $(".preview_content>div.content_2").addClass("active").siblings("div").removeClass("active");
+                        $(".content_2_msg[index='"+parseInt($(this).parents(".content_3_msg").index())+"']").addClass("active").siblings(".content_2_msg").removeClass("active");
+                        $('.preview_operate .operate_5').show();
+                        count = parseInt($(this).parents(".content_3_msg").index() + 1);
+                        isCanClick(count);
+                    });
+                    $(".content_4_body").undelegate(".chat_content_wrap","click").delegate(".chat_content_wrap","click",function(){
+                        $('.operate_2').addClass("active").siblings("li").removeClass("active");
+                        $(".preview_content>div.content_2").addClass("active").siblings("div").removeClass("active");
+                        $(".content_2_msg[index='"+parseInt($(this).parents(".content_4_msg").index())+"']").addClass("active").siblings(".content_2_msg").removeClass("active");
+                        $('.preview_operate .operate_5').show();
+                        count = parseInt($(this).parents(".content_4_msg").index() + 1);
+                        isCanClick(count);
+                    });
+                }else{
+                    singlePreview();
+                    singleArticalContent();
+                    //单图文点击事件
+                    $(".content_1_body").undelegate(".content_1_msg","click").delegate(".content_1_msg","click",function(){
+                        $('.operate_2').trigger("click");
+                    });
+                    $(".content_3_body").undelegate(".moments_content","click").delegate(".moments_content","click",function(){
+                        $('.operate_2').trigger("click");
+                    });
+                    $(".content_4_body").undelegate(".chat_content_wrap","click").delegate(".chat_content_wrap","click",function(){
+                        $('.operate_2').trigger("click");
+                    });
+                }
+                showPic();//判断正文是否显示封面图片
+                $(".preview_phone").show();
+                $(".preview_shadow").show();
+            });
+
+            $(".preview_close").unbind("click").bind("click",function(){
+                $(".preview_phone").hide();
+                $(".preview_shadow").hide();
+            });
+
+            $('.preview_operate li').unbind("click").bind("click",function(){
+                $(this).addClass("active").siblings("li").removeClass("active");
+                $(".preview_content>div.content_" + parseInt($(this).index()+1)).addClass("active").siblings("div").removeClass("active");
+                if($('.msgBtn').length>0 && parseInt($(this).index()) == 1){
+                    $('.preview_operate .operate_5').show();
+                }else{
+                    $('.preview_operate .operate_5').hide();
+                }
+            });
+        }
+        /*==========判断上下篇按钮是否可点击==========*/
+        function isCanClick(count){
+            if(count == 1){
+                $('.prev_btn').attr("disabled","disabled");
+                $('.next_btn').removeAttr("disabled");
+            }else if(count == $('.content_2_msg').length){
+                $('.prev_btn').removeAttr("disabled");
+                $('.next_btn').attr("disabled","disabled");
+            }else{
+                $(".preview_operate .operate_5>button").removeAttr("disabled");
+            }
+        }
+        /*==========单图文预览生成==========*/
+        function singlePreview(){
+            var previewStr1 = "", previewStr2 = "", previewStr3 = "", previewStr4 = "";
+            previewStr1 = "<div class='content_1_msg'><div class='msg_bd'><div class='msg_title'></div><div class='msg_time'></div><div class='msg_pic'><img src=''></div></div><div class='msg_ft'><span>阅读原文</span><span><i class='fa fa-chevron-right'></i></span></div></div>";
+            $(".content_1_body  .bind_scroll").append(previewStr1);
+            previewStr2 = '<div class="content_2_msg active"><div class="msg_bd"><div class="msg_title"></div><div class="msg_info"><span class="msg_time"></span><span class="msg_user"></span></div><div class="msg_pic"><img src="" alt=""></div><div class="msg_desc"></div></div></div>';
+            $(".content_2_body  .bind_scroll").append(previewStr2);
+            previewStr3 = '<div class="content_3_msg"><img src="images/logo.jpg" alt=""><div class="msg_moments"><p class="moments_nickname"></p><div class="moments_content"><img class="moments_appmsg_img" src="images/logo.jpg" alt=""><div class="moments_appmsg_title"></div></div></div></div>';
+            $(".content_3_body  .bind_scroll").append(previewStr3);
+            previewStr4 = '<div class="content_4_msg"><img src="images/logo.jpg" alt=""><div class="chat_msg"><i class="fa fa-caret-left"></i><div class="chat_content_wrap"><div class="chat_appmsg_title"></div><div class="chat_content"><img class="chat_appmsg_img" src="images/logo.jpg" alt=""><div class="chat_appmsg_desc"></div></div></div></div></div>';
+            $(".content_4_body  .bind_scroll").append(previewStr4);
+        }
+        /*==========多图文预览生成==========*/
+        function morePreview(){
+            var previewStr1 = "", previewStr2 = "", previewStr3 = "", previewStr4 = "";
+            previewStr1 = '<div class="content_1_more"><div class="artical artical_1"><img src="" alt=""><div class="artical_1_title"></div></div></div>';
+            $(".content_1_body .bind_scroll").append(previewStr1);
+
+            previewStr2 = '<div class="content_2_msg active" index="0"><div class="msg_bd"><div class="msg_title"></div><div class="msg_info"><span class="msg_time"></span><span class="msg_user"></span></div><div class="msg_pic"><img src="" alt=""></div><div class="msg_desc"></div></div></div>';
+            $(".content_2_body .bind_scroll").append(previewStr2);
+
+            previewStr3 = '<div class="content_3_msg"><img src="images/logo.jpg" alt=""><div class="msg_moments"><p class="moments_nickname"></p><div class="moments_content"><img class="moments_appmsg_img" src="" alt=""><div class="moments_appmsg_title"></div></div></div></div>';
+            $(".content_3_body .bind_scroll").append(previewStr3);
+
+            previewStr4 = '<div class="content_4_msg"><img src="images/logo.jpg" alt=""><div class="chat_msg"><i class="fa fa-caret-left"></i><div class="chat_content_wrap"><div class="chat_appmsg_title"></div><div class="chat_content"><img class="chat_appmsg_img" src="" alt=""><div class="chat_appmsg_desc"></div></div></div></div></div>';
+            $(".content_4_body .bind_scroll").append(previewStr4);
+        }
+        /*==========获取单图文内容==========*/
+        function singleArticalContent(){
+            var articalTitle = $("#iTitle").val(),
+                articalAuthor = $("#iAuthor").val()?$("#iAuthor").val():"云问科技",
+                articalContent = $("#mid-head").find("#ueditor_0").contents().find("body.view").html(),
+                articalText = $("#mid-head").find("#ueditor_0").contents().find("body.view").text(),
+                articalImg = $('.msgBtn-ctn img').attr("src"),
+                articalTime1 = "",
+                articalTime2 = "";
+
+            var time = new Date();
+            articalTime1 = parseInt(time.getMonth()+1) + "月" + time.getDate() + "日";
+            articalTime2 = time.getFullYear() + "-" + parseInt(time.getMonth()+1) + "-" + time.getDate();
+
+            $(".content_1_head").html(articalAuthor);
+            $(".content_1_body").find(".msg_title").html(articalTitle);
+            $(".content_1_body").find(".msg_desc").html(articalText);
+            $(".content_1_body").find(".msg_time").html(articalTime1);
+            $(".content_1_body .msg_pic").children("img").attr("src",articalImg);
+
+            $(".content_2_head").html(articalAuthor);
+            $(".content_2_body").find(".msg_title").html(articalTitle);
+            $(".content_2_body").find(".msg_user").html(articalAuthor);
+            $(".content_2_body").find(".msg_desc").html(articalContent);
+            $(".content_2_body").find(".msg_time").html(articalTime2);
+            $(".content_2_body .msg_pic").children("img").attr("src",articalImg);
+
+            $(".content_3_body .moments_content").children("img").attr('src',articalImg);
+            $(".content_3_body").find(".moments_nickname").html(articalAuthor);
+            $(".content_3_body").find(".moments_appmsg_title").html(articalTitle);
+
+            $(".content_4_body .chat_content").children("img").attr('src',articalImg);
+            $(".content_4_body").find(".chat_appmsg_title").html(articalTitle);
+            $(".content_4_body").find(".chat_appmsg_desc").html(articalText);
+        }
+        /*==========获取多图文内容==========*/
+        function moreArticalContent(){
+            //第一篇文章
+            var firstTitle = $(".msgBtn-first").data('title'),
+                firstPic = $(".msgBtn-first").data('coverImg'),
+                firstAuthor = $(".msgBtn-first").data('author')?$(".msgBtn-first").data('author'):"云问科技",
+                firstContent = $("#mid-head").find("#ueditor_0").contents().find("body.view").html(),
+                firstText = $("#mid-head").find("#ueditor_0").contents().find("body.view").text();
+
+            var time = new Date(),
+                articalTime2 = time.getFullYear() + "-" + parseInt(time.getMonth()+1) + "-" + time.getDate();
+
+            $(".content_1 .content_head").html(firstAuthor);
+            $(".content_1_more .artical_1").find(".artical_1_title").html(firstTitle);
+            $(".content_1_more .artical_1").find("img").attr("src",firstPic);
+
+            $(".content_2 .content_head").html(firstAuthor);
+            $(".content_2_msg").find(".msg_title").html(firstTitle);
+            $(".content_2_msg").find(".msg_time").html(articalTime2);
+            $(".content_2_msg").find(".msg_user").html(firstAuthor);
+            $(".content_2_msg .msg_pic").find("img").attr("src",firstPic);
+            $(".content_2_msg").find(".msg_desc").html(firstContent);
+
+            $(".content_3_msg").find(".moments_nickname").html(firstAuthor);
+            $(".content_3_msg").find(".moments_appmsg_title").html(firstTitle);
+            $(".content_3_msg").find(".moments_appmsg_img").attr("src",firstPic);
+
+            $(".content_4_msg").find(".chat_appmsg_title").html(firstTitle);
+            $(".content_4_msg").find(".chat_appmsg_img").attr("src",firstPic);
+            $(".content_4_msg").find(".chat_appmsg_desc").html(firstText);
+
+            //剩余文章
+            var arr = $(".msg-ctn").find(".msgBtn"),
+                htmlStr1 = "",
+                htmlStr2 = "",
+                htmlStr3 = "",
+                htmlStr4 = "";
+            $.each(arr, function(k,msgBtn){
+                var imgSrc = $(msgBtn).data('coverImg');
+                var title = $(msgBtn).data('title');
+                var content = $(msgBtn).data('content');
+                var author = $(msgBtn).data('author')?$(msgBtn).data('author'):"云问科技";
+                htmlStr1 = '<div class="artical artical_2"><img src="'+ imgSrc +'" alt=""><div class="sub_artical_title">'+ title +'</div></div>';
+                $(".content_1_more").append(htmlStr1);
+
+                htmlStr2 = '<div class="content_2_msg" index="'+parseInt(k+1)+'"><div class="msg_bd"><div class="msg_title">'+title+'</div><div class="msg_info"><span class="msg_time">'+articalTime2+'</span><span class="msg_user"></span></div><div class="msg_pic"><img src="'+imgSrc+'" alt=""></div><div class="msg_desc">'+content+'</div></div></div>';
+                $(".content_2_body .bind_scroll").append(htmlStr2);
+
+                htmlStr3 = '<div class="content_3_msg"><img src="images/logo.jpg" alt=""><div class="msg_moments"><p class="moments_nickname">'+author+'</p><div class="moments_content"><img class="moments_appmsg_img" src="'+imgSrc+'" alt=""><div class="moments_appmsg_title">'+title+'</div></div></div></div>';
+                $(".content_3_body .bind_scroll").append(htmlStr3);
+
+                htmlStr4 = '<div class="content_4_msg"><img src="images/logo.jpg" alt=""><div class="chat_msg"><i class="fa fa-caret-left"></i><div class="chat_content_wrap"><div class="chat_appmsg_title">'+title+'</div><div class="chat_content"><img class="chat_appmsg_img" src="'+imgSrc+'" alt=""><div class="chat_appmsg_desc">'+content+'</div></div></div></div></div>';
+                $(".content_4_body .bind_scroll").append(htmlStr4);
+            });
+        }
+        /*==========判断正文是否显示封面图片==========*/
+        function showPic(){
+            if($('#coverBtn').attr("checked") == "checked"){
+                $('.content_2_msg').find('.msg_pic').css("display",'block');
+            }else{
+                $('.content_2_msg').find('.msg_pic').css("display",'none');
+            }
+        }
+
+
+    </script>
+    <!-- ================== END PREVIEW JS ================== -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+
+    
+</body>
+</html>

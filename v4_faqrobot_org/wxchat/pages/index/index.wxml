@@ -1,0 +1,30 @@
+<import src="../../component/wxParse/wxParse.wxml"/> 
+<!-- <import src="../../component/wxTip/wxTip.wxml"/> --> 
+
+<scroll-view class="vb-wholeCtn-scroll">
+	<view class="vb-wholeCtn vb-flex vb-flex-v">
+		<scroll-view class="vb-chatCtn-scroll vb-flex-1" scroll-y bindscrolltolower="change" bindtap="change">
+			<view class="vb-chatCtn">
+				<block wx:for="{{ wxParseTemArray }}"> 
+				   <template is="wxParse" data="{{ wxParseData: item }}" /> 
+				</block>
+			</view>
+		</scroll-view>
+		<view class="vb-editCtn" style="height: {{ vb_editCtn_style.height }};">
+			<view class="vb-inputCtn vb-flex vb-flex-h">
+				<input class="vb-input vb-flex-6" value="{{ inputWord }}" bindinput="input" placeholder="请输入您要咨询的问题" maxlength="100" />
+				<image bindtap="chatEvent" data-id="faceBtn" wx:if="{{ vb_sendBtn_style.show }}" class="vb-faceBtn vb-flex-1" mode="aspectFit" src="{{ imgs.faceBtn }}"></image>
+				<view class="vb-sendBtnCtn vb-flex-1">
+					<view bindtap="chatEvent" data-id="sendBtn" wx:if="{{ !vb_sendBtn_style.show }}" class="vb-sendBtn">发送</view>
+					<image wx:if="{{ vb_sendBtn_style.show }}" class="vb-moreBtn" src="{{ imgs.moreBtn }}"></image>
+				</view>
+			</view>
+			<scroll-view wx:if="{{false}}" class="vb-funCtn-scroll">
+				<view bindtap="appEvent" class="vb-funCtn">qwe</view>
+			</scroll-view>
+		</view>
+	</view>
+</scroll-view>
+
+
+

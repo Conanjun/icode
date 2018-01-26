@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <title>FaqRobot智能问答机器人</title>
+  <link rel="stylesheet" type="text/css" href="skin/base2/css/style.css" />
+  <link rel="stylesheet" href="skin/base2/css/jquery.autocomplete.css" />
+  <link rel="stylesheet" href="skin/base2/css/nanoscroller.css" />
+  <link rel="stylesheet" href="skin/base2/css/blue.css" />
+  <script type="text/javascript" src="skin/base2/js/jquery-1.10.1.min.js"></script>
+  <script type="text/javascript" src="skin/base2/js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="skin/base2/js/jquery.autocomplete.js"></script>
+
+  <script type="text/javascript" src="skin/base2/js/nanoScroller.js"></script>
+  <script type="text/javascript" src="skin/base2/js/jquery.icheck.js"></script>
+  <script type="text/javascript" src="skin/base2/js/jquery.faqrobot.dev.js"></script>
+  <script type="text/javascript" src="skin/base2/js/main.js"></script>
+ </head>
+ <body>
+ 	<div class="psBarW">
+        <div class="container">
+        <!--离开确认弹框开始-->
+		<div class="cl-ctn">
+			<div id="close">
+				<div class="cl-title">确定要结束对话吗？</div>
+				<div class="cl-body">
+					<input id="cl-yes" type="button" value="确定" />
+					<input id="cl-no" type="button" value="取消" />
+				</div>
+			</div>
+		</div>
+		<!--离开确认弹框结束-->
+		<!--评价弹框开始-->
+		<div class="c-ctn">
+			<div id="comment">
+				<div class="c-title">为了下次更好的为您服务，请您给本次服务一个评价！</div>
+				<div class="c-body">
+					<form id="c-form" class="c-form">
+						<span>您对本服务的评价是</span>
+						<span>
+							<input type="radio" id="c2" name="level" value="1" checked="checked"/>
+							<label for="c2">满意</label>
+						</span>
+						<span>
+							<input type="radio" id="c1" name="level" value="0"/>
+							<label for="c1">不满意</label>
+						</span>
+						<span class="c-a-comment">评论：</span>
+						<textarea id="c-textarea" name="content" placeholder="描述您的意见和建议，以便我们提升服务水平和质量，谢谢您！"></textarea>
+						<input id="submit" type="button" value="提交" />
+						<input id="cancel" type="button" value="取消" />
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--评价弹框结束-->
+        	<!--顶部开始-->
+            <div class="header">
+            	<div class="headerLeft">
+                	<a href="javascript:;" title="云问智能机器人" >
+						<img src="../images/logo.png" id="weblogo">
+					</a>
+                </div>
+                <div class="headerRight">
+                	<span class="h-r-close" title="关闭"></span>
+                	<!--<a class="h-r-arti" href="#" title="人工智能客服">人工在线客服</a> -->
+                </div>
+            </div>
+            <!--顶部结束-->
+            <div class="body">
+                <div class="bodyLeft">
+                    <div class="psBarC nano">
+                        <div id="left_content" class="chatCtn content">
+                               
+                        </div>
+                    </div>
+                    <!--输入框开始-->
+                    <div class="bodyFooter">
+                    	<p id="showErrorId" class="error"></p>
+                		<div class="b-f-ctn">
+                        	<span class="remainNum">您还可以输入<span id="wordremain">100</span>个字</span>
+                        	<textarea id="sendtxt" maxlength="100"></textarea>
+                            <div class="b-f-footer">
+                            	<div class="b-f-f-left">
+                                	<span id="clearScreen" class="clRecord" title="清空记录">清空记录</span>
+                                    <span id="fadeBackIdLink" class="comment" title="满意度评价">满意度评价</span>
+									<span><a href="http://www.faqrobot.org" target="_blank" class="link_a">Powered By YunWen</a></span>
+                                </div>
+                                <div id="inputPR" class="b-f-f-right">发送</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--输入框结束-->
+                </div>
+                <div class="bodyRight">
+                    <div class="b-r-header">
+                        <div class="b-r-h-ctn">
+                            <div class="rightBtn1 click" title="热门问题"></div>
+                            <div class="rightBtn2" title="快捷服务"></div>
+                            <div class="rightBtn3" title="联系我们"></div>
+                        </div>
+                    </div>
+                    <div class="b-r-body">
+                    	<div id="topQuestionDiv" class="rightCtn1">
+                        </div>
+                        <div class="rightCtn2">
+                        	<a href="#" class="kjBtn1"></a>
+                            <a href="#" class="kjBtn2"></a>
+                            <a href="#" class="kjBtn3"></a>
+                            <a href="#" class="kjBtn4"></a>
+                        </div>
+                        <div class="rightCtn3">
+                        	<div class="contact">
+                            	<p class="contact1">云问科技</p>
+                                <a href="http://www.faqrobot.org/" target="_blank"><p class="contact2">www.faqrobot.org</p></a>
+                                <p class="contact3">南京市鼓楼区建宁路65号</p>
+                                <p class="contact4">025-52208363</p>
+                                <a href="http://wpa.qq.com/msgrd?v=3&uin=1765280298&site=qq&menu=yes" target="_blank"><p class="contact2"><p class="contact5">market@FaqRobot.org</p></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ <script>
+	//配置faqrobot插件参数
+	var s_tspan=3;//主动请求的时间间隔
+	var s_state=0;//聊天的状态
+	var baseUrl= 'http://127.0.0.1:10098/robot/';
+	baseUrl= '../';
+	var s_q_url="";//问题的url
+	var s_a_url="";//获取相关问题答案的url地址
+	var s_sysNum="";
+	var hkey = "Enter";//hotKey
+	var t_count=0;//运行的代理的次数
+	var dt;//定时器
+	var robotName='FAQRobot';
+	var robot_name = "faqrobot机器人";
+	var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'topQuestionDiv',
+		inputMagOldvalue:'请输入您需要咨询的问题~',
+        sendBtn:'inputPR',
+        inputMsgArea:'sendtxt',
+        clearScreen:'clearScreen',
+        showErrorId:'showErrorId',
+		logoUrl:"skin/chat5/skin/base2/images/logo.png",
+		logoDiv:"weblogo",
+		baseInfoDiv :"contact",
+		baseInfoCustom :true,
+		wordremain:'wordremain',
+		fadeBackId:'submit',
+		teachMetalk:'teachMetalk',
+		fadeBackIdLink:'fadeBackIdLink',
+		quickLink:'rservlist',
+		sourceId:0
+	};
+       $("#sendtxt").faqrobot(1000000,option);
+ </script>
+</html>

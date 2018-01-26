@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>数据模型项列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">数据模型项列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">数据模型项列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addfromChildModal">
+							<span>添加数据模型项</span>
+						</a>
+            <a href="modelList.html" class="btn btn-link">
+              <i class="icon icon-arrow-left"></i>&nbsp;返回列表
+            </a>
+             <table class="table" id="formChildTabList">
+              <thead>
+                <tr>
+                  <th>唯一代码</th>
+                  <th>指令词集</th>
+                  <th>展示的语句</th>
+                  <th>排序ID</th>
+                  <th>展示类型</th>
+                  <th>答案类型</th>
+                  <th>回复内容</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            <div id="formChildpage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="addfromChildModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 class="modal-title">添加数据模型项</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="addformChild" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">唯一代码</label>
+              <div class="col-md-7">
+                <input type="text" name="code" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">指令词集</label>
+              <div class="col-md-7">
+                <input type="text" name="commandWords" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">展示的语句</label>
+              <div class="col-md-7">
+                <input type="text" name="showWords" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">排序ID</label>
+              <div class="col-md-7">
+                <input type="text" name="orderId" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">展示类型</label>
+              <div class="col-md-7">
+                <label>
+                  <input type="radio" name="showType" value="0" checked="checked">
+                  展示
+                </label>
+                <label>
+                  <input type="radio" name="showType" value="1">
+                  不展示
+                </label>
+                <label>
+                	<input type="radio" name="showType" value="2">
+                	有值展示，无值不展示
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">答案类型</label>
+              <div class="col-md-7">
+                <label>
+                  <input type="radio" name="answerType" value="0" checked="checked">
+                  固定回复
+                </label>
+                <label>
+                  <input type="radio" name="answerType" value="1">
+                  接口数据
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="perReplyAdd" style="display: none;">
+              <label class="col-md-3 control-label">自定义回复</label>
+              <div class="col-md-7">
+                <input type="text" class="form-control" id="perAdd">
+                <div>可以在{接口数据}前后增加文字模板<br />请不要修改或删除输入框中的{接口数据}，否则默认会返回接口数据</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" id="relAdd">固定回复内容</label>
+              <div class="col-md-7">
+                <input type="text" name="reply" class="form-control">
+              </div>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addformChild').submit()">添加</button>
+        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" style="display: none;" aria-hidden="true" id="editfromChildModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 class="modal-title">修改数据模型项</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="editformChild" class="form-horizontal">
+            <input type="hidden" name="id">
+            <div class="form-group">
+              <label class="col-md-3 control-label">唯一代码</label>
+              <div class="col-md-7">
+                <input type="text" name="code" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">指令词集</label>
+              <div class="col-md-7">
+                <input type="text" name="commandWords" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">展示的语句</label>
+              <div class="col-md-7">
+                <input type="text" name="showWords" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">排序ID</label>
+              <div class="col-md-7">
+                <input type="text" name="orderId" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">展示类型</label>
+              <div class="col-md-7">
+                <label>
+                  <input type="radio" name="showType" value="0" checked="checked">
+                  展示
+                </label>
+                <label>
+                  <input type="radio" name="showType" value="1">
+                  不展示
+                </label>
+				<label>
+                  <input type="radio" name="showType" value="2">
+                  有值展示，无值不展示
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">答案类型</label>
+              <div class="col-md-7">
+                <label>
+                  <input type="radio" name="answerType" value="0" checked="checked">
+                  固定回复
+                </label>
+                <label>
+                  <input type="radio" name="answerType" value="1">
+                  接口数据
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="perReplyEdit" style="display: none;">
+              <label class="col-md-3 control-label">自定义回复</label>
+              <div class="col-md-7">
+                <input type="text" class="form-control" id="perEdit">
+                <div>可以在{接口数据}前后增加文字模板<br />请不要修改或删除输入框中的{接口数据}，否则默认会返回接口数据</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label" id="relEdit">固定回复内容</label>
+              <div class="col-md-7">
+                <input type="text" name="reply" class="form-control">
+              </div>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editformChild').submit()">修改</button>
+        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+  <script src="js/model.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      fromChild(1);
+      $('#addformChild').validate({
+        rules:{
+            orderId:{
+                digits: true,
+            }
+        },
+        messages:{
+            orderId:{
+                digits: '请输入大于零的数字',
+            }
+        },
+        submitHandler: addfromChild
+      });
+      $('#editformChild').validate({
+        rules:{
+            orderId:{
+                digits: true,
+            }
+        },
+        messages:{
+            orderId:{
+                digits: '请输入大于零的数字',
+            }
+        },
+        submitHandler: editfromChild
+      });
+      $('#addformChild input[name=answerType]').on('change', function() {
+        if($(this).val() == 0) {
+          $('#relAdd').html('固定回复内容');
+          $('#perReplyAdd').css('display','none');
+        } else {
+          $('#perAdd').val('{接口数据}');
+          $('#relAdd').html('缺省回复内容');
+          $('#perReplyAdd').css('display','block');
+        }
+      });
+      $('#editformChild input[name=answerType]').on('change', function() {
+        if($(this).val() == 0) {
+          $('#relEdit').html('固定回复内容');
+          $('#perReplyEdit').css('display','none');
+        } else {
+          $('#perEdit').val('{接口数据}');
+          $('#relEdit').html('缺省回复内容');
+          $('#perReplyEdit').css('display','block');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

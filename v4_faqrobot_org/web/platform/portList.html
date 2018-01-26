@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>接口列表</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">平台对接</a></li>
+				<li class="active">接口列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">接口列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div class="alert alert-warning fade in m-b-15">
+                          <strong>友情提示：</strong>第三方接口是指在机器人的问答业务中，常常遇到需要调用其他业务是同才能完成的问答，如通过产品编号产寻产品，根据业务编号查询办事业务进度等，如果对接身份认证系统，那么可以查询的业务更多，如订单查询，积分查询等等。 当用户输入特定格式的问题时，系统可以通过查询第三方接口的形式回答用户的问题。机器人目前支持http接口的调用方式，数据内容采用json格式标准。
+                          <span class="close" data-dismiss="alert">×</span>
+                        </div>
+                        <a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加第三方接口</span>
+						</a>
+						<a href="javascript:;" class="btn btn-default pull-right" id="mul-del"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
+
+							<table class="table" id="ThirdOpenList">
+								<thead>
+									<tr>
+										<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="ThirdOpenList"/></th>
+										<th>简介</th>
+										<th>状态</th>
+										<th>是否需要认证</th>
+										<th>适用平台</th>
+										<th width="150">添加的时间</th>
+										<th width="70">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+
+						<div id="pageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加第三方接口</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="ThirdOpen_form" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">对方的url<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入URL地址" class="form-control" name="url">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">简介<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入简介" class="form-control" name="info" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类的名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类的名称" class="form-control" name="className">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类的方法名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类的方法名称" class="form-control" name="methodName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">接口调用失败的提示语<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入接口调用失败的提示语" class="form-control" name="errorWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证失败的语句<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证失败的语句" class="form-control" name="authWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">请求格式规定<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入请求格式规定" class="form-control" name="requestRegex">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">状态<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												启用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												停用
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否需要认证<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="auth">
+												需要
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="0" name="auth">
+												不需要
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">适用平台<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select id="getableSourceAdd" class="form-control" name="sourceId">
+												<option value="0">网页</option>
+												<option value="1">微信</option>
+												<option value="2">API</option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#ThirdOpen_form').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="myModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改第三方接口</h4>
+						</div>
+						<div class="modal-body">
+							<form method="POST" id="save_form" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id" id="hideid">
+									<div class="form-group">
+										<label class="col-md-3 control-label">对方的url<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入URL地址" class="form-control" name="url">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">简介<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入简介" class="form-control" name="info" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类的名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类的名称" class="form-control" name="className">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">实现类的方法名称</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入实现类的方法名称" class="form-control" name="methodName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">接口调用失败的提示语<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入接口调用失败的提示语" class="form-control" name="errorWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">认证失败的语句<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<textarea type="text" placeholder="请输入认证失败的语句" class="form-control" name="authWords" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">请求格式规定<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入请求格式规定" class="form-control" name="requestRegex">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">状态<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" value="1" name="status">
+												启用
+											</label>
+											<label class="radio-inline">
+												<input type="radio" checked="" value="0" name="status">
+												停用
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">是否需要认证<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<label class="radio-inline">
+												<input type="radio" checked="" value="1" name="auth">
+												需要
+											</label>
+											<label class="radio-inline">
+												<input type="radio" value="0" name="auth">
+												不需要
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">适用平台<span class="red">&nbsp;*</span></label>
+										<div class="col-md-7">
+											<select id="getableSourceEdit" class="form-control" name="sourceId">
+												<option value="0">网页</option>
+												<option value="1">微信</option>
+												<option value="2">API</option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#save_form').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/jquery.validate.custom.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/platform.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../Configuration/showSourceByWebId'),
+				success: function(data) {
+					if(data.listSource) {
+						if(data.listSource[0]) {
+							$('#getableSourceAdd').empty();
+							$('#getableSourceEdit').empty();
+							for(var key in data.listSource) {
+								$('#getableSourceAdd').append('<option value="'+data.listSource[key].DicCode+'">'+data.listSource[key].DicDesc+'</option>');
+								$('#getableSourceEdit').append('<option value="'+data.listSource[key].DicCode+'">'+data.listSource[key].DicDesc+'</option>');
+							}
+						}
+					}
+				}
+			});
+			icheckBindInit();
+		  $('#mul-del').on('click', function() {
+		    $(this).adcCreator(function() {
+					selectDel('','../../thirdOpen/deleteThirdOpen?type=0',listthirdOpenPage,'pageList')
+		    });
+		  });
+			//列出表格
+			listthirdOpenPage(1);
+			//添加第三方接口表单验证
+			$('#ThirdOpen_form').validate({
+				rules:{
+					url:{
+						required:true,
+					},
+					info:{
+						required:true,
+						maxlength:100
+					},
+					className:{
+						isABC:true
+					},
+					methodName:{
+						isABC:true
+					},
+					errorWords:{
+						required:true,
+						maxlength:100
+					},
+					authWords:{
+						required:true,
+						maxlength:100
+					},
+					requestRegex:{
+						required:true
+					}
+				},
+				messages:{
+					url:{
+						required:"请输入您要修改的url！",
+					},
+					info:{
+						required:"请输入您要修改的简介内容！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					className:{
+						isABC:"实现类的名称只能是英文字母！"
+					},
+					methodName:{
+						isABC:"实现类的方法名称只能是英文字母！"
+					},
+					errorWords:{
+						required:"请输入接口调用失败的提示语！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					authWords:{
+						required:"请输入认证失败的语句！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					requestRegex:{
+						required:"请输入请求格式规定！"
+					}
+				},
+				submitHandler: addOpen
+			});
+			//修改第三方接口表单验证
+			$('#save_form').validate({
+				rules:{
+					url:{
+						required:true,
+					},
+					info:{
+						required:true,
+						maxlength:100
+					},
+					className:{
+						isABC:true
+					},
+					methodName:{
+						isABC:true
+					},
+					errorWords:{
+						required:true,
+						maxlength:100
+					},
+					authWords:{
+						required:true,
+						maxlength:100
+					},
+					requestRegex:{
+						required:true
+					}
+				},
+				messages:{
+					url:{
+						required:"请输入您要修改的url！",
+					},
+					info:{
+						required:"请输入您要修改的简介内容！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					className:{
+						isABC:"实现类的名称只能是英文字母！"
+					},
+					methodName:{
+						isABC:"实现类的方法名称只能是英文字母！"
+					},
+					errorWords:{
+						required:"请输入接口调用失败的提示语！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					authWords:{
+						required:"请输入认证失败的语句！",
+						maxlength:"请输入不多于100个字符！"
+					},
+					requestRegex:{
+						required:"请输入请求格式规定！"
+					}
+				},
+				submitHandler: saveOpenSub
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#ThirdOpen_form input[type=text]').val('');
+				$('#ThirdOpen_form textarea').val('');
+				$('#ThirdOpen_form input[name=status]:eq(1)').iCheck('check');
+				$('#ThirdOpen_form input[name=level]:eq(1)').iCheck('check');
+				$('#ThirdOpen_form select[name=sourceId]').val(0);
+
+			})
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>总体次数统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done" style="min-width:1015px">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">总体次数统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">总体次数统计</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计不同访客点击进入聊天机器人并参与聊天的次数和总体聊天访客人数"
+                   class="fa fa-question-circle"></i>
+            </h1>
+            <div class="row" style="margin: 0 -10px;">
+                <!-- begin col-4 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-stats bg-green">
+                        <div class="stats-icon stats-icon-lg">
+                            <i class="fa fa-globe fa-fw"></i>
+                        </div>
+                        <div class="stats-title">
+                            有效来访总数
+                            <i data-toggle="tooltip" data-placement="right" title="访客访问总次数"
+                               class="fa fa-question-circle"></i>
+                        </div>
+                        <div class="stats-number" id="countUp1">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-stats bg-blue">
+                        <div class="stats-icon stats-icon-lg">
+                            <i class="fa fa-tags fa-fw"></i>
+                        </div>
+                        <div class="stats-title">
+                            有效来访客户总数
+                            <i data-toggle="tooltip" data-placement="right" title="聊天用户的总数"
+                               class="fa fa-question-circle"></i>
+                        </div>
+                        <div class="stats-number" id="countUp2">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <!-- end col-4 -->
+                <!-- begin col-4 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-stats bg-purple">
+                        <div class="stats-icon stats-icon-lg">
+                            <i class="fa fa-comments fa-fw"></i>
+                        </div>
+                        <div class="stats-title">
+                            有效来访客服总数
+                            <i data-toggle="tooltip" data-placement="right" title="后台客服的总数"
+                               class="fa fa-question-circle"></i>
+                        </div>
+                        <div class="stats-number" id="countUp3">
+                            0
+                        </div>
+                    </div>
+                </div>
+                <!-- end col-4 -->
+            </div>
+            <div class="panel panel-inverse" style="min-width: 950px">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        明细次数统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>访客访问总次数&nbsp;<i data-toggle="tooltip" data-placement="right" title="新访客+老访客=访客访问总次数"
+                                                class="fa fa-question-circle"></i></th>
+                            <th>有效访客访问总次数&nbsp;<i data-toggle="tooltip" data-placement="right" title="有效访问总次数"
+                                                  class="fa fa-question-circle"></i></th>
+                            <th>客服访问总次数&nbsp;<i data-toggle="tooltip" data-placement="right" title="客服登录机器人后台的次数"
+                                                class="fa fa-question-circle"></i></th>
+                            <th>新访客&nbsp;<i data-toggle="tooltip" data-placement="right" title="访客日志中访问次数小于等于1的为新访客"
+                                            class="fa fa-question-circle"></i></th>
+                            <th>老访客&nbsp;<i data-toggle="tooltip" data-placement="right" title="访客日志中访问次数大于1的为老访客"
+                                            class="fa fa-question-circle"></i></th>
+                            <th>新访客比例</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tableData">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        访客访问次数统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/LoginSummary/findChartData"/>
+                    <div style="font-size:0;" class="text-right">
+                        <div class="btn-group m-r-4" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open');queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="byloadTimes" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker">
+                                <option value="-1">新老访客</option>
+                                <option value="1">老访客</option>
+                                <option value="0">新访客</option>
+                            </select>
+                        </div>
+                        <div id="bylogItems" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker">
+                                <option value="-1">全部访客</option>
+                                <option value="1">有效访客</option>
+                                <option value="0">无效访客</option>
+                            </select>
+                        </div>
+                        <div id="DataSource" class="m-r-4 f-s-14" style="display:inline-block;">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary pull-right f-s-14"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-6">
+                            <div id="main" style="height:400px;"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="mainPie" style="height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>交互平台&nbsp;<i data-toggle="tooltip" data-placement="right" title="数据来源渠道"
+                                             class="fa fa-question-circle"></i></th>
+                            <th>访客访问次数&nbsp;<i data-toggle="tooltip" data-placement="right" title="访客日志中的所有记录"
+                                               class="fa fa-question-circle"></i></th>
+                            <th>访客人数&nbsp;<i data-toggle="tooltip" data-placement="right" title="访客日志中聊天用户的人数"
+                                             class="fa fa-question-circle"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="../common/js/countUp.js"></script>
+<script src="js/util.js"></script>
+<script type="text/javascript">
+    function showStyle (json) {
+        var allCount
+        var allVisit
+        var allViewer
+        if (json.AllCount) {
+            allCount = json.AllCount.AllVisit === null ? 0 : json.AllCount.AllVisit
+            allVisit = json.AllCount.AllValidVisit === null ? 0 : json.AllCount.AllValidVisit
+            allViewer = json.AllCount.AllViewer === null ? 0 : json.AllCount.AllViewer
+        }
+        var numAnim = new CountUp('countUp1', 0, allCount, 0, 2.5)
+        numAnim.start()
+        numAnim = new CountUp('countUp2', 0, allVisit, 0, 2.5)
+        numAnim.start()
+        numAnim = new CountUp('countUp3', 0, allViewer, 0, 2.5)
+        numAnim.start()
+
+        var todayTemp = json.dayNowVisitCount.HourNewVisit + json.dayNowVisitCount.HourOldVisit
+        var yestodayTemp = json.yestdayAllVisitCount.HourOldVisit + json.yestdayAllVisitCount.HourNewVisit
+        var yestdayNowTemp = json.yestdayNowVisitCount.HourOldVisit + json.yestdayNowVisitCount.HourNewVisit
+        var top_temp = json.top_HourNewVisit.HourNewVisit + json.top_HourOldVisit.HourOldVisit
+
+        if (todayTemp === 0) {
+            todayTemp = Number.MAX_VALUE
+        }
+        if (yestodayTemp === 0) {
+            yestodayTemp = Number.MAX_VALUE
+        }
+        if (yestdayNowTemp === 0) {
+            yestdayNowTemp = Number.MAX_VALUE
+        }
+        if (top_temp === 0) {
+            top_temp = Number.MAX_VALUE
+        }
+        var todayPercent = Math.round((json.dayNowVisitCount.HourNewVisit) / todayTemp * 10000) / 100.00 + '%'
+        var yestodayPercent = Math.round((json.yestdayAllVisitCount.HourNewVisit) / yestodayTemp * 10000) / 100.00 + '%'
+        var yestdayNowPercent = Math.round((json.yestdayNowVisitCount.HourNewVisit) / yestdayNowTemp * 10000) / 100.00 + '%'
+        var top_Percent = Math.round((json.top_HourNewVisit.HourNewVisit) / top_temp * 10000) / 100.00 + '%'
+        var table = ''
+        //今日
+        table += '<tr>' + '<td>今日</td>' + '<td>' + json.dayNowVisitCount.HourVisit + '</td>'
+        table += '<td>' + json.dayNowVisitCount.HourValidVisit + '</td>'
+        table += '<td>' + json.dayNowVisitCount.HourViewer + '</td>' + '<td>' + json.dayNowVisitCount.HourNewVisit + '</td>'
+        table += '<td>' + json.dayNowVisitCount.HourOldVisit + '</td>' + '<td>' + todayPercent + '</td>' + '</tr>'
+
+        table += '<tr>' + '<td>昨日</td>' + '<td>' + json.yestdayAllVisitCount.HourVisit + '</td>'
+        table += '<td>' + json.yestdayAllVisitCount.HourValidVisit + '</td>'
+        table += '<td>' + json.yestdayAllVisitCount.HourViewer + '</td>' + '<td>' + json.yestdayAllVisitCount.HourNewVisit + '</td>'
+        table += '<td>' + json.yestdayAllVisitCount.HourOldVisit + '</td>' + '<td>' + yestodayPercent + '</td>' + '</tr>'
+
+        table += '<tr>' + '<td>过去24小时</td>' + '<td>' + json.yestdayNowVisitCount.HourVisit + '</td>'
+        table += '<td>' + json.yestdayNowVisitCount.HourValidVisit + '</td>'
+        table += '<td>' + json.yestdayNowVisitCount.HourViewer + '</td>' + '<td>' + json.yestdayNowVisitCount.HourNewVisit + '</td>'
+        table += '<td>' + json.yestdayNowVisitCount.HourOldVisit + '</td>' + '<td>' + yestdayNowPercent + '</td>' + '</tr>'
+
+        table += '<tr>' + '<td>历史最高</td>'
+        table += '<td>'
+        table += json.top_HourVisit.HourVisit
+        if (json.top_HourVisit.Day) {
+            table += ' (' + json.top_HourVisit.Day + ')'
+        }
+        table += '</td>'
+        table += '<td>'
+        table += json.top_hourValidVisit.HourValidVisit
+        if (json.top_hourValidVisit.Day) {
+            table += ' (' + json.top_hourValidVisit.Day + ')'
+        }
+        table += '</td>'
+        table += '<td>'
+        table += json.top_hourViewer.HourViewer
+        if (json.top_hourViewer.Day) {
+            table += ' (' + json.top_hourViewer.Day + ')'
+        }
+        table += '</td>'
+        table += '<td>'
+        table += json.top_HourNewVisit.HourNewVisit
+        if (json.top_HourNewVisit.Day) {
+            table += ' (' + json.top_HourNewVisit.Day + ')'
+        }
+        table += '</td>'
+        table += '<td>'
+        table += json.top_HourOldVisit.HourOldVisit
+        if (json.top_HourOldVisit.Day) {
+            table += ' (' + json.top_HourOldVisit.Day + ')'
+        }
+        table += '</td>'
+        table += '<td>' + top_Percent + '</td>'
+        table += '</tr>'
+
+        $('#tableData').html(table)
+    }
+
+    //日期排序yyyy-mm-dd
+    function ymd_up (a, b) {
+        var c = a.split('-')
+        var d = parseInt(c[0] + '' + c[1] + '' + c[2])
+        var e = b.split('-')
+        var f = parseInt(e[0] + '' + e[1] + '' + e[2])
+        return (d > f) ? 1 : -1
+    }
+
+    //日期小时排序yyyy-mm-dd-hh
+    function ymdh_up (a, b) {
+        var c = a.split('-')
+        var d = parseInt(c[0] + '' + c[1] + '' + c[2] + '' + c[3])
+        var e = b.split('-')
+        var f = parseInt(e[0] + '' + e[1] + '' + e[2] + '' + e[3])
+        return (d > f) ? 1 : -1
+    }
+
+    //报表全局变量
+    var dateArray = []
+    var dataArray1 = []//lineVisit 访问次数
+    var dataArray2 = []//lineTimes 访问人数
+    var dataArrayS = []
+
+    function analysis (json) {
+        //图表变量
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var myChart2 = echarts.init(document.getElementById('mainPie'), 'macarons')
+        var ListVisit = json.ListVisit
+        var ListTimes = json.ListTimes
+        //清空全局变量
+        dateArray = []
+        dataArray1 = []
+        dataArray2 = []
+        dataArrayS = []
+        var dataMap = {}
+        var mapArray = []
+        if (!ListVisit[0]) {
+            if (json.IntervalDays > 3) {
+                dateArray.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
+            } else {
+                dateArray.push('00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00')
+            }
+            dataArray1.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            dataArray2.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        } else {
+            if (json.IntervalDays > 3) {
+                //存访问次数
+                for (var i = 0; i < ListVisit.length; i++) {
+                    if (dataMap[ListVisit[i].Day]) {
+                        if (isNaN(parseInt(dataMap[ListVisit[i].Day].visits))) {
+                            dataMap[ListVisit[i].Day].visits = ListVisit[i].LogItems
+                        } else {
+                            dataMap[ListVisit[i].Day].visits = dataMap[ListVisit[i].Day].visits + ListVisit[i].LogItems
+                        }
+                    } else {
+                        dataMap[ListVisit[i].Day] = {}
+                        dataMap[ListVisit[i].Day].visits = ListVisit[i].LogItems
+                        dataMap[ListVisit[i].Day].sourceId = ListVisit[i].SourceId
+                    }
+                }
+                //存访问人数
+                for (var j = 0; j < ListTimes.length; j++) {
+                    if (dataMap[ListTimes[j].Day]) {
+                        if (isNaN(parseInt(dataMap[ListTimes[j].Day].times))) {
+                            dataMap[ListTimes[j].Day].times = ListTimes[j].LogItems
+                        } else {
+                            dataMap[ListTimes[j].Day].times = dataMap[ListTimes[j].Day].times + ListTimes[j].LogItems
+                        }
+                    } else {
+                        dataMap[ListTimes[j].Day] = {}
+                        dataMap[ListTimes[j].Day].times = ListTimes[j].LogItems
+                        dataMap[ListTimes[j].Day].sourceId = ListTimes[j].SourceId
+                    }
+                }
+                //存日期
+                mapArray = []
+                for (var x in dataMap) {
+                    mapArray.push(x)
+                }
+                //日期排序
+                mapArray.sort(ymd_up)
+                //向报表List中写数据
+                for (var y in mapArray) {
+                    var z = dataMap[mapArray[y]]
+                    //date
+                    dateArray[y] = mapArray[y]
+                    //lineVisit
+                    if (z.visits) {
+                        dataArray1[y] = z.visits
+                    } else {
+                        dataArray1[y] = 0
+                    }
+                    //lineTimes
+                    if (z.times) {
+                        dataArray2[y] = z.times
+                    } else {
+                        dataArray2[y] = 0
+                    }
+                    //sourceId
+                    if (z.sourceId != undefined) {
+                        dataArrayS[y] = z.sourceId
+                    } else {
+                        dataArrayS[y] = -1
+                    }
+                }
+            } else {
+                var tmpH = ''
+                //存访问次数
+                for (var k = 0; k < ListVisit.length; k++) {
+                    if (ListVisit[k].Hour < 10) {
+                        tmpH = '-0' + ListVisit[k].Hour
+                    } else {
+                        tmpH = '-' + ListVisit[k].Hour
+                    }
+                    if (dataMap[ListVisit[k].Day + tmpH]) {
+                        if (isNaN(parseInt(dataMap[ListVisit[k].Day + tmpH].visits))) {
+                            dataMap[ListVisit[k].Day + tmpH].visits = ListVisit[k].LogItems
+                        } else {
+                            dataMap[ListVisit[k].Day + tmpH].visits = dataMap[ListVisit[k].Day + tmpH].visits + ListVisit[k].LogItems
+                        }
+                    } else {
+                        dataMap[ListVisit[k].Day + tmpH] = {}
+                        dataMap[ListVisit[k].Day + tmpH].visits = ListVisit[k].LogItems
+                        dataMap[ListVisit[k].Day + tmpH].sourceId = ListVisit[k].SourceId
+                    }
+                }
+                //存访问人数
+                for (var o = 0; o < ListTimes.length; o++) {
+                    if (ListTimes[o].Hour < 10) {
+                        tmpH = '-0' + ListTimes[o].Hour
+                    } else {
+                        tmpH = '-' + ListTimes[o].Hour
+                    }
+                    if (dataMap[ListTimes[o].Day + tmpH]) {
+                        if (isNaN(parseInt(dataMap[ListTimes[o].Day + tmpH].times))) {
+                            dataMap[ListTimes[o].Day + tmpH].times = ListTimes[o].LogItems
+                        } else {
+                            dataMap[ListTimes[o].Day + tmpH].times = dataMap[ListTimes[o].Day + tmpH].times + ListTimes[o].LogItems
+                        }
+                    } else {
+                        dataMap[ListTimes[o].Day + tmpH] = {}
+                        dataMap[ListTimes[o].Day + tmpH].times = ListTimes[o].LogItems
+                        dataMap[ListVisit[o].Day + tmpH].sourceId = ListVisit[o].SourceId
+                    }
+                }
+                tmpH = null
+                //存日期
+                mapArray = []
+                for (var m in dataMap) {
+                    mapArray.push(m)
+                }
+                //日期排序
+                mapArray.sort(ymdh_up)
+                //向报表List中写数据
+                for (var n in mapArray) {
+                    var l = dataMap[mapArray[n]]
+                    //date
+                    dateArray[n] = mapArray[n].substring(5, mapArray[n].length - 3) + ' ' + mapArray[n].substring(mapArray[n].length - 2) + ':00'
+                    //lineVisit
+                    if (l.visits) {
+                        dataArray1[n] = l.visits
+                    } else {
+                        dataArray1[n] = 0
+                    }
+                    //lineTimes
+                    if (l.times) {
+                        dataArray2[n] = l.times
+                    } else {
+                        dataArray2[n] = 0
+                    }
+                    //sourceId
+                    if (l.sourceId != undefined) {
+                        dataArrayS[n] = l.sourceId
+                    } else {
+                        dataArrayS[n] = -1
+                    }
+                }
+            }
+        }
+        var maxY = 5
+        var max1 = Math.max.apply(null, dataArray1)
+        var max2 = Math.max.apply(null, dataArray2)
+        maxY = Math.max(maxY, max1, max2)
+        //画图一
+        // 初始 option1
+        option1 = {
+            title: {
+                text: '访客访问次数及人数统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['访问次数', '访问人数'],
+                orient: 'vertical',
+                left: 'right'
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: true,
+                data: dateArray,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 0,
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '',
+                max: maxY,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value}次 '
+                }
+            }],
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            series: [{
+                name: '访问次数',
+                type: 'line',
+                data: dataArray1
+            },
+                {
+                    name: '访问人数',
+                    type: 'line',
+                    data: dataArray2
+                }]
+        }
+
+        myChart1.hideLoading()
+        myChart1.setOption(option1)
+
+        //画图二
+        var newCount = json.newVisitCount
+        var oldCount = json.oldVisitCount
+        var dataArray3 = []
+
+        var tempMap1 = {}
+        tempMap1.name = '新访客'
+        tempMap1.value = newCount
+        dataArray3.push(tempMap1)
+
+        var tempMap2 = {}
+        tempMap2.name = '老访客'
+        tempMap2.value = oldCount
+        dataArray3.push(tempMap2)
+
+        // 初始 option2
+        option2 = {
+            title: {
+                text: '新老访客访问次数比例'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                data: ['新访客', '老访客'],
+                orient: 'vertical',
+                left: 'right'
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                x: 'right',
+                y: 'center',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            series: [{
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: dataArray3
+            }]
+        }
+
+        myChart2.hideLoading()
+        myChart2.setOption(option2)
+
+        $(window).resize(function () {
+            $(myChart1).resize()
+            $(myChart2).resize()
+        })
+
+        //画表格
+        var table = ''
+
+        if (!ListVisit[0]) {
+            table += '<tr >'
+            table += '<td colspan=4 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+        } else {
+            var countTimes = 0
+            var countPeople = 0
+            for (var t = dateArray.length - 1; t >= 0; t--) {
+                table += '<tr class="body-row">'
+                table += '<td class="col1">' + dateArray[t] + '</td>'
+                if (getSourceName($('#DataSource .selectpicker').val() == '-1' || dataArrayS[t]) == '') {
+                    table += '<td class="col1">' + '全部' + '</td>'
+                } else {
+                    table += '<td class="col1">' + getSourceName(dataArrayS[t]) + '</td>'
+                }
+                table += '<td class="col3">' + dataArray1[t] + '</td>'
+                countTimes += dataArray1[t]
+                table += '<td class="col3">' + dataArray2[t] + '</td>'
+                countPeople += dataArray2[t]
+                table += '</tr>'
+            }
+            table += '<tr><td colspan="2">总计</td><td>' + countTimes + '</td><td>' + countPeople + '</td></tr>'
+        }
+        $('#visitDataTable').html(table)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        analysis(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()
+        $('#byloadTimes .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#byloadTimes .selectpicker').on('change', function () {
+            queryAll()
+        })
+        $('#bylogItems .selectpicker').selectpicker({
+            style: 'btn-primary',
+            width: '100%'
+        })
+        $('#bylogItems .selectpicker').on('change', function () {
+            queryAll()
+        })
+        /**由于返回数据量较大，特拆分成两个接口*/
+        //总体次数统计 明细次数统计
+        $.getJSON('../../report/LoginSummary/findAllVisitTimes', function (json) {
+            if (json.status != 0) {
+                yunNoty(json)
+            }
+            showStyle(json)
+        })
+        //饼图 折线图 表格
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var myChart2 = echarts.init(document.getElementById('mainPie'), 'macarons')
+        myChart1.showLoading()
+        myChart2.showLoading()
+        //列出图表
+        queryAll()
+    })
+</script>
+</body>
+</html>

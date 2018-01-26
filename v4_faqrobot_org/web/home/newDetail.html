@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>新闻详情</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.yun_align_new{
+			text-align: center;
+		}
+		.yun_i_e {
+			margin: 5px 10px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">资讯</a></li>
+				<li class="active" id="liTitle">新闻详情</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">新闻详情</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<div id="news">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	
+	<script src="../common/js/customMethod.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../news/findById?id='+getUrlParam('id')),
+				success:
+				function(data){
+					if(data.status==0){
+						document.title=data.News.Title;
+						var s=[];
+						var classname="";
+						if(data.News.Mode == 0){
+							classname = "新闻";
+						} else if(data.News.Mode == 1){
+							classname = "产品动态";
+						} else if(data.News.Mode == 2){
+							classname = "行业分析";
+						} else if(data.News.Mode == 3){
+							classname = "通知";
+						}
+						$('#liTitle').html(classname);
+						s.push('<fieldset>');
+						s.push('<legend class=\"yun_align_new\">'+data.News.Title+'</legend>');
+						s.push('</fieldset>');
+						s.push('<div class=\"row-fluid\">');
+						s.push('<p class=\"yun_align_new\">');
+						s.push('<span class=\"yun_i_e\">添加时间：'+(data.News.Time?data.News.Time:'未知时间')+'</span>');
+						s.push('<span class=\"yun_i_e\">关键词：'+(data.News.KeyWords?data.News.KeyWords:'未知关键词')+'</span>');
+						s.push('<span class=\"yun_i_e\">分类：'+classname+'</span>');
+						s.push('</p>');
+						s.push('</div>');
+						s.push('<div class=\"row-fluid\">'+data.News.Content+'</div>');
+						$('#news').html(s.join(''));
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		});
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return unescape(r[2]); return null;
+		}
+	</script>
+</body>
+</html>

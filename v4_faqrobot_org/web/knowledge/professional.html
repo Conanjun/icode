@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <title>后台管理系统</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+
+  <!-- ================== BEGIN BASE CSS STYLE ================== -->
+  <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+  <link href="../../assets/css/style.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+  <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+  <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+  <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+  <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+  <!-- ================== END BASE CSS STYLE ================== -->
+  <style>
+    .m-l-5 {
+      margin-left: 3px!important;
+    }
+  </style>
+</head>
+<body>
+  <!-- #modal-dialog -->
+  <div class="modal fade" id="modal-dialog">
+    <div class="modal-video-addSrc modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title">添加专业名词</h4>
+          <input type="hidden" value="" id="marked">
+        </div>
+        <div class="modal-body">
+          <form class="form-synonym form-horizontal" novalidate="novalidate">
+            <fieldset>
+              <div class="form-group">
+                <label class="col-md-3 control-label">专业名词<span class="red">&nbsp;*</span></label>
+                <div class="col-md-7">
+                  <input type="text" placeholder="请输入专业名词" class="input1-synonym form-control" name="word">
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <div class="alert-synonym" style="text-indent: 72px;">单个词长度在1-50之间,多个词之间用逗号","分隔</div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:;" class="ensure-synonym btn btn-sm btn-primary">确认</a>
+          <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="page-container" class="fade in">
+    <div id="content" class="content">
+      <!-- begin breadcrumb -->
+      <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">首页</a></li>
+        <li><a href="javascript:;">知识库管理</a></li>
+        <li>专业名词</li>
+      </ol>
+      <!-- end breadcrumb -->
+      <!-- begin page-header -->
+      <h1 class="page-header">专业名词</h1>
+      <!-- end page-header -->
+
+      <!-- begin row -->
+      <div class="rowNav">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+          <div class="panel-body">
+            <div class="alert alert-warning fade in m-b-15">
+              <strong>友情提示：</strong> 专业名词是机器人语义分析引擎在分词与句法解析的时候重要的判断原则之一，这里您可以按照自己的业务需要自定义专业名词、业务术语等。
+              <span class="close" data-dismiss="alert">×</span>
+            </div>
+            <div class="row">
+              <button type="button" class="btn-synonym btn btn-primary m-r-4" data-toggle="modal" data-target="#modal-dialog">
+									<i class="glyphicon glyphicon-plus"></i>
+									<span>添加专业名词</span>
+							</button><span class="btn btn-primary fileinput-button m-r-4">
+									<i class="glyphicon glyphicon-upload"></i>
+									<span>批量导入专业名词</span>
+                  <input type="file" accept=".xls,.xlsx" name="file" id="exlfileupload">
+              </span><span class="btn btn-primary m-r-4 fileUpLoadingSign" style="display:none;">
+									<i class="glyphicon glyphicon-upload"></i>
+									<span>上传中</span>
+              </span><a class="btn btn-primary m-r-4" target="_blank" href="../../WordDocExcel/exportWords?mode=4">
+                <i class="glyphicon glyphicon-download"></i>
+                <span>导出Excel</span>
+              </a>
+              <span class="files" id="files" style="display:inline-block;"></span>
+              <button href="javascript:void(0);" class="pull-right btn btn-default m-l-4" id="mul-del">
+                <i class="glyphicon glyphicon-trash"></i>
+                <span>批量删除</span>
+              </button>
+              <a class="btn btn-default pull-right m-l-4" target="_blank" href="../../wordDocExcel/exportTemplate?mode=6">
+                <i class="glyphicon glyphicon-download"></i>
+                <span>下载模板</span>
+              </a>
+              <div class="input-group pull-right" style="width:250px;">
+                <input type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词">
+                <span class="search-addSrc input-group-btn" style="padding-bottom: 0;">
+										<button class="btn btn-primary" type="button">
+											<i class="glyphicon glyphicon-search"></i>
+										</button>
+									</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table" id="proList">
+                <thead>
+                  <tr>
+                    <th width="50" class="table_checkbox"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="proList" /></th>
+                    <th>专业名词</th>
+                    <th width="70">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+              <div id="itemContainer"></div>
+            </div>
+          </div>
+        </div>
+        <!-- end panel -->
+        <!-- end row -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+  </div>
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+  <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+  <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+  <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+  <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+  <!-- ================== END BASE JS ================== -->
+
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="../../assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
+
+  <!-- 必加开始 -->
+  <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+  <link rel="stylesheet" href="../common/css/commonCSS.css">
+  <link href="css/style.css" rel="stylesheet" />
+  <script src="../common/js/bootstrap-paginator.js"></script>
+  <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+  <script src="../common/js/customMethod.js"></script>
+  <script src="../common/js/jquery.validate.js"></script>
+  <script src="../common/js/jquery.validate.custom.js"></script>
+  <script src="../common/js/icheck.js"></script>
+  <script src="../common/js/base.js"></script>
+  <script src="../common/js/loadingMethod.js"></script>
+  <script src="js/main.js"></script>
+  <!-- 必加结束 -->
+
+  <script>
+    // var INTERVAL;
+    $(document).ready(function() {
+      App.init();
+      icheckBindInit();
+      // $('#mul-del').on('click', function() {
+      //   if($("#proList input[type=checkbox]:checked").length>0){
+      //     selectDel('', '../../wordDoc/delOptWordDocById', initSrc)
+      //   }
+      // });
+      $('#mul-del').on('click',function(){
+        $(this).adcCreator(function() {
+          selectDel('', '../../wordDoc/delOptWordDocById',initSrc)
+        });
+      });
+
+      //$('#modal-dialog [name=word]').addWordCount(10);
+      var This = this;
+      var type = 1, //素材类型
+        pageNo = 1, //当前页
+        pageSize = 10, //每页数量
+        queryStr = '', //搜索内容
+        mode = 4,
+        idStr = '', //是否传id
+        isJpage = 0, //是否已实例化jpage
+        delPage = 0; //是否删除jpage
+
+      //检测professional的位数 1-10
+      jQuery.validator.addMethod("professionalNumber",
+        function(value, element) {
+          var pros = value.split(/,|，/);
+          for (var i in pros) {
+            if (pros[i].length < 1 || pros[i].length > 50) {
+              return false;
+            }
+          }
+          return true;
+        }, "单个词长度在1-50之间！");
+
+      //添加
+      var validate=$('.form-synonym').validate({
+        rules: {
+          word: {
+            required: true,
+            professionalNumber: true
+          },
+        },
+        messages: {
+          word: {
+            required: "请输入专业名词！",
+            professionalNumber: "单个词长度在1-50之间！"
+          },
+        },
+        submitHandler: function() {
+          Base.request({
+            url: 'wordDoc/' + (idStr ? 'altProfessionWordInfo' : 'editProfessionWordInfo') + idStr,
+            params: {
+              word: $('.input1-synonym').val(),
+              mode: mode,
+            },
+            callback: function(data) {
+              if (data.status) {
+                Base.gritter(data.message, false);
+              } else {
+                Base.gritter(data.message, true);
+
+                $('.input1-synonym').val(''),
+                  $('#modal-dialog').modal('hide');
+                initSrc();
+              }
+            },
+          });
+        },
+      });
+
+      //确认添加专业名词
+      $('.ensure-synonym').on('click', function() {
+        if($("#marked").val()==$('.input1-synonym').val().trim()&&$("#modal-dialog").hasClass("old")){
+          $('#modal-dialog').modal('hide')
+        }else{
+          $('.form-synonym').submit();     
+        }
+      });
+      $('#modal-dialog').on('hidden.bs.modal', function () {
+        $("#marked").val("")
+      })
+
+
+
+      function initSrc() {
+        $('#proList').tableAjaxLoader2(7);
+        Base.request({
+          url: 'wordDoc/list?queryStr=' + queryStr,
+          params: {
+            mode: mode,
+            pageNo: pageNo,
+            pageSize: pageSize,
+          },
+          callback: function(data) {
+            if (data.status) {
+              Base.gritter(data.message, false);
+            } else {
+              var html = '';
+              if (data.list[0]) {
+                for (var i = 0; i < data.list.length; i++) {
+                  html += '<tr Id="' + (data.list[i].Id || '') + '"><td><input type="checkbox" name="ckb" class="select_row" value="' + data.list[i].Id + '" /></td><td>' + (data.list[i].Word || '') +
+                    '</td><td><a><i class="timeTip edit-synonym glyphicon glyphicon-pencil" title="编辑"></i><i class="timeTip del-synonym glyphicon glyphicon-trash" title="删除"></i></a></td></tr>';
+                }
+
+                var options = {
+                  data: [data, 'list', 'total'],
+                  currentPage: data.currentPage,
+                  totalPages: data.totlePages ? data.totlePages : 1,
+                  alignment: 'right',
+                  onPageClicked: function(event, originalEvent, type, page) {
+                    pageNo = page;
+                    initSrc();
+                  }
+                };
+                $('#itemContainer').bootstrapPaginator(options);
+              // 批量删除按钮
+                $("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+                $(".select_rows,.select_row").on("ifChanged",function(){
+                    if($(".select_row:checked").length>0){
+                      $("#mul-del").removeClass("btn-default").addClass("btn-primary").attr("disabled",false)
+                    }else{
+                        $("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+                    }
+                })
+              } else {
+                html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+                $('#itemContainer').empty();
+              }
+              $('tbody').empty().append(html);
+              icheckListInit();
+              $('.timeTip').tooltip();
+            // 批量删除按钮      
+              $("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+              $(".select_rows,.select_row").on("ifChanged",function(){
+                if($(".select_row:checked").length>0){
+                  $("#mul-del").removeClass("btn-default").addClass("btn-primary").attr("disabled",false)
+                }else{
+                    $("#mul-del").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
+                }
+              })
+
+            }
+          },
+        });
+      }
+      window.initSrc = initSrc;
+      initSrc();
+
+      // $('.progress-striped').hide();
+      $('.tab-addSrc').hide();
+      $('.tab-addSrc').eq(0).show();
+      var tabIndex = 0;
+
+      //不是修改
+      $('.btn-synonym').on('click', function() {
+        idStr = '';
+      });
+
+      //修改
+      $('body').on('click', '.edit-synonym', function() {
+        var $tr = $(this).parents('tr'),
+          id = $tr.attr('Id');
+        idStr = '?id=' + id;
+
+        $('.input1-synonym').val($tr.find('td:eq(1)').text());
+        $('.input2-synonym').val($tr.find('td:eq(2)').text());
+
+        $('#modal-dialog .alert-synonym').html('注：此处只可修改，不可用逗号新增词汇哦~');
+        $('#modal-dialog h4.modal-title').html('修改专业名词');
+        $('#modal-dialog').modal('show');
+        $('#modal-dialog').addClass("old")
+        $("#marked").val( $('.input1-synonym').val())
+      });
+
+      $('#modal-dialog').on('hidden.bs.modal', function() {
+        $('#modal-dialog .alert-synonym').html('单个词长度在1-50之间,多个词之间用逗号","分隔');
+        $('#modal-dialog h4.modal-title').html('添加专业名词');
+         $('#modal-dialog').removeClass("old");
+         $("#marked").val('')
+      });
+
+      //删除
+      $('body').on('click', '.del-synonym', function() {
+        $(this).adcCreator(delfun);
+      });
+
+      function delfun(obj) {
+        var $tr = $(obj).parents('tr'),
+          id = $tr.attr('Id');
+
+        Base.request({
+          url: 'wordDoc/delWordDocById',
+          params: {
+            id: id,
+          },
+          callback: function(data) {
+            if (data.status) {
+              Base.gritter(data.message, false);
+            } else {
+              Base.gritter(data.message, true);
+              if ($('.del-synonym').length == 1) {
+                if (pageNo >= 2) {
+                  pageNo -= 1;
+                }
+              }
+              initSrc();
+            }
+          },
+        });
+      }
+
+      //搜索
+      $('.search-addSrc').on('click', function() {
+        delPage = 1;
+        pageNo = 1;
+        queryStr = $('.search-input-addSrc').val();
+        isJpage = 0;
+        initSrc();
+      });
+      $('.search-input-addSrc').on('click', function() {
+        return false;
+      });
+
+      //ENTER
+      $(document).on('keyup', function(e) {
+        var $activeEl = $(document.activeElement);
+
+        if ($activeEl.is('.search-input-addSrc') && (e.keyCode == 13 || e.keyCode == 108)) {
+          $('.search-addSrc').trigger('click');
+        }
+      });
+
+      //跳转
+      $('.goPage-addSrc a').on('click', function() {
+        $('.holder').jPages(parseInt($('.goPage-addSrc input').val()));
+        return false;
+      });
+
+      //全选文本
+      $('.goPage-addSrc input').on('focus', function() {
+        $(this).select();
+      });
+      $('#modal-dialog').on('hidden.bs.modal', function() {
+        $('.input1-synonym').val('');
+        $('#modal-dialog .input1-synonym').attr('class',"input1-synonym form-control valid")
+        validate.resetForm()
+      });
+    });
+
+
+    // 进度条函数
+    loadingfn('#exlfileupload','../../WordDocExcel/importFile?mode=4','../../WordDocExcel/getStatus','initSrc',100)
+  </script>
+
+</body>
+
+</html>

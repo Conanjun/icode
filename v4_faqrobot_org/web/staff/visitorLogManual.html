@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>转人工日志</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="../common/css/zTreeStyleTest.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+  <style>
+    #chatModal .chats img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">转人工日志</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">转人工日志</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="visiterLog_Query">
+							<div id="DataSource" style="display: inline-block;" class="m-b-5">
+								<select class="selectpicker" id="Choice_Query" name="sourceId">
+									<option value="-1">全部访客</option>
+									<option value="1">微信访客</option>
+									<option value="0">网页访客</option>
+								</select>
+							</div>
+							<div id="DTT" style="display: inline-block;" class="m-b-5">
+								<select class="selectpicker" id="TT" name="turnPeopleType">
+									<option value="">全部客服</option>
+									<option value="1">第三方客服</option>
+									<option value="2">云问客服</option>
+								</select>
+							</div>
+							<div class="btn-group m-r-5">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									排序 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-left" style="min-width: 66px;">
+									<li> <a href="#" onClick="visiterLog(1,0);return false;">正序</a> </li>
+									<li> <a href="#" onClick="visiterLog(1,1);return false;">倒序</a> </li>
+								</ul>
+							</div>
+							<div class="form-group m-r-10 m-b-5">
+								<label class="control-label pagination-right">访客名称：</label>
+								<input type="text" class="form-control" name="clientName" onkeypress="searchKey(event)">
+							</div>
+							<div class="form-group m-r-10 m-b-5">
+								<label class="control-label pagination-right">接待客服</label>
+								<input type="text" class="form-control" name="customer" onkeypress="searchKey(event)">
+							</div>
+							<button class="btn btn-primary m-r-5 m-b-5" onclick="visiterLog()" type="button"><i class="glyphicon glyphicon-search"></i></button>
+							<button class="btn btn-default m-r-5 m-b-5" onclick="$('#visiterLog_Query')[0].reset()" type="button"><i class="glyphicon glyphicon-remove"></i></button>
+						</form>
+						<table class="table" id="visiterlogList">
+							<thead>
+								<tr>
+									<th>访客名称</th>
+									<th>来源</th>
+									<th>渠道</th>
+									<th>转人工次数</th>
+									<th>接待客服</th>
+									<th width="120">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="logpageList"></div>
+						<input type="hidden" name="orderId" value="0">
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+  <div class="modal" style="display: none;" aria-hidden="true" id="preModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title">会话详情</h4>
+        </div>
+        <div class="modal-body">
+			<div id="affinx">
+
+			</div>
+        </div>
+        <div class="modal-footer">
+          <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" style="display: none;" aria-hidden="true" id="chatModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title">查看记录</h4>
+        </div>
+        <div class="modal-body p-b-0 p-t-5">
+          <form method="POST" id="visiterForm" class="form-horizontal">
+            <fieldset>
+              <div class="form-group m-b-5">
+                <label class="col-md-2 control-label">访客信息</label>
+                <div class="col-md-9" style="padding-left:0;padding-right:0;padding-top:7px;">
+                  <span class="visiterInfo"></span>
+                  <button type="button" class="btn btn-primary btn-xs" onclick="$('.hideForm').toggle();">高级查询</button>
+                </div>
+              </div>
+              <div class="form-group hideForm m-b-5" style="display: none;">
+                <label class="col-md-2 control-label">起始时间</label>
+                <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                  <input size="16" type="text" readonly class="form-control form_datetime input-sm" name="startTime">
+                </div>
+                <label class="col-md-2 control-label">结束时间</label>
+                <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                  <input size="16" type="text" readonly class="form-control form_datetime input-sm" name="endTime">
+                </div>
+              </div>
+              <div class="form-group hideForm m-b-5" style="display: none;">
+                <label class="col-md-2 control-label">内容</label>
+                <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                  <input type="text" class="form-control input-sm" name="content">
+                </div>
+              </div>
+              <div class="form-group hideForm" style="display: none;">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                  <button type="button" class="btn btn-primary btn-xs" id="searchChatRe">搜索</button>
+                  <button type="button" class="btn btn-primary btn-xs" onclick="searchClear()">清空</button>
+                </div>
+              </div>
+              <input type="hidden" name="chatVersion"/>
+            </fieldset>
+          </form>
+          <div id="chatCon">
+            <div id="chatLogList">
+              <ul class="chats"></ul>
+            </div>
+          </div>
+          <div id="chatpageList" style="margin-top:10px; margin-bottom:0px;"></div>
+        </div>
+        <div class="modal-footer">
+          <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+    function searchKey(e) {
+      if(e.key=='Enter') {
+        visiterLog(1);
+      }
+    }
+		$(document).ready(function() {
+			App.init();
+			visiterLog(1);
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate:new Date(),
+				zIndex: 1500
+			});
+
+			$('body').on('change', '#Choice_Query', function(){
+				visiterLog(1);
+			});
+			$('body').on('change', '#TT', function(){
+				visiterLog(1);
+			});
+
+			$('.selectpicker').selectpicker({
+				style: 'btn-primary',
+				size: 4,
+				width: '120px',
+			});
+      //聊天记录
+      $('#chatModal').on('shown.bs.modal', function () {
+        chatRecords(1);
+      });
+      $('#visiterForm #searchChatRe').click(function(){
+        chatRecords();
+      });
+      //清空表单
+      $('#chatModal').on('hidden.bs.modal', function () {
+        $('#visiterForm input[type=text]').val('');
+        $('#chatLogList').html('<ul class="chats"></ul>');
+        $('#chatpageList').html('');
+        $('body').addClass('modal-open');
+      });
+		});
+
+var selectSourceFlag = true;
+var visiterLogLists = [];
+function visiterLog(pageNo,orderType){
+	if(!pageNo)pageNo=1;
+	if(orderType===undefined){
+		orderType=$('input[name=orderId]').val();
+	}else{
+		$('input[name=orderId]').val(orderType);
+	}
+	$('#visiterlogList').tableAjaxLoader2(9);
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../TurnPeopleLog/list'),
+		data:{
+			'pageNo':pageNo,
+			'pageSize':20,
+			'orderId':orderType,
+			'sourceId':$('#Choice_Query').val(),
+			'turnPeopleType':$('#TT').val(),
+			'clientName':$('[name="clientName"]').val(),
+			'customer':$('[name="customer"]').val()
+		},
+		success:
+		function(data){
+			if(data.status===0){
+				if(data.list===undefined){
+					$('#visiterlogList').find('tbody').html('<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空！</td></tr>');
+					$('#logpageList').html('');
+					return;
+				}
+				if(data.sourceList) {
+					if(data.sourceList[0]) {
+						if(selectSourceFlag) {
+							var html = '<select class="selectpicker" id="Choice_Query">';
+							html += '<option value="-1">全部渠道</option>';
+							for(var m in data.sourceList) {
+								html += '<option value="'+data.sourceList[m].DicCode+'">'+data.sourceList[m].DicDesc+'</option>';
+							}
+							html += '</select>';
+							$('#DataSource').empty().append(html);
+							$('#Choice_Query').selectpicker({
+								style: 'btn-primary',
+								width: '100px'
+							});
+							selectSourceFlag = false;
+						}
+					}
+				}
+				if(data.list.length>0){
+          visiterLogLists = data.list;
+					var html = "";
+					for(var i=0;i<data.list.length;i++){
+						html += "<tr>";
+						html += '<td>'+data.list[i].ClientName+'</td>';
+						html += '<td>'+(data.list[i].TurnPeopleType===2?'云问客服':'第三方客服')+'</td>';
+						html += '<td>'+getSourceName(data.list[i].SourceId);
+						html += '<td>'+data.list[i].TurnPeopleCount+'</td>';
+						html += '<td>'+data.list[i].Customer+'</td>';
+            html += '<td><a href="javascript:;" title="查看聊天记录" onclick="prelookChat(this);">查看聊天记录</a></td>';
+						html += '</tr>';
+					}
+					$('#visiterlogList').find('tbody').html(html);
+					//下面开始处理分页
+					var options = {
+						data: [data, 'list', 'total'],
+						currentPage: data.currentPage,
+						totalPages: data.totlePages,
+						onPageClicked: function (event, originalEvent, type, page) {
+							visiterLog(page);
+						}
+					};
+					setPage('logpageList',options);
+				}else{
+					$('#visiterlogList').find('tbody').html('<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空！</td></tr>');
+					$('#logpageList').html('');
+				}
+			}else{
+				yunNoty(data);
+			}
+		}
+	});
+}
+var prelookChatList = [];
+var prelookChatListI = -1;
+function prelookChat(obj){
+  $('#preModal .modal-body #affinx').empty();
+  $('#preModal').modal('show');
+  $('#preModal .modal-body #affinx').slimScroll({
+		height: $(window).height() -200 + 'px',
+		allowPageScroll: false
+	})
+  var i = $(obj).parent().parent().index();
+  var ddt = {
+    turnPeopleType: visiterLogLists[i].TurnPeopleType,
+    sourceId: visiterLogLists[i].SourceId,
+    customer: visiterLogLists[i].Customer,
+    clientName: visiterLogLists[i].ClientName
+  };
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../TurnPeopleLog/findDetails'),
+		data:ddt,
+		success:
+		function(data){
+			if(data.status===0){
+        prelookChatList = data.list;
+        data.list.forEach(function(el){
+          $('#preModal .modal-body #affinx').append('<div style="padding: 15px;"><div>访客名称：'+ddt.clientName+'</div><div>接待客服：'+ddt.customer+'</div><div>转人工时间：'+el.CreateTime+'</div><div><a href="javascript:;" style="cursor:pointer;" onclick="lookChat(this)">查看会话记录</a></div></div>');
+        });
+      } else {
+        yunNoty(data);
+      }
+    }
+  });
+}
+//访客Modal
+function lookChat(obj){
+  prelookChatListI = $(obj).parent().parent().index();
+  $('#visiterForm input[name=chatVersion]').val(prelookChatList[prelookChatListI].ChatVersion);
+	$('#visiterForm input[name=startTime]').val('');
+	$('#visiterForm input[name=endTime]').val('');
+	$('#visiterForm input[name=content]').val('');
+	$('#chatModal').modal('show');
+}
+
+function searchClear(){
+	$('#visiterForm')[0].reset();
+}
+
+//访客聊天记录
+function chatRecords(pageNo){
+	if(!pageNo)pageNo=1;
+	$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><img src=\"../common/images/ajax_loader.gif\"></li>');
+	$.ajax({
+		type:'get',
+		datatype:'json',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../TurnPeopleLog/findByChatVersion?pageSize='+20+'&pageNo='+pageNo),
+		data:$("#visiterForm").serialize(),
+		success:
+		function(data){
+			if(data.status===0){
+				if(data.list[0]) {
+					var visiterInfo='';
+					if(typeof data.userCard!='undefined' && data.userCard!==null){
+						if(data.userCard.Name !==null){
+							visiterInfo=data.userCard.Name+'&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+						}else if(data.userCard.UserName !==null){
+							visiterInfo += data.userCard.Name+'&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+						}
+					}
+					if(typeof data.chatUser!='undefined' && data.chatUser!==null){
+						if(data.chatUser.SysInfo !==null){
+							visiterInfo +=data.chatUser.SysInfo+'&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+						}
+						if(data.chatUser.Broswer !==null){
+							visiterInfo +=data.chatUser.Broswer+'&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+						}
+						if(data.chatUser.Address !==null){
+							visiterInfo +=data.chatUser.Address+'&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+						}
+						if(data.chatUser.HostIp !==null){
+							visiterInfo +=data.chatUser.HostIp;
+						}
+					}
+					$('#visiterForm .visiterInfo').html(visiterInfo);
+
+					var html ='';
+					if(data.list[0]) {
+						for(var i=0; i<data.list.length; i++) {
+							var reply = (data.list[i].Reply || '　');
+							if(data.list[i].Reply) {
+								var src = data.list[i].Reply.match(/src=\"([^\"]+)/);
+								if(src) {
+									reply = '<a href="'+ src[1] +'" data-lightbox="gallery">'+(data.list[i].Reply || '　')+ '</a>';
+								}
+							}
+							html += '<li class="right"><span class="date-time">'+data.list[i].DateTime+'</span><a class="name">'+prelookChatList[prelookChatListI].ClientName+'</a><a class="image"><img src="../common/images/user.png" alt=""></a><div class="message">'+(data.list[i].Question || '　')+'</div><li class="left"><span class="date-time">'+data.list[i].DateTime+'</span><a class="name">'+prelookChatList[prelookChatListI].Customer+'</a><a class="image"><img src="../common/images/robot.png" alt=""></a><div class="message">'+ reply +'</div>';
+						}
+					}else {
+						html += '<div colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</div>';
+					}
+					$('#chatLogList').find('ul').html(html);
+					var scrollheight = $(window).height() - 300;
+					$('#chatLogList').slimScroll({
+						height: ((scrollheight)>100?scrollheight:100) + 'px'
+					});
+					//下面开始处理分页
+					var options = {
+						currentPage: data.currentPage,
+						totalPages: data.totlePages,
+						onPageClicked: function (event, originalEvent, type, page) {
+							chatRecords(page);
+						}
+					};
+					setPage('chatpageList',options);
+				}else{
+					$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空</li>');
+					$('#chatpageList').html('');
+				}
+			}else{
+				yunNoty(data);
+			}
+		}
+	});
+}
+	</script>
+</body>
+</html>

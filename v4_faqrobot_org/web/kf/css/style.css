@@ -1,0 +1,290 @@
+body{
+	overflow:auto;
+	min-width:1024px;
+}
+.iyunwen_title{
+	background:url(../images/titleBg.png) repeat-x;
+	height:68px;
+}
+.titleName{
+	color:#fff;
+	margin-top:10px;
+}
+
+.iyunwen_m10{
+	margin-top:10px;
+	clear:both;
+}
+.conDiv{
+	max-height:150px;
+	overflow:auto;
+	margin-bottom:10px;
+}
+.iyunwen_bar a{
+	color:#333;
+	text-decoration:none;
+}
+.iyunwen_bar{
+	height:20px;
+	margin:5px 0;
+}
+.relateHead{
+	border-bottom:1px solid #ddd;
+}
+.relateCon{
+	color:black;
+}
+.relateCon dt{
+	font-weight: normal;
+    line-height: 24px;
+}
+.relateCon dt a{
+	color:#333;
+}
+.iyunwen_footer{	
+	height:28px;
+	background:#2977bf repeat-x;
+}
+.iyunwen_height{
+	height:100%;
+	overflow:auto;
+}
+#classLeft{
+	position:absolute;
+	width:10px;
+	height:30px;
+	left:-15px; 
+	top:300px;
+	
+	background-image:url(../images/left.png);
+}
+#classright{
+	position:absolute;
+	width:10px;
+	height:30px;
+	right:-15px; 
+	top:300px;
+	background-image:url(../images/right.png);
+}
+.queOl{
+	margin:10px 0 10px -40px;
+}
+.queOl li{
+	border-radius:4px;
+	list-style:none;
+	background-color:#f0f0f0;
+	padding:10px;
+	border-color:black;
+	margin-top:10px;
+}
+.queOl li:hover{
+	background-color:#fff;
+	border:1px solid #f0f0f0;
+}
+
+.staff-info {
+	text-align: center;
+	font-size: 12px
+}
+.staff-info>p {
+	margin: 0
+}
+.transfer-info {
+	margin: 14px 0;
+	text-align: center;
+	font-size: 12px;
+	height: 34px;
+	line-height: 34px
+}
+.transfer-info>img {
+	width: 34px;
+	height: 34px;
+	border-radius: 17px;
+	display: inline-block;
+	vertical-align: middle
+}
+.msg-date {
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	margin-bottom: 5px
+}
+.staff-msg, .client-msg {
+	width: 100%;
+	margin-bottom: 18px;
+	position:relative;
+}
+.staff-msg:after, .client-msg:after {
+	content: ' ';
+	display: block;
+	clear: both
+}
+.staff-msg .msg, .client-msg .msg {
+	position: relative;
+	border-radius: 3px;
+	padding: 10px;
+	word-wrap: break-word;
+	word-break: break-all
+}
+.staff-msg .msg:after, .client-msg .msg:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	height: 0;
+	width: 0
+}
+.staff-msg .msg img, .client-msg .msg img {
+	max-width: 100%
+}
+.staff-msg .picture, .client-msg .picture {
+	position: relative
+}
+.staff-msg .picture .mask .cover, .client-msg .picture .mask .cover {
+	position: absolute;
+	width: 10px;
+	height: 100%
+}
+.staff-msg .picture .mask .cover:after, .client-msg .picture .mask .cover:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	height: 0;
+	width: 0
+}
+.staff-msg .picture img, .client-msg .picture img {
+	max-width: 100%;
+	max-height: 120px
+}
+.staff-msg .msg .msg-status, .client-msg .msg .msg-status, .staff-msg .picture .msg-status, .client-msg .picture .msg-status {
+	position: absolute;
+	top: 12px;
+	display: none;
+	text-align: center
+}
+.staff-msg .msg .msg-status.msg-loading, .client-msg .msg .msg-status.msg-loading, .staff-msg .picture .msg-status.msg-loading, .client-msg .picture .msg-status.msg-loading {
+	display: block
+}
+.staff-msg .msg .msg-status.msg-loading:before, .client-msg .msg .msg-status.msg-loading:before, .staff-msg .picture .msg-status.msg-loading:before, .client-msg .picture .msg-status.msg-loading:before {
+	content: url(../../mobile1%20-%20%E6%8B%B7%E8%B4%9D/images/sending.gif);
+	width: 20px
+}
+.staff-msg .msg .msg-status.msg-faild, .client-msg .msg .msg-status.msg-faild, .staff-msg .picture .msg-status.msg-faild, .client-msg .picture .msg-status.msg-faild {
+	display: block;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	font-size: 12px;
+	line-height: 18px
+}
+.staff-msg .msg .msg-status.msg-faild:before, .client-msg .msg .msg-status.msg-faild:before, .staff-msg .picture .msg-status.msg-faild:before, .client-msg .picture .msg-status.msg-faild:before {
+	content: "!"
+}
+.staff-msg {
+	padding-right: 14%
+}
+.staff-msg .name {
+	font-size: 12px;
+	margin-bottom: 5px
+}
+.staff-msg .msg {
+	float: left;
+	margin-left: 8px;
+	background-color:#f0f0f0;
+}
+.staff-msg .msg:after {
+	top: 0;
+	left: -8px;
+	border-left: 10px solid;
+	border-top: 10px solid;
+	border-left-color: transparent;
+	border-top-color: #f0f0f0
+}
+
+.staff-msg .picture {
+	float: left;
+	text-align: left
+}
+.staff-msg .picture .mask .cover {
+	top: 10px;
+	left: 0
+}
+.staff-msg .picture .mask .cover:after {
+	top: -10px;
+	left: 0;
+	border-left: 10px solid;
+	border-top: 10px solid
+}
+.staff-msg .msg .msg-status, .staff-msg .picture .msg-status {
+	right: -24px
+}
+.client-msg {
+	padding-left: 14%
+}
+.client-msg .msg {
+	float: right;
+	margin-right: 8px
+}
+.client-msg .msg:after {
+	top: 0;
+	right: -8px;
+	border-right: 10px solid;
+	border-top: 10px solid;
+	border-right-color: transparent;
+	border-top-color: #90c0ed
+}
+.client-msg .picture {
+	float: right;
+	text-align: right
+}
+.client-msg .picture .mask .cover {
+	bottom: 15px;
+	right: 0
+}
+.client-msg .picture .mask .cover:after {
+	bottom: -10px;
+	right: 0;
+	border-right: 10px solid;
+	border-bottom: 10px solid
+}
+.client-msg .msg .msg-status, .client-msg .picture .msg-status {
+	left: -24px
+}
+.unsolved{
+	text-align:left;
+	margin:0 12px 10px;
+}
+.unsolved a{
+	display:block;
+	margin-bottom:5px;
+	vertical-align:bottom;
+}
+.unsolved>p{
+	font-weight:bold;
+	margin-bottom:5px;
+	color:#333;
+}
+.unsolved>span{
+	color:#333;
+}
+.unsolved>textarea{
+	border: 1px solid #cfcfcf;
+    border-radius: 4px;
+    font-family: 微软雅黑;
+    font-size: 14px;
+    height: 80px;
+    margin-bottom: 5px;
+    padding: 5px;
+    resize: none;
+    width: 98%;
+}
+.unsolved>a input{
+	margin-right:5px;
+}
+.unsolved>button{
+	background-color: #337ab7;
+    border: 0 none;
+    border-radius: 4px;
+    color: #fff;
+    height: 26px;
+    width: 56px;
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<script type="text/javascript" src="../internal.js"></script>
+	<link rel="stylesheet" type="text/css" href="workflow.css">
+	<link href="../../../../../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/style.min.css" rel="stylesheet" />
+    <style type="text/css">
+        *{margin:0;padding:0;color: #838383;}
+        table{font-size: 12px;margin: 10px;line-height: 30px}
+        .txt{width:256px;height:24px;line-height:24px;border:1px solid #d7d7d7;}
+        body{min-width: 0}
+    </style>
+</head>
+<body style="background: #ffffff;">
+    <table style="margin: 0 auto;text-align: right;">
+        <tr>
+            <td colspan="2"><label for="text"> 文本跳转链接内容:</label></td>
+            <td><input class="txt form-control m-l-5 m-r-5" id="text" type="text" disabled="true"/></td>
+			<td>&nbsp;</td>
+        </tr>
+        <tr style="display:none;">
+            <td><label for="href"> 流程项描述关键字:</label></td>
+            <td><input class="txt" id="href" type="hidden" value="" /></td>
+			<td>&nbsp;</td>
+        </tr>
+		<tr>
+            <td style="margin-right: 2px;">
+				<select id="searchRange" class="form-control" style="padding: 0;height: 24px;line-height: 24px;">
+					<option value="1">本流程</option>
+					<option value="2">所有流程</option>
+				</select>
+			</td>
+            <td>
+				<select id="searchsub" class="form-control" style="padding: 0;height: 24px;line-height: 24px;">
+					<option id="todisabled1" value="1" style="display:none;">标准问题</option>
+					<option value="2">流程项描述</option>
+					<option id="todisabled2" value="3" style="display:none;">流程项内容</option>
+				</select>
+			</td>
+            <td><input id="J_searchName" type="text" class="txt form-control m-l-5 m-r-5"/></td>
+			<td><button type="button" class="searchBtn btn btn-xs btn-primary" id="J_searchBtn"><i class="glyphicon glyphicon-search" style="color: white;"></i></button></td>
+        </tr>
+        <tr>
+            <td colspan="2" id="msg"></td>
+        </tr>
+    </table>
+	<div class="wrapper">
+		<div class="resultBar" id="J_resultBar">
+			<div class="loading" style="display:none"></div>
+			<div class="empty"><var id="lang_input_tips"></var></div>
+		</div>
+		<div id="J_preview"></div>
+	</div>
+	<script type="text/javascript" src="workflow.js"></script>
+<script type="text/javascript">
+$G('searchsub').value = '2';
+$G('searchRange').onchange=function(){
+	if($G('searchRange').value=='2') {
+		$G('todisabled1').style.display = 'block';
+		$G('todisabled2').style.display = 'block';
+	} else {
+		$G('todisabled1').style.display = 'none';
+		$G('todisabled2').style.display = 'none';
+		$G('searchsub').value = '2';
+	}
+}
+
+var workflow = new WorkFlow;
+workflow.solutionId = editor.options.solutionId ? editor.options.solutionId:'';
+
+var range = editor.selection.getRange(),
+	link = range.collapsed ? editor.queryCommandValue("link") : editor.selection.getStart(),
+	url,
+	text = $G('text'),
+	rangeLink = domUtils.findParentByTagName(range.getCommonAncestor(), 'a', true),
+	orgText,
+	link = domUtils.findParentByTagName(link, "a", true);
+if (link) {
+    url = utils.html(link.getAttribute('_href') || link.getAttribute('href', 2));
+    if (rangeLink === link && !link.getElementsByTagName('img').length) {
+        text.removeAttribute('disabled');
+        orgText = text.value = link[browser.ie ? 'innerText': 'textContent'];
+    } else {
+        text.setAttribute('disabled', 'true');
+        text.value = '仅支持选中一个跳转';
+    }
+} else {
+    if (range.collapsed) {
+        text.removeAttribute('disabled');
+        text.value = '';
+    } else {
+        text.setAttribute('disabled', 'true');
+        text.value = '仅支持选中一个跳转';
+    }
+
+}
+
+$focus($G("href"));
+
+function handleDialogOk() {
+
+    var temp1 = $G('text').value.replace(/^\s+|\s+$/g, '');
+    if (temp1) {
+
+        //检查有没有选择流程项
+        var select = workflow.exec();
+        var flowId;
+        if (select && select.Id) {
+            $G("msg").innerHTML = "";
+            flowId = select.Id;
+        } else {
+            workflow.dosearch();
+            //$G("msg").innerHTML = "<span style='color: red'>"+lang.httpPrompt+"</span>";
+            return false;
+        }
+
+        var obj = {
+            'href': 'javascript:void(0);',
+            'class': 'wflink',
+            'rel': flowId,
+            'name': 'wfl_' + flowId,
+            'title': '点击查看具体信息',
+            '_href': 'javascript:void(0);'
+            //'onclick':'gotoFlow('+flowId+');'
+        };
+        //修改链接内容的情况太特殊了，所以先做到这里了
+        //todo:情况多的时候，做到command里
+        if (orgText && text.value != orgText) {
+            link[browser.ie ? 'innerText': 'textContent'] = obj.textValue = text.value;
+            range.selectNode(link).select()
+        }
+        if (range.collapsed) {
+            obj.textValue = text.value;
+        }
+        editor.execCommand('link', utils.clearEmptyAttrs(obj));
+        dialog.close();
+    }
+}
+dialog.onok = handleDialogOk;
+//$G('href').onkeydown = function(evt) {
+//    evt = evt || window.event;
+//    if (evt.keyCode == 13) {
+//        handleDialogOk();
+//        return false;
+//    }
+//};
+
+function hrefStartWith(href, arr) {
+    href = href.replace(/^\s+|\s+$/g, '');
+    for (var i = 0,
+    ai; ai = arr[i++];) {
+        if (href.indexOf(ai) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+domUtils.on(window, 'load', function() {
+    workflow.dosearch();
+});
+</script>
+
+</body>
+</html>

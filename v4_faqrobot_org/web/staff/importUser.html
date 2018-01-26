@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>批量导入用户</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+	<link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">人员管理</a></li>
+				<li class="active">批量导入用户</li>
+			</ol>
+			<h1 class="page-header">批量导入用户</h1>
+			<div class="row">
+				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+					<div class="panel-body">
+						<div class="row">
+							<span class="btn btn-primary m-r-5 fileinput-button">
+								<i class="glyphicon glyphicon-plus"></i>
+								<span>批量导入用户</span>
+								<input type="file" accept=".xls,.xlsx" name="file" id="exlfileupload">
+							</span>
+							<span class="btn btn-primary m-r-5 fileUpLoadingSign" style="display:none;">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>上传中</span>
+							</span>
+							<span class="files" id="files" style="display:inline-block;">
+								<button style="display:none" class="btn btn-info confirmLoadBtn"><i class="glyphicon glyphicon-import"></i><span>确认导入</span></button>
+							</span>
+							<a class="btn btn-default m-r-5 pull-right" target="_blank" href="../../wordDocExcel/exportTemplate?mode=7">
+								<i class="glyphicon glyphicon-download"></i>
+								<span>下载模板</span>
+							</a>
+						</div>
+						<table class="table" id="problemList">
+							<thead>
+								<tr>
+									<th> 用户名 </th>
+									<th> 昵称 </th>
+									<th> 角色 </th>
+									<th> 电话 </th>
+									<th> 城市 </th>
+									<th> 状态 </th>
+									<th> 说明 </th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="problemPageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- begin scroll to top btn -->
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+		<!-- end scroll to top btn -->
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="assets/crossbrowserjs/respond.min.js"></script>
+		<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="../common/js/loadingMethod.js"></script>
+	<script src="js/staff.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			problem_Import();
+		});
+        var INTERVAL;
+        // 进度条dom写入页面
+        var jindutiaostr='<div id="exlProgress" style="position:fixed;z-index:99;top:0;right:0;background-color:rgba(0,0,0,0.4);width:100%;height:100%;display:none">';
+            jindutiaostr+='<div style="width:329px;margin:25% auto;">';
+            jindutiaostr+='<h4 style="text-align:center;color:#1296db;font-size:18px;font-family:'+'微软雅黑'+';text-shadow:1px 1px 2px  #FFFFFF;font-weight:700">Loading...</h4>';
+            jindutiaostr+='<div class="progress progress-striped active" style="height:10px;background-color:#dadada;box-shadow:inset 0px 0px 3px lightgray;">';
+            jindutiaostr+='<div class="progress-bar" style="background-color:#33b5e2"></div></div></div></div>';
+        $("body").append(jindutiaostr)
+
+		$('.confirmLoadBtn').on("click",function(){
+			$.ajax({
+				type:'get',
+				datatype:'json',
+				cache:false,//不从缓存中去数据
+				url:encodeURI('../../user/confirmImport'),
+				success:
+				function(data){
+					if(data.status==0){
+						yunNoty(data); 
+						$('#files button').hide();
+					}
+					else{
+						yunNoty(data); 
+					}
+				}
+			});
+			setTimeout(function(){
+				problem_Import()
+			},1000)
+			
+		});
+
+        //上传
+        $(function() {
+          'use strict';
+          $("#exlfileupload").fileupload({
+            url: '../../user/jQueryFileUpload',
+            dataType: 'json',
+            change: function(e, data) {   
+              var flag = true;
+              $.each(data.files, function(index, file) {
+                var str = file.name.substring(file.name.lastIndexOf(".") + 1);
+                if (str == "xls" || str == "xlsx") {
+                  flag = true;
+                } else {
+                  flag = false;
+                  yunNotyError("请上传xls或xlsx格式的文件！");
+                }
+              });
+              return flag;
+
+            },
+            done: function(e, data) {
+              if (data.result.status == 0) {
+                $('#exlProgress').show();
+                yunNoty(data.result);
+                INTERVAL = setInterval(getstatus,400)
+              } else {
+                yunNoty(data.result);
+                $('#exlProgress').hide();
+                $('#exlProgress .progress-bar').css('width', '0%');
+                $('.fileinput-button').css('display', 'inline-block');
+                $('.fileUpLoadingSign').css('display', 'none');
+              }
+            },
+          }).bind('fileuploadstart', function(e) {
+            $('.fileinput-button').css('display', 'none');
+            $('.fileUpLoadingSign').css('display', 'inline-block');
+            $('#exlProgress').show();
+          }).bind('fileuploadstop', function(e) {
+            $('.fileinput-button').css('display', 'inline-block');
+            $('.fileUpLoadingSign').css('display', 'none');
+          });
+        });
+        //确认导入
+        function getstatus() {
+          $.ajax({
+            type: 'get',
+            datatype: 'json',
+            cache: false, //不从缓存中去数据
+            url: encodeURI('../../User/getStatus'),
+            success: function(data) {
+				var progress=data.ProgressToKnowledge;
+				if (data.ProgressToKnowledge == 100) {
+					if (data.ErrorMsg != '') {
+						yunNoty({
+							status: 1,
+							message: data.ErrorMsg
+						});
+					} else {
+						yunNoty({
+							status: 0,
+							message: '导入成功！'
+						});
+					}
+					clearInterval(INTERVAL);
+					$('#exlProgress .progress-bar').css('width',progress + '%')
+					$('#exlProgress h4').text("Loading..."+progress + '%') 
+					setTimeout(function(){
+						$('#exlProgress').hide();
+						$('#exlProgress .progress-bar').css('width', '0%');
+						problem_Import()
+					},1000)
+				} else { 
+					$('#exlProgress .progress-bar').css('width',progress + '%')
+					$('#exlProgress h4').text("Loading..."+progress + '%')   
+				}
+            },
+            error:function(){
+              clearInterval(INTERVAL);
+              $('#exlProgress').hide();
+              $('#exlProgress .progress-bar').css('width', '0%');
+              problem_Import()
+            }
+          });
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>参数配置</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">参数配置</li>
+			</ol>
+				<h1 class="page-header">参数配置</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<form method="POST" class="form-inline" id="pm_add" style="display: inline;">
+							<div class="form-group">
+								<input type="text" placeholder="请输入参数名" class="form-control" name="code" id="name" style="width: 360px;">
+                <input type="text" style="display:none;">
+							</div>
+              <button class="btnSearch btn btn-primary" type="button" onclick="addParameters()">
+                新增参数
+              </button>
+							<button type="button" onclick="configuration()" class="btn btn-primary m-l-1" aria-haspopup="true" aria-expanded="false">
+								应用配置
+							</button>
+						</form>
+						<form method="POST" class="form-inline" id="pm_search" style="display: inline;">
+							<!--<div class="form-group">-->
+								<!--<input type="text" placeholder="请输入搜索参数名" class="form-control" name="code">-->
+							<!--</div>-->
+							<!--<div class="m-l-1 form-group">-->
+								<!--<input style="border-top-right-radius:0;border-bottom-right-radius:0;" type="text" placeholder="请输入搜索字符串" class="form-control" name="value">-->
+							<!--</div>-->
+              				<!--<button style="border-top-left-radius:0;border-bottom-left-radius:0; margin-left:-4px" type="button" class="btn btn-primary m-r-1" id="ssr"><i class="glyphicon glyphicon-search" style="top: 2px;"></i></button>-->
+							<div class="input-group pull-right">
+								<input type="text" class="form-control" id="ABC" name="code"><input type="text" class="hide" >
+								<div class="input-group-btn">
+									<ul class="dropdown-menu pull-right">
+										<li><a class="searchA" href="javascript:;">参数</a></li>
+										<li><a class="searchB" href="javascript:;">字符串</a></li>
+									</ul>
+									<button type="button" class="searchAbtn btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										参数&nbsp;<span class="caret"></span>
+									</button>
+									<button style="border-top-left-radius: 3px;border-top-right-radius: 3px;" type="button"  id="ssr" class="m-l-4 btn btn-primary">
+										<i class="glyphicon glyphicon-search"></i>
+									</button>
+								</div>
+							</div>
+
+						</form>
+						<table class="table" id="Parameterslist">
+							<thead>
+								<tr>
+									<th width="250"><div style="width:200px;">参数名</div></th>
+									<th width="100">数值参数</th>
+									<th>字符串参数</th>
+									<th width="150">参数说明</th>
+									<th width="90">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="Parameterspage"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script src="js/system.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.searchA').click(function(){
+				$('#ABC').attr('name','code');
+				$('.searchAbtn').html($(this).text() + '&nbsp;'+ '<span class="caret"></span>')
+			});
+			$('.searchB').click(function(){
+				$('#ABC').attr('name','value');
+				$('.searchAbtn').html($(this).text() + '&nbsp;'+ '<span class="caret"></span>')
+			});
+			App.init();
+			icheckBindInit();
+			//列出表格
+			ParametersPage(1);
+      $('#ssr').click(function(){
+        ParametersPage(1);
+      });
+
+      $('#pm_search input').on('keyup', function(e) {
+        if(e.key == 'Enter') {
+          ParametersPage(1);
+        }
+      });
+		});
+
+	</script>
+</body>
+</html>

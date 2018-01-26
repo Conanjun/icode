@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>流程详细</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../../../../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../../../../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../../../../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../../../../../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+	<link href="../../../../../../web/common/css/zTreeStyleTest.css" rel="stylesheet" />
+	<link href="../../../../../../web/common/css/radioskin/blue.css" rel="stylesheet" />
+	<link href="workflow.css" rel="stylesheet" />
+	<link href="../../../../../../web/common/css/commonCSS.css" rel="stylesheet" />
+</head>
+<body style="background: #ffffff;padding: 15px;">
+	<form method="POST" id="search_Que" class="form-inline" style="position: relative;">
+		<fieldset>
+			<input type="text" style="display:none;" id="text">
+			<div class="form-group">
+				<label class="control-label">选择分类：</label>
+				<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+			</div>
+			<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 0; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+				<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+					<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+				</div>
+			</div>
+			<div class="input-group" style="margin-left:10px; float:right;">
+				<input class="search-input-addSrc2 form-control" placeholder="请输入你要查询的内容" type="text">
+				<span class="input-group-btn">
+					<button type="button" class="sort2_0 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right: 3px;">问题<span class="caret"></span></button>
+					<ul class="dropdown-menu" style="min-width: 100px;">
+						<li><a class="sort2_1" href="javascript:;">问题</a></li>
+						<li><a class="sort2_2" href="javascript:;">答案</a></li>
+					</ul>
+					<button class="btnSearch2 btn btn-primary" type="button" style="border-radius:3px;"><i class="glyphicon glyphicon-search"></i></button>
+				</span>
+			</div>
+		</fieldset>
+	</form>
+	<div id="queDiv" style="margin-top:5px;">
+		<div class="tab-content" style="margin-bottom:0;padding:0">
+			<div class="tab-pane fade active in" id="queManualQue">
+				<div id="queManualQueTable">
+					<table class="table" id="ansList">
+						<thead>
+							<tr>
+								<th width="75">选择</th>
+								<th>问题</th>
+								<th>答案</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div id="quepageList" style="margin:0;"></div>
+			</div>
+		</div>
+	</div>
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../../../../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../../../../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../../../../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../../../../../assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+	<script src="../../../../../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+	<script src="../../../../../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../../../../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../../../../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../../../../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="../../../../../../assets/crossbrowserjs/html5shiv.js"></script>
+	<script src="../../../../../../assets/crossbrowserjs/respond.min.js"></script>
+	<script src="../../../../../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../../../../../../web/common/js/customMethod.js"></script>
+	<script src="../../../../../../web/common/js/bootstrap-paginator.js"></script>
+	<script src="../../../../../../web/common/js/jquery.ztree.all-3.5.js"></script>
+	<script src="../../../../../../web/common/js/icheck.js"></script>
+	<script type="text/javascript" src="../internal.js"></script>
+	<script type="text/javascript" src="workflow.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <title>营销列表</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+
+  <!-- ================== BEGIN BASE CSS STYLE ================== -->
+  <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+  <link href="../../assets/css/style.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+  <link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+  <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+  <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+  <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+  <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+  <!-- ================== END BASE CSS STYLE ================== -->
+  <link href="../common/css/commonCSS.css" rel="stylesheet" />
+  <style>
+    .search-addSrc {
+      padding-bottom: 0;
+    }
+
+    .m-l-5 {
+      margin-left: 3px!important;
+    }
+    .table tbody tr td{
+        vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="page-container" class="fade in">
+    <div id="content" class="content">
+      <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">首页</a></li>
+        <li><a href="javascript:;">知识库管理</a></li>
+        <li>营销列表</li>
+      </ol>
+      <!-- end breadcrumb -->
+
+      <h1 class="page-header">营销列表</h1>
+
+      <!-- begin row -->
+      <div class="rowNav">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+          <div class="panel-body">
+            <div class="row" id='mark'>
+                <a href="javascript:;" data-num="0" data-name="营销设置" class="btn btn-primary m-r-4" id="setMarket">营销设置</a>
+				<a href="../../web/data/marketVisit.html" data-num="0" data-name="营销报表" class="btn btn-primary m-r-4" style="position:relative;left:-4px">营销报表</a>
+	            <div class="btn-group pull-right m-r-4" data-step="4" data-intro='在这里，可以按你喜欢的顺序进行问题的排序！'>
+					<button id="menuDown" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+						默认排序 <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li> <a href="javascript:;" onClick="marketList(1,0,this);return false;">默认排序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,1,this);return false;">时间倒序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,2,this);return false;">时间正序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,3,this);return false;">浏览次数倒序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,4,this);return false;">浏览次数正序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,5,this);return false;">推送次数倒序</a> </li>
+						<li> <a href="javascript:;" onClick="marketList(1,6,this);return false;">推送次数正序</a> </li>
+					</ul>
+				</div>
+				<div class="input-group pull-right m-r-4" style="width:250px;">
+	                <input type="text" class="searchMarket form-control" placeholder="输入搜索的词">
+	                <span class="search-addSrc input-group-btn">
+						<button class="btn btn-primary" type="button">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+					</span>
+	            </div>
+           </div>
+            <div class="table-responsive">
+              <div class="row">
+                <table class="table" id="marketList">
+                  <thead>
+                    <tr>
+                      <th>营销名称</th>
+                      <th>触发机制</th>
+                      <th>推送/浏览次数</th>
+                      <th>创建时间</th>
+                      <th>是否启用</th>
+                      <th width="70">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <div id="pageList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end panel -->
+        <!-- end row -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+  </div>
+  
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="delModalLabel">确定删除？</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<div class="row">
+		        	<form method="POST" class="form-horizontal del_form" id="del_form">
+		        		<fieldset>
+							<div class="form-group col-md-7">确定要删除您所选的内容？</div>
+						</fieldset>
+					</form>
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" id="delButton">确定</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		      </div>
+		    </div>
+	  </div>
+	</div>
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+  <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+  <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+  <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+  <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+  <!-- ================== END BASE JS ================== -->
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="../../assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
+  <!-- 必加开始 -->
+  <link href="../common/css/radioskin/blue.css" rel="stylesheet">
+  <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+  <script src="../common/js/bootstrap-paginator.js"></script>
+  <script src="../../assets/plugins/switchery/switchery.min.js"></script>
+  <script src="../common/js/customMethod.js"></script>
+  <script src="../common/js/jquery.validate.js"></script>
+  <script src="../common/js/jquery.validate.custom.js"></script>
+  <script src="../common/js/iframeTab.min.js"></script>
+  <script src="../common/js/icheck.js"></script>
+  <script src="../common/js/base.js"></script>
+  <!-- 必加结束 -->
+	<script>
+		$(document).ready(function() {
+			App.init();
+			iframeTab.init({iframeBox: ''});
+		});
+		//switchery 初始化
+		var green = "#00acac",
+		red = "#ff5b57",
+		blue = "#348fe2",
+		purple = "#727cb6",
+		orange = "#f59c1a",
+		tmpNum='',
+		black = "#2d353c";
+		$(document).ready(function() {
+		    tmpNum=parent.$('#tabHeader li[data-tab="'+location.href+'"]').attr('data-num');//鑾峰彇褰撳墠url涓殑data-num
+			App.init();
+			iframeTab.init({iframeBox: ''});
+			$('#setMarket').attr('href','../../web/temp/marketAdver.html?tmpNum='+tmpNum)
+		});
+		var renderSwitcher = function() {
+		    if ($("[data-render=switchery]").length !== 0) {
+		        $("[data-render=switchery]").each(function() {
+		            var e = green;
+		            if ($(this).attr("data-theme")) {
+		                switch ($(this).attr("data-theme")) {
+		                case "red":
+		                    e = red;
+		                    break;
+		                case "blue":
+		                    e = blue;
+		                    break;
+		                case "purple":
+		                    e = purple;
+		                    break;
+		                case "orange":
+		                    e = orange;
+		                    break;
+		                case "black":
+		                    e = black;
+		                    break;
+		                }
+		            }
+		            var t = {};
+		            t.color = e;
+		            t.secondaryColor = $(this).attr("data-secondary-color") ? $(this).attr("data-secondary-color") : "#dfdfdf";
+		            t.className = $(this).attr("data-classname") ? $(this).attr("data-classname") : "switchery";
+		            t.disabled = $(this).attr("data-disabled") ? true: false;
+		            t.disabledOpacity = $(this).attr("data-disabled-opacity") ? $(this).attr("data-disabled-opacity") : 0.5;
+		            t.speed = $(this).attr("data-speed") ? $(this).attr("data-speed") : "0.5s";
+		            var n = new Switchery(this, t);
+		        });
+		    }
+		};
+		var name = $('.searchMarket').val(),
+			orderType = 0,
+			pageSize = 10,
+			pageNo = 1;
+		marketList();
+		function marketList(pageNo,orderType,asd){
+			if(asd)$('#menuDown').html($(asd).html()+'<span class="caret"></span>');
+			if(!pageNo) pageNo = 1;
+			if (!orderType) orderType = 0;
+			$.ajax({
+				type:"POST",
+				url:"../../Advertise/list",
+				data:{
+					'pageNo':pageNo,
+					'pageSize':10,
+					'orderType':orderType,
+					'name':name
+				},
+				async:true,
+				cache:true,
+				success:function(data){
+					if(data.status == 0){
+						var html = [];
+						var AdvertiseType1 = '',
+							AdvertiseType2 = '',
+							AdvertiseTyp3 = '';
+						if(data.list.length>0){
+							var tmpNum=parent.$('#tabHeader li[data-tab="'+location.href+'"]').attr('data-num');//获取当前url中的data-num
+							for(var i = 0;i < data.list.length;i++){
+								html.push('<tr Id="'+data.list[i].Id+'">');
+								html.push('<td>'+data.list[i].Name+'</td>');
+								if(data.list[i].AdvertiseType.match('0')){
+									AdvertiseType1 = '关键词、';
+								}else{
+									AdvertiseType1 = '';
+								}
+								if(data.list[i].AdvertiseType.match('1')){
+									AdvertiseType2 = '问题、';
+								}else{
+									AdvertiseType2 = '';
+								}
+								if(data.list[i].AdvertiseType.match('2')){
+									AdvertiseType3 = '随机、';
+								}else{
+									AdvertiseType3 = '';
+								}
+								var AdvertiseType = (AdvertiseType1+AdvertiseType2+AdvertiseType3).substring(0,(AdvertiseType1+AdvertiseType2+AdvertiseType3).length-1);
+								html.push('<td>'+AdvertiseType+'</td>');
+								if(data.list[i].Hits == null){
+									data.list[i].Hits = '--';
+								}
+								if(data.list[i].Click == null){
+									data.list[i].Click = '--';
+								}
+								html.push('<td>'+data.list[i].Hits+'/'+data.list[i].Click+'</td>');
+								html.push('<td>'+data.list[i].AddTime+'</td>');
+								if(data.list[i].Status == 0){
+									html.push('<td><input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" value="1"/></td>');
+								}
+								if(data.list[i].Status == 1){
+									html.push('<td><input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" value="1" checked/></td>');
+								}
+								html.push('<td><a href="../../web/temp/marketAdver.html?advertiseId='+data.list[i].Id+'&tmpNum='+tmpNum+'" data-num="0" data-name="营销设置"><i class="edit-market glyphicon glyphicon-pencil" title="编辑" style="margin-right: 10px;"></i></a><a style="cursor:pointer;"><i class="del-market glyphicon glyphicon-trash" title="删除"></i></a></td>');
+								html.push('</tr>');
+							}
+							$('#marketList tbody').empty().html(html.join(''));
+							renderSwitcher();
+							//单个删除
+							$('.del-market').unbind('click').bind('click',function(){
+								$("#delModal").modal('show');
+								var delId = $(this).parents('tr').attr('id');
+								$("#delButton").unbind('click').bind('click',function(){
+									delMarket(delId);
+								});
+							});
+							//是否启用
+							$('[data-change="check-switchery-state-text"]').on("change",function() {
+								var isQiYongId = $(this).parents('tr').attr('id');
+								var status=$(this).prop("checked")?1:0;
+								if(status == 0){//不启用
+									NoqiYongMod(isQiYongId);
+								}else{
+									qiYongMod(isQiYongId);
+								}
+							});
+							var options = {
+			                  data: [data, 'list', 'total'],
+			                  currentPage: data.currentPage,
+			                  totalPages: data.totlePages ? data.totlePages : 1,
+			                  alignment: 'right',
+			                  onPageClicked: function(event, originalEvent, type, page) {
+			                    pageNo = page;
+			                    marketList(pageNo,orderType);
+			                  }
+			                };
+			                $('#pageList').bootstrapPaginator(options);
+						} else {
+			                $('#marketList tbody').html('<tr><td colspan="6" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+			                $('#pageList').empty();
+			            }
+					}
+				}
+			});
+		}
+		//删除
+		function delMarket(delId){
+			$.ajax({
+				type:"POST",
+				url:"../../Advertise/deleteAdvertise?id="+delId,
+				async:true,
+				cache:true,
+				success:function(data){
+					if(data.status == 0){
+						yunNoty(data);
+						$("#delModal").modal('hide');
+						marketList(1,orderType);
+					}else{
+						yunNotyError(data);
+					}
+				}
+			});
+		}
+		//启用
+		function qiYongMod(isQiYongId){
+			$.ajax({
+				type:"POST",
+				url:"../../Advertise/openAdvertise?id="+isQiYongId,
+				async:true,
+				cache:true,
+				success:function(data){
+					if(data.status == 0){
+						yunNoty(data);
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//不启用
+		function NoqiYongMod(isQiYongId){
+			$.ajax({
+				type:"POST",
+				url:"../../Advertise/closeAdvertise?id="+isQiYongId,
+				async:true,
+				cache:true,
+				success:function(data){
+					if(data.status == 0){
+						yunNoty(data);
+					}else{
+						yunNoty(data);
+					}
+				}
+			});
+		}
+		//搜索
+	    $('.search-addSrc').on('click', function() {
+	       name = $('.searchMarket').val();
+	       marketList(1,orderType);
+	    });
+	    $('.searchMarket').on('click', function() {
+	       return false;
+	    });
+	
+	    //ENTER
+	    $(document).on('keyup', function(e) {
+	       var $activeEl = $(document.activeElement);
+	       if ($activeEl.is('.searchMarket') && (e.keyCode == 13 || e.keyCode == 108)) {
+	        $('.search-addSrc').trigger('click');
+	       }
+	    });
+		
+	</script>
+</body>
+
+</html>

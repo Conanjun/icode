@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <style>
+        a .timeTip {
+            margin: 0 3px;
+            cursor: pointer;
+        }
+        .cosType2 {
+            display: none;
+        }
+        th {
+
+        }
+    </style>
+</head>
+<body>
+    <!-- #modal-dialog -->
+    <div class="modal fade" id="modal-dialog">
+        <div class="modal-video-addSrc modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">添加场景式问答表单项</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="formList" class="form-synonym form-horizontal" novalidate="novalidate">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">问题<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入问题" class="input2-synonym form-control" name="question">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">默认值<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入默认值" class="input2-synonym form-control" name="defaultValue">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">验证方式<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="validateType" style="margin-top: 6px;">
+                                        <option selected="" value="0">缺省</option>
+                                        <option value="1">字符串</option>
+                                        <option value="2">数字</option>
+                                        <option value="3">日期</option>
+                                        <option value="4">整数</option>
+                                        <option value="5">货币</option>
+                                        <option value="6">度量单位</option>
+                                        <option value="7">时间</option>
+                                        <option value="21">手机</option>
+                                        <option value="22">电话</option>
+                                        <option value="23">省份</option>
+                                        <option value="24">城市</option>
+                                        <option value="25">城市</option>
+                                        <option value="26">电子邮件</option>
+                                        <option value="51">url</option>
+                                        <option value="52">信用卡号</option>
+                                        <option value="53">IP</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">是否必须<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="radio" name="mustType" value="1" checked="checked">非必须
+                                    <input type="radio" name="mustType" value="0">必须
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">参数名<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入参数名" class="input2-synonym form-control" name="parameterName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">参数展示名称<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入参数展示名称" class="input2-synonym form-control" name="parameterValue">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">验证失败的话语说明<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入验证失败的话语说明" class="input2-synonym form-control" name="validateErrorMsg">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">排序的ID代号<span class="red">&nbsp;*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入排序的ID代号" class="input2-synonym form-control" name="orderId">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">碎片逻辑代码<span class="red">&nbsp;&nbsp;</span></label>
+                                <!-- <div class="col-md-7">
+                                    <input type="text" placeholder="请输入碎片逻辑代码" class="input2-synonym form-control" name="partCode">
+                                </div> -->
+                                <div class="col-md-7">
+                                    <select class="form-control" name="partCode"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">限定可选值<span class="red">&nbsp;&nbsp;</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" placeholder="请输入限定可选值" class="input2-synonym form-control" name="answers">
+                                <label class="col-md-11 control-label">对于该项的回复用户只能从以下可选值中选择一个。（多个可选值用逗号隔开）</label>
+                                </div>
+                            </div>
+                            <input type="hidden" value="1" name="ansType">
+                            <input type="hidden" value="faqrobot" name="validateRole">
+                            <input type="hidden" value="" name="formId">
+
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="ensure-synonym btn btn-sm btn-primary">确认</a>
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-container" class="fade in">
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">首页</a></li>
+                <li><a href="javascript:;">系统管理</a></li>
+                <li>场景式问答表单项列表</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">场景式问答表单项列表</h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="rowNav">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 添加场景式问答表单项</button>
+								<a href="formList.html" class="btn btn-link"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;返回列表</a>
+								<table class="table" id="qqqtable">
+									<thead>
+										<tr>
+											<th>字段说明</th>
+											<th>默认值</th>
+											<th>验证方式</th>
+											<th>是否必须</th>
+											<th>参数名</th>
+											<th>参数展示名</th>
+											<th>验证失败的话语说明</th>
+											<th>排序的ID代号</th>
+											<th>限定可选值</th>
+											<th style="white-space: nowrap;">添加时间</th>
+											<th style="white-space: nowrap;width:80px;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="itemContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <!-- 必加开始 -->
+    <link rel="stylesheet" href="../common/css/commonCSS.css">
+
+    <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="../common/js/bootstrap-paginator.js"></script>
+    <script src="../common/js/customMethod.js"></script>
+    <script src="../common/js/jquery.validate.js"></script>
+    <script src="../common/js/jquery.validate.custom.js"></script>
+    <script src="../common/js/base.js"></script>
+    <script src="js/formChildren.js"></script>
+    <!-- 必加结束 -->
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+</body>
+</html>

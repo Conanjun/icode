@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>重置知识库</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.but {
+			width:250px;
+		}
+	</style>
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+				<ol class="breadcrumb pull-right">
+					<li><a href="javascript:;">首页</a></li>
+					<li><a href="javascript:;">系统管理</a></li>
+					<li class="active">重置知识库</li>
+				</ol>
+				<div class="row">
+					<h1 class="page-header">重置知识库</h1>
+					<div data-sortable-id="table-basic-1" class="panel panel-inverse">
+						<div class="panel-body">
+							<p><button class="btn but btn-primary btn-lg" onclick="open_modal('../../adminManager/removeQueAndAns',this)">清空所有问题和答案</button></p>
+							<p><button class="btn but btn-info btn-lg" onclick="open_modal('../../adminManager/removeChatLog',this)">清空聊天日志</button></p>
+							<p><button class="btn but btn-success btn-lg" onclick="open_modal('../../adminManager/removeLoginLog',this)">清空登录信息</button></p>
+							<p><button class="btn but btn-danger btn-lg" onclick="open_modal('../../adminManager/removeQueAnsAndCla',this)">清空问题答案分组</button></p>
+							<p><button class="btn but btn-warning btn-lg" onclick="open_modal('../../adminManager/removeVisit',this)">清空访客记录</button></p>
+							<p><button class="btn but btn-inverse btn-lg" onclick="open_modal('../../adminManager/removeThird',this)">清空第三方信息</button></p>
+							<p><button class="btn but btn-white btn-lg" onclick="open_modal('../../adminManager/removeAll',this)">清空所有信息</button></p>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" style="display: none;" aria-hidden="true" id="resetModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+								<h4 class="modal-title" id="modalTitle">清空提示</h4>
+							</div>
+							<div class="modal-body">
+								<input type="hidden" id="url">
+								<form method="POST" id="key_verification" class="form-horizontal">
+									<fieldset>
+										<div class="form-group">
+											<label class="col-md-3 control-label">请输入您的验证码</label>
+											<div class="col-md-7">
+												<input type="text" placeholder="请输入您的验证码" class="form-control" name="keyCode">
+											</div>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#key_verification').submit()">是</button>
+								<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+		 </div>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			$('#key_verification').validate({
+				rules:{
+					keyCode:{
+						required:true
+					}
+				},
+				messages:{
+					keyCode:{
+						required:"请输入您的验证码！"
+					}
+				},
+				submitHandler: doReset
+			});
+			//清空表单
+			$('#resetModal').on('hidden.bs.modal', function () {
+				$('#key_verification')[0].reset();
+			})
+		});
+		function open_modal(url,obj){
+			$('#modalTitle').text('确认'+$(obj).text()+'？');
+			$('#url').val(url);
+			$('#resetModal').modal('show');
+		}
+		var flag_add=false;
+		function doReset(){
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI($('#url').val()),
+				data: $("#key_verification").serialize(),
+				success: function(data) {
+					flag_add = false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#resetModal').modal('hide');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

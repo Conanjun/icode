@@ -1,0 +1,18 @@
+<template name="showModal">
+	<view bindtap="hide" data-str="{{ that }}" class="showModal-ctn">
+		<view class="showModal-outer">
+			<view class="showModal-title">123</view>
+			<view class="showModal-inner">
+				<view>{{ html }}</view>
+			</view>
+			<view class="showModal-btn">
+				<view class="showModal-cancle">取消</view>
+				<view class="showModal-ensure">确定</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+
+
+

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>报警邮箱</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+
+	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">报警邮箱</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">报警邮箱</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>添加报警邮箱</span>
+						</a>
+						<table class="table" id="emaileTabList">
+							<thead>
+								<tr>
+									<th>邮箱</th>
+									<th>添加时间</th>
+									<th width="80">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div id="emailpageList"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="addModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">添加报警邮箱</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-warning fade in m-b-15">
+								<strong>提示：</strong>
+								某些答案在报警之后会发送到此邮箱中
+								<span data-dismiss="alert" class="close">×</span>
+							</div>
+							<form method="POST" id="addEmailFrom" class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-md-3 control-label">邮箱</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入邮箱" class="form-control" name="email">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#addEmailFrom').submit()">添加</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="editModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">修改报警邮箱</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-warning fade in m-b-15">
+								<strong>提示：</strong>
+								某些答案在报警之后会发送到此邮箱中
+								<span data-dismiss="alert" class="close">×</span>
+							</div>
+							<form method="POST" id="editEmailFrom" class="form-horizontal">
+								<fieldset>
+									<input type="hidden" name="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">邮箱</label>
+										<div class="col-md-7">
+											<input type="text" placeholder="请输入邮箱" class="form-control" name="email">
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#editEmailFrom').submit()">修改</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/jquery.validate.js"></script>
+	<script src="../common/js/icheck.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			App.init();
+			//列出表格
+			emailList(1);
+
+			$('#addEmailFrom').validate({
+				rules:{
+					email:{
+						required:true,
+						email:true
+					}
+				},
+				messages:{
+					email:{
+						required:"请输入报警邮箱！",
+						email:"请输入有效的邮箱地址！"
+					}
+				},
+				submitHandler: addEmail
+			});
+
+			$('#editEmailFrom').validate({
+				rules:{
+					email:{
+						required:true,
+						email:true
+					}
+				},
+				messages:{
+					email:{
+						required:"请输入报警邮箱！",
+						email:"请输入有效的邮箱地址！"
+					}
+				},
+				submitHandler: editEmail
+			});
+			//清空表单
+			$('#addModal').on('hidden.bs.modal', function () {
+				$('#addEmailFrom')[0].reset();
+			})
+			$('#editModal').on('hidden.bs.modal', function () {
+				$('#editEmailFrom')[0].reset();
+			})			
+		});
+
+		var flag_add=false;
+		//添加邮箱
+		function addEmail() {
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../alarmEmail/addEmail'),
+				data: $("#addEmailFrom").serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#addModal').modal('hide');
+						listCurrentPage(emailList,'emailpageList');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//修改邮箱
+		function editEmail() {
+			if(flag_add){
+				return;
+			}
+			flag_add=true;
+			$.ajax({
+				type: 'post',
+				datatype: 'json',
+				cache: false,
+				//不从缓存中去数据
+				url: encodeURI('../../alarmEmail/editEmail'),
+				data: $("#editEmailFrom").serialize(),
+				success: function(data) {
+					flag_add=false;
+					if (data.status == 0) {
+						yunNoty(data);
+						$('#editModal').modal('hide');
+						listCurrentPage(emailList,'emailpageList');
+					} else {
+						yunNoty(data);
+					}
+				}
+			});
+		}
+
+		//邮箱列表
+		function emailList(pageNo) {
+			if (!pageNo) pageNo = 1;
+			$('#emaileTabList').tableAjaxLoader2(3);
+			$.ajax({
+				type: 'get',
+				datatype: 'json',
+				cache: false,
+				url: encodeURI('../../alarmEmail/listEmail?pageSize=' + 10 + '&pageNo=' + pageNo),
+				success: function(data) {
+					if (data.status == 0) {
+						if(data.List==undefined){
+							$('#emaileTabList').find('tbody').html('<tr><td colspan=\"3\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#emailpageList').html('');
+							return;
+						}
+						var s = [];
+						if (data.List.length > 0) {
+							var list = data.List;
+							for (var i = 0; i < list.length; i++) {
+								s.push('<tr>');
+								s.push('<td>' + (list[i].Email == null ? '&nbsp;': list[i].Email) + '</td>');
+								s.push('<td>' + (list[i].AddTime == null ? '&nbsp;': list[i].AddTime) + '</td>');
+								s.push('<td><a href="javascript:;" title="编辑"  class="editEmailA_list" rel="' + list[i].Id + '"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp;&nbsp;<a href="javascript:;" title="删除" class="m-del" rel="' + list[i].Id + '"><i class="glyphicon glyphicon-trash"></i></a></td>');
+								s.push('</tr>');
+							}
+							$('#emaileTabList').find('tbody').html(s.join(''));
+							//点击修改的时候弹出框
+							$('.editEmailA_list').on('click',
+							function() {
+								$('#editModal').modal('show');
+								$("#editEmailFrom input[name=id]").val($(this).attr('rel'));
+								$("#editEmailFrom input[name=email]").val($(this).parents('tr').children('td').eq(0).html());
+							})
+							$('.m-del').on('click',function(){
+								var self = this;
+	              $(self).adcCreator(function() {
+									delById(self, '../../alarmEmail/doDel', emailList, 'emailpageList');
+								});
+							});
+							var options = {
+								data: [data, 'List', 'total'],
+								currentPage: data.currentPage,
+								totalPages: data.totlePages,
+								onPageClicked: function(event, originalEvent, type, page) {
+									emailList(page);
+								}
+							};
+							setPage('emailpageList', options);
+						} else {
+							$('#emaileTabList').find('tbody').html('<tr><td colspan=\"3\" style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');
+							$('#emailpageList').html('');
+						}
+					} else {
+						yunNoty(data);
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>

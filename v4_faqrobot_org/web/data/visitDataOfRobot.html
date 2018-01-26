@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>访客次数统计</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">数据分析</a></li>
+            <li class="active">访客次数统计</li>
+        </ol>
+        <div class="row">
+            <h1 class="page-header">访客次数统计</h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div data-toggle="buttons" class="btn-group pull-right">
+                        <label class="btn btn-success btn-xs active" id="option1">
+                            <input type="radio" id="optionA" name="options"> 时间段
+                        </label>
+                        <label class="btn btn-success btn-xs" id="option2">
+                            <input type="radio" id="optionB" name="options"> 精确时间
+                        </label>
+                    </div>
+                    <h4 class="panel-title" id="chartHead">
+                        访客访问次数统计
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveSourceId" value="-1"/>
+                    <input type="hidden" id="saveValue" value="2"/>
+                    <input type="hidden" id="saveStartTime" value=""/>
+                    <input type="hidden" id="saveEndTime" value=""/>
+                    <input type="hidden" id="saveRobot" value=""/>
+                    <div id="DataSource" style="display:inline-block;">
+                        <select class="selectpicker">
+                            <option value="-1">全部渠道</option>
+                            <option value="0">网页</option>
+                            <option value="1">微信</option>
+                        </select>
+                    </div>
+                    <div id="byRobot" style="display:inline-block;">
+                        <select class="selectpicker">
+                        </select>
+                    </div>
+                    <div id="byTimePiece" style="display:inline-block;">
+                        <select class="selectpicker">
+                            <option value="1">最近12小时</option>
+                            <option value="2" selected>最近24小时</option>
+                            <option value="3">昨天</option>
+                            <option value="4">最近7天</option>
+                            <option value="5">最近30天</option>
+                        </select>
+                    </div>
+                    <form id="TimeQuery" class="form-inline m-l-5" method="POST" style="display:inline-block;">
+                        <div class="form-group m-r-10 m-b-10">
+                            <label class="control-label pagination-right">起始时间：</label>
+                            <input type="text" name="startT" class="form-control form_datetime" readonly="" size="16">
+                        </div>
+                        <div class="form-group m-r-10 m-b-10">
+                            <label class="control-label pagination-right">结束时间：</label>
+                            <input type="text" name="endT" class="form-control form_datetime" readonly="" size="16">
+                        </div>
+                        <button type="button" onclick="query()" class="btn btn-primary m-r-5 m-b-10"><i
+                                class="glyphicon glyphicon-search"></i></button>
+                        <button type="button" onclick="$('#TimeQuery')[0].reset()" class="btn btn-default m-r-5 m-b-10">
+                            <i class="glyphicon glyphicon-remove"></i></button>
+                    </form>
+                    <button type="button" onclick="OutExcel()" class="btn btn-default m-r-5 pull-right"><i
+                            class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                    </button>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>交互平台</th>
+                            <th>访客访问次数</th>
+                            <th>访客人数</th>
+                            <th>机器人名称</th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script src="js/visitDataOfRobot.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen()
+        //饼图 折线图 表格
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        //列出图表
+        queryDays(2)
+    })
+</script>
+</body>
+</html>

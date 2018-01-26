@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <title>后台管理系统</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+
+  <!-- ================== BEGIN BASE CSS STYLE ================== -->
+  <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+  <link href="../../assets/css/style.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+  <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+  <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+  <link href="../../assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+
+  <!-- ================== END BASE CSS STYLE ================== -->
+  <style>
+    .chats .image {
+      width: 30px;
+      height: 30px;
+    }
+
+    @media screen and (max-width: 1300px) {
+      .aa {
+        margin-top: 0px;
+      }
+    }
+
+    @media screen and (max-width: 1215px) {
+      #timeSearchForm {
+        margin-top: 5px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .toShow {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal fade" style="display: none;" aria-hidden="true" id="dandianModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title">选择未知问题标签</h4>
+        </div>
+        <div class="modal-body">
+          <iframe id="myFrame" name="myFrame" src="Unknown_mark.html" frameborder="0" width="100%" height="100%"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button id="ensureCos" type="submit" class="btn btn-sm btn-primary" href="javascript:;">确定</button>
+          <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #modal-dialog -->
+  <div class="modal" id="modal-dialog-ans">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title">回答问题</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="form-group">
+                <label class="col-md-2 control-label">问题</label>
+                <div class="col-md-9" style="padding-left:0;padding-right:0;">
+                  <input type="text" class="form-control" name="ansQueInput">
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <div>
+            <ul class="nav nav-pills">
+              <li class="active"><a href="#nav-pills-tab-1" data-toggle="tab" aria-expanded="true">已有答案回答</a></li>
+              <li class=""><a href="#nav-pills-tab-2" data-toggle="tab" aria-expanded="false">编辑答案回答</a></li>
+              <li><a href="#nav-pills-tab-3" data-toggle="tab">相似问题答案回答</a></li>
+            </ul>
+            <div>
+              <div class="classifyCtn">
+                <span class="queCtn col-md-3" style="display: inline-block;">
+                                    <div class="form-group" style="margin-bottom:20px;">
+                                        <label class="control-label">选择分类：</label>
+                                        <a class="selectQue" style="cursor:pointer;">全部分类</a>
+                                    </div>
+                                    <!-- <div>
+                                        <span class="openAll2 glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                <span class="closeAll2 glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+              </div> -->
+
+              <div id="ztree2" class="ztree" style="display:none;"></div>
+              </span>
+              <span class="fromCtn channelCtn col-md-6" style="display: inline-block; margin-bottom: 20px;">
+                                    <p>选择生效渠道</p>
+                                    <div class="channel"></div>
+                                </span>
+              <span class="fromCtn roleCtn col-md-3" style="display: inline-block;">
+                                    <p>选择来访者角色</p>
+                                    <div>
+                                        <span class="openAll3 glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+              <span class="closeAll3 glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+            </div>
+            <div id="ztree3" class="ztree"></div>
+            <!-- <span class="fromCtn" style="display: inline-block;">
+                                        <p>已选择来访者角色</p>
+                                        <input class="col-md-6 roleInput form-control" type="text" readonly>
+                                    </span> -->
+            </span>
+
+
+          </div>
+
+          <div class="showCtn form-group" style="margin-top: 20px;">
+            <div class="">
+              <textarea class="ans-textarea form-control" placeholder="请输入您的回答" rows="5"></textarea>
+            </div>
+          </div>
+          <div class="hideCtn col-md-6 pull-right input-group">
+            <input type="text" class="search-input-addSrc2 form-control" placeholder="请输入你要查询的内容">
+            <span class="input-group-btn">
+                                <button type="button" class="sort2_0 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:3px;">问题<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" style="min-width: 100px;">
+              <li><a class="sort2_1" href="#">问题</a></li>
+              <li><a class="sort2_2" href="#">答案</a></li>
+            </ul>
+            <button class="btnSearch2 btn btn-primary" type="button" style="border-radius:3px;">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+
+
+            </span>
+          </div>
+          <div class="hideCtn tableCtn">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="white-space: nowrap; width: 10px;"></th>
+                  <th id="gggggggg">答案详细</th>
+                  <th>时间</th>
+                </tr>
+              </thead>
+              <tbody class="tbody2">
+              </tbody>
+            </table>
+            <div id="itemContainer2" style="margin-bottom: -20px;"></div>
+          </div>
+          <div class="textareaCtn">
+            <label class="col-md-2 control-label">请输入答案</label>
+            <textarea class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer modal-footer1 modal-footer2">
+      <a href="javascript:;" class="justAns btn btn-sm btn-primary">仅回答</a>
+      <a href="javascript:;" class="ansAndLearn btn btn-sm btn-primary">回答并学习</a>
+      <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+    </div>
+  </div>
+
+  </div>
+  </div>
+  </div>
+  <div class="modal" id="modal-dialog-record">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title">聊天记录</h4>
+        </div>
+        <div class="modal-body" style="padding: 5px 15px;">
+          <form method="POST" id="visiterForm" class="form-horizontal">
+            <fieldset>
+              <div class="form-group">
+                <label class="col-md-2 control-label">访客信息</label>
+                <div class="col-md-9" style="padding-left:0; padding-right:0;padding-top:7px;">
+                  <span class="visiterInfo"></span>
+                </div>
+              </div>
+              <div class="form-group hideForm" style="margin-bottom:5px;display: none;">
+                <label class="col-md-2 control-label">起始时间</label>
+                <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                  <input size="16" type="text" readonly class="form-control form_datetime input-sm" name="startTime">
+                </div>
+                <label class="col-md-2 control-label">结束时间</label>
+                <div class="col-md-3" style="padding-left:0;padding-right:0;">
+                  <input size="16" type="text" readonly class="form-control form_datetime input-sm" name="endTime">
+                </div>
+              </div>
+              <div class="form-group hideForm" style="margin-bottom:5px;display: none;">
+                <label class="col-md-2 control-label">内容</label>
+                <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                  <input type="text" class="tipsearch form-control input-sm" name="content">
+                </div>
+              </div>
+              <div class="form-group hideForm" style="display: none;">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-8" style="padding-left:0;padding-right:0;">
+                  <a href="javascript:void(0);" title="本次记录" class="bcjl btn btn-primary btn-xs">本次记录</a>
+                  <a href="javascript:void(0);" title="全部记录" class="qbjl btn btn-primary btn-xs">全部记录</a>
+                  <button type="button" class="btn btn-primary btn-xs" id="searchChatRe">搜索</button>
+                  <button type="button" class="btn btn-primary btn-xs" id="clearChatRe">清空</button>
+                </div>
+              </div>
+              <input type="hidden" class="recordsChatUserId" name="chatUserId">
+              <input type="hidden" class="tempValue">
+              <input type="hidden" class="chatV" name="chtvs">
+              <input type="hidden" class="locateContent" name="locateContent">
+            </fieldset>
+          </form>
+          <div class="chatCtn">
+            <div class="chats"></div>
+
+            <div id="itemContainer1" style="margin-bottom: 15px;"></div>
+          </div>
+        </div>
+        <div class="modal-footer" style="margin-top: -25px;">
+          <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="page-container" class="fade in">
+    <div id="content" class="content">
+      <!-- begin breadcrumb -->
+      <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">首页</a></li>
+        <li><a href="javascript:;">知识库管理</a></li>
+        <li>未知问题</li>
+      </ol>
+      <!-- end breadcrumb -->
+      <!-- begin page-header -->
+      <h1 class="page-header">未知问题</h1>
+      <!-- end page-header -->
+
+      <!-- begin row -->
+      <div class="rowNav">
+        <!-- begin col-12 -->
+        <div>
+          <!-- begin panel -->
+          <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+            <div class="panel-body">
+              <div class="alert alert-warning fade in m-b-15">
+                <strong>友情提示：</strong> 学习机器人未知的问题。您也可以在这里回复客户的问题哦！他们下次来访时可以看到哦！
+                <span class="close" data-dismiss="alert">×</span>
+              </div>
+              <div class="table-responsive">
+                <div class="panel-body" style="padding: 0;">
+                  <form id="timeSearchForm" class="form-inline">
+                    <div class="btn-group m-b-5" role="group" aria-label="...">
+                      <button type="button" class="btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-download"></i> 批量处理<span class="caret"></span></button>
+                      <ul class="dropdown-menu" style="min-width: 125px; left: 0; right: auto;">
+                        <li><a class="mult-ig" href="#">批量忽略</a></li>
+                        <li><a class="mult-igA" href="#">批量永久忽略</a></li>
+                        <li><a class="ansOneTime" href="#">合并回答</a></li>
+                      </ul>
+                    </div>
+                    <div class="btn-group m-b-5" role="group" aria-label="...">
+                      <button type="button" class="btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-download"></i> 导出Excel<span class="caret"></span></button>
+                      <ul class="dropdown-menu" style="min-width: 125px; left: auto; right: 0;">
+                        <li><a class="outExl" href="#">导出未知问题</a></li>
+                        <li><a class="outExl2" href="#">导出操作类型详细</a></li>
+                      </ul>
+                    </div>
+                    <a href="Unknown_mark.html" class="hide m-b-5">
+                      <button type="button" class="dandain btn btn-primary"><i class="glyphicon glyphicon-list"></i> 未知问题标签列表</button>
+                    </a>
+                    <div class="form-group m-r-3 m-b-5">
+                      <label class="control-label pagination-right">起始时间：</label>
+                      <input size="16" type="text" readonly class="form-control form_datetime" name="startT">
+                    </div>
+                    <div class="form-group m-r-3 m-b-5">
+                      <label class="control-label pagination-right">结束时间：</label>
+                      <input size="16" type="text" readonly class="form-control form_datetime" name="endT">
+                    </div>
+                    <input type="text" class="search-input-addSrc form-control m-b-5" placeholder="请输入你要查询的内容">
+                    <button class="btnSearch btn btn-primary m-b-5" type="button" style="border-radius: 3px;"><i class="glyphicon glyphicon-search"></i></button><button class="btn btn-default m-l-4 m-b-5" onclick="$('#timeSearchForm')[0].reset()" type="button" style=""><i class="glyphicon glyphicon-remove"></i></button>
+                    <div id="DataSource" class="btn-group pull-right m-l-4" style="margin-left: 2px;cursor:pointer;" role="group" aria-label="...">
+                      <a class="sourceType btn btn-toggle dropdown-toggle btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部渠道<span class="caret"></span></a>
+                      <ul class="dropdown-menu pull-right" id="DataSourceUL">
+                        <li><a class="sol" href="#">全部渠道</a></li>
+                        <li><a class="sol" href="#">网页</a></li>
+                        <li><a class="sol" href="#">微信</a></li>
+                      </ul>
+                    </div>
+                    <div class="aa btn-group pull-right m-b-5">
+                      <button type="button" class="sort0_0 btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认排序<span class="caret"></span></button>
+                      <ul class="dropdown-menu" style="min-width: 125px;">
+                        <li><a class="sort1" href="#">默认排序</a></li>
+                        <li><a class="sort2" href="#">时间正序</a></li>
+                        <li><a class="sort3" href="#">时间倒序</a></li>
+                        <li><a class="sort4" href="#">问题内容正序</a></li>
+                        <li><a class="sort5" href="#">问题内容倒序</a></li>
+                        <li class="hide"><a class="sort6" href="#">提问数量正序</a></li>
+                        <li class="hide"><a class="sort7" href="#">提问数量倒序</a></li>
+                      </ul>
+                    </div>
+                  </form>
+                  <div class="col-md-12" style="padding: 0;margin-top: 10px;">
+                    <div class="col-md-2 col-sm-2 toShow" style="border: 1px solid #D9E0E7; border-radius: 3px; padding: 5px; overflow: hidden;margin-bottom: 15px;">
+                      <div>
+                        <span class="openAll glyphicon glyphicon-plus-sign" style="cursor:pointer;" title="展开所有"></span>
+                        <span class="closeAll glyphicon glyphicon-minus" style="cursor:pointer;" title="折叠所有"></span>
+                        <span class="openIt pull-right glyphicon glyphicon-chevron-down" style="cursor:pointer;" title="展开"></span>
+                        <span class="closeIt pull-right glyphicon glyphicon-chevron-up" style="cursor:pointer;" title="收起"></span>
+                      </div>
+                      <div id="ztree1" class="ztree" style="position: relative; overflow: auto; border: none;"></div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 toHide" style="padding-right: 0;">
+                      <table class="table table1" style="margin-top: 0px;" id="tb01">
+                        <thead>
+                          <tr>
+                            <th style="width: 10px;"><input class="multCos" type="checkbox"></th>
+                            <th>问题详细</th>
+                            <th style="width: 150px;">分类</th>
+                            <th style="width: 150px;">时间</th>
+                            <th class="col-md-1">操作</th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody1">
+                        </tbody>
+                      </table>
+                      <div id="itemContainer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+        <!-- end row -->
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+  </div>
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+  <script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+  <script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+  <script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <!--[if lt IE 9]>
+        <script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+  <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- ================== END BASE JS ================== -->
+
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="../../assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
+
+  <!-- 必加开始 -->
+  <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../common/css/radioskin/blue.css">
+  <link rel="stylesheet" href="../common/css/zTreeStyleTest.css">
+  <link href="../../assets/plugins/lightbox/css/lightbox.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+
+  <script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+  <script src="../../assets/plugins/lightbox/js/lightbox-2.6.min.js"></script>
+  <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+  <script src="../common/js/bootstrap-paginator.js"></script>
+  <script src="../common/js/icheck.js"></script>
+  <script src="../common/js/jquery.ztree.all-3.5.js"></script>
+  <script src="../../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <script src="../common/js/customMethod.js"></script>
+  <script src="../common/js/base.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/unknowQue.js"></script>
+  <!-- 必加结束 -->
+
+  <script>
+    $(document).ready(function() {
+      App.init();
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+html {
+  height: 100%;
+}
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+blockquote,
+big,
+body,
+center,
+canvas,
+caption,
+cite,
+code,
+command,
+datalist,
+dd,
+del,
+details,
+dfn,
+dl,
+div,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+font,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+keygen,
+label,
+legend,
+li,
+meter,
+nav,
+menu,
+object,
+ol,
+output,
+p,
+pre,
+progress,
+q,
+s,
+samp,
+section,
+small,
+span,
+source,
+strike,
+strong,
+sub,
+sup,
+table,
+tbody,
+tfoot,
+thead,
+th,
+tr,
+tdvideo,
+tt,
+u,
+ul,
+var {
+  margin: 0;
+  padding: 0;
+}
+* {
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-timing-function: ease-in-out;
+  -ms-transition-timing-function: ease-in-out;
+  -o-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+input {
+  font-family: "microsoft yahei";
+  padding: 8px 0 8px 8px;
+  color: #333;
+  outline: none;
+  background: none;
+  margin: 0;
+}
+body {
+  background: #fff url('../images/register/bac.jpg') repeat-x left top;
+  position: relative;
+  font-family: "microsoft yahei";
+  font-size: 0.75em;
+  min-width: 320px;
+  height: 100%;
+  width: 100%;
+}
+@media screen and (min-width: 768px) {
+  body {
+    background: #fff url('../images/register/bac.jpg') repeat-x left top;
+  }
+}
+@media screen and (max-width: 768px) {
+  body {
+    background: #ffffff;
+  }
+}
+body div.top_center {
+  padding-top: 15px;
+  width: 960px;
+  height: 70px;
+  margin: 0 auto;
+}
+@media screen and (min-width: 960px) {
+  body div.top_center {
+    width: 960px;
+  }
+}
+@media screen and (max-width: 960px) {
+  body div.top_center {
+    width: 100%;
+  }
+}
+body div.top_center .LOG_login {
+  margin-top: 25px;
+  color: grey;
+  font-size: 14px;
+}
+body div.top_center .LOG_login a {
+  color: #1B96FF;
+  font-family: Microsoft YaHei;
+  font-size: 14px;
+}
+body .LOG_content {
+  margin: 0 auto;
+  max-width: 768px;
+  padding: 50px 0;
+}
+@media screen and (min-width: 768px) {
+  body .LOG_content {
+    max-width: 768px;
+  }
+}
+@media screen and (max-width: 768px) {
+  body .LOG_content {
+    width: 100%;
+  }
+}
+body .LOG_content .LOG_content_top {
+  height: 65px;
+  background: #1B96FF;
+  text-align: center;
+}
+body .LOG_content .LOG_content_top span {
+  font-size: 20px;
+  line-height: 65px;
+  color: white;
+  font-weight: bold;
+}
+body .LOG_content .LOG_form {
+  padding: 40px 0;
+  background: #fff none repeat scroll 0 0;
+}
+body .LOG_content div.containerOuter {
+  margin-top: 20px;
+  text-align: center;
+}
+body .LOG_content div.containerOuter div.containerInner {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+body .LOG_content div.containerOuter div.containerInner div.placeholderP {
+  width: 301px;
+  position: relative;
+  margin: 0 auto;
+  text-align: left;
+}
+body .LOG_content div.containerOuter div.containerInner div.placeholderR {
+  width: 301px;
+  position: relative;
+  margin: 0 auto;
+  text-align: right;
+}
+body .LOG_content div.containerOuter div.containerInner p.placeholderAfter {
+  color: #bbb;
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  font-size: 16px;
+}
+body .LOG_content div.containerOuter div.containerInner input {
+  border: 1px solid #b1b1b1;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 16px;
+  height: 27px;
+  line-height: 28px;
+  padding-top: 6px;
+  padding-bottom: 5px;
+  vertical-align: middle;
+  width: 289px;
+}
+body .LOG_content div.containerOuter div.containerInner input.chk {
+  border: none;
+  box-shadow: none;
+  font-size: 16px;
+  height: 18px;
+  line-height: 18px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  width: 30px;
+  cursor: pointer;
+}
+body .LOG_content div.containerOuter div.containerInner label.forChk {
+  height: 20px;
+  line-height: 20px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  color: #8c8c8c;
+  font-size: 14px;
+  cursor: pointer;
+}
+body .LOG_content div.containerOuter div.containerInner input:focus {
+  border: 1px solid #1B96FF;
+  box-shadow: none;
+  border-radius: 0;
+}
+body .LOG_content div.containerOuter div.containerInner input.code {
+  width: 167px;
+}
+body .LOG_content div.containerOuter div.containerInner img.vcodeImg {
+  height: 40px;
+  vertical-align: middle;
+  width: 120px;
+  cursor: pointer;
+}
+body .LOG_content div.containerOuter div.containerInner input.telVerifyCode {
+  width: 167px;
+}
+body .LOG_content div.containerOuter div.containerInner button {
+  border: 1px solid #1B96FF;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 16px;
+  height: 40px;
+  line-height: 36px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  width: 300px;
+  background: #1B96FF;
+  color: #FFF;
+  cursor: pointer;
+}
+body .LOG_content div.containerOuter div.containerInner button.getcode {
+  width: 120px;
+}
+body .LOG_content div.containerOuter div.containerInner button.REGing {
+  border: 1px solid #b1b1b1;
+  background: #b1b1b1;
+  display: none;
+}
+body .LOG_content div.containerOuter div.containerInner label.helper-font-small {
+  text-align: left;
+}
+body .REG_end {
+  bottom: 0;
+  line-height: 150%;
+  padding: 0 0 10px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+body .REG_end a {
+  color: white;
+}

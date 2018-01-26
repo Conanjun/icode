@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+	<title>关键词页面</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	
+	<link href="../../assets/plugins/switchery/switchery.min.css" rel="stylesheet">
+	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	
+	<style type="text/css">
+		.btn-primary{
+			width: 99px;
+			background-color: #3399FF!important;
+		}
+		.modal-content{
+			margin-top: 300px;
+		}
+		input{
+			width: 326px;
+			padding: 5px 5px;
+		}
+		.del{
+			margin-left: 10px;
+			cursor: pointer;
+		}
+		.edit{
+			cursor: pointer;
+		}
+	</style>
+  </head>
+  
+ <body class="pace-done">
+	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div id="page-container" class="fade in">
+		<div id="content" class="content">
+			<ol class="breadcrumb pull-right">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="javascript:;">系统管理</a></li>
+				<li class="active">关键词列表</li>
+			</ol>
+			<div class="row">
+				<h1 class="page-header">关键词列表</h1>
+				<div class="panel">
+					<div class="panel-body">
+						<a data-toggle="modal" class="btn btn-primary" href="#addModal">
+							<span>添加关键词</span>
+						</a>
+						<a data-toggle="modal" class="btn btn-primary pull-left m-r-4" href="../../web/temp/groups.html">
+							<span>微信群列表</span>
+						</a>
+						<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                <h4 class="modal-title" id="myModalLabel">添加关键字</h4>
+						            </div>
+						            <div class="modal-body">
+						            	<span>请输入需添加的关键字：</span>
+						            	<input type="text" maxlength='20' id="crux"/>
+						            </div>
+						            <div class="modal-footer">
+						            	<button type="button" class="btn btn-primary" id="addCrux" style="width: 54px;">确认</button>
+						                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						            </div>
+						        </div><!-- /.modal-content -->
+						    </div><!-- /.modal -->
+						</div>
+						
+						<a data-toggle="modal" class="btn btn-primary" href="#editModal" style="display:none;" id="editCrux">
+							<span>编辑关键字</span>
+						</a>
+						<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                <h4 class="modal-title" id="myModalLabel">添加关键字</h4>
+						            </div>
+						            <div class="modal-body">
+						            	<span>请编辑关键字：</span>
+						            	<input type="text" maxlength='20' id="editCruxInput"/>
+						            </div>
+						            <div class="modal-footer">
+						            	<button type="button" class="btn btn-primary" id="editCruxbtn">提交</button>
+						                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						            </div>
+						        </div><!-- /.modal-content -->
+						    </div><!-- /.modal -->
+						</div>
+						
+						<table class="table" id="cruxTabList">
+							<thead>
+								<tr>
+									<th style="width:33.3%;">关键词</th>
+									<th style="width:33.3%;">添加时间</th>
+									<th style="width:33.3%; text-align:right;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="cruxTabBody">
+				
+							</tbody>
+						</table>
+						<div id="cruxpageList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+	</div>
+    <!-- ================== BEGIN BASE JS ================== -->
+	<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="../../assets/js/apps.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+		<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<!-- ================== END BASE JS ================== -->
+	
+	<script src="../../assets/plugins/switchery/switchery.min.js"></script>
+	<script src="../common/js/bootstrap-paginator.js"></script>
+	<script src="../common/js/customMethod.js"></script>
+	<script type="text/javascript">
+		$(function(){
+		 $('[data-toggle="tooltip"]').tooltip();
+		 
+			var initSrc=function(pageNo){
+				$.post("../../WxWordDoc/listWxWord",{
+					/* pageSize:2, */  //每行显示条数，可不传，默认30
+					pageNo:pageNo,
+					mode:8
+				},function(data){
+				 	if(data.status==0){
+				 	 	var renderTo=$("#cruxTabBody");
+				 	 	$("#cruxTabBody").html("");
+				 	 	var html="";
+						if(data.list.length>0){
+				 	 	$(data.list).each(function(i,t){
+				 	 		var tr=$("<tr></tr>").appendTo(renderTo);
+					 		var td=$("<td></td>").text(t.Word).appendTo(tr);
+					 		var td=$("<td></td>").text(t.AddTime).appendTo(tr);
+					 		var td1=$("<td style='text-align:right'></td>").appendTo(tr);
+					 		//var edit=$("<span class='timeTip glyphicon glyphicon-pencil edit' data-toggle='tooltip' data-placement='top' title='编辑关键字'></span>").appendTo(td1);
+					 		var del=$("<span class='oneDelQue timeTip glyphicon glyphicon-trash del' data-toggle='tooltip' data-placement='top' title='删除关键字'></span>").appendTo(td1);
+				 	 		del.data("cruxId",t.Id);
+//					 		edit.data("crux",t.Word);
+//					 		edit.data("cruxId",t.Id);
+					 		$(del).click(function(){  //删除关键字
+					 			 var cruxId=$(this).data("cruxId");
+					 			 $.post("../../WxWordDoc/delOptWordDocById",{
+					 			 	ids:cruxId
+					 			 },function(json){
+					 			 	if(json.status==0){
+					 			 		yunNoty(json);
+					 			 		var pageNo=$("li.active","#cruxpageList").children().text();
+					 			 		initSrc(pageNo);
+					 			 	}
+					 			 	else{
+					 			 		yunNotyError(json.message);
+					 			 	}
+					 			 });
+					 		});
+					 		/*$(edit).click(function(){   //编辑关键字事件
+					 			$("#editCrux").click();
+					 			$("#editCruxInput").val(edit.data("crux"));
+					 			$("#editCruxInput").data("cruxId",edit.data("cruxId"));
+					 		});*/
+				 	 	});
+				 	 	var options = {
+			              data: [data, 'list', 'total'],
+			              currentPage: data.currentPage,
+			              totalPages: data.totlePages ? data.totlePages : 1,
+			              alignment: 'right',
+			              onPageClicked: function(event, originalEvent, type, page) {
+			                pageNo = page;
+			                initSrc(pageNo);
+			              }
+			            };
+			            $('#cruxpageList').bootstrapPaginator(options);
+				 	 	}
+				 	 	else{
+					 		html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+			            	$('#cruxTabBody').empty().append(html);
+			            	$("#cruxpageList").html("");
+				 		}
+				 	}
+				 });
+			};
+			initSrc(1);
+		 
+		 $("#addCrux").click(function(){   //添加关键字
+		 	var crux=$("#crux").val();
+		 	if(crux==""){
+		 		yunNotyError("请输入关键字!");
+		 	}
+		 	else{
+		 		$.post("../../WxWordDoc/editWxWordDocInfo",{
+		 			word:crux,
+		 			mode:8
+		 		},function(json){
+		 			if(json.status==0){
+		 				yunNoty(json);
+		 				initSrc(1);
+		 			}
+		 			else{
+		 				yunNotyError(json.message);
+		 			}
+		 		});
+		 		$(".btn-default").click();
+		 		var crux=$("#crux").val("");
+		 	}
+		 });
+		 
+		 $("#addModal").on("hide.bs.modal",function(){
+				$("#crux").val("");
+			});
+		 
+		 $("#editCruxbtn").click(function(){   //编辑关键字
+		 	var crux=$("#editCruxInput").val();
+		 	var cruxId=$("#editCruxInput").data("cruxId");
+		 	$.post("../../WxWordDoc/editWxWordDocInfo",{
+		 		id:cruxId,
+		 		word:crux
+		 	},function(json){
+		 		if(json.status==0){
+		 			yunNoty(json);
+		 			$(".btn-default").click();
+		 			var pageNo=$("li.active","#cruxpageList").children().text();
+ 			 		initSrc(pageNo);
+		 		}
+		 		else{
+		 			yunNotyError(json.message);
+		 		}
+		 	});
+		 });
+		});
+	</script>
+  </body>
+</html>

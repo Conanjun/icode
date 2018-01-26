@@ -1,0 +1,40 @@
+<import src="../wxParse/wxParse.wxml"/> 
+
+<template name="wxTip">
+	<!-- showModal -->
+	<block wx:if="{{ type }}">
+		<view class="showModal-ctn wxTip-ctn">
+			<view class="showModal-outer wxTip-outer">
+				<view class="showModal-title">1234</view>
+				<view class="showModal-inner">
+					<block wx:for="{{ wxParseTemArray }}"> 
+					   <template is="wxParse" data="{{ wxParseData: item }}" /> 
+					</block>
+				</view>
+				<view class="showModal-btn">
+					<view bindtap="WxTip_cancel" class="showModal-cancle">取消</view>
+					<view class="showModal-ensure">确定</view>
+				</view>
+			</view>	
+		</view>	
+	</block>
+
+	<!-- showToast -->
+	<block wx:elif="{{ !type }}">
+		<view class="showToast-ctn wxTip-ctn">
+			<view class="showToast-outer wxTip-outer">
+				<view class="showToast-inner">
+					<view>{{ html }}</view>
+				</view>
+			</view>		
+		</view>		
+	</block>	
+</template>
+
+<template name="click-template">
+	<view bindtap="click">click</view>
+</template>
+
+
+
+

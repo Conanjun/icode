@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+.MN_sideBar {
+    background: #FF5A60;
+}
+.MN_headCtn {
+    background: #FF5A60;
+}
+.MN_kfCtn a {
+    color: #FF5A60;
+}
+.MN_khCtn {
+    background: #FF5A60;
+    border: 1px solid #FF5A60;
+}
+.MN_yes {
+    background: #FF5A60;
+}
+.MN_khTriangle1, .MN_khTriangle2 {
+    border-left-color: #FF5A60;
+}
+.MN_gusList, .MN_relateList {
+    color: #FF5A60;
+}
+.MN_remainWordNum {
+    color: #FF5A60;
+}
+.MN_sendBtn {
+    background: #FF5A60;
+}
+.MN_accordionBtn_focus {
+    color: #FF5A60;
+    background: #ffdcdd;
+    border-left-color: #FF5A60;
+    border-right-color: #ffdcdd;
+}
+.MN_queListIndex {
+    color: #FF5A60;
+}
+.MN_commentBtn {
+    background: #FF5A60;
+}
+
+
+
+
+
+
+
+

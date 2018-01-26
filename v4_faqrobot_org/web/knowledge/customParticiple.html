@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定制分词</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="../../assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <link href="../common/css/commonCSS.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <style>
+        ul{
+            list-style: none;
+        }
+        .help_content{
+            font-size:14px;
+        }
+        .help_content li{
+            padding:5px;
+        }
+        .help_content li>span:first-child{
+            display:inline-block;
+            width:80px;
+            text-align:right;
+        }
+        #participleList th, #participleList td{
+
+            vertical-align: middle;
+        }
+        .editParticiple{
+            margin-right:10px;
+        }
+    </style>
+</head>
+<body>
+<!-- #modal-dialog -->
+<div class="modal fade" id="modal-dialog">
+    <div class="modal-video-addSrc modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">
+                    <span id="Modal-tital">添加分词</span>
+                    <a data-toggle="modal" href="#helpModel1" class="helpa">
+                        <i class="fa fa-question-circle" style="font-size: 20px;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-participle form-horizontal" novalidate="novalidate">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">短  语<span class="red">&nbsp;*</span></label>
+                            <div class="col-md-7">
+                                <input type="text" placeholder="请输入需要分词的短语" class="input1-participle form-control" name="word" maxlength="100">
+                                <label class="red wran_content" style="display:none">请输入需要分词的短语!</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">分词结果<span class="red">&nbsp;*</span></label>
+                            <div class="col-md-7">
+                                <input type="text" placeholder='请用","分隔出正确的结果' class="input2-participle form-control" name="tyc" maxlength="100">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="ensure-participle btn btn-sm btn-primary">确认</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">首页</a></li>
+            <li><a href="javascript:;">知识库管理</a></li>
+            <li>定制分词</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <h1 class="page-header">定制分词</h1>
+
+        <!-- begin row -->
+        <div class="rowNav">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                <div class="panel-body">
+                    <div class="alert alert-warning fade in m-b-15">
+                        <strong>友情提示：</strong> 定制分词创建成功后，机器人在对这个短语进行分词时，将会按照定制结果进行切分。
+                        <span class="close" data-dismiss="alert">×</span>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="addParticiple btn btn-primary m-r-4" data-toggle="modal" data-target="#modal-dialog" onclick='$("#Modal-tital").html("添加分词")'>
+                            <span class="glyphicon glyphicon-plus"></span>
+                            添加分词
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div id="exlProgress" class="progress" style="clear:both; margin-top:20px; display:none;">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="row">
+                            <table class="table" id="participleList">
+                                <thead>
+                                <tr>
+                                    <!--<th width="50" class="table_checkbox"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="participleList" /></th>-->
+                                    <th>短语</th>
+                                    <th>分词结果</th>
+                                    <th>添加时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="itemContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end panel -->
+            <!-- end row -->
+        </div>
+        <!-- end row -->
+
+        <!-- begin help -->
+        <div class="modal fade" style="display: none;" aria-hidden="true" id="helpModel1">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">定制分词说明</h4>
+                    </div>
+                    <div class="modal-body help_content">
+                        <p>1、用“,”将短语分隔，机器人就可以按照这个结果进行分词。</p>
+                        <ul>
+                            <li>例如：</li>
+                            <li><span>短语：</span><span>邓颖超生前</span></li>
+                            <li><span>分词结果：</span><span>邓颖超，生前</span></li>
+                        </ul>
+                        <p>2、分词结果若没有用/分隔，在分词时这个短语会被当做一个整体切出，需要谨慎使用。</p>
+                        <ul>
+                            <li>例如：</li>
+                            <li><span>短语：</span><span>中华人民共和国</span></li>
+                            <li><span>分词结果：</span><span>中华人民共和国</span></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">关闭</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end help -->
+    </div>
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!--[if lt IE 9]>
+<script src="../../assets/crossbrowserjs/html5shiv.js"></script>
+<script src="../../assets/crossbrowserjs/respond.min.js"></script>
+<script src="../../assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../assets/js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<!-- 必加开始 -->
+<link href="../common/css/radioskin/blue.css" rel="stylesheet">
+
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../common/js/bootstrap-paginator.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/jquery.validate.js"></script>
+<script src="../common/js/jquery.validate.custom.js"></script>
+<script src="../common/js/icheck.js"></script>
+<script src="../common/js/base.js"></script>
+<script src="js/main.js"></script>
+<!-- 必加结束 -->
+<script>
+    /*==========定制分词全局变量=========*/
+    var divideWordId = 0;      //分词id
+    var phrase = '';           //短语
+    var divideWords = '';      //分词
+    var pageNo = 1;            //页码
+    var pageSize = 10;         //数据量
+
+    /*==========定制分词程序入口=========*/
+    $(function(){
+        initData(pageNo);         //初始化数据
+        addParticiple();    //添加分词
+        editParticiple();   //编辑分词
+        removeParticiple(); //删除分词
+        autoParticiple();   //自动分词
+    });
+
+    /*==========定制分词初始化数据=========*/
+    function initData(pageNum){
+        $.ajax({
+            url:'../../wordDoc/getDivideWords',
+            data:{
+                pageNo:pageNum,
+                pageSize:pageSize
+            },
+            type:'post',
+            dataType:'json',
+            cache:false,
+            success:function(data){
+                if(data.status == 0){
+                    var html = '';
+                    if(data.wordDocList[0]){
+                        $.each(data.wordDocList, function(i, item){
+                             html+='<tr><td>'+item.Word+'</td><td>'+item.Tyc+'</td><td>'+item.AddTime+'</td><td wordId = "'+item.Id+'"><a><i class="timeTip edit-synonym glyphicon glyphicon-pencil editParticiple"  title="编辑"></i><i class="timeTip del-synonym glyphicon glyphicon-trash removeParticiple" title="删除"></i></a></td></tr>';
+                        });
+
+                    }else{
+                        html = '<tr><td colspan="4" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>';
+                    }
+                    $('#participleList').children('tbody').html(html);
+                    //下面开始处理分页
+                    var options = {
+                        data: [data, 'wordDocList', 'TotalCount'],
+                        currentPage: data.PageNo,
+                        totalPages: data.PageCount,
+                        onPageClicked: function(event, originalEvent, type, page) {
+                            pageNo = page;
+                            initData(page);
+                        }
+                    };
+                    setPage('itemContainer', options);
+                }
+                $('.timeTip').tooltip();
+            }
+        });
+    }
+
+    /*==========定制分词添加分词=========*/
+    function addParticiple(){
+        $('.addParticiple').unbind('click').bind('click', function(){
+            $('.input1-participle').val('');
+            $('.input2-participle').val('');
+            $('.wran_content').hide();
+        });
+        $('.ensure-participle').unbind('click').bind('click',function(){
+            phrase = $('.input1-participle').val();
+            divideWords = $('.input2-participle').val();
+            if(!phrase){
+                $('.wran_content').show();
+            }else{
+                $('.wran_content').hide();
+                // $('#modal-dialog').removeClass('in');
+                if($('.ensure-participle').hasClass('editPanel')){
+                    //修改并更新分词
+                    updateParticiple();
+                    $('.ensure-participle').removeClass('editPanel');
+                }else{
+                    //添加分词
+                    $.ajax({
+                        url:'../../wordDoc/saveDivideWord',
+                        data:{
+                            phrase:phrase,
+                            divideWords:divideWords
+                        },
+                        type:'post',
+                        dataType:'json',
+                        cache:false,
+                        success:function(data){
+                            if(data.status == 0){
+                                initData(pageNo);
+                                yunNoty(data);
+                                $('#modal-dialog').removeClass('in');
+                            }else{
+                                yunNotyError(data.message);
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    // modal-dialog模态框消失时.ensure-participle移除Class'editPanel'
+    $('#modal-dialog').on('hide.bs.modal',function(){
+        if($('.ensure-participle').hasClass('editPanel')){
+            $('.ensure-participle').removeClass('editPanel')
+        }
+    })
+
+    /*==========定制分词编辑分词=========*/
+    function editParticiple(){
+        $('#participleList').undelegate('.editParticiple','click').delegate('.editParticiple','click',function(e) {
+            // $('#modal-dialog').addClass('in');
+            $('#modal-dialog').modal('show')
+            $("#Modal-tital").html('编辑分词')
+            $('.ensure-participle').addClass('editPanel');
+            var src = e.target || window.event.srcElement;     //获取当前按钮  
+            divideWordId = $(src).parent().parent().attr('wordId');
+            $.ajax({
+                url: '../../wordDoc/getCurrentDivideWord',
+                data: {divideWordId: divideWordId},
+                type: 'post',
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.status == 0) {
+                        $('.input1-participle').val(data.wordDoc.Word);
+                        $('.input2-participle').val(data.wordDoc.Tyc);
+                    }else{
+                        yunNotyError(data.message);
+                    }
+                }
+            });
+        });
+    }
+
+    /*==========定制分词更新分词=========*/
+    function updateParticiple(){
+        $.ajax({
+            url:'../../wordDoc/updateCurrentDivideWord',
+            data:{
+                divideWordId:divideWordId,
+                phrase:phrase,
+                divideWords:divideWords
+            },
+            type:'post',
+            dataType:'json',
+            cache:false,
+            success:function(data){
+                if(data.status == 0){
+                    initData(pageNo);
+                    yunNoty(data);
+                    $('#modal-dialog').modal('hide')
+                }else{
+                    yunNotyError(data.message);
+                }
+            }
+        });
+    }
+
+    /*==========定制分词删除分词=========*/
+    function removeParticiple(){
+        $('#participleList').undelegate('.removeParticiple','click').delegate('.removeParticiple','click',function(e){
+            var src = e.target || window.event.srcElement;
+            divideWordId = $(src).parent().parent().attr('wordId');
+            $(src).adcCreator(function(){
+                $.ajax({
+                    url:'../../wordDoc/deleteCurrentDivideWord',
+                    data:{divideWordId:divideWordId},
+                    type:'post',
+                    dataType:'json',
+                    cache:false,
+                    success:function(data){
+                        if(data.status == 0){
+                            initData(pageNo);
+                            yunNoty(data);
+                        }else{
+                            yunNotyError(data.message);
+                        }
+                    }
+                });
+            });
+
+        });
+
+    }
+
+    /*==========定制分词自动分词=========*/
+    function autoParticiple(){
+        $('.input1-participle').unbind('blur').bind('blur', function(){
+            if($('.input1-participle').val() != ''){
+                $('.wran_content').hide();
+                var phrase = $('.input1-participle').val();
+                $.ajax({
+                    url:'../../wordDoc/getRobotDivideWords',
+                    data:{phrase:phrase},
+                    type:'post',
+                    dataType:'json',
+                    cache:false,
+                    success:function(data){
+                        if(data.status == 0){
+                            var str = '';
+                            if(data.divideArray[0]){
+                                $.each(data.divideArray, function(i, item){
+                                    str +=item.word+'，';
+                                });
+                            }
+                            str = str.substring(0, str.length-1);
+                            $('.input2-participle').val(str);
+                        }else{
+                            yunNotyError(data.message);
+                        }
+                    }
+                });
+            }else{
+                $('.wran_content').show();
+            }
+        });
+
+    }
+
+
+
+</script>
+</body>
+</html>
