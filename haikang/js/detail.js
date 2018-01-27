@@ -246,15 +246,18 @@
 							 * 用于给流程、图文绑定点击事件
 							*/
 							linkAns();
-							for(var k = 0;k < $('.showCon .mui-content img').not('.img1,.img2').length;k++){
-								if($('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src')){
-									if($('.showCon .mui-content img').not('.img1,.img2').eq(k).parents('.MN_kfCtn').find('figure').length>0){
-										
-									}else{
-										$('.showCon .mui-content img').not('.img1,.img2').eq(k).wrap('<figure><div class="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '"><a href="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+							if(ansType!=1){
+								for(var k = 0;k < $('.showCon .mui-content img').not('.img1,.img2').length;k++){
+									if($('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src')){
+										if($('.showCon .mui-content img').not('.img1,.img2').eq(k).parents('.MN_kfCtn').find('figure').length>0){
+											
+										}else{
+											$('.showCon .mui-content img').not('.img1,.img2').eq(k).wrap('<figure><div class="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '"><a href="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+										}
 									}
 								}
 							}
+							
 							richText($('a'),1);
 
 							richText($('img'),2);

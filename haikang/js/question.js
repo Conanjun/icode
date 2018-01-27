@@ -537,7 +537,7 @@
 								}else{
 									flow='';
 								}
-								
+
 								html+= '<div class="mui-content-padded" id="'+hid2+'">'+
 										'<p class="one">Q:'+ques+'</p>'+
 										'<div class="showAns" ansType="'+ansType+'" modeValue="'+(data.list[0].ModeValue||'')+'">'+
@@ -583,15 +583,19 @@
 							 * 用于给流程、图文绑定点击事件
 							*/
 							linkAns();
-							for(var k = 0;k < $('.showCon .mui-content img').not('.img1,.img2').length;k++){
-								if($('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src')){
-									if($('.showCon .mui-content img').not('.img1,.img2').eq(k).parents('.MN_kfCtn').find('figure').length>0){
-										
-									}else{
-										$('.showCon .mui-content img').not('.img1,.img2').eq(k).wrap('<figure><div class="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '"><a href="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+							if(ansType!=1){
+								for(var k = 0;k < $('.showCon .mui-content img').not('.img1,.img2').length;k++){
+									if($('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src')){
+										if($('.showCon .mui-content img').not('.img1,.img2').eq(k).parents('.MN_kfCtn').find('figure').length>0){
+											
+										}else{
+											$('.showCon .mui-content img').not('.img1,.img2').eq(k).wrap('<figure><div class="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '"><a href="' + $('.showCon .mui-content img').not('.img1,.img2').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+										}
 									}
 								}
 							}
+						
+
 							richText($('a'),1);
 
 							richText($('img'),2);
@@ -599,6 +603,21 @@
 							richText($('source'),2);
 							richText($('embed'),2);
 							richText($('audio'),2);
+							/**taskId=686 Amend by 赵宇星 给所有的地址改为链接*/
+							// 获取所有的a标签的href属性 并添加标记
+							// var herfList=[];
+							// $('.page a').each(function(){
+							// 	$(this).attr('orginal','1');
+							// 	herfList.push($(this).attr('href'));
+							// })
+							// console.log(herfList);
+							// $('.page').each(function(){
+							// 	$(this).html(changeLink($(this).html()));
+							// })
+							// $('.page a[orginal=1]').each(function(i){
+							// 	$(this).attr('href',(herfList[i]));
+							// })
+							
 
 							// filterlink();
 							//调整点赞图标的位置	
@@ -711,7 +730,17 @@
 			}
 		}
 
-	
+		/**taskId=686 Amend by 赵宇星 给所有的地址改为链接
+		 * @parmam str 答案的内容
+		 */
+		function changeLink(str){
+			var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+			// var reg2=/(src="|href=")/g;
+			str = str.replace(reg, "<a href='$1$2'>$1$2</a>").replace(/\n/g, "<br />");
+			return str;
+		}
+
+
 		// $('body').on('tap', '.wflink', function() {
 		// 	$this = $(this);
 		// 	var fid = $this.attr('rel');
