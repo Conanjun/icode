@@ -1,0 +1,121 @@
+html{font-size:12px;}
+
+/*头部*/
+.mui-pull-left{
+	color:#fff;
+}
+
+.mui-bar-nav{
+	background: #C4271E;
+}
+
+.mui-title{
+	color:#fff;
+}
+
+/*主体*/
+body,.mui-content{
+	background:#fff;
+}
+
+p{
+	color:#747472;
+}
+
+.one{
+	color:#474643;
+}
+
+
+
+.tit{
+	color: #BA0200;
+	display: inline-table;
+}
+
+.page{
+	width:89%;
+	display: inline-table;
+}
+
+
+.sj{
+	text-indent: 30px;
+}
+
+.img{
+	height: 17px;
+}
+
+.img1{
+	float:right;
+	margin-right:25px;
+}
+.img2{
+	float:right;
+	margin-right:25px;
+}
+
+.bg{
+	width:336px;
+	height:302px;
+	margin:0 auto;
+	background:url(../images/bg.png) no-repeat;
+}
+
+.mt{
+	margin-top:20px;
+}
+
+.page1{
+	width:95%;
+	margin:0 auto;
+}
+
+.title{
+	background:#ECEBEB;
+	font-size:15px;
+	height:34px;
+	line-height:34px;
+	text-indent: 20px;
+	color:#6B6A69;
+}
+
+.data{
+	border:1px solid #E2E2E2;
+	padding:10px;
+}
+
+.data p{
+	
+	margin:0;
+}
+.ud{
+	margin-bottom:6px!important;
+}
+
+.data p a{
+	color:#C22018;
+	font-size:13px;
+}
+
+.page2{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.pp{
+	font-size:13px;
+}
+
+.tit1{
+	background: #DE5246;
+	color:#fff;
+}
+
+
+.data1{
+	border:1px solid #DB473A;
+	padding:20px;
+}
+

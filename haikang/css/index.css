@@ -1,0 +1,297 @@
+html,body{
+	height: 100%;
+}
+html{
+	font-size:12px;
+}
+
+/*设置列表背景颜色*/
+body{
+	background: #fff;
+}
+
+/*去除上下箭头*/
+.mui-table-view-cell.mui-collapse>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse>.mui-push-right:after{
+	content: '';
+}
+
+.mui-table-view-cell.mui-collapse>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse>.mui-push-right:after{
+	content: ''!important;
+}
+
+.mui-navigate-right:after, .mui-push-right:after{
+	content: '';
+}
+
+/*改变侧滑背景*/
+.mui-off-canvas-left, .mui-off-canvas-right{
+	background:#fff;
+}
+
+/*改变侧边栏行内间距*/
+.row{
+	padding-bottom:10px!important;
+}
+
+/*隐藏模板*/
+.templ{
+	display: none;
+}
+
+/*隐藏没有数据加载提示*/
+/*.mui-block{
+	display: none!important;
+}*/
+
+/*下拉刷新提示位置移动*/
+.mui-bar-nav~ .mui-content .mui-pull-top-pocket{
+	top:40px !important;
+}
+
+
+/*问题搜索框*/
+
+.search{
+	padding:10px;
+	position: relative;
+}
+
+/*.mui-icon-search{*/
+	/*color:#A6A5A4;*/
+/*}*/
+/*收藏图标*/
+.collect-icon{
+	font-size: 16px;
+	margin-left: -6px;
+	width: 20px;
+	opacity: 0.5;
+}
+/*收藏图标样式*/
+.collected{
+	color:#C4271E;
+	opacity: 1;
+}
+.query{
+	width: 36px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}
+.select1{
+	padding:0 0 0 15px;
+	position: relative;
+}
+
+select{
+	padding:0!important;
+	border:1px solid #ACACB4!important;
+	height:34px;
+	line-height: 34px;
+	position: relative;
+}
+
+
+.col1{
+	width:85%;
+	z-index:2;
+	opacity: .5;
+	text-indent: 12px;
+	padding-left:5px!important;
+}
+
+.down{
+	position:absolute;
+	right:16%;
+	top: 2px;
+	/*background: #EEEEEF;*/
+	width:36px;
+	height:32px;
+	line-height: 32px;
+	text-align: center;
+	border-left:1px solid #ccc;
+	
+}
+
+.xjiantou{
+	width:12px;
+	height:12px;
+	position: absolute;
+	top:12px;
+	right: 9.5px;
+}
+
+.mui-input{
+	margin-bottom: 0px!important;
+	padding-left:25px!important;
+}
+
+.ss{
+	position: absolute;
+	top:18px;
+	left:15px;
+	font-size:19px;
+}
+
+/*问题搜索框结束*/
+
+/*PC端*/
+.mui-table-view::before{
+	height: 0;
+}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus{
+	background-color: #C4271E;
+    border-color: #C4271E;
+}
+.pagination>li>a, .pagination>li>span{
+	color: #C4271E;
+}
+.pagination input{
+	width: 38px !important;
+	padding: 0;
+}
+#pageList{
+	margin-bottom: 60px;
+}
+#pageList span{
+	font-size: 14px;
+}
+#pageList .pagination{
+	float: right;
+}
+.pagination li a{
+	margin-left:4px;
+}
+/*排序显示*/
+
+.fhead a span{
+	position: relative;
+    display: inline-block;
+
+}
+@media screen and (min-width:768px){
+	.fhead a span{
+		min-width:105px;
+	}
+}
+.fhead a span img{
+	right: -2rem;
+}
+/*搜索框*/
+.isearch {
+    width: 400px!important;
+    height: 30px!important;
+    line-height: 30px!important;
+    border-radius: 4px!important;
+    position: absolute;
+    right: 120px;
+    top: 6px;
+    padding:0;
+    text-indent: 10px;
+}
+.hsearch {
+    color: #fff;
+    float: right;
+    right: 70px;
+}
+
+/*改变ztree样式*/
+
+ul.ztree{
+	border: 0;
+    background: #fff; 
+    height:auto;
+    overflow: auto;
+}
+.ztree *{
+	font-size: 14px;
+}
+.treeDivLeft{
+    border: 1px solid #D9E0E7;
+    border-radius: 4px;
+}
+/*改变ztree样式结束*/
+
+/*增加列表页面左阴影效果*/
+.mui-content.mui-scroll-wrapper{
+	box-shadow: 1px 0px 24px 0px #f2f2f2;
+}
+/*搜索框样式*/
+.search-pc{
+	position: fixed;
+	top: 44px;
+	z-index: 22;
+	width: 100%;
+	background: #F6F6F6;
+	padding-bottom: 10px;
+	padding-left:15px;
+	text-align: center;
+	display: none;
+}
+.search-pc>div{
+	display: inline-block;
+}
+.search-pc .down{
+	right: 46px;
+}
+.selectContanier{
+	width:270px;
+	position: relative;
+}
+
+/*new的标识*/
+.txt>img{
+	margin-top: -35px;
+	margin-left:-8px;
+	margin-right: -12px;
+}
+
+/*收藏提示*/
+#collectTip{
+	position: fixed;
+	left:50%;
+	top:40%;
+	margin-left:-59px ;
+	font-size: 15px;
+	width:150px;
+	height:50px;
+	line-height: 50px;
+	text-align: center;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	z-index: 100;
+	display: none;
+}
+form{
+	display: inline-block;
+}
+
+#loginTip{
+	position: absolute;
+	left:50%;
+	top:30%;
+	margin-left:-118px ;
+	width:250px;
+	height:100px;
+	line-height: 100px;
+	text-align: center;
+	border-radius: 5px;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	display: none;
+}
+.AU_replaceTip{
+	color:red;
+	display: inline-block;
+}
+.mui-bar-tab a.mui-tab-item{
+	text-decoration: none;
+}
+.mui-bar-tab a.mui-tab-item span{
+	vertical-align: text-bottom;
+}
+#showcollect{
+	bottom: 0;
+    position: absolute;
+    height: 40px;
+    width: 100%;
+}

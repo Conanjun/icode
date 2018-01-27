@@ -1,0 +1,189 @@
+
+html{
+	font-size: 12px;
+}
+
+/*头部*/
+.mui-pull-left{
+	color:#fff;
+}
+
+.mui-bar-nav{
+	background: #C4271E;
+}
+
+.mui-title{
+	color:#fff;
+}
+
+/*列表头*/
+.fhead{
+	background: #F6F6F6;
+	width:100%;
+	height:40px;
+	position: fixed;
+    top: 40px;
+    z-index: 22;
+}
+
+.fhead a{
+	display: inline-block;
+	width:50%;
+	text-align: center;
+	height:40px;
+	line-height: 40px;
+	color:#252524;
+	font-size: 14px;
+	z-index: 999;
+	float: left;
+	text-decoration: none;
+    cursor: pointer;
+}
+.a2,.a3,.a4{
+	position: relative;
+}
+.fhead img{
+	width:3rem;
+	height:2.8rem;
+}
+
+.imga{
+	position: absolute;
+	right:-.9rem;
+	top:.4rem;
+}
+
+.imgb{
+	position: absolute;
+	right:.2rem;
+	top:.4rem;
+}
+
+.imgc{
+	position: absolute;
+	right:.8rem;
+	top:.4rem;
+}
+.txtselect{
+	position: fixed;
+    top: 41px;
+    z-index: 22;
+    width: 100%;
+    background: #F6F6F6;
+    padding-bottom: 10px;
+}
+/*弹出框*/
+.pull{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top:0;
+	z-index: 1;
+}
+
+/*.mod{
+	position: absolute;
+	top:50%;
+	margin-top:-26%;
+	left:50%;
+	margin-left:-25%;
+	width:50%;
+	height:29%;
+}*/
+/*列表上下内间距调整*/
+.mui-content{
+	/*padding-top: 81px!important;*/
+	background: #fff;
+	padding-bottom: 30px;
+}
+
+/*列表行*/
+
+
+.txt{
+	font-size:15px;
+	color:#403F3D;
+	font-weight: 500;
+}
+
+/*每一行的内间距*/
+.mui-table-view-chevron .mui-table-view-cell {
+	padding-left: 10px;
+    padding-right: 8px;
+	padding-bottom: 0px;
+}
+
+.ispan{
+	font-size:14px;
+	color:#6B6A69;
+	
+}
+
+.ml{
+	margin-left:10px;
+}
+
+.img{
+	width: auto;
+    height: 20px;
+    line-height: 20px;
+	float:right;
+	margin-right:5px;
+	z-index: 9;
+	cursor: pointer;
+}
+.border-bottom .img:last-child{
+	margin-right: 15px
+}
+.img img{
+	width: 16px;
+	height: 14px;
+}
+i{
+	font-style: normal;
+	font-size:12px;
+	color:#787775;
+}
+
+/*去除分割线*/
+.mui-table-view:after,.mui-table-view-cell:after{
+	height:0;
+}
+
+/*加上虚线*/
+.border-bottom{
+	padding-bottom: 10px;
+	border-bottom:1px dashed #ccc;
+}
+
+/*底部*/
+.mui-bar-tab{
+	border-top:1px solid #CAC8C8;
+	box-sizing:border-box ;
+}
+
+.bd{
+	border-right:1px solid #CAC8C8;
+}
+
+.mui-bar-tab{
+	height:40px;
+}
+
+.mui-bar-tab .mui-tab-item{
+	height:30px;
+}
+
+.mui-bar-tab .mui-tab-item.mui-active{
+	color:#CE342C!important;
+}
+
+/*主页图标*/
+.icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	fill: currentColor;
+	overflow: hidden;
+}
+

@@ -1,0 +1,164 @@
+/*头部*/
+.mui-pull-left{
+	color:#fff;
+	cursor: pointer;
+}
+
+.mui-bar-nav{
+	background: #C4271E;
+}
+
+.mui-title{
+	color:#fff;
+}
+
+/*主体*/
+.mui-content-padded{
+	height: auto;
+	overflow: hidden;
+}
+body,.mui-content{
+	background:#fff;
+}
+
+p{
+	color:#747472;
+}
+
+.one{
+	color:#474643;
+	margin-bottom: 10px;
+}
+.showCon video{
+	width: 100%;
+}
+.mui-input{
+	padding: 0 15px;
+}
+
+.tit{
+	color: #BA0200;
+	display: inline-block;
+    float: left;
+}
+.mui-content-padded img{
+	width: auto !important;
+	max-width: 100%;
+    height: auto !important;
+    margin-right: 5px;
+}
+.page{
+	width:100%;
+	color:#747472;
+	font-size: 14px;
+	/*display: inline-table;*/
+}
+.showCon{
+	height:auto;
+	width: 1000px;
+	margin:60px auto 0;
+}
+.showAns{
+	height: auto;
+	overflow: hidden;
+}
+
+.sj{
+	text-indent: 30px;
+}
+
+.mui-content-padded  .img{
+	height: 30px;
+	cursor: pointer;
+}
+.mui-content-padded .img span{
+	height: 20px;
+	margin: 0 12px;
+	font-size:14px;
+	color:#747472;
+}
+.mui-content-padded .img img{
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+.bg{
+	width:90%;
+	height:270px;
+	margin:0 auto;
+	background:url(../images/bg.png) no-repeat;
+	background-size:100% 100%;
+}
+
+.mt{
+	margin-top:20px;
+}
+/*流程样式*/
+.Ider{
+	border:1px solid #E4E4E4;
+}
+.title{
+	color:#888;
+	background:#ECEBEB;
+	height: 34px;
+    line-height: 34px;
+    text-indent: 10px;
+}
+.data{
+	padding: 2%;
+}
+.data p .wflink{
+	color: #D16561;
+}
+/* taskId=686 详情页显示流程样式*/
+a{
+	color:#C4271E;  
+}
+.showCon .flow{
+	font-size:14px;
+}
+/*收藏按钮*/
+.collectContanier{
+	margin-top: 45px;
+	margin-bottom: 45px;
+	text-align: center;
+}
+#collectBtn{
+	display: inline-block;
+	text-align: center;
+	height:95px;
+	width: 95px;
+	border-radius: 50%;
+	background-color: #C4271E;
+	color: #fff;
+	outline: none;
+	font-size: 17px;
+	border:none;
+}
+#collectBtn.collected{
+	background-color: #DEDBDB;
+	color:#BBBBBB;
+}
+/*收藏提示*/
+#collectTip,#evalTip,#loginTip{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	min-width:150px;
+	height:50px;
+	line-height: 50px;
+	text-align: center;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	white-space: nowrap;
+	padding-left: 10px;
+	padding-right: 10px;
+	display: none;
+}
+
+/* 图片位置调整 */
+figure{
+	margin: 0;
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>海康在线知识库</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<link rel="stylesheet" href="css/demo.css" type="text/css">
+		<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/jquery.gritter.css" />
+		<link rel="stylesheet" type="text/css" href="css/pop.css"/>
+		<link rel="stylesheet" type="text/css" href="css/classification.css"/>
+		<link rel="stylesheet" type="text/css" href="css/pullquestionlist.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+
+	<body>
+		<!-- 侧滑导航根容器 -->
+		<div class="mui-off-canvas-wrap mui-draggable">
+			<input type="hidden" id="currentIndex" />
+		  <!-- 菜单容器 -->
+		  <aside class="mui-off-canvas-left">
+		    <div class="mui-scroll-wrapper">
+		      <div class="mui-scroll" id="groupTree">
+		      	<input type="hidden" name="groupName"/>
+		      	<input type="hidden" name="groupId" value="0"/>
+		        <!-- 菜单具体展示内容 -->
+				<div class="treeDivLeft" data-step="3" data-intro='在这里，可以对你的分类进行添加、重命名等等的操作！'>
+					<ul id="treeClasses" class="ztree"></ul>
+				</div>
+		      </div>
+		    </div>
+		  </aside>
+		  <!-- 主页面容器 -->
+		  <div class="mui-inner-wrap">
+		    <!-- 主页面标题 -->
+		    <header class="mui-bar mui-bar-nav" >
+				<!--<a class="mui-icon mui-icon-list"></a>-->
+				<h1 class="mui-title">问答总览</h1>
+			</header>
+			<!--表头-->
+			<div class="fhead">
+				<a id="all">全部</a><a class="a2" id="browsetm"><span>浏览次数<img src="images/down.png" class="imga"></span></a>
+				<!-- <a class="a3" id="zan"><span>点赞<img src="images/down.png" class="imgb"></span></a><a class="a4" id="cai"><span>踩<img src="images/down.png" class="imgc"></span></a> -->
+			</div>
+			
+			<!--文本框和下拉框-->
+			<div class="txtselect" style="display:none;">
+				<!--文本框-->
+				<div class="mui-input-row search">
+					<input type="search" name="search" class="mui-input" id="searchVal" placeholder="" >
+					<span class="mui-icon mui-icon-search ss"></span>
+				</div>
+				<!--下拉框-->
+				<div class="select1" >
+					<select class="col1">
+						<option>问题</option>
+						<option>答案</option>
+					</select>
+
+					<span class="mui-icon down">
+						<svg class="icon xjiantou" >
+							<use xlink:href="#icon-jiantou-copy"></use>
+						</svg>
+					</span>
+					<span class="mui-icon mui-icon-search query"></span>
+				</div>
+			</div>
+
+			<!--pc端的搜索框-->
+			<div class="search-pc row">
+				<!--文本框-->
+				<div class="mui-col-sm-8 search">
+					<input type="search" name="search" class="mui-input" id="keyword">
+					<span class="mui-icon mui-icon-search ss"></span>
+				</div>
+				<!--下拉框-->
+				<div class="select1 mui-col-sm-3 " >
+					<div class="selectContanier">
+						<select class="col1">
+							<option>问题</option>
+							<option>答案</option>
+						</select>
+						<span class="mui-icon down">
+							<svg class="icon xjiantou" >
+								<use xlink:href="#icon-jiantou-copy"></use>
+							</svg>
+						</span>
+						<span class="mui-icon mui-icon-search query" id="search"></span>
+					</div>
+				</div>
+			</div>
+
+
+	        <!-- 主界面具体展示内容 -->
+	        <!--下拉刷新容器-->
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll" id="scrollApp">
+					<div class="col-md-12">
+						<div class="col-md-2" style="margin-top: 10px;" id="space">
+                            <!-- 菜单具体展示内容 -->
+                            <div id="toShow">
+                                    <input type="hidden" name="groupName"/>
+                                    <input type="hidden" name="groupId" value="0"/>
+                                <div class="treeDivLeft" data-step="3" data-intro='在这里，可以对你的分类进行添加、重命名等等的操作！'>
+                                    <ul id="treeLeftClasses" class="ztree"></ul>
+                                </div>
+                            </div>
+						</div>
+						<!--数据列表-->
+						<ul class="mui-table-view view mui-table-view-chevron cell col-md-9" id="scroll">
+							
+						</ul>
+						<input type="hidden" id="pageCount" />
+						<input type="hidden" id="currentPage" />
+						<div id="pageList" style="width: 64%;"></div>
+					</div>
+				</div>
+				
+			</div>
+			  <!--收藏按钮代理请求-->
+			  <form action="/QuestionHk/editCollect" id="editCollectForm">
+				  <!--<input type="hidden" name="id">-->
+				  <!--<input type="hidden" name="webId">-->
+				  <!--<input type="hidden" name="collect">-->
+				  <input type="hidden" name="originUrl">
+			  </form>
+
+			  <!--页面切换导航-->
+			  <form action="/QuestionHk/doFindQueCollect" id="showcollect">
+				  <nav class="mui-bar mui-bar-tab" >
+					<a id="defaultTab" class="mui-tab-item mui-active bd showfhead" href="">
+						<span class="mui-icon">
+							<svg class="icon" aria-hidden="true">
+								<use xlink:href="#icon-zhuye"></use>
+							</svg>
+						</span>首页
+					</a>
+					<a class="mui-tab-item showselect bd" href="">
+						<span class="mui-icon mui-icon-search msearch"></span>搜索
+					</a>
+					<input type="hidden" name="question">
+					<input type="hidden" name="answer">
+					<input type="hidden" name="type">
+					<input type="hidden" name="orderType">
+					<input type="hidden" name="queryType">
+					<input type="hidden" name="webId">
+					<input type="hidden" name="pageSize">
+					<input type="hidden" name="pageNo">
+					<input type="hidden" name="groupId">
+					<input type="hidden" name="collect">
+					<input type="hidden" name="showFlow">
+					<input type="hidden" name="originUrl">
+					<a class="mui-tab-item showcollect">
+						<span class="mui-icon mui-icon-star"></span>收藏
+					</a>
+				</nav>
+			  </form>
+
+
+			  <!--收藏提示-->
+			  <div id="collectTip">
+				  <div>
+					  收藏成功
+				  </div>
+			  </div>
+				<!--登录提示-->
+			  <!--<div id="loginTip">-->
+				  <!--<div>-->
+					  <!--登录成功！-->
+				  <!--</div>-->
+			  <!--</div>-->
+
+		  </div>
+		</div>
+	</body>
+		<!--js部分-->
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-1.9.1.min.js"></script>
+		
+		<script src="fonts/font_390426_dsxd3dmfdo647vi/iconfont.js"></script>
+		<script src="js/jquery.slimscroll.min.js"></script>
+		<script src="js/jquery.ztree.core.js" id="ztreeScApp" style="display: none;"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-paginator.js"></script>
+		<script src="js/customMethod.js"></script>
+		<script src="js/indexMy.js"></script>
+    </body>
+    <script>
+		$('#toShow').slimScroll({
+			height: $(window).height() -200 + 'px',
+			allowPageScroll: false
+		})
+    </script>
+</html>

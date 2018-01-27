@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../../../../global/css/mui.min.css">
+		<link rel="stylesheet" href="../../../../global/css/userapp.css">
+		<link rel="stylesheet" href="../../functions/service/css/service.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../../../../global/css/app.css"/>
+		<script type="text/javascript" src="../../../../global/js/jquery.min.js" ></script>
+		<script type="text/javascript" src="../../../../global/js/jquery.ex.js" ></script>
+		<script type="text/javascript" src="../../../../global/js/ajaxurl.js" ></script>
+		<script type="text/javascript" src="../../../../global/js/json2.js" ></script>
+		<script type="application/javascript" src="../../../../global/js/userapp.js"></script>
+		<style>
+			.mui-card .mui-control-content {
+				padding: 10px;
+			}
+			.mui-control-content {
+				height: 150px;
+			}
+			@media screen and (min-width: 100px) and (max-width: 280px) {
+				width:50px;
+				height:50px;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav mui-header-orange">
+			<h1 class="mui-title headercolor">餐台</h1>
+			<a id="icon-refresh"><span class="mui-icon mui-icon-reload headercolor"></span></a>
+			<a id="Fsearch" style="margin-right: 5px;" class="mui-icon mui-icon-search mui-pull-right headercolor"></a>
+				<div id="segmentedControl" style="top:0px;background-color: #ffffff;color: #000000;" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-negative">
+					<a class="mui-control-item mui-active" href="#item1" id="itemon1">全部</a>
+					<a class="mui-control-item" href="#item2" id="itemon2">空闲</a>
+					<a class="mui-control-item" href="#item3" id="itemon3">使用中</a>
+					<a class="mui-control-item" href="#item4" id="itemon4">已结账</a>
+				</div>
+		</header>
+		<div id="content1" class="mui-content" style="background-color: #FFFFFF;padding-top: 40px;">
+			<div style="padding: 10px 10px;">
+				<div class="mui-input-row" id="FS" style="margin: 2px 10px;padding-top: 20px;">
+					<input id="payerInfo" type="text" style="width: 85%;color: #000000;margin-top: 5px;margin-bottom: 0;" placeholder="餐台"/>
+					<a id="search" class="mui-icon mui-icon-search" style="color: #000000;"></a>
+				</div>
+			</div>
+			<div id="item1" class="mui-control-content mui-active item1" >
+				<ul class="mui-table-view mui-grid-view mui-grid-9" style="margin-top: 0px;background-color:#fff;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 wround templone" style="background-color:#fff;display: none;">
+			            <div style="position:relative" class="longtap"> 
+			                <div class="dinnertable-order" style="float: none;margin: 0px auto;">
+			                	<p class="dinnertable-p" style="font-size: 18px;font-weight: bold;">vip包间1</p>
+			                </div>
+			                <div class="mui-table-view-cell" style="border: 0;width: 90px;padding: 0;">
+								<p class="mui-pull-left test1" style="width: 45px;text-align: left;">0/4</p>
+								<p class="mui-pull-right test2" style="width: 45px;text-align: left;">11:35</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div id="item2" class="mui-control-content item2">
+			    <ul class="mui-table-view mui-grid-view mui-grid-9" style="margin-top: 0px;background-color:#fff;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 wround templtwo" style="background-color:#fff;display: none;">
+			            <div style="position:relative" class="longtap"> 
+			                <div class="dinnertable-order" style="float: none;margin: 0px auto;">
+			                	<p class="dinnertable-p" style="font-size: 18px;font-weight: bold;">01</p>
+			                </div>
+			                <div class="mui-table-view-cell" style="border: 0;width: 90px;padding: 0;">
+								<p class="mui-pull-left test1" style="width: 45px;text-align: left;">0/4</p>
+								<p class="mui-pull-right test2" style="width: 45px;text-align: left;">11:35</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div id="item3" class="mui-control-content item3">
+			    <ul class="mui-table-view mui-grid-view mui-grid-9" style="margin-top: 0px;background-color:#fff;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 wround templthree" style="background-color:#fff;display: none;">
+			            <div style="position:relative" class="longtap"> 
+			                <div class="dinnertable-order" style="float: none;margin: 0px auto;">
+			                	<p class="dinnertable-p" style="font-size: 18px;font-weight: bold;">01</p>
+			                </div>
+			                <div class="mui-table-view-cell" style="border: 0;width: 90px;padding: 0;">
+								<p class="mui-pull-left test1" style="width: 45px;text-align: left;">0/4</p>
+								<p class="mui-pull-right test2" style="width: 45px;text-align: left;">11:35</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div id="item4" class="mui-control-content item4">
+			    <ul class="mui-table-view mui-grid-view mui-grid-9" style="margin-top: 0px;background-color:#fff;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 wround templfour" style="background-color:#fff;display: none;">
+			            <div style="position:relative" class="longtap"> 
+			                <div class="dinnertable-order" style="float: none;margin: 0px auto;">
+			                	<p class="dinnertable-p" style="font-size: 18px;font-weight: bold;">01</p>
+			                </div>
+			                <div class="mui-table-view-cell" style="border: 0;width: 90px;padding: 0;">
+								<p class="mui-pull-left test1" style="width: 45px;text-align: left;">0/4</p>
+								<p class="mui-pull-right test2" style="width: 45px;text-align: left;">11:35</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="content" class="mui-content" style="margin-top:-10px;padding-top: 0;">
+			<div id="alllist" class="mui-control-content mui-active">
+				<div id="scroll" >
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-media templfive" style="display: none;">
+									<a>
+									<div class="dinnertable-order" style="margin-top: 3%;">
+										<p class="dinnertable-p" style="font-size: 18px;font-weight: bold;">05</p>	
+									</div>
+									<div class="mui-media-body" style="padding-left: 15px;">
+										<span id="billNo" class="mui-h5 mui-pull-left" style="color: #000000;">单号：</span>
+										<p id="corpName" class='mui-ellipsis mui-pull-right' style="color: #000000;">11:30:34</p>
+										<p id="corpName" class='mui-ellipsis' style="color: #000000;">398434343</p>
+										<span id="caterName" class="mui-h5 mui-pull-left" style="color: #000000;">菜品：</span>
+										<p id="corpName" class='mui-ellipsis mui-pull-right' style="color: #000000;font-weight: bold;">¥280.00</p>
+										<p id="corpName" class='mui-ellipsis' style="color: #000000;">6份</p>
+										<span id="customer" class="mui-h5 mui-pull-left" style="color: #000000;">人数：</span>
+										<p id="corpName" class='mui-ellipsis mui-pull-right' style="color: #000000;">张三</p>
+										<p id="corpName" class='mui-ellipsis' style="color: #000000;">4/8</p>
+									</div>
+									</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../../../global/js/mui.min.js"></script>
+		<script>
+			var segmentedControl = document.getElementById('segmentedControl');
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			$('#scroll').scroll({
+				indicators: true //是否显示滚动条
+			});
+			var restId=localStorage.getItem('restId');
+			var vouObj ={restId:restId};
+			var nowfocus = 1;
+			var nowfocustwo = 1;
+			var num = 0;
+			returndeskCode = "";
+			mui.plusReady(function(){
+				//报销人
+				if(!plus.webview.getWebviewById('openView')){
+					mui.preload({
+						id: 'openView',
+						url: 'opentable.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('deskchoose')){
+					mui.preload({
+						id: 'deskchoose',
+						url: 'deskchoose.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('deskchoosetwo')){
+					mui.preload({
+						id: 'deskchoosetwo',
+						url: 'deskchoosetwo.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('billingdetailsedit')){
+					mui.preload({
+						id: 'billingdetailsedit',
+						url: 'billingdetailsedit.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('menus')){
+					mui.preload({
+						id: 'menus',
+						url: 'menus.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('detailsedit')){
+					mui.preload({
+						id: 'detailsedit',
+						url: '../bill/detailsedit.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				if(!plus.webview.getWebviewById('billoktwo')){
+					mui.preload({
+						id: 'billoktwo',
+						url: '../bill/billoktwo.html',
+						styles:{
+							popGesture : 'hide'
+						}
+					});
+				}
+				
+				intdata();
+			});
+			
+			function intdata(){
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					if(data.success){
+						for(var i=0;i<data.list.length;i++){
+						getDeskList(data.list[i],"templone");	
+						}	
+						
+						resetFrameTop();
+						$('#content1').css('padding-top',(parseFloat(topoffset.replace('px',''))+20)+'px');
+					}else{
+					plus.nativeUI.toast(data.msg,{verticalAlign:'bottom'});
+					}
+
+					
+				});
+			}
+			
+			function getDeskList(list,name){
+						var templRow = jQuery('li.'+name+'');
+						var newRow = templRow.clone(true);
+						newRow.addClass('expenseitem');
+						var $div = newRow.find('div:eq(0)');
+						$div.find('p:eq(0)').text(list.desk_code);
+						var $divtwo = newRow.find('div:eq(1)');
+						var p0 = $div.find('p:eq(1)');
+						var p1 = $div.find('p:eq(2)');
+						p0.text(list.user_number+"/"+list.seat_count);
+
+						if(list.work_status == "10"){
+							$div.find('div:eq(0)').css("border","solid 3px #C0C0C0"); 
+							p1.html("&emsp;");
+							
+						}else if(list.work_status == "20"){
+							$div.find('div:eq(0)').css("border","solid 3px #fad503"); 
+								p1.text(list.use_time);
+						}else if(list.work_status == "30"){
+							$div.find('div:eq(0)').css("border","solid 3px #d7fc7c"); 
+								p1.text(list.use_time);
+						}else if(list.work_status == "40"){
+							$div.find('div:eq(0)').css("border","solid 3px #62be7b");
+								p1.text(list.use_time);
+						}else if(list.work_status == "50"){
+							$div.find('div:eq(0)').css("border","solid 3px #74d1fb");
+								p1.text(list.use_time);
+						}else if(list.work_status == "70"){
+							$div.find('div:eq(0)').css("border","solid 3px #f8b651"); 
+							p1.text(list.use_time);
+						}else{
+							$div.find('div:eq(0)').css("border","solid 3px #ae5da1"); 
+							p1.text(list.use_time);
+						}
+						newRow.bind('touchstart',function(){
+							timeout=setTimeout(function(){
+							choose(list);
+							},1000);
+						});
+						newRow.bind('touchend',function(){
+							clearTimeout(timeout);
+						});
+						newRow.bind('touchmove',function(){
+							clearTimeout(timeout);
+						});
+						
+						newRow.data('expenseitem',list);
+						newRow.insertBefore(templRow).removeClass(name).show();
+				}
+			
+			$("#FS").hide();
+			$("#content").hide();
+			document.getElementById('itemon1').addEventListener('tap',function(e){
+				$("#payerInfo").val("");
+				$("#content").hide();
+				$("#item2").hide();
+				$("#FS").hide();
+				$('div.item3').hide();
+				$('div.item4').hide();
+				$("#item1").show();
+				nowfocus = 1;
+				nowfocustwo = 1;
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					$('li.expenseitem').remove();
+					setTimeout(function(){
+						for(var i=0;i<data.list.length;i++){
+						getDeskList(data.list[i],"templone");	
+						}
+					},500);
+				});
+			});
+			document.getElementById('itemon2').addEventListener('tap',function(e){
+				$("#payerInfo").val("");
+				$("#content").hide();
+				$('div.item1').hide();
+				$('div.item3').hide();
+				$('div.item4').hide();
+				$("#FS").hide();
+				$("#item2").show();
+				nowfocus = 2;
+				nowfocustwo = 2;
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					$('li.expenseitem').remove();
+					setTimeout(function(){
+						for(var i=0;i<data.list.length;i++){
+							if(data.list[i].work_status == "10"){
+								getDeskList(data.list[i],"templtwo");
+							}
+						}
+					},500);
+				});
+			});
+			document.getElementById('itemon3').addEventListener('tap',function(e){
+				$("#payerInfo").val("");
+				$("#content").hide();
+				$('div.item1').hide();
+				$('div.item2').hide();
+				$('div.item4').hide();
+				$("#FS").hide();
+				$("#item3").show();
+				nowfocus = 3;
+				nowfocustwo = 3;
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					$('li.expenseitem').remove();
+					setTimeout(function(){
+						for(var i=0;i<data.list.length;i++){
+							if(data.list[i].work_status != "70"&&data.list[i].work_status != "10"){
+								getDeskList(data.list[i],"templthree");
+							}
+						}
+					},500);
+				});
+			});
+			document.getElementById('itemon4').addEventListener('tap',function(e){
+				$("#payerInfo").val("");
+				$("#content").hide();
+				$('div.item1').hide();
+				$('div.item2').hide();
+				$("#FS").hide();
+				$('div.item3').hide();
+				$("#item4").show();
+				nowfocus = 4;
+				nowfocustwo = 4;
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					$('li.expenseitem').remove();
+					
+					setTimeout(function(){
+						for(var i=0;i<data.list.length;i++){
+							if(data.list[i].work_status == "70"){
+								getDeskList(data.list[i],"templfour");
+							}
+						}
+					},500);
+				});
+			});
+			document.getElementById('Fsearch').addEventListener('tap',function(e){
+				nowfocus = 8 ;
+				$("#FS").show();
+				$('div.item1').hide();
+				$('div.item2').hide();
+				$('div.item3').hide();
+				$("#item4").hide();
+			});
+			document.getElementById('search').addEventListener('tap',function(e){
+				nowfocus = 5 ;
+				$("#content").show();
+				var name = $("#payerInfo").val();
+				var url = getSessiontag("app/getDesk.do","");
+				$.postJSON(url,vouObj,function(data){	
+					$('li.expenseitem').remove();
+					setTimeout(function(){
+						for(var i=0;i<data.list.length;i++){
+						var asdf = data.list[i].desk_name;
+						if(nowfocustwo == 1){
+							if(asdf.indexOf(name)>= 0){
+								getDeskList2(data.list[i]);
+							}
+						}else if(nowfocustwo == 2  && data.list[i].work_status == "10"){
+							if(asdf.indexOf(name)>= 0){
+								getDeskList2(data.list[i]);
+							}
+						}else if(nowfocustwo == 3 &&(data.list[i].work_status != "70"&&data.list[i].work_status != "10")){
+							if(asdf.indexOf(name)>= 0){
+								getDeskList2(data.list[i]);
+							}
+						}else if(nowfocustwo == 4){
+							if(asdf.indexOf(name)>= 0 && data.list[i].work_status == "70"){
+								getDeskList2(data.list[i]);
+							}
+						}
+						}
+					},500);
+					
+				});
+			});
+			
+			document.getElementById("icon-refresh").addEventListener("tap",function(e){
+				if(nowfocus == 1){
+					var btn = document.getElementById('itemon1');
+				}else if(nowfocus == 2){
+					var btn = document.getElementById('itemon2');
+				}else if(nowfocus == 3){
+					var btn = document.getElementById('itemon3');
+				}else if(nowfocus == 4){
+					var btn = document.getElementById('itemon4');
+				}else if(nowfocus == 5){
+					var btn = document.getElementById('search');
+				}else{
+					return;
+				}
+				mui.trigger(btn,"tap");
+				
+			});
+			
+			function getDeskList2(list){
+						var templRow = jQuery('li.templfive');
+						var newRow = templRow.clone(true);
+						newRow.addClass('expenseitem');
+						var $div = newRow.find('div:eq(0)');
+						var pname = $div.find('p:eq(0)');
+						pname.text(list.desk_code);
+						var $divtwo = newRow.find('div:eq(1)');
+						var p0 = $divtwo.find('p:eq(0)');
+						var p1 = $divtwo.find('p:eq(1)');
+						var p2 = $divtwo.find('p:eq(2)');
+						var p3 = $divtwo.find('p:eq(3)');
+						var p4 = $divtwo.find('p:eq(4)');
+						var p5 = $divtwo.find('p:eq(5)');
+						if(list.orderbill_code!=null&&list.orderbill_code!=0){
+							p1.text(list.orderbill_code);
+						}else{
+							p1.text("ss");
+							p1.attr("style","color: white");	
+						}
+						if(list.lowestconsAmount!=null&&list.lowestconsAmount!=0){  
+							p2.text("￥"+list.lowestconsAmount);
+						}else{
+							p2.text("ss");
+							p2.attr("style","color: white");	
+						}
+						if(list.ccount!=null&&list.ccount!=0){
+							p3.text(list.ccount);
+						}else{
+							p3.text("ss");
+							p3.attr("style","color: white");	
+						}
+						if(list.bill_employee_name!=null&&list.bill_employee_name!=0&&list.bill_employee_name!="null"){
+							p4.text(list.bill_employee_name);
+						}else{
+							p4.text("ss");
+							p4.attr("style","color: white");
+						}
+						if(list.user_number!=null&&list.user_number!=0){
+							p5.text(list.user_number+"/"+list.seat_count);
+						}else{
+							p5.text(0+"/"+list.seat_count);
+						}
+						p0.text("www");
+						p0.attr("style","color: white");
+						if(list.work_status == "10"){
+							$div.css("border","solid 3px #C0C0C0"); 
+						}else if(list.work_status == "20"){
+							$div.css("border","solid 3px #fad503"); 
+						}else if(list.work_status == "30"){
+							$div.css("border","solid 3px #d7fc7c"); 
+						}else if(list.work_status == "40"){
+							$div.css("border","solid 3px #62be7b"); 
+						}else if(list.work_status == "50"){
+							$div.css("border","solid 3px #74d1fb"); 
+						}else if(list.work_status == "70"){
+							$div.css("border","solid 3px #f8b651"); 
+							p0.text(list.use_time);
+						}else{
+							$div.css("border","solid 3px ae5da1"); 
+							p0.text(list.use_time);
+						}
+						newRow.bind('touchstart',function(){
+							timeout=setTimeout(function(){
+							choose(list);
+							},1000);
+						});
+						newRow.bind('touchend',function(){
+							clearTimeout(timeout);
+						});
+						newRow.bind('touchmove',function(){
+							clearTimeout(timeout);
+						});
+						newRow.data('expenseitem',list);
+						newRow.insertBefore(templRow).removeClass("templfive").show();
+					
+				}
+			
+			$('.mui-media').on('tap','div',function(e){
+				openView($(this).closest("li").data('expenseitem'));
+			});
+
+			function openView(temp){
+				//var $this = jQuery(temp),$li = $this.closest('li');
+        		var abc = temp;
+        		var userobj = {};
+        		userobj.groupId = localStorage.getItem('groupId') ;
+        		userobj.restId = localStorage.getItem('restId');
+        		userobj.deskId = abc.desk_id;
+        		var uri = getSessiontag("app/checkDesk.do","");
+        		$.postJSON(uri,userobj,function(data){
+        			if(data.success){
+        				if(abc.work_status == data.flag){
+        					if(abc.work_status == "10"){
+				        		var dataPage = plus.webview.getWebviewById('openView');
+								dataPage.loadURL('opentable.html');
+								var obj = {};
+								obj.list = abc;
+								setTimeout(function(){
+									mui.fire(dataPage,'initData',obj);
+									dataPage.show('slide-in-right', 300);
+								},500);	
+			        		}/*else if(abc.work_status == "40")
+			        		{
+			        			var dataPage = plus.webview.getWebviewById('billingdetailsedit');
+								dataPage.loadURL('billingdetailsedit.html');
+								var obj = {};
+								abc.deskId = abc.desk_id;
+								abc.deskName = abc.desk_name;
+								abc.deskCode = abc.desk_code;
+								abc.orderBillCode = abc.orderbill_code;
+								abc.orderBillId = abc.orderbill_id;
+								abc.billEmployeeName = abc.bill_employee_name;
+								abc.billEmployeeId = abc.bill_employee_id;
+								abc.deskOpenBillId = abc.deskOpenId;
+								obj.list = abc;
+								setTimeout(function(){
+									mui.fire(dataPage,'initData',obj);
+									dataPage.show('slide-in-right', 300);
+								},500);
+			        		}*/else if(abc.work_status == "30"){
+			        			var dataPage = plus.webview.getWebviewById('menus');
+								dataPage.loadURL('menus.html');
+								var obj = {};
+								abc.billEmployeeName = abc.bill_employee_name;
+								abc.billEmployeeId = abc.bill_employee_id;
+								obj.list = abc;
+								setTimeout(function(){
+									mui.fire(dataPage,'initData',obj);
+									dataPage.show('slide-in-right', 300);
+								},500);
+			        		}else if(abc.work_status == "50"||abc.work_status == "60"||abc.work_status == "40"){
+			        			var dataPage = plus.webview.getWebviewById('detailsedit');
+								dataPage.loadURL('../bill/detailsedit.html');
+								var obj = {};
+								abc.deskId = abc.desk_id;
+								abc.deskName = abc.desk_name;
+								abc.deskCode = abc.desk_code;
+								abc.orderBillCode = abc.orderbill_code;
+								abc.orderBillId = abc.orderbill_id;
+								abc.billEmployeeName = abc.bill_employee_name;
+								abc.billEmployeeId = abc.bill_employee_id;
+								abc.deskOpenBillId = abc.deskOpenId;
+								obj.list = abc;
+								setTimeout(function(){
+									mui.fire(dataPage,'initData',obj);
+									dataPage.show('slide-in-right', 300);
+								},500);
+			        		}
+			        		else if(abc.work_status == "70"){
+			        			var dataPage = plus.webview.getWebviewById('billoktwo');
+								dataPage.loadURL('../bill/billoktwo.html');
+								var obj = {};
+								abc.billEmployeeName = abc.bill_employee_name;
+								abc.billEmployeeId = abc.bill_employee_id;
+								abc.deskId = abc.desk_id;
+								abc.deskName = abc.desk_name;
+								abc.deskCode = abc.desk_code;
+								abc.orderBillCode = abc.orderbill_code;
+								abc.orderBillId = abc.orderbill_id;
+								abc.deskOpenBillId = abc.deskOpenId;
+								obj.list = abc;
+								setTimeout(function(){
+									mui.fire(dataPage,'initData',obj);
+									dataPage.show('slide-in-right', 300);
+								},500);
+			        		}
+        				}else{
+        					plus.nativeUI.toast("请刷新页面",{verticalAlign:'bottom'});
+							return;
+        				}
+        			}else{
+        				plus.nativeUI.toast(data.msg,{verticalAlign:'bottom'});
+        			}
+        		})
+        		
+			}
+			
+			function choose(temp){
+				num =0;
+				var abc = temp;
+        		var userobj = {};
+        		userobj.groupId = localStorage.getItem('groupId') ;
+        		userobj.restId = localStorage.getItem('restId');
+        		userobj.deskId = abc.desk_id;
+        		var uri = getSessiontag("app/checkDesk.do","");
+        		$.postJSON(uri,userobj,function(data){
+        			if(data.success){
+        				if(data.flag == "10"){
+        					return;
+        				}
+        				if(abc.work_status == data.flag){
+						var aasd = {};
+						aasd.deskIds = abc.desk_id;
+						aasd.rest_id = localStorage.getItem('restId');
+						var uurl = getSessiontag("app/getMegerDeskList.do","");
+						$.postJSON(uurl,aasd,function(datas){
+							var $div = '<ul class="mui-table-view mui-table-view-chevron">';
+								if(data.flag== "30"||data.flag== "40"||data.flag== "50"){
+									num++;
+									$div += '<li class="mui-table-view-cell" value="'+temp.desk_id+","+temp.desk_name+","+temp.rest_id+'"> '
+									+'<a class="mui-popup-buttonthis"  onclick="nextstep(this)">'
+									+'<p class="mui-pull-left" style="color: black;font-weight: bold;font-size: 18px;">转台</p>'
+									+'</a>'
+									+'</li>';
+								}
+								
+								if(data.flag== "30"||data.flag== "40"||data.flag== "50"){
+									num++;
+									$div += '<li class="mui-table-view-cell" value="'+temp.desk_id+","+temp.desk_name+","+temp.rest_id+'"> '
+									+'<a class="mui-popup-buttonthis"  onclick="nextstep(this)">'
+									+'<p class="mui-pull-left" style="color: black;font-weight: bold;font-size: 18px;">并台</p>'
+									+'</a>'
+									+'</li>';
+								}
+								if(datas!=""){
+									num++;
+									returndeskCode = "";
+									for(var i=0;i<datas.length;i++){
+										returndeskCode += ","+datas[i].desk_code;
+									}
+									$div += '<li class="mui-table-view-cell" value="'+temp.desk_id+","+temp.desk_name+","+temp.rest_id+'"> '
+									+'<a class="mui-popup-buttonthis"  onclick="nextstep(this)">'
+									+'<p class="mui-pull-left" style="color: black;font-weight: bold;font-size: 18px;">撤并</p>'
+									+'</a>'
+									+'</li>';	
+								}
+								if(data.flag== "30"||data.flag== "70"||data.flag== "99"){
+									num++;
+									$div += '<li class="mui-table-view-cell" value="'+temp.desk_id+","+temp.desk_name+","+temp.rest_id+'"> '
+									+'<a class="mui-popup-buttonthis"  onclick="nextstep(this)">'
+									+'<p class="mui-pull-left" style="color: black;font-weight: bold;font-size: 18px;">清台</p>'
+									+'</a>'
+									+'</li>';
+								}
+							
+							$div += '</ul>';
+							mui.confirm($div,"餐台："+temp.desk_code, null, function(e) {
+								if (e.index != 1) {
+									$(".mui-popup-backdrop").attr("style","display: none;");	
+								}
+							},'div');
+							$('.mui-popup-text').css('height','200px');
+							mui('.mui-popup-text').scroll({
+								indicators: true //是否显示滚动条
+							});
+							$('.mui-popup-button-bold').attr("style","display: none;");
+							//mui-popup-in（hide）
+							$(".mui-popup-in").attr("style","display: block;");
+							$(".mui-popup-backdrop").attr("style","display: block;");
+							
+						});
+        				}else{
+        					plus.nativeUI.toast("请刷新页面",{verticalAlign:'bottom'});
+							return;
+        				}
+        			
+        			}else{
+        				plus.nativeUI.toast(data.msg,{verticalAlign:'bottom'});
+        			}
+        		})
+				
+				
+			}
+			
+			function nextstep(e){
+				var $this = $(e);
+				var $p = $this.find("p");
+				var $li = $this.closest("li");
+				var tempnow = {};
+				tempnow.desk_id = $li.attr("value").split(",")[0];
+				tempnow.desk_name = $li.attr("value").split(",")[1];
+				tempnow.rest_id = $li.attr("value").split(",")[2];
+				var $div = $(".mui-popup");
+				$div.remove();
+				$(".mui-popup-backdrop").attr("style","display: none;");
+				if($p.text() == "清台"){
+					clear(tempnow);
+				}else if($p.text() == "转台"){
+					var dataPage = plus.webview.getWebviewById('deskchoose');
+						dataPage.loadURL('deskchoose.html');
+						setTimeout(function(){
+							mui.fire(dataPage,'initData',tempnow);
+							dataPage.show('slide-in-right', 300);
+						},500);
+				}else if($p.text() == "撤并"){
+					returndesk(tempnow);
+				}else if($p.text() == "并台"){
+					var dataPage = plus.webview.getWebviewById('deskchoosetwo');
+						dataPage.loadURL('deskchoosetwo.html');
+						setTimeout(function(){
+							mui.fire(dataPage,'initData',tempnow);
+							dataPage.show('slide-in-right', 300);
+						},500);
+				}
+			}
+			
+			function returndesk(tempnow){
+				var btnArray = "撤并";
+				mui.confirm("餐台号"+returndeskCode.substring(1)+"：确定要撤并吗？", btnArray, function(e) {
+					if (e.index == 1) {
+						var obj = {};
+						obj.desk_id = tempnow.desk_id;
+						var uri = getSessiontag("app/cancelMegerDesk.do","");
+						$.postJSON(uri,obj,function(data){
+						 	if(data.meg!=""){
+						 		plus.nativeUI.toast(data.meg,{verticalAlign:'bottom'});
+						 	}else{
+						 		plus.nativeUI.toast("撤并成功！",{verticalAlign:'bottom'});
+						 	}
+						});								
+				     }     
+				})
+			}
+			
+			
+			function clear(temp){
+				 var dopenBill={};
+				 dopenBill.fronDeskWorkList=[];
+				 dopenBill.dopenBillWorkList=[];
+				 var name='02';
+					 var deskWork={};
+					 var dopenWork={};
+					// var desk=idList;
+					 deskWork.desk_id=temp.desk_id;
+					 deskWork.rest_id=temp.rest_id;
+				
+					dopenBill.fronDeskWorkList.push(deskWork);
+					dopenWork.rest_id=temp.rest_id;
+					dopenWork.desk_id=temp.desk_id;
+					dopenBill.dopenBillWorkList.push(dopenWork);
+					var btnArray = "清台";
+					mui.confirm("餐台号"+temp.desk_name+"：确定要清台吗？", btnArray, function(e) {
+						if (e.index == 1) {
+							
+							var uri = getSessiontag("app/cleanDesk.do","");
+								 $.postJSON(uri,dopenBill,function(data){	
+								 	 if(data.success){
+										plus.nativeUI.toast("清台成功！",{verticalAlign:'bottom'});
+										var btn = document.getElementById('icon-refresh');
+										mui.trigger(btn,"tap");
+								}else{
+									plus.nativeUI.toast(data.msg.substring(10),{verticalAlign:'bottom'});
+								}
+					
+								})  								
+					     }     
+					})
+			}
+			
+			window.addEventListener('refresh', function(event){
+				$('li.expenseitem').remove();
+				var btn = document.getElementById('icon-refresh');
+				$("#payerInfo").val("");
+				mui.trigger(btn,"tap");
+			});
+			
+		</script>
+		<script type="text/javascript" src="../../../../global/js/immersed.js" ></script>
+	</body>
+
+</html>
