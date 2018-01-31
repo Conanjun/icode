@@ -180,7 +180,7 @@
 				success:function(data, textStatus, request){
 					if(!data.status||data.status==0){
 						var html = "",
-						flow='';//答案为流程，显示流程的内容
+							ansHtml='';//答案为流程，显示流程的内容
 						var ques = filterQue(data.question);//处理语音、图片等信息问题 去除_xgn
 						//获取答案的类型
 						var ansType='';
@@ -196,15 +196,15 @@
 								 * 说明：如果答案为流程，则展示该流程的入口
 								 * */
 								if(ansType==6){
-									flow='<div>'+'<a class="flow" ansType="'+ansType+'" modeValue="'+(data.list[0].ModeValue||'')+'">'+data.list[0].ModeInfo+'</a></div>';
+									ansHtml='<div>'+'<a class="flow" ansType="'+ansType+'" modeValue="'+(data.list[0].ModeValue||'')+'">'+data.list[0].ModeInfo+'</a></div>';
 								}else{
-									flow='';
+									ansHtml=data.list[0].Answer;
 								}
 								
 								html+= '<div class="mui-content-padded" id="'+ansId+'">'+
 										'<p class="one">Q:'+ques+'</p>'+
 										'<div class="showAns" ansType="'+ansType+'" modeValue="'+(data.list[0].ModeValue||'')+'">'+
-											'<span class="tit">A：</span><div class="page">'+(data.list[0].Answer)+'</div>'+flow+
+											'<span class="tit">A：</span><div class="page">'+ansHtml+'</div>'+
 										'</div>'+
 										// '<div class="img">'+
 										// 	'<span><img src="images/bad.png" class="img2">'+(data.list[0].Useless ? data.list[0].Useless : 0)+'</span>'+
@@ -223,14 +223,14 @@
 								 * 说明：如果答案为流程，则展示该流程的入口
 								 * */
 									if(ansType==6){
-										flow='<div>'+'<a class="flow" ansType="'+ansType+'" modeValue="'+(data.list[i].ModeValue||'')+'">'+(data.list[i].ModeInfo||'')+'</a>'
+										ansHtml='<div>'+'<a class="flow" ansType="'+ansType+'" modeValue="'+(data.list[i].ModeValue||'')+'">'+(data.list[i].ModeInfo||'')+'</a>'
 										'</div>'	
 									}else{
-										flow='';
+										ansHtml=data.list[i].Answer;
 									}
 									html+= '<div class="mui-content-padded">'+
 											'<div class="showAns" ansType="'+ansType+'" modeValue="'+(data.list[i].ModeValue||'')+'">'+
-												'<span class="tit">A'+(i+1)+'：</span><div class="page">'+(data.list[i].Answer)+'</div>'+flow+
+												'<span class="tit">A'+(i+1)+'：</span><div class="page">'+ansHtml+'</div>'+
 											'</div>'+
 											// '<p class="img">'+
 											// 	'<span><img src="images/bad.png" class="img2">'+(data.list[i].Useless ? data.list[i].Useless : 0)+'</span>'+
