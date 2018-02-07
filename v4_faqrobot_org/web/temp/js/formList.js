@@ -150,9 +150,9 @@
         $('.g').show();
     });
     $('input[name=saveType]:eq(4)').on('click', function() {
-        $('.cosType1').hide();
-        $('.cosType2').hide();
-        $('.cosType3').show();
+      $('.cosType1').hide();
+      $('.cosType2').hide();
+      $('.cosType3').show();
     });
 
     function initSrc() {
@@ -169,7 +169,7 @@
                     Base.gritter(data.message, false);
                 }else {
                     var html ='';
-                    if(data.List[0]) {
+                    if(data.List && data.List[0]) {
 						dataList = data.List;
                         for(var i=0; i<data.List.length; i++) {
                             var ShowConfirm = '';//是否需要表单确认
@@ -305,4 +305,17 @@
     $('.search-input-addSrc').on('click', function() {
         return false;
     });
+
+    
+    /**
+     * taskid=779
+     * 原因：添加场景式问答表单：默认选中java类处理，添加默认className和classMethod
+     */
+    $('#addClick').click(function () {
+      $("input:radio[name=saveType][value=1]").attr({'checked': 'checked'}).trigger('click');
+      $('[name=className]').val('org.faqrobot.third.stepform.third.test.TestStepFormImpl');
+      $('[name=classMethod]').val('getStemFormResult');
+    });
+
+
 });

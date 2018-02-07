@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>支付宝列表</title>
+    <title>平台对接</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -79,6 +79,14 @@
         .api:hover{
             background: url("images/api1.png") no-repeat;
         }
+        .Garph{
+            background: url("images/graph.png") no-repeat;
+            background-size: 100%;
+        }
+        .Garph:hover{
+            background: url("images/graph1.png") no-repeat;
+            background-size: 100%;
+        }
     </style>
 </head>
 
@@ -87,26 +95,13 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">系统管理</a></li>
-            <li class="active">接口列表</li>
+           
         </ol>
         <div class="row">
-            <h1 class="page-header">接口列表</h1>
+            <h1 class="page-header">平台对接</h1>
             <div class="panel">
                 <div class="panel-body container">
-                  <div class="row">
-                      <!-- <div class="col-md-3 col-sm-6"><a href="../../web/system/payCode.html" class="wangye block" data-num="0" data-name="网页接入"></a></div> -->
-                      <div class="col-md-3 col-xs-4"><a href="../../web/system/payCode.html" class="wangye block" data-num="0" data-name="网页接入"></a></div>
-                      <div class="col-md-3 col-xs-4"><a href="../../web/platform/weiboList.html" class="weibo block" data-num="0" data-name="微博接入"></a></div>
-                      <div class="col-md-3 col-xs-4"><a id="wechat" href="../../web/platform/wechatListCus.html" class="weixin block" data-num="0" data-name="微信接入"></a></div>
-                      <div class="col-md-3 col-xs-4"><a href="../../web/platform/dingchat.html" class="dingding block" data-num="0" data-name="钉钉接入"></a></div>
-                  <!-- </div>
-                  <div class="row"> -->
-                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/zhifubaoList.html" class="zhifubao block" data-num="0" data-name="支付宝接入"></a></div>
-                        <!-- <div id='kefu' class="col-md-3 col-xs-4"><a href="../../web/platform/ThirdViewer.html" class="kefu block" data-num="0" data-name="第三方客服"></a></div> -->
-                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/authList.html" class="renzheng block" data-num="0" data-name="认证列表"></a></div>
-                        <div class="col-md-3 col-xs-4"><a href="../../web/platform/portList.html" class="api block" data-num="0" data-name="接口列表"></a></div>
+                  <div class="row" id='platList'>
                   </div>
 
                 </div>
@@ -142,6 +137,39 @@
         $('#wechat').attr('href','../../web/platform/wechatListYun.html');
         $('#kefu').hide();
     }
+    /*
+        taskid=748,黄世鹏
+        逻辑：取出localStorage的数据，通过判断地址进行添加
+    */
+    var html=''
+    JSON.parse(localStorage.getItem('access')).map(function(obj){
+        if(obj.NewUrl.indexOf('web/system/payCode.html')!=-1 ){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="wangye block" data-num="0" data-name="网页接入"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/weiboList.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="weibo block" data-num="0" data-name="微博接入"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/wechatListCus.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="weixin block" data-num="0" data-name="微信接入"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/dingchat.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="dingding block" data-num="0" data-name="钉钉接入"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/zhifubaoList.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="zhifubao block" data-num="0" data-name="支付宝接入"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/authList.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="renzheng block" data-num="0" data-name="认证列表"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/portList.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="api block" data-num="0" data-name="接口列表"></a></div>'
+        };
+        if(obj.NewUrl.indexOf('web/platform/knowledgeGarph.html')!=-1){
+            html+='<div class="col-md-3 col-xs-4"><a href=../../'+obj.NewUrl+' class="Garph block" data-num="0" data-name="知识图谱"></a></div>'
+        };
+    })
+    $('#platList').append(html)
+    
 </script>
 </body>
 </html>

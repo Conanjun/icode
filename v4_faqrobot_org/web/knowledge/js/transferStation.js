@@ -166,7 +166,11 @@ function listPorts(confirmBtn) {
                         x.ComeFromValue = getComeFrom(x.ComeFrom);
                         x.TypeValue = getAnswerType(x.Type);
                         x.AnswerTypeValue = getAnswerType(x.AnswerType);
-                        x.AddKnowledge = x.ComeFrom == 2 ? false : (x.Type == 1 ? true : false);
+                        /**
+                         * taskid=517 索菲亚知识中转站客服添加问题添加到知识中站点击不了 2017/12/29
+                         * 修改：当为客服添加问题时，添加到客服图标置灰
+                         */
+                        x.AddKnowledge = (x.ComeFrom == 2||x.ComeFrom == 0) ? false : (x.Type == 1 ? true : false);
                     });
                     var source = $("#list-item-template").html();
                     var template = Handlebars.compile(source);
@@ -262,7 +266,12 @@ function listPorts(confirmBtn) {
                         }
                         if (tTemp[0].ComeFrom == 0) {
                             // 人工客服
-                            ifbOpenWindowInNewTab('/web/knowledge/transferStationAdd.html?tsFlag=true&tmpNum=' + tmpNum, '新增知识');
+                        /**
+                             * taskid=517 索菲亚知识中转站客服添加问题添加到知识中站点击不了 2017/12/29
+                             * 原因：当为客服添加问题时，未传ComeForm参数导致报错
+                             * 修改：追加ComeForm参数
+                             */
+                            ifbOpenWindowInNewTab('/web/knowledge/transferStationAdd.html?ComeFrom=0&tsFlag=true&tmpNum=' + tmpNum, '新增知识');
                             return;
                         }
                         // 第三方知识库     第三方知识系统回答

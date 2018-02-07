@@ -419,16 +419,7 @@
                 }else {            
                     window.event.cancelBubble = true; 
               } 
-        })
-
-       //输入内容字数限制
-        // $('#helpContent').on('change',function(){
-        //     console.log('11');
-        //     if($(this).val().length>=200){
-        //         faqrobotModule.showMsg('您好，您的留言最多输入200字');
-        //     }
-        // })
-       
+        })     
       }
     }
       //taskId: 418 自如页面定制 满意度评价 点击满意度评价按钮s=fadeback，推送评价框

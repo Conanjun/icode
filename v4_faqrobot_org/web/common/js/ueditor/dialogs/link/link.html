@@ -28,7 +28,7 @@
         <tr>
              <td colspan="2">
                  <label for="target"><var id="lang_input_target"></var></label>
-                 <input id="target" type="checkbox"/>
+                 <input id="target" type="checkbox" checked="checked"/>
              </td>
         </tr>
         <tr>
@@ -69,7 +69,7 @@
     }
     $G("title").value = url ? link.title : "";
     $G("href").value = url ? url: '';
-    $G("target").checked = url && link.target == "_blank" ? true :  false;
+    //$G("target").checked = url && link.target == "_blank" ? true :  false;
     $focus($G("href"));
 
     function handleDialogOk(){

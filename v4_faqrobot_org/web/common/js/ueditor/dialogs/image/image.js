@@ -10,9 +10,13 @@ function showMenu() {
 	var cityOffset = $("#queSel").offset();
 	$("#menuContent").slideDown("fast");
 	$("body").bind("mousedown", onBodyDown);
-	$('#classTree').slimScroll({
-		height: '300px'
-	});
+/*
+	taskId=483,黄世鹏，
+    分类名不能完全展示
+ */
+	// $('#classTree').slimScroll({
+	// 	height: '300px'
+	// });
 }
 function hideMenu() {
 	$("#menuContent").fadeOut("fast");
@@ -904,7 +908,11 @@ function onBodyDown(event) {
 				},
 				async: {
 					enable: true,
-					url: "/classes/pageListClasses?mode=9&pageSize=1000",
+					/*
+						黄世鹏
+						修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+					*/
+					url: "/classes/listClasses?m=9&pageSize=1000",
 					autoParam: ["id"],
 					dataFilter: function (treeId, parentNode, responseData) {
 						if (responseData) {

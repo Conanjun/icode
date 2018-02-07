@@ -31,6 +31,15 @@
         #queManual .form-group {
             padding: 0 15px;
         }
+        /*taskId=558  智能推荐功能优化 Amend by 赵宇星
+        *说明：修改智能推荐输入样式
+        */
+        .QueContainer .form-group:first-child{
+            min-width: 100px;
+        }
+        [name=postQueInput]{
+            border-color:#348FE2;
+        }
 		.item{
 			width:100%;
 			overflow:hidden;
@@ -147,6 +156,26 @@
         .oneDelQueGrey{
             cursor: not-allowed !important;
             color: #b6c2c9;
+        }
+        /*taskId=558  智能推荐功能优化 Amend by 赵宇星
+        *说明：刷新按钮样式更改 默认不显示刷新按钮
+        */
+        .form-horizontal .reflashRec{
+            margin: 4px 0 0 30px;
+            width: 29px;
+            height: 29px;
+            background: #348FE2;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+            font-size: 15px;
+        }
+        .form-horizontal .reflashRec>span.timeTip{
+                margin-right: 0px;
+        }
+        .form-horizontal .reflashRec{
+            display: none;
         }
     </style>
 </head>
@@ -410,9 +439,13 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                            <h4 class="modal-title" id="tipTitle"></h4>
+                            <h4 class="modal-title" id="tipTitle">删除问题</h4>
                         </div>
                         <div class="modal-body">
+                            <input type="hidden" class="delAnsFlowId"><!-- 该问题id -->
+                            <input type="hidden" class="nowId"><!-- 删除的id -->
+                            <input type="hidden" class="corSetId"><!-- 不进入回收站id -->
+                            <input type="hidden" class="flowId"><!-- 标问id -->
                             <p id="tipWord"></p>
                         </div>
                         <div class="modal-footer">
@@ -556,16 +589,37 @@
             </div>
         </div>
     </div>
-
+    <!-- 删除关联标准问题 -->
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="queDelModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">删除问题</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="delQueAnsTitle"></p>
+                    <p><span class="delAllTitle">&nbsp;&nbsp;该问题与其他问题或流程存在被引用关系，删除将导致引用问题或流程无法正常使用，您可以解除引用关系后再进行删除，</span><span style="color:red;">或者点击删除全部按钮将引用流程一并删除。</span></p>
+                    <p>&nbsp;&nbsp;引用关系流程：</p>
+                    <input type="hidden" class="nowId"><!-- 删除的id -->
+                    <input type="hidden" class="corSetId"><!-- 不进入回收站id -->
+                    <input type="hidden" class="flowId"><!-- 标问id -->
+                    <div class="flowList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-white" href="javascript:;" id="selQueBtn">删除全部</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-primary" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div id="page-container" class=" page-header-fixed page-sidebar-fixed in">
         <div id="content" class="content">
             <!-- begin breadcrumb -->
             <ol class="breadcrumb pull-right">
-                <li><a href="javascript:;">首页</a></li>
-                <li><a href="javascript:;">知识库管理</a></li>
-                <li>问题详细</li>
+                
             </ol>
             <!-- end breadcrumb -->
             <!-- begin page-header -->
@@ -604,7 +658,7 @@
                                                 <ul class="nav nav-pills">
                                                     <li class="recomBtn"><a href="#queOff" data-toggle="tab" aria-expanded="false">关闭</a></li>
                                                     <li class="recomBtn"><a href="#queManual" data-toggle="tab">问题推荐</a></li>
-                                                    <a class="reflashRec"><span class="timeTip glyphicon glyphicon-refresh" data-original-title="更新推荐问题"></span></a>
+                                                    <a class="reflashRec"><span class="timeTip glyphicon glyphicon-repeat" data-original-title="更新推荐问题"></span></a>
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane" id="queOff">
@@ -612,13 +666,13 @@
                                                     <div class="tab-pane active in" id="queManual">
 
                                                         <div class="QueContainer row">
-                                                            <div class="form-group col-md-2">
-                                                                <button type="button" class="btn btn-primary zntjo">智能推荐</button>
+                                                            <div class="form-group col-xs-2 col-sm-1">
+                                                                <button type="button" class="btn btn-primary zntjo">智能</button>
                                                             </div>
-                                                            <div class="form-group col-md-8">
+                                                            <div class="form-group col-xs-7 col-sm-5">
                                                                 <input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="请选择推荐的问题" name="postQueInput">
                                                             </div>
-                                                            <div class="form-group col-md-2 m-t-5 m-l-5">
+                                                            <div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5">
                                                                 <a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>
                                                                 <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a>
                                                             </div>
@@ -804,9 +858,12 @@
 		    }
 		};
         renderSwitcher();
-        			
-			$("a[href=#queManual]").click(function(){
-				if($("#queManual a[name=addpostInput]").length>=5){
+        /*taskId=558  智能推荐功能优化
+        *说明：开启智能推荐 推荐问题最多10条，最少1条
+        *修改：点击加号增加时，queManual（推荐问题表单）等于10条，隐藏增加按钮；等于1条，隐藏减少按钮
+        */ 		
+			$("a[href=#queManual]").on('click',function(){
+				if($("#queManual a[name=addpostInput]").length>=10){
 				  	$("#queManual a[name=addpostInput] span").hide()
 				  }
 			})

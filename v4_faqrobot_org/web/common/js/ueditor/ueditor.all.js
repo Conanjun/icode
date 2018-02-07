@@ -24691,7 +24691,11 @@ UE.plugin.register('serverparam', function (){
 UE.plugin.register('insertfile', function (){
 
     var me = this;
-
+    /**
+     *TASKID=641
+     *添加附件图标xlsx为xls图标 
+     * "xlsx":"icon_xls.gif",
+     */
     function getFileIcon(url){
         var ext = url.substr(url.lastIndexOf('.') + 1).toLowerCase(),
             maps = {
@@ -24705,6 +24709,7 @@ UE.plugin.register('insertfile', function (){
                 "pdf":"icon_pdf.gif",
                 "mp3":"icon_mp3.gif",
                 "xls":"icon_xls.gif",
+                "xlsx":"icon_xls.gif",
                 "chm":"icon_chm.gif",
                 "ppt":"icon_ppt.gif",
                 "pptx":"icon_ppt.gif",

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>用户对话渠道维度表</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme"/>
+    <link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
+    <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+    <link href="../common/css/commonCSS.css" rel="stylesheet">
+</head>
+<style>
+    #mainNull{
+        text-align: center;
+        line-height: 300px;
+    }
+    table thead>tr>th{
+        font-size: 14px;
+        text-align: center;
+    }
+    table{
+        text-align: center;
+    }
+</style>
+
+<body class="pace-done">
+<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+<div id="page-container" class="fade in">
+    <div id="content" class="content">
+        <ol class="breadcrumb pull-right">
+           
+        </ol>
+        <div class="row">
+            <h1 class="page-header">
+                <span class="page-header-span">用户对话渠道维度表</span>
+                <i data-toggle="tooltip" data-placement="right" title="统计不同渠道交互的问题数量以及计算机器人的匹配率" class="fa fa-question-circle"></i>
+            </h1>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="chartHead">
+                        用户对话渠道维度表
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="saveURL" value="../../report/userDialogueChannel/getUserDialogueChannel"/>
+                    <div style="font-size:0;" class="text-right">
+                        <div class="btn-group m-r-4 f-s-14" style="margin-bottom:18px;">
+                            <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle"
+                                    aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span
+                                    class="caret"></span></button>
+                            <ul class="dropdown-menu" style="min-width: 275px;">
+                                <li><a class="ttw0" data-p="" href="javascript:;">昨天</a></li>
+                                <li><a class="ttw1" data-p="" href="javascript:;">今天</a></li>
+                                <li><a class="ttw2" data-p="" href="javascript:;">最近七天</a></li>
+                                <li><a class="ttw3" data-p="" href="javascript:;">最近一个月</a></li>
+                                <!--li><a class="ttw4" data-p="" href="javascript:;">全部时间</a></li-->
+                                <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                                    <span style="margin-left: 15px">自定义时间范围：</span>
+                                    <div class="form-inline text-center">
+                                        <input id="tm1" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="startT"
+                                               type="text">
+                                        <input id="tm2" size="16" readonly=""
+                                               class="form-control form_datetime m-2 input-sm" name="endT" type="text">
+                                    </div>
+                                    <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;"
+                                         class="text-center">
+                                        <button class="btn btn-primary m-2" style="width:97%;" type="button"
+                                                onclick="$('#myDropdown').parent().removeClass('open'); queryAll('',1)">
+                                            确认
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="DataSource" style="display:inline-block;vertical-align: top;" class="f-s-14 m-r-4">
+                            <select class="selectpicker">
+                                <option value="-1">全部渠道</option>
+                                <option value="0">网页</option>
+                                <option value="1">微信</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="exportExcel_new()" class="btn btn-primary m-r-5 pull-right"><i
+                                class="glyphicon glyphicon-download"></i>&nbsp;导出报表
+                        </button>
+                    </div>
+                    <div class="row m-t-15">
+                        <div class="col-md-12">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>访客数&nbsp<i data-toggle="tooltip" data-placement="right" title="访客来访数量" class="fa fa-question-circle"></i></th>
+                            <th>访问量&nbsp<i data-toggle="tooltip" data-placement="right" title="访客访问的次数" class="fa fa-question-circle"></i></th>
+                            <th>机器人回答量&nbsp<i data-toggle="tooltip" data-placement="right" title="机器人回答的消息数" class="fa fa-question-circle"></i></th>
+                            <th>人均问题数&nbsp<i data-toggle="tooltip" data-placement="right" title="人均访客访问机器人问题数" class="fa fa-question-circle"></i></th>
+                            <th width="200">问答匹配率&nbsp<i data-toggle="tooltip" data-placement="top" title="（直问+理解问答+引导确认）/问答量" class="fa fa-question-circle"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody id="visitDataTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i
+            class="fa fa-angle-up"></i></a>
+</div>
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../assets/js/apps.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/crossbrowserjs/html5shiv.js"></script>
+<script src="assets/crossbrowserjs/respond.min.js"></script>
+<script src="assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<!-- ================== END BASE JS ================== -->
+
+<script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../common/js/customMethod.js"></script>
+<script src="../common/js/echarts/echarts.min.js"></script>
+<script src="../common/js/echarts/macarons.js"></script>
+<script src="js/util.js"></script>
+<script type="text/javascript">
+    function showdata (json) {
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        var DList=[]//日期
+        var vistorList = []//访客量
+        var queList = []//访问量
+        // taskid=617 民泰表报添加机器人回复量字段（AllSgsAns） 修改人：顾荣
+        // 原因：增加复量字段
+        var ansList=[]//机器人回答量
+        var eveList = []//人均问题数
+        var cenList = []//问题匹配率
+        var value = json.IntervalDays
+        var Alen = json.List.length
+        /**
+         * taskid=489 顾荣 民泰报表定制 2018.1.4
+        */
+        var maxY=5;//没有数据时y轴最大值为5，防止无数据是数量的y轴出现小数
+        if (Alen == 0) {
+            DList.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
+            vistorList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            queList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            ansList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            eveList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            cenList.push(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        } else {
+            if (value > 1) {
+                for (var i=0; i < Alen; i++) {
+                    DList.push(json.List[i].Day||0)
+                    vistorList.push(json.List[i].AllCount||0)
+                    queList.push(json.List[i].AllVer||0)
+                    ansList.push(json.List[i].AllSgsAns||0)
+                    eveList.push(json.List[i].QuestionAvg||0)
+                    if(json.List[i].AllSgsAns){//防止分母为0时导致数据为NAN
+                        var queCen=(json.List[i].AllDtAns+json.List[i].AllGusAns+json.List[i].AllSgsSuc)/json.List[i].AllSgsAns
+                        queCen=Math.round(queCen* 10000) / 100.00;
+                    }else{
+                        queCen=0;
+                    }
+                    cenList.push(queCen)
+                }
+            } else {
+                for (var i=0; i < Alen; i++) {
+                    var date = ''
+                    if (json.List[i].Hour < 10) {
+                        date = '0' + json.List[i].Hour + ':00'
+                    } else {
+                        date = json.List[i].Hour + ':00'
+                    }
+                    DList.push(date)
+                    vistorList.push(json.List[i].AllCount||0)
+                    queList.push(json.List[i].AllVer||0)
+                    ansList.push(json.List[i].AllSgsAns||0)
+                    eveList.push(json.List[i].QuestionAvg||0)
+                    if(json.List[i].AllSgsAns){//防止分母为0时导致数据为NAN
+                        var queCen=(json.List[i].AllDtAns+json.List[i].AllGusAns+json.List[i].AllSgsSuc)/json.List[i].AllSgsAns
+                        queCen=String(queCen*100).split(".")[0]*1
+                    }else{
+                        queCen=0;
+                    }
+                    cenList.push(queCen)
+                }
+            }
+        }
+
+        //获取y轴最大值，默认值为5
+        var arrs=vistorList.concat(queList).concat(eveList).concat(ansList)
+        if(maxY<Math.max.apply({},arrs)){
+            maxY=Math.max.apply({},arrs)
+        }
+        // 初始 option1
+        option1 = {
+            title: {
+                text: '用户对话渠道维度表'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter:function(params,ticket,callback){
+                    var res=params[0].name+"<br>";
+                    for(var i=0;i<params.length;i++){//自定义折线图上单个时间段的数据模板
+                        res += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + params[i].color + '"></span>&nbsp'
+                        res += params[i].seriesName+"：";
+                        if(i==0){
+                            res += params[i].value+"%<br>";
+                        }else{
+                            res += params[i].value+"<br>";                            
+                        }
+
+                    }
+                    return res;
+                }
+            },
+            legend: {
+                data: ['访客量', '访问量','机器人回答量','人均问题数','问题匹配率']
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: true,
+                data: DList,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                axisLabel: {
+                    rotate: 20, 
+                    textStyle: {
+                        color: '#339933',
+                        fontSize: 12
+
+                    },
+                    interval:0
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '数量',
+                max:maxY,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                }
+            },
+            {
+                type: 'value',
+                name: '问题匹配率（%）',
+                min:0,
+                max:100,
+                axisLabel:{
+                    formatter:"{value}%",                    
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#cccccc',
+                        type: 'solid',
+                        width: 1
+                    }
+                } 
+            }],
+            toolbox: {
+                show: true,
+                x: 'right',
+                y: 'center',
+                orient: 'vertical',
+                feature: {
+                    dataView: {
+                        show: false,
+                        readOnly: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            series: [{
+                    name: '问题匹配率',
+                    type: 'line',
+                    yAxisIndex:1,    
+                    data: cenList
+                },
+                {
+                    name: '访客量',
+                    type: 'line',
+                    data: vistorList
+                },
+                {
+                    name: '访问量',
+                    type: 'line',
+                    data: queList
+                },
+                {
+                    name: '机器人回答量',
+                    type: 'line',
+                    data: ansList
+                },
+                {
+                    name: '人均问题数',
+                    type: 'line',
+                    data: eveList
+                }]
+        }
+
+        myChart1.hideLoading()
+        myChart1.setOption(option1)
+        window.onresize = myChart1.resize
+    }
+
+    function showtable (json) {
+        var table = ''
+        var Dlen = json.List.length
+        var value = json.IntervalDays
+        var count1 = 0
+        var count2 = 0
+        var count3 = 0
+        var count5 = 0
+        var count3a = 0
+        var count3b = 0
+        var count4 = 0
+        var count4a = 0;
+        var count4b = 0;
+        if (Dlen == 0) {
+            table += '<tr >'
+            table += '<td colspan=7 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '</tr>'
+            $('#visitDataTable').html(table)
+            return
+        }
+        if (value > 1) {
+            for (var t = 0; t < Dlen; t++) {
+                table += '<tr>'
+                table += '<td class="tab_tr_bg">' + json.List[t].Day + '</td>'
+                var AllCount=json.List[t].AllCount||0;
+                table += '<td class="tab_tr_sec_bg">' + AllCount + '</td>'
+                var AllVer=json.List[t].AllVer||0;
+                table += '<td class="tab_tr_bg">' + AllVer + '</td>'
+                var AllSgsAns=json.List[t].AllSgsAns||0;
+                table += '<td class="tab_tr_bg">' + AllSgsAns + '</td>'
+                var QuestionAvg=json.List[t].QuestionAvg||0;
+                table += '<td class="tab_tr_bg">' + QuestionAvg + '</td>'
+                if(json.List[t].AllSgsAns){//防止分母为0时导致数据为NAN
+                    var queCen=(json.List[t].AllDtAns+json.List[t].AllGusAns+json.List[t].AllSgsSuc)/json.List[t].AllSgsAns
+                    queCen=Math.round(queCen* 10000) / 100.00 + '%'
+                }else{
+                    queCen="0%"
+                }
+                table += '<td class="tab_tr_bg">' + queCen + '</td>'
+                table += '</tr>'
+                count1 += AllCount
+                count2 += AllVer
+                count5+=AllSgsAns
+                count3a += json.List[t].AllSgsAns
+                count3b += json.List[t].AllCount
+                count4a+=json.List[t].AllDtAns+json.List[t].AllGusAns+json.List[t].AllSgsSuc
+                count4b+=json.List[t].AllSgsAns
+            }
+        } else {
+            for (var t = 0; t < Dlen; t++) {
+                var date = ''
+                if (json.List[t].Hour < 10) {
+                    date = json.List[t].Day + ' 0' + json.List[t].Hour + ':00'
+                } else {
+                    date = json.List[t].Day + ' ' + json.List[t].Hour + ':00'
+                }
+                table += '<tr>'
+                table += '<td class="tab_tr_bg">' + date + '</td>'
+                var AllCount=json.List[t].AllCount||0;
+                table += '<td class="tab_tr_sec_bg">' + AllCount + '</td>'
+                var AllVer=json.List[t].AllVer||0;
+                table += '<td class="tab_tr_bg">' + AllVer + '</td>'
+                var AllSgsAns=json.List[t].AllSgsAns||0;
+                table += '<td class="tab_tr_bg">' + AllSgsAns + '</td>'
+                var QuestionAvg=json.List[t].QuestionAvg||0;
+                table += '<td class="tab_tr_bg">' + QuestionAvg + '</td>'
+                if(json.List[t].AllSgsAns){//防止分母为0时导致数据为NAN
+                    var queCen=json.List[t].AllSgsSuc/json.List[t].AllSgsAns;
+                    queCen=Math.round(queCen* 10000) / 100.00 + '%'
+                }else{
+                    queCen="0%"
+                }
+                table += '<td class="tab_tr_bg">' + queCen + '</td>'
+                table += '</tr>'
+                count1 += AllCount
+                count2 += AllVer
+                count3a += json.List[t].AllSgsAns
+                count3b += json.List[t].AllCount
+                count4a+=json.List[t].AllDtAns+json.List[t].AllGusAns+json.List[t].AllSgsSuc
+                count4b+=json.List[t].AllSgsAns
+            }
+        }
+        count4=Math.round(count4a/count4b* 10000) / 100.00 + '%';//计算总计问题匹配率百分比
+        count3=Math.round(count3a/count3b* 100) / 100.00;//计算总计人均问题数
+        table += '<tr><td>总计</td><td>' + count1 + '</td><td>' + count2 + '</td><td>' + count5 + '</td><td>' + count3 + '</td><td>' + count4 + '</td></tr>'
+        $('#visitDataTable').html(table)
+    }
+
+    //回调函数
+    function callback_chart (json) {
+        showdata(json)
+        showtable(json)
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        App.init()
+        InitHeaderRadio()
+        formatDateTime()
+        selectGen_new()//初始化筛选下拉框
+        var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
+        myChart1.showLoading()
+        //列出图表
+        queryAll()
+    })
+</script>
+</body>
+</html>

@@ -27,9 +27,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">系统管理</a></li>
-				<li class="active">企业信息</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">企业信息</h1>
@@ -220,7 +218,7 @@
 					$('#adress').val(data.company.Address);
 					$('#openTime').val(data.company.OpenTime);
 					UE.getEditor('intro').ready( function() {
-					UE.getEditor('intro').setContent(data.company.Info);
+					    UE.getEditor('intro').setContent(data.company.Info||"");
 					});
 				} else if (data.status==-1){
 					data.clallback=function(){

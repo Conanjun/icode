@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:foo>
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>小当家</title>
+
+	<link rel="stylesheet" href="skin/robotDDi/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="skin/robotDDi/css/zTreeStyle.css" />
+	<link rel="stylesheet" href="skin/robotDDi/css/minichat.css"/>
+	<link rel="stylesheet" href="skin/robotDDi/css/Dang.css" />
+	<link rel="stylesheet" href="skin/robotDDi/css/robot.css" />
+	<link rel="stylesheet" href="skin/robotDDi/css/skins/red.css" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+	<script type="text/javascript" src="js/minichat.js" sysNum="1000000"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/bootstrap-paginator.js"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/jquery.ztree.all-3.5.js"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/app.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="backdrop"></div>
+	<div class="container1">
+		<!-- 头部开始 -->
+		<div class="header">
+			<!-- 标题栏开始 -->
+			<div class="robot_top">
+				<!-- 标题栏logo开始 -->
+				<ul class="robot_top_icon">
+					<img id="weblogo" src="skin/robotDDi/images/head.png"/>
+				</ul>
+				<!-- 标题栏logo结束 -->
+				<!-- 标题栏文案开始 -->
+				<ul class="robot_top_name">
+					<h4>小当家机器人</h4>
+					<p>24小时竭诚为您服务~</p>
+				</ul>
+				<!-- 标题栏文案结束 -->
+			</div>
+			<!-- 标题栏结束 -->
+		</div>
+		<!-- 头部结束 -->
+		<!-- 内容开始 -->
+		<div class="content">
+			<!-- 内容左侧开始 -->
+			<div class="contentLeft">
+				<div class="writeRoot">
+					<div class="chatArea" id="chatContent">
+					</div>
+				</div>
+				<div class="writeArea">
+					<div class="writePanel">
+						<div class="Panel_name" id="faceRoot">
+							<span class="Panel_item" style="cursor:pointer;" title="表情">
+								<div id="faceBtn" class="icon-bq_normal"></div>
+							</span>
+							<a class="Panel_item" href="javascript:void(0)" title="字号">
+								<div id="font" class="icon-font_normal"></div>
+							</a>
+							<a class="Panel_item" href="javascript:void(0)" title="满意度评价">
+								<div id="love" class="icon-my_normal"></div>
+							</a>
+							<a class="Panel_item" href="javascript:void(0)" title="清空聊天记录" id="clearBtn">
+								<div id="trash" class="icon-clear_normal"></div>
+							</a>
+							<div class="popFont" style="display:none;">
+								<div class="popFontS">
+									<span>字号：</span>
+									<select id="fonts">
+										<option value="14px">9</option>
+										<option value="15px">10</option>
+										<option value="16px">11</option>
+										<option value="17px">12</option>
+										<option value="18px">13</option>
+										<option value="19px">14</option>
+										<option value="20px">15</option>
+									</select>
+								</div>
+								<div class="popFontF">
+									<span>字体：</span>
+									<select id="fontf">
+										<option value="Microsoft YaHei" style="font-family:'Microsoft YaHei'">微软雅黑</option>
+										<option value="SimSun" style="font-family:'SimSun'">宋体</option>
+										<option value="SimHei" style="font-family:'SimHei'">黑体</option>
+										<option value="FangSong" style="font-family:'FangSong'">仿宋</option>
+										<option value="KaiTi" style="font-family:'KaiTi'">楷体</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="Panel_word">
+							<a class="Panel_item" href="javascript:void(0)" id="smallTip">
+								<div id="skill" class="icon-tips_normal"></div>
+							</a>
+							<span class="popSpan">提问小技巧</span>
+							<div class="popTips" style="display:none;">
+								<div class="popTrans" style="position:absolute;width:400px;height:30px;bottom:-20px;left:0;"></div>
+								<div class="popClose">&times;</div>
+								<div class="popHead">
+									<div class="lPic">
+										<img src="skin/robotDDi/images/tips1.png">
+									</div>
+									<div class="cPic">
+										<img src="skin/robotDDi/images/dang_tips.png">
+									</div>
+									<div class="cam" id="cam">
+										<div class="tipMsg" id="tipMsg">
+											<div class="tipMsgItem" name="tipMsgItem" orderT="1">
+												<span>多个问题分别发送</span>
+												<p>小当家一次只能回答一个问题哦，分开问才能准确哦。<br>
+												比如这个问题“我的订单怎么还没收到？已经发货的订单可以取消吗？”，其实这里面包含“我的订单怎么还没收到？”和“已经发货的订单可以取消吗？”两个问题。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="2">
+												<span>问题简洁明了</span>
+												<p>发送您询问的主要关键字就可以了哦。<br>
+												比如这个问题“我刚下了订单已付款，但要修改信息取消了订单，什么时候退款啊？”其实不用描述太多，直接问要点就可以了。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="3">
+												<span>一个问题不要拆开发送</span>
+												<p>只有将问题描述完整小当家才能给出完整解答哦。<br>
+												比如这个问题“怎么办？”，如果改成“商品发错了怎么办？”，那么我马上就能回答您了！</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="4">
+												<span>推荐商品查询</span>
+												<p>您直接输入【推荐，价格区间，商品】或者【搜索，价格区间，商品】，小当家可以直接为您推荐商品哦。<br>
+												比如：推荐2000-3000的冰箱。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="5">
+												<span>查询物流</span>
+												<p>您直接输入【快递，快递名称，包裹号】，小当家可以直接为您查询最新物流信息哦。</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="popTail">
+									<div class="tailMiddle">
+										<div class="imgLeft">
+											<div id="tipToLeft" class="icon-tips_left_normal"></div>
+										</div>
+										<div class="imgRight">
+											<div id="tipToRight" class="icon-tips_right_normal"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="writeInput">
+						<div style="display:none;" id="hdnWord"></div>
+						<div style="display:none;" id="hdnTipWord" class="hdnTipWord"></div>
+						<div style="display:none;"><div style="display:none;" id="hdnCommentTip"></div></div>
+						<ul class="inputArea">
+							<textarea maxlength="100" id="message"></textarea>
+						</ul>
+					</div>
+					<dl class="inputSend" id="sendBtn">
+						<dd>发送</dd>
+					</dl>
+					<dl class="inputClose" id="closeBtn">
+						<dd>关闭</dd>
+					</dl>
+				</div>
+			</div>
+			<!-- 内容左侧结束 -->
+			<!-- 内容右侧开始 -->
+			<div class="contentRight">
+				<div class="hotSpot">
+					<div class="nav">
+						<div class="navRow navRowOn" id="hotzero">
+							知识树
+						</div>
+						<div class="navRow" id="hotone">
+							知识排行
+						</div>
+						<div class="navRow" id="hottwo">
+							每日必读
+						</div>
+						<div class="slider" id="slider">
+							<img class="sliderImg" src="skin/robotDDi/images/icon_to.png">
+						</div>
+					</div>
+					<div class="robot_hot" id="showhotzero">
+						<div id="searchWrapper" style="padding-top: 8px;">
+							<div class="input-group" style="width:90%;margin: 2px auto;">
+								<input class="form-control" id="sword" onkeypress="if(event.keyCode==13) {sQue(1);return false;}" />
+								<span class="input-group-btn" onclick="sQue(1);">
+									<button class="btn btn-danger"><i class="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+							<div style="width:90%;margin: 0 auto;margin-top: 12px;">
+								<div class="form-group" style="margin-bottom:0px;">
+									<label class="control-label">选择分类：</label>
+									<a id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;">全部分类</a>
+								</div>
+								<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 87px; top: 80px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+									<div class="treeDivOfConfigure" tabindex="0" id="classTree">
+										<ul id="treeHide" class="ztree" style="margin-top:0;"></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="hotZeroWrapper" style="height: 50%;">
+							<div id="hotZeroContent">
+							</div>
+						</div>
+						<div id="pageList" style="width:100%;text-align: center;padding: 8px 0;" class="pagination paginator-text-right pagination-right">
+						</div>
+					</div>
+					<div class="robot_hot" style="display:none" id="showhotone">
+						<div class="null">知识排行暂无内容</div>
+					</div>
+					<div class="robot_hot" style="display:none" id="showhottwo">
+						<div class="null">每日必读暂无内容</div>
+					</div>
+				</div>
+			</div>
+			<!-- 内容右侧结束 -->
+		</div>
+		<!-- 内容结束 -->
+		<!-- 底部开始 -->
+		<div class="footer"></div>
+		<!-- 底部结束 -->
+	</div>
+	<div class="fadeBackContent" style="display:none">
+		<form class="feedbackForm" id="feedbackForm">
+			<div class="feedback">
+				<p>您对本服务是否满意？</p>
+				<div>
+					<input type="radio" name="level" checked value="1" id="rdoGood">
+					满意
+					<input type="radio" name="level" value="0" id="rdoBad">
+					不满意
+				</div>
+			</div>
+			<div id="hid" style="display:none">
+				<p>您不满意的原因是？</p>
+				<div>
+					<input type="checkbox" name="reason[]" value="回答不准确" checked="">
+					回答不准确
+					<input type="checkbox" name="reason[]" value="答非所问">
+					答非所问
+					<input type="checkbox" name="reason[]" value="机器人骂人">
+					机器人骂人
+				</div>
+			</div>
+			<div class="comment">
+				<textarea name="content" id="cont" maxlength="100" style="font-family: Microsoft Yahei;"></textarea>
+			</div>
+			<div class="send">
+				<input type="button"  value="提交" id="fadeBackId" style="font-family: Microsoft Yahei;" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>

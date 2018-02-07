@@ -28,7 +28,11 @@ var setting = {
 	},
 	async: {
 		enable: true,
-		url: "../../classes/pageListClasses?mode=0&pageSize=1000",
+		/*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url: "../../classes/listClasses?m=0&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},
@@ -71,8 +75,13 @@ function zTreeOnDrop(treeId, treeNodes, targetNode, moveType) {
 		async: false,
 		datatype:'json',
 		cache:false,//不从缓存中去数据
-		url:encodeURI('../../classes/doEditClass'),
-		data:'&id='+classId+'&className='+className+'&pId='+targetNode.Id,
+        url:encodeURI('../../classes/doEditClass'),
+        /*
+        *taskId = 555 司徒棋巽
+        *修改原因：was环境中对中文不编码，出现乱码情况
+        *修改逻辑：对中文编码后再传到was中  encodeURI()
+        */
+		data:'&id='+classId+'&className='+encodeURI(className)+'&pId='+targetNode.Id,
 		success:
 		function(data){
 			if(data.status==0){
@@ -125,8 +134,13 @@ function zTreeOnDropList(treeId, treeNodes, targetNode, moveType) {
 		async: false,
 		datatype:'json',
 		cache:false,//不从缓存中去数据
-		url:encodeURI('../../classes/doEditClass'),
-		data:'&id='+classId+'&className='+className+'&pId='+targetNode.Id+'&type='+type,
+        url:encodeURI('../../classes/doEditClass'),
+        /*
+        *taskId = 555 司徒棋巽
+        *修改原因：was环境中对中文不编码，出现乱码情况
+        *修改逻辑：对中文编码后再传到was中  encodeURI()
+        */
+		data:'&id='+classId+'&className='+encodeURI(className)+'&pId='+targetNode.Id+'&type='+type,
 		success:
 		function(data){
 			if(data.status==0){
@@ -731,45 +745,31 @@ var INTERVAL;
 $(document).ready(function() {
 	// 新手引导(需要引导的页面的code即为页面名称)
 	Base.request({
-        url: 'tipHelp/add',
-        params: {
-            code: 'classify',
-            webId: -1,
-        },
-        callback: function(data) {
-            if(data.status) {//!=0 旧
+		url: 'tipHelp/check',
+		params: {
+			code: 'classify',
+		},
+		callback: function(data) {
+			if(data.status) {//旧
+			}else {//新
+				introJs().setOptions({
+					'prevLabel': '上一步',
+					'nextLabel': '下一步',
+					'skipLabel': '　',
+					'doneLabel': '　',
+					'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
+				}).start().onexit(function() {//非常规退出
+				}).oncomplete(function() {//正常完成
+				}).onchange(function(obj) {//已完成当前一步
+					var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
 
-            }else {//=0 新
-				Base.request({
-					url: 'tipHelp/check',
-					params: {
-						code: 'classify',
-						webId: -1,
-					},
-					callback: function(data) {
-						if(data.status) {//旧
-						}else {//新
-							introJs().setOptions({
-								'prevLabel': '上一步',
-								'nextLabel': '下一步',
-								'skipLabel': '　',
-								'doneLabel': '　',
-								'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
-							}).start().onexit(function() {//非常规退出
-							}).oncomplete(function() {//正常完成
-							}).onchange(function(obj) {//已完成当前一步
-								var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
-
-								$('.tipStep'+ (curNum-1)).hide();//隐藏前一个
-								$('.tipStep'+ (curNum+1)).hide();//隐藏后一个
-								$(obj).show();//显示当前
-							});
-						}
-					},
+					$('.tipStep'+ (curNum-1)).hide();//隐藏前一个
+					$('.tipStep'+ (curNum+1)).hide();//隐藏后一个
+					$(obj).show();//显示当前
 				});
-            }
-        },
-    });
+			}
+		},
+	});
 
 
 	App.init();

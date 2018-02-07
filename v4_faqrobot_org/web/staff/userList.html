@@ -28,9 +28,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">客服列表</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">客服列表</h1>
@@ -60,6 +58,7 @@
 								<div class="input-group-btn">
 									<ul class="dropdown-menu pull-right">
 										<li><a class="chooseUser" href="javascript:;">客服名</a></li>
+										<li><a class="chooseName" href="javascript:;">昵称</a></li>
 										<li><a class="chooseNum" href="javascript:;">电话</a></li>
 										<li><a class="chooseEma" href="javascript:;">邮箱</a></li>
 									</ul>
@@ -91,8 +90,9 @@
 								  <th>电话 </th>
 								  <th>邮箱</th>
 								  <th>QQ</th>
+								  <th>状态</th>
 								  <th>角色</th>
-								  <th width="90">操作</th>
+								  <th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -188,7 +188,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button" onclick="fresh()">×</button>
 							<h4 class="modal-title">修改客服</h4>
 						</div>
 						<div class="modal-body">
@@ -250,7 +250,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" onclick="$('#repUser_form').submit()">修改</button>
-							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;" onclick="fresh()">取消</a>
 						</div>
 					</div>
 				</div>
@@ -318,6 +318,14 @@
 			$('.chooseUser').click(function(){
 				$('.chooseWay').html($(this).text() + '&nbsp;'+ '<span class="caret"></span>');
 				$('#ABC').attr('name','userName');
+			});
+			/*
+				taskid=698,黄世鹏
+				开发：添加状态列
+			*/
+			$('.chooseName').click(function(){
+				$('.chooseWay').html($(this).text() + '&nbsp;'+ '<span class="caret"></span>');
+				$('#ABC').attr('name','name');
 			});
 			$('.chooseNum').click(function(){
 				$('.chooseWay').html($(this).text() + '&nbsp;'+ '<span class="caret"></span>');

@@ -54,6 +54,7 @@
         inputCtnId: 'input',//输入框Id y   --------
         sendBtnId: 'sendBtn',//发送按钮Id y   ------
         tipWordId: 'inputTip',//输入框提示语Id ----
+        copyrightId:'copyright',// 版权及联系我们
         //tipWord: '请输入您要咨询的问题',//输入框提示语
         //remainWordId: 'MN_remainWordNum',
         //remainWordNum: '100',

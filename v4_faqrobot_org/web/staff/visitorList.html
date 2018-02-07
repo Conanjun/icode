@@ -8,25 +8,31 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 
-	<!-- ================== BEGIN BASE CSS STYLE ================== -->
-	<link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
+  <!-- ================== BEGIN BASE CSS STYLE ================== -->
+  <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="../../assets/css/style.min.css" rel="stylesheet" />
+	<link href="../../assets/css/animate.min.css" rel="stylesheet" />
 	<link href="../../assets/css/style-responsive.min.css" rel="stylesheet" />
 	<link href="../../assets/css/theme/default.css" rel="stylesheet" id="theme" />
 	<link href="../../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
 	<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-	<link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+  <link href="../../assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 	<!-- ================== END BASE CSS STYLE ================== -->
 
-	<link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+  <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
 	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
 	<link href="../common/css/commonCSS.css" rel="stylesheet">
 	<style>
 	  DataSource .caret{right:16px}
 	  #VpageList .pagination li a[title=最后一页],#VpageList .pagination li:last-child {
 			display:none;
-	  }
+    }
+
+    .dataTime{
+      width: auto;
+      display: inline-block;
+    }
 	
 	</style>
 </head>
@@ -36,17 +42,19 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">访客列表</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">访客列表</h1>
 				<div data-sortable-id="table-basic-1" class="panel panel-inverse">
 					<div class="panel-body">
 						<div class="tableHead" style="height:34px;">
+
+                
+
+
 							<a id='selectDelBtn' data-toggle="#delQue" href="javascript:void(0);" class="btn pull-right btn-default m-l-4 m-b-10"><span class="glyphicon glyphicon-trash"></span>&nbsp;批量删除</a>
-							<div id="DataSource"  class="pull-right " style="display: inline-block;">
+							<div id="DataSource"  class="pull-right m-l-4" style="display: inline-block;">
 								<div class="btn-group m-b-10">
 									<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										访客类型 <span class="caret"></span>
@@ -57,7 +65,28 @@
 										<li> <a onclick="listPage(1,0);" href="javascript:void(0);">网页访客</a> </li>
 									</ul>
 								</div>
-							</div>
+              </div>
+              
+              <div class="btn-group pull-right">
+                  <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;<span class="caret"></span></button>
+                  <ul class="dropdown-menu" style="min-width: 275px;">
+                    <li><a class="ttw0" data-p="" href="#">昨天</a></li>
+                    <li><a class="ttw1" data-p="" href="#">今天</a></li>
+                    <li><a class="ttw2" data-p="" href="#">最近七天</a></li>
+                    <!--<li><a class="ttw3" data-p="" href="#">最近一个月</a></li>
+                    <li><a class="ttw4" data-p="" href="#">全部时间</a></li>-->
+                    <li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+                      <span style="margin-left: 15px">自定义时间范围：</span>
+                      <div style="text-align: center">
+                        <input id="tm1"  size="16" type="text" readonly class="form-control dataTime form_datetime m-2 input-sm" name="startT">
+                        <input id="tm2" size="16" type="text" readonly class="form-control dataTime form_datetime m-2 input-sm" name="endT">
+                      </div>
+                      <div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">
+                        <button style="width:97%;" class="confirm btn btn-primary" type="button">确认</button>
+                      </div>
+                    </li>
+                  </ul>
+              </div>
 
 						</div>
 						<table class="table" id="visiterList">
@@ -121,7 +150,9 @@
 	<![endif]-->
 	<!-- ================== END BASE JS ================== -->
 
-	<script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+  <script src="../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+  <script src="../../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="../common/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script src="../common/js/bootstrap-paginator.js"></script>
 	<script src="../common/js/jquery.validate.js"></script>
 	<script src="../common/js/icheck.js"></script>
@@ -130,21 +161,25 @@
 		$(document).ready(function() {
 			App.init();
 			icheckBindInit();
-			listPage(1);
 		});
 
-		var selectSourceFlag = true;
+    var selectSourceFlag = true;
+    var newSourceId = '-1';
 		function listPage(pageNo,sourceId){
-			//不勾选全选
+      //不勾选全选
+
 			$('.select_rows').iCheck('uncheck');
 			if(!pageNo)pageNo=1;
-			if(typeof sourceId=="undefined") sourceId='-1';
+      if(typeof sourceId=="undefined") sourceId='-1';
+      newSourceId = sourceId;
+      var startT =  $('#tm1').val();
+      var endT = $('#tm2').val();
 			$('#visiterList').tableAjaxLoader2(8);
 			$.ajax({
 				type:'get',
 				datatype:'json',
 				cache:false,//不从缓存中去数据
-				url:encodeURI('../../chatUser/getList?pageSize='+20+'&pageNo='+pageNo+'&sourceId='+sourceId),
+				url:encodeURI('../../chatUser/getList?pageSize='+20+'&startT='+ startT +'&endT='+ endT +'&pageNo='+pageNo+'&sourceId='+sourceId),
 				success:
 				function(data){
 					if(data.status==0){
@@ -258,8 +293,208 @@
 					$("#selectDelBtn").removeClass("btn-primary").addClass("btn-default").attr("disabled",true)
 				}
 			});
-		}
+    }
+    
 
+    $('.confirm').off('click').click(function(){
+			$('#myDropdown').parent().removeClass('open');
+			listPage(1,newSourceId);
+		})
+
+
+    $('#myDropdown').on('click', function () {
+				$(this).parent().toggleClass('open');
+			});
+
+			$('body').on('click', function (e) {
+				if(!$('#myDropdown').parent().find($(e.target)).length) {
+					$('#myDropdown').parent().removeClass('open');
+				}
+			});
+
+
+
+
+    var myDate = new Date();
+    var myDateM = myDate.getMonth()+1;//月
+    var myDateD = myDate.getDate();//日
+    var myDateHou = myDate.getHours();//时
+    var myDateMin = myDate.getMinutes()+2;//分
+    function updateTime(){
+        myDate = new Date();
+        myDateM = myDate.getMonth()+1;//月
+        myDateD = myDate.getDate();//日
+        myDateHou = myDate.getHours();//时
+        myDateMin = myDate.getMinutes()+2;//分
+    }
+    if(myDateM<10){//判断现在月份格式
+        myDateM = "0"+myDateM;
+    }
+    if(myDateD<10){//判断现在日期格式
+        myDateD = "0"+myDateD;
+    }
+    if(myDateHou<10){//判断现在小时格式
+        myDateHou = "0"+myDateHou;
+    }
+    if(myDateMin<10){//判断现在分钟格式
+        myDateMin = "0"+myDateMin;
+  }
+  
+  //判断时间大于7天的
+  function diy_time(time1,time2){
+    time1 = Date.parse(new Date(time1));
+    time2 = Date.parse(new Date(time2));
+    return time3 = Math.abs(parseInt((time2 - time1)/1000/3600/24));
+  }
+
+  //页面初始化 默认一周自动填充时间
+  function  apply(){//获取一周前时间
+    var newDatew = new Date();
+    newDatew.setTime(newDatew.getTime()-7*24*60*60*1000);//此时newDatew变成了一周前的时间
+    var weekMon = newDatew.getMonth()+1;//一周前的月份
+    if(weekMon<10){weekMon='0'+(newDatew.getMonth()+1)};
+    var weekDay = newDatew.getDate();//一周前的日
+    if(weekDay<10){weekDay='0'+newDatew.getDate()};
+    var week = newDatew.getFullYear()+"-" + weekMon + "-" + weekDay;
+    $('#tm1').val(week+' '+myDateHou+':'+myDateMin);//一周前的现在
+    $('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//今天的时间
+    listPage(1,newSourceId);
+  }
+  apply();
+
+  //获得上月今天的方法
+  function lastMonthDate(){
+    var vYear = myDate.getFullYear();
+    var vMon = myDate.getMonth() + 1;
+    var vDay = myDate.getDate();
+    //每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+    var daysInMonth = new Array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+    if(vMon==1){
+      vYear = myDate.getFullYear()-1;
+      vMon = 12;
+    }else{
+      vMon = vMon -1;
+    }
+    //若是闰年，二月最后一天是29号
+    if(vYear%4 == 0 && vYear%100 != 0){
+      daysInMonth[2]= 29;
+    }
+    if(daysInMonth[vMon] < vDay){
+      vDay = daysInMonth[vMon];
+    }
+    if(vDay<10){
+      vDay="0"+vDay;
+    }
+    if(vMon<10){
+      vMon="0"+vMon;
+    }
+    var LastMonthDate =vYear+"-"+ vMon +"-"+vDay;
+    return LastMonthDate;
+  }
+
+
+            $('.ttw0').on('click', function() { //昨天
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;&nbsp;'+'<span class="caret"></span>');
+				var newDate1 = new Date();//获取当前时间
+				newDate1.setTime(newDate1.getTime()-24*60*60*1000);//当前时间设置成昨天时间
+				var yestM = newDate1.getMonth()+1; //昨天的月
+				if(yestM<10){
+					yestM ="0"+yestM;
+				}
+				var yestD = newDate1.getDate();//昨天的日
+				if(yestD<10){
+					yestD="0"+yestD;
+				}
+				pageNo = 1;
+				var yesterday = newDate1.getFullYear()+"-" + yestM + "-" + yestD;
+				$('#tm1').val(yesterday+' '+'00'+':'+'00');//昨天的时间
+				$('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//现在的时间
+				
+			  listPage(1,newSourceId);
+			});
+
+      $('.ttw1').on('click', function() { //今天
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;&nbsp;'+'<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+'00'+':'+'00');//今天零点
+				$('#tm2').val(myDate.getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+				
+				listPage(1,newSourceId);
+			});
+
+      $('.ttw2').on('click', function() { //最近七天
+        updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;&nbsp;'+'<span class="caret"></span>');
+        apply();
+      });
+      
+      $('.ttw3').on('click', function() { //最近一个月
+        updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;&nbsp;'+'<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val(lastMonthDate()+' '+myDateHou+':'+myDateMin);//一月前的今天
+				$('#tm2').val(new Date().getFullYear()+'-'+myDateM+'-'+myDateD+' '+myDateHou+':'+myDateMin);//现在时间
+				listPage(1,newSourceId);
+      });
+      
+      $('.ttw4').on('click', function() { //全部
+                updateTime();
+				$('#myDropdown').parent().removeClass('open');
+				$('.ttw').html($(this).text() +'&nbsp;&nbsp;'+'<span class="caret"></span>');
+				pageNo = 1;
+				$('#tm1').val('');
+				$('#tm2').val('');
+				listPage(1,newSourceId);
+			});
+			$(".form_datetime").datetimepicker({
+				language: "zh-CN",
+				format: "yyyy-mm-dd hh:ii",
+				autoclose: true,
+				todayBtn: true,
+				minuteStep: 10,
+				initialDate:new Date(),
+				zIndex: 1500
+			});
+			$('#tm1').on('changeDate', function(ev){
+				var endValue=$('#tm2').val();
+				if(endValue!=''){
+					if(diy_time($(this).val(),endValue)>30){
+						var obj={"message":"请选择7天内的时间","status":-2}
+						$('.confirm').off('click').css('pointer-events', 'all').attr('disabled', true);
+						yunNoty(obj);
+						return;
+					}else{
+						$('.confirm').off('click').click(function(){
+							$('#myDropdown').parent().removeClass('open');
+							listPage(1,newSourceId);
+						}).css('pointer-events', 'all').removeAttr('disabled');
+					}
+				}
+			});
+			$('#tm2').on('changeDate', function(ev){
+				var startValue=$('#tm1').val();
+				if(startValue!=''){
+					diy_time(startValue,$(this).val());
+					if(diy_time(startValue,$(this).val())>30){
+						var obj={"message":"请选择7天内的时间","status":-2}
+						$('.confirm').off('click').css('pointer-events', 'all').attr('disabled', true);
+						yunNoty(obj);
+						return;
+					}else{
+						$('.confirm').off('click').click(function(){
+							$('#myDropdown').parent().removeClass('open');
+							listPage(1,newSourceId);
+						}).css('pointer-events', 'all').removeAttr('disabled');
+
+					}
+				}
+			});
 
 
 	</script>

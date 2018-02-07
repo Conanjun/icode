@@ -1932,6 +1932,8 @@ function uploadFile (options) {
       showMsgId: 'showMsgId',//展示信息Id
       chatCtnId: 'chatCtnId',//聊天展示Id
       inputCtnId: 'inputCtnId',//输入框Id
+      frontId:'front', // frontId获取页面高度用来设定input的定位
+      editCtn: 'editCtn',// 为设定输入框定位
       sendBtnId: 'sendBtnId',//发送按钮Id
       tipWordId: 'tipWordId',//输入框提示语Id
       //tipWord: '请输入您要咨询的问题',//输入框提示语
@@ -2051,11 +2053,21 @@ function uploadFile (options) {
     this.robot = {}//机器人基本信息
     this.$obj = {}//元素集合
     this.isOffline = false//当前是否下线
-    this.init()
+    var u = navigator.userAgent, app = navigator.appVersion;
+    this.isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    
+    this.init();
+    /**
+     * taskid=476
+     * 原因:判断是否是ios端，zip文件提示无法下载
+     * 添加 是否是ios端
+     */
+    // this.isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
   }
 
   Faqrobot.prototype = {
     init: function () {
+      this.setInputTop();
       this.getHrefInfo()//获取网址->网址有jid或sysNum，则相应配置参数失效
       this.initOffline()//关闭、刷新网页前请求下线->s=offline
       if (!this.options.jsonp) {//不跨域
@@ -2089,6 +2101,35 @@ function uploadFile (options) {
             	}*/
       //调整功能宽度(防止某些功能隐藏)
       this.kuaijie()
+    },
+    // 设置输入框top值的高度：解决键盘遮挡输入框bug
+    setInputTop: function () {
+      
+      if(this.isiOS){
+        var frontHeight = $('.'+this.options.frontId).height();
+        var textareaHeight = $('.'+this.options.editCtn).height();
+        var editCtnTop = frontHeight - textareaHeight;
+        var self = this;
+        $('#'+this.options.inputCtnId).on('focus', function () {
+            $('.'+self.options.editCtn).css('top', editCtnTop+ 'px');
+        });
+      }else{
+        var self = this;
+        $('.'+this.options.editCtn).css('position','fixed');
+        var timer1;  
+        $('.'+this.options.editCtn).on('focus',function() {
+          timer1 = setTimeout(function() {
+            self.scrollIntoView(false);
+          },100)
+        });
+    
+        $('.'+this.options.editCtn).on('blur',function() {
+          if(timer1){
+            clearInterval(timer1);  
+          }
+        });
+
+      }
     },
     //计算h5下面的快捷服务
     kuaijie: function () {
@@ -2274,14 +2315,21 @@ function uploadFile (options) {
           This.options.initCallback(data)
           $('#' + This.options.inputCtnId).removeAttr('readonly')
           This.setLogo(data)//设置logo->客服图标/客户图标
-          This.sayHello(data)//欢迎语
+          
+          if(data.talkMessageList&&data.talkMessageList[0]){//taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
+            This.flashOutDeal(data);
+          }else{
+            This.sayHello(data)//欢迎语
+            This.welcomeguideQue(data)
+          }
+          // This.sayHello(data)//欢迎语
           This.quickService(data)//快捷服务
           This.recommendLink(data)//推荐资讯
           This.unsatisfy(data)//不满意原因
           This.muiItem()
           This.topQue(data)//热门、常见问题
           This.welcomeQue(data)//欢迎语下面的热点问题
-          This.welcomeguideQue(data)
+          // This.welcomeguideQue(data)
           This.newQue(data)//新增问题
           This.userInfo(data)//用户信息
           This.poweredBy(data)//技术支持
@@ -2309,6 +2357,38 @@ function uploadFile (options) {
           }
         }
       })
+    },
+    //taskId=406 app闪退处理
+    flashOutDeal:function(data){
+      var This=this;
+      var html = '',
+      recordData = ''
+      This.scrollbar.options.autoBottom = true// 自动滚动到底部
+      for (var i = 0; i<data.talkMessageList.length; i++) {
+          // var _data = JSON.parse('{"robotAnswer":[{"ansCon":"' + (data.talkMessageList[i].ansMsg || '').replace(/"/g, '\'').replace(/\n+/g, '').replace(/[\r\n]/g, '') + '", "time": "' + data.talkMessageList[i].ansTime + '"}]}')
+
+          // recordData += (data.talkMessageList[i].askMsg ? This.customHtml(This.replaceFace(data.talkMessageList[i].askMsg), data.talkMessageList[i].askTime) : '') + ((data.talkMessageList[i].ansMsg || '') ? This.robotHtml(_data) : '')
+          var obj={
+            ansCon:(data.talkMessageList[i].reply || '').replace(/[\r\n]/g, ''),
+            time:data.talkMessageList[i].dateTime||'',
+            msyType:data.talkMessageList[i].ansType||''
+          }
+          var robotAnswer=[];
+          robotAnswer.push(obj);
+
+          var _data=new Object();
+          _data.robotAnswer=robotAnswer;
+
+          recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
+      }
+      recordData = This.iosBindEvent(recordData);
+      
+      recordData=recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5');
+      This.$obj.$chatCtnId.append(recordData)//添加机器人的话
+
+      This.bodybindgClick();
+      // $('#' + This.options.chatCtnId).append('<div class="flashOutDeal">以上为历史记录</div>')
+      This.scrollbar.scrollTo('bottom', true);
     },
     //不满意原因
     unsatisfy: function (data) {
@@ -2377,10 +2457,25 @@ function uploadFile (options) {
                             $('#' + This.options.chatCtnId).prepend('<div class="MN_record">查看更多消息</div>')
                         }
                         for (var i = data.list.length - 1; i >= 0; i--) {
-                            var _data = JSON.parse('{"robotAnswer":[{"ansCon":"' + (data.list[i].reply || '').replace(/"/g, '\'').replace(/\n+/g, '').replace(/[\r\n]/g, '') + '", "time": "' + data.list[i].dateTime + '"}]}')
+                          var obj={
+                            ansCon:(data.list[i].reply || '').replace(/[\r\n]/g, ''),
+                            time:data.list[i].dateTime||'',
+                            msyType:data.list[i].ansType||''
+                          }
+                          var robotAnswer=[];
+                          robotAnswer.push(obj);
 
-                            recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question), data.list[i].dateTime) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
+                          var _data=new Object();
+                          _data.robotAnswer=robotAnswer;
+
+               
+
+                          recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
                         }
+                          /**
+                           * ios端历史记录拦截附件添加事件
+                           */
+                          recordData = This.iosBindEvent(recordData);
                         $('.MN_record').data('recordData', recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5'))// 防止字符串里含有带引号的链接
                     } else {
                         This.scrollbar.options.autoBottom = false// 防止自动滚动到底部
@@ -2400,7 +2495,11 @@ function uploadFile (options) {
       $('#' + This.options.chatCtnId).on('click.FA', '.MN_record', function () {
         This.historyRecord()
         var oldH = This.$obj.$chatCtnId.outerHeight()
-        This.$obj.$chatCtnId.prepend($(this).data('recordData'))
+        This.$obj.$chatCtnId.prepend($(this).data('recordData'));
+        /**
+         * 历史记录添加点击时间，拦截iso端附件提示
+         */
+        This.bodybindgClick();
         var newH = This.$obj.$chatCtnId.outerHeight()
         This.scrollbar.scrollTo(newH - oldH, true)// css 方式滚动
         /* 查看历史记录中图片的缩放 */
@@ -2596,6 +2695,22 @@ function uploadFile (options) {
             ansCon += '<video src="' + data.robotAnswer[index].ansCon + '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
           }
 
+          /**
+           * taskid=476
+           * 原因:判断是否是ios端，截取zip文件添加class
+           * 添加 截取zip文件添加class
+           */
+          // if(this.isiOS){
+          //   var matchArray = ansCon.match(/href=[\'\"]([^\'\"]+\.(?:rar|zip|7z| ))[\'\"]/g);
+          //   if(matchArray && matchArray.length > 0){
+          //     matchArray.forEach(function(item) {
+          //       ansCon =  ansCon.replace(item, item +' class="imgClick"');
+          //     });
+          //   }
+          // }
+
+          ansCon = this.iosBindEvent(ansCon);
+
           //%%
           html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
           /* 正常交互中图片的缩放 */
@@ -2604,7 +2719,13 @@ function uploadFile (options) {
                     if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
                         
                     }else{
+                      if($('.MN_kfCtn img').not('.MN_kfImg').length > 1){
+                        for(var i=0;i < $('.MN_kfCtn img').not('.MN_kfImg').length;i++){
+                          $('.MN_kfCtn img').not('.MN_kfImg').eq(i).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(i).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(i).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+                        }
+                      }else{
                         $('.MN_kfCtn img').not('.MN_kfImg').eq(k).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+                      }
                     }
                 }
             }
@@ -2617,10 +2738,46 @@ function uploadFile (options) {
 
       return html
     },
+    // IOS端绑定事件
+    iosBindEvent: function(ansCon) {
+      var newansCon = '';
+      if(this.isiOS){
+        var matchArray = ansCon.match(/href=[\'\"]([^\'\"]+\.(?:rar|zip|7z| ))[\'\"]/g);
+        if(matchArray && matchArray.length > 0){
+          matchArray.forEach(function(item) {
+            ansCon =  ansCon.replace(item, item +' class="imgClick"');
+          });
+        }
+      }
+      newansCon = ansCon;
+      return newansCon
+    },
+    bodybindgClick:function () {
+      var This = this;
+      if(this.isiOS){
+        $('body').undelegate('imgClick','click').delegate('.imgClick','click', function (e) {
+          e.preventDefault();
+          This.showMsg('该文件类型需要在PC端下载!');
+        });
+      }
+    },
     //客户结构
-    customHtml: function (word, time) {
+    customHtml: function (word, time,msgType) {
       var html = ''
+        //taskId=475 查看聊天记录，聊天记录图片不显示bug
+        if(msgType=='image'){
+        //图片答案
+        word = '<figure><div class="' + word + '"><a href="' + word + '" data-size="1920x1800"><img src="' + word + '" class="imgBox"></a></div></figure>';
+      }else if(msgType=='voice'){
+          //语音答案
+          word = '<p>若无法播放，请点击<a href="' + word + '" target="_blank">下载</a></p><br/>'
+          word += '<audio src="' + word + '" controls="controls">您的浏览器不支持 audio 标签。</audio>'
 
+      }else if(msgType=='video'){
+        //视频答案
+        word = '<p>若无法播放，请点击<a href="' +word + '" target="_blank">下载</a></p><br/>'
+        word += '<video src="' + word+ '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
+      }
       html = this.options.khHtml.replace(/%khPic%/g, this.robot.khPic).replace(/%askWord%/g, word).replace(/%formatDate%/g, time ? this.getFormatDate(time) : this.getFormatDate())
       return html
     },
@@ -2678,7 +2835,7 @@ function uploadFile (options) {
       var str = ''
 
       //问题结构->.MN_guideQue必须存在，搜索#.MN_guideQue查看原因
-      if (queList[0]) {
+      if (queList&&queList[0]) {
         for (var i = 0; i < queList.length; i++) {
           if (i + 1 > this.options.maxQueNum) {//限制条数
             break
@@ -2886,6 +3043,17 @@ function uploadFile (options) {
             if (hasCtn) {
               This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
               This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
+              /**
+               * taskid=476
+               * 原因:判断是否是ios端，添加事件
+               * 添加 判断ios端，添加事件，弹出到pc端下载
+               */
+              if(This.isiOS){
+                $('body').undelegate('imgClick','click').delegate('.imgClick','click', function (e) {
+                  e.preventDefault();
+                  This.showMsg('该文件类型需要在PC端下载!');
+                });
+              }
             }
             This.recommendQue(data)//推荐问题
             This.recommendUrl(data)//推荐链接

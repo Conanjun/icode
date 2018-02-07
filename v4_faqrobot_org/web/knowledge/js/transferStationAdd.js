@@ -4,6 +4,7 @@ var QandFIndex = -1;
 var transferStationFlag = false;
 var tsItem = null;
 var similarFlag = true;
+var channelOther = [];
 richtextUE = UE.getEditor('ans_richtext', {
     initialFrameHeight: 300,
     zIndex: 190,
@@ -139,6 +140,14 @@ if (getUrlParam('tsFlag')) {
                         $('#ClassesLabel').removeClass('hide');
                         $('#queClassify').addClass('hide');
                         $('#ClassesLabel').html(data.thirdList[0].ComeGroupName);
+                    }
+                    /*taskId = 684 知识中转站添加渠道修改项
+                        新增知识时将已经设置的渠道信息展示出来
+                    */
+                    if(data.thirdList[0].Other){
+                        if(data.thirdList[0].Other.split(',')){
+                            channelOther = data.thirdList[0].Other.split(',');
+                        }
                     }
                 }
             }
@@ -2237,32 +2246,36 @@ function imgTextList(pageNo) {
                     $('#ib0').empty();
                     $('#ib1').empty();
                     $('#ib2').empty();
+                    /*
+                        黄世鹏，
+                        修改：后台接口重构，将返回的参数名第一个字母大写
+                    */
                     for (var i = 0; i < json.result.list.length; i++) {
                         var imgTxtHtml = '';
-                        if (json.result.list[i].wxappmsgDetails.length == 1) {
+                        if (json.result.list[i].WxappmsgDetails.length == 1) {
                             imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
                             imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px; max-height: 280px; overflow: hidden;padding: 5px;">';
-                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
                             imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].wxappmsgDetails[0].title + '</span></h4>';
-                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].timeStr + '</span></p>';
-                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].wxappmsgDetails[0].imgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].WxappmsgDetails[0].Title + '</span></h4>';
+                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].TimeStr + '</span></p>';
+                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].WxappmsgDetails[0].ImgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
                             imgTxtHtml += '</div></div>';
                         } else {
                             imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
                             imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px;">';
-                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
                             imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].wxappmsgDetails[0].title + '</span></h4>';
-                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].timeStr + '</span></p>';
-                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].wxappmsgDetails[0].imgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].WxappmsgDetails[0].Title + '</span></h4>';
+                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].TimeStr + '</span></p>';
+                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].WxappmsgDetails[0].ImgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
                             imgTxtHtml += '</div>';
-                            for (var j = 1; j < json.result.list[i].wxappmsgDetails.length; j++) {
+                            for (var j = 1; j < json.result.list[i].WxappmsgDetails.length; j++) {
                                 imgTxtHtml += '<div style="border-top: 1px solid #D4D4D4;"></div>';
                                 imgTxtHtml += '<div class="sub-msg-item" style="max-width: 320px; margin:5px 0; padding:10px 12px;">';
                                 imgTxtHtml += '<div style="display: table;"></div>';
-                                imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>' + json.result.list[i].wxappmsgDetails[j].title + '</span></h4></div>';
-                                imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="' + json.result.list[i].wxappmsgDetails[j].imgUrl + '" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
+                                imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>' + json.result.list[i].WxappmsgDetails[j].Title + '</span></h4></div>';
+                                imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="' + json.result.list[i].WxappmsgDetails[j].ImgUrl + '" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
                                 imgTxtHtml += '<div style="display: table; clear: both;"></div>';
                                 imgTxtHtml += '</div>';
                             }
@@ -2784,7 +2797,9 @@ function Add() {
         }
     });
 }
-
+/*  taskId = 684 知识中转站添加渠道修改项
+    新增页面展示上次设置的渠道
+*/
 function getRule() {
     $.ajax({
         type: 'post',
@@ -2826,6 +2841,13 @@ function getRule() {
                                             });
                                             for (var key in data.listValue) {
                                                 $('#DivRule_WayItem').append('<a class="btn btn-white m-r-5 m-b-5" fid="' + data.listValue[key].DicCode + '">' + data.listValue[key].DicDesc + '</a>');
+                                            }
+                                            for(var i = 0;i < channelOther.length;i++){
+                                                for(var j = 0;j < $('#DivRule_WayItem a.btn').length;j++){
+                                                    if(channelOther[i] == $('#DivRule_WayItem a.btn').eq(j).text()){
+                                                        $('#DivRule_WayItem a.btn').eq(j).addClass('btn-primary').attr('ckb','1');
+                                                    }
+                                                }
                                             }
                                         }
                                     }

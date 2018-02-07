@@ -8,7 +8,7 @@
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <title>FaqRobot智能问答机器人</title>
     <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../web/common/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/minichat.css?time=1513">
 	<link rel="stylesheet" href="skin/chat2/css/app.css?time=1513">
     <link href="../web/common/css/radioskin/blue.css" rel="stylesheet">
@@ -104,6 +104,9 @@
             text-align: center;
             color:#2090b4   
         }
+        #successMessage .modal-footer span{
+            cursor: pointer;   
+        }
         #MessageBoardForm .form-group>label{
             padding-right:0px
         }
@@ -155,7 +158,7 @@
                     </div>
                     <div class="sendCtn">
                         <span id="clearMsg" class="clearMsg"></span>
-                        <a id="power" target="_blank" href="javascript:void(0);" style="cursor: default;"><span class="power" style="cursor: default;">Powered By YunWen</span></a>
+                        <a id="power" target="_blank" href="javascript:void(0);" style="cursor: default;"><span class="power" id='copyright' style="cursor: default;">Powered By YunWen</span></a>
                         <span id="sendBtn" class="sendBtn">发送</span>
                     </div>
                 </div>
@@ -389,24 +392,18 @@
         var validator1=$('#MessageBoardForm').validate({
             rules:{
                 name:{
-                    required:true,
                     minlength:2,
                     maxlength:10,
                 },
                 phone:{
-                    required:true,
-                    number:true,
-                    minlength:5,
-                    maxlength:11
+                    telFlag:true
                 },
                 QQ:{
-                    required:true,
                     number:true,
                     minlength:5,
                     maxlength:12 
                 },
                 email:{
-                    required:true,
                     emailFlag:true,
                 },
                 ans_text:{
@@ -415,24 +412,13 @@
             },
             messages:{
                 name:{
-                    required:"请输入姓名！",
                     minlength:"请输入2~10个字符！",
                     maxlength:"请输入2~10个字符！"
                 },
-                phone:{
-                    required:"请输入电话号码！",
-                    number:"请输入正确的电话号码！",
-                    maxlength:"请输入正确的电话号码！",
-                    minlength:"请输入正确的电话号码！"
-                },
                 QQ:{
-                    required:"请输入QQ号码！",
                     number:"请输入正确的QQ号码！",
                     minlength:"请输入正确的QQ号码！",
                     maxlength:"请输入正确的QQ号码！"
-                },
-                email:{
-                    required:"请输入正确的邮箱！"
                 },
                 ans_text:{
                     required:"留言不能为空！",
@@ -442,9 +428,24 @@
         });
         $.validator.addMethod("emailFlag",function(value,element,params){  
             var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
-            return this.optional(element)||(emailreg.test(value.trim()));  
+            if(emailreg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            } 
         },"请输入正确格式的邮箱！");
-
+        /**
+         * taskId=494;顾荣 2017.12.27
+        * 修改：优化手机号码正则
+        */ 
+        $.validator.addMethod("telFlag",function(value,element,params){  
+            var telNumReg=/^1[0-9]{10}$/  
+            if(telNumReg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            }
+        },"请输入正确格式的手机号码！");
         function msgSubmit(){
             var messageName=$("#boardName").val().trim()//姓名
             var messagePhone=$("#boardPhone").val().trim()//电话号码

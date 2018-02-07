@@ -206,7 +206,6 @@
             url: 'tipHelp/check',
             params: {
                 code: 'artiMonitorHelp',
-                webId: -1,
             },
             callback: function(data) {
                 if(data.status) {//旧

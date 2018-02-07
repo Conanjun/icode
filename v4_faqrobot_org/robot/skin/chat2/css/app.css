@@ -129,10 +129,15 @@ body {
   line-height: 80px;
   float: left;
 }
+/*
+* taskId = 502 聊天页面logo大小问题
+* 设置最大宽度
+*/
 .whole .head .headLeft .logo {
   vertical-align: middle;
   max-height: 70px;
   margin-right: 20px;
+  max-width: 400px;
 }
 .whole .head .headLeft .titleCtn {
   vertical-align: middle;

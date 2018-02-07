@@ -104,17 +104,21 @@
                                     </label>
                                 </div>
                             </div>
+                            <!-- 
+                              taskid=449
+                              原因：接口的简介修改为场景欢迎语
+                            -->
                             <div class="form-group">
-                                <label class="col-md-3 control-label">接口的简介<span class="red">&nbsp;*</span></label>
+                                <label class="col-md-3 control-label">场景欢迎语<span class="red">&nbsp;*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" placeholder="请输入接口的简介" class="input2-synonym form-control" name="info">
+                                    <input type="text" placeholder="请输入场景欢迎语" class="input2-synonym form-control" name="info">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">保存方式<span class="red">&nbsp;*</span></label>
                                 <div class="col-md-9">
                                     <label>
-                                      <input type="radio" name="saveType" value="0" checked="checked">
+                                      <input type="radio" name="saveType" value="0">
                                       url直接提交
                                     </label>
                                     <label>
@@ -214,9 +218,7 @@
         <div id="content" class="content">
             <!-- begin breadcrumb -->
             <ol class="breadcrumb pull-right">
-                <li><a href="javascript:;">首页</a></li>
-                <li><a href="javascript:;">系统管理</a></li>
-                <li>场景式问答列表</li>
+               
             </ol>
             <!-- end breadcrumb -->
             <!-- begin page-header -->
@@ -229,13 +231,13 @@
                     <div class="panel panel-inverse" data-sortable-id="table-basic-7">
                         <div class="panel-body">
                             <div class="table-responsive">
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 添加场景式问答表单</button>
+								<button id='addClick' type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-dialog"><span class="glyphicon glyphicon-plus"></span> 添加场景式问答表单</button>
 								<table class="table" id="ttt">
 									<thead>
 										<tr>
 											<th>表单的名称</th>
 											<th>是否需要表单确认</th>
-											<th>接口的简介</th>
+											<th>场景欢迎语</th>
 											<th style="white-space: nowrap;">添加时间</th>
 											<th style="white-space: nowrap;text-align:center;width: 80px;">操作</th>
 										</tr>
@@ -292,7 +294,7 @@
             formList();
             $.getJSON('../../DisplayModel/list?pageSize=50&pageNo=1', function(data){
               if(data.status==0){
-                if(data.list.length>0){
+                if(data.list && data.list.length>0){
                   data.list.forEach(function(el){
                     $('[name=modelId]').append('<option value="'+el.Id+'">'+el.Name+'</option>');
                   });
@@ -316,7 +318,7 @@ function formList(pageNo){
 	success:
 	function(data){
 		if(data.status==0){
-			if(data.list.length>0){
+			if(data.list && data.list.length>0){
 				var temp=[];
 				for(var i=0;i<data.list.length;i++){
 					temp.push('<tr>');

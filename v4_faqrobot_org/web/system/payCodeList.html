@@ -74,9 +74,7 @@
     <div id="page-container" class="fade in">
         <div id="content" class="content">
             <ol class="breadcrumb pull-right">
-                <li><a href="javascript:;">首页</a></li>
-                <li><a href="javascript:;">系统管理</a></li>
-                <li>获取代码</li>
+               
             </ol>
             <h1 class="page-header">获取代码</h1>
             <div>
@@ -101,16 +99,20 @@
 								<div class="itemCtn-payCode">
 									<div id="editor"></div>
 								</div>
-							</div>
+                            </div>
+                            <!-- 
+                                taskid=472,黄世鹏
+                                修改：将图片路径由绝对路径变为相对路径
+                             -->
 							<div class="tab-pane in" id="default-tab-2">
 								<div class="itemCtn-payCode">
 									<span>
 										<input type="radio" value="0" name="styleRdo" checked>
-										<a href="http://www.faqrobot.org/chatIcon/chatp3.png" data-lightbox="gallery-group-2"><img class="picUrl" src="http://www.faqrobot.org/chatIcon/chatp3.png" style="width: 120px;"></a>
+										<a href="../../web/system/images/chatp13.png" data-lightbox="gallery-group-2"><img class="picUrl" src="../../web/system/images/chatp13.png" style="width: 120px;"></a>
 									</span>
 									<span>
 										<input type="radio" value="1" name="styleRdo">
-										<a href="http://www.faqrobot.org/chatIcon/chatp5.png" data-lightbox="gallery-group-2"><img class="picUrl" src="http://www.faqrobot.org/chatIcon/chatp5.png" style="width: 120px;"></a>
+										<a href="../../web/system/images/chatp15.png" data-lightbox="gallery-group-2"><img class="picUrl" src="../../web/system/images/chatp15.png" style="width: 120px;"></a>
 									</span>
 								</div>
 							</div>
@@ -118,15 +120,15 @@
 								<div class="itemCtn-payCode">
 									<span>
 										<input type="radio" value="0" name="styleR" checked>
-										<a href="http://www.faqrobot.org/chatIcon/chatp6.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp6.png" style="width: 120px;"></a>
+										<a href="../../web/system/images/chatp16.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="../../web/system/images/chatp16.png" style="width: 120px;"></a>
 									</span>
 									<span>
 										<input type="radio" value="2" name="styleR">
-										<a href="http://www.faqrobot.org/chatIcon/chatp8.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp8.png" style="width: 120px;"></a>
+										<a href="../../web/system/images/chatp18.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="../../web/system/images/chatp18.png" style="width: 120px;"></a>
 									</span>
 									<span>
 										<input type="radio" value="1" name="styleR">
-										<a href="http://www.faqrobot.org/chatIcon/chatp7.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="http://www.faqrobot.org/chatIcon/chatp7.png" style="width: 120px;margin-top:10px;"></a>
+										<a href="../../web/system/images/chatp17.png" data-lightbox="gallery-group-3"><img class="picUrl2" src="../../web/system/images/chatp17.png" style="width: 120px;margin-top:10px;"></a>
 									</span>
 								</div>
 							</div>
@@ -136,7 +138,13 @@
 										<div class="cosImgBtn-payCode btn btn-primary" data-toggle="modal" data-target="#modal-dialog" type="button">
 											<span class="glyphicon glyphicon-plus"></span> 自定义图标
 										</div>
-										<div class="cosImg-payCode"></div>
+										<div class="cosImg-payCode">
+                                            <!-- 
+                                                黄世鹏
+                                                修改：添加图片，显示设置过的自定义图标
+                                             -->
+                                            <img src="" alt="">
+                                        </div>
 										<div class="input-payCode">
 											模式：
 											<input id="dir3" class="dir3" type="radio" name="mode" value="0" checked>
@@ -163,14 +171,14 @@
 											<span class="glyphicon glyphicon-plus"></span> 客服图标
 										</div>
 										<div class="cosImg-payCode1 cosImg-payCode3">
-											<img src="images/logo.png">
+											<img src="../../web/system/images/logo.png">
 										</div>
 
 										<div class="cosImgBtn-payCode2 btn btn-primary" data-toggle="modal" data-target="#modal-dialog" type="button">
 											<span class="glyphicon glyphicon-plus"></span> 客户图标
 										</div>
 										<div class="cosImg-payCode2 cosImg-payCode3">
-											<img src="images/robot_askicon.png">
+											<img src="../../web/system/images/robot_askicon.png">
 										</div>
 
 									</div>

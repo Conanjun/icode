@@ -1,0 +1,581 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="./skin/chat2_GuoTai/images/logo.png" type="/image/x-icon">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>FaqRobot智能问答机器人</title>
+    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../web/common/css/radioskin/blue.css" rel="stylesheet">
+    <link href="../web/common/css/commonCSS.css" rel="stylesheet">
+    <link rel="stylesheet" href="skin/chat2_GuoTai/css/minichat.css?time=1513">
+	<link rel="stylesheet" href="skin/chat2_GuoTai/css/app.css?time=1513">
+	
+	<script src="./js/minichat.js?time=1513"></script>
+	<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../web/common/js/webuploader.min.js"></script>
+	<script src="../web/common/js/customMethod.js"></script>
+    <script src="skin/chat2_GuoTai/js/app.js?time=1513"></script>
+    <style type="text/css">
+        body{
+            background: url('./skin/chat2_GuoTai/images/bg.png');
+            background-size: cover;
+        }
+    	.form-horizontal .form-group{
+    		margin-right: 0;
+    		margin-left: 0;
+    	}
+    	.modal{
+    		background: rgba(0,0,0,0.3);
+    	}
+    	@media (min-width: 768px){
+    		.modal-dialog{
+	    		margin: 200px auto;
+	    	}
+    	}
+    	
+    	input[name=satis],input[name=ckb]{
+    		opacity: 0;
+    	}
+    	
+    	.rad a{
+    		display: inline-block;
+		    width: 16px;
+		    height: 17px;
+    		background: url(./skin/chat2_GuoTai/css/red.png) -96px -15px;
+		    vertical-align: text-bottom;
+		    margin-right:5px;
+    	}
+    	.muiSel a{
+    		display: inline-block;
+		    width: 16px;
+		    height: 17px;
+	        vertical-align: text-bottom;
+		    background: url(./skin/chat2_GuoTai/css/red.png) 145px 17px;
+		    margin-right:5px;
+    	}
+    	#title{
+            white-space: nowrap;
+            overflow:hidden;    
+            font-size: 30px;
+            line-height: 40px;
+            font-family: '宋体';
+            font-weight:700;
+            position:relative;
+            left:-4px;
+        }
+         /* taskid=403 顾荣 任务:留言面板 样式开始 */
+         #MessageBoardModal #ansText{
+            height:160px;
+        }
+        #MessageBoardModal .modal-dialog{
+            margin-top: 50px;
+        }
+        #MessageBoardModal,#dialogFeedModal{
+            overflow-y: auto;
+        }
+        #MessageBoardModal .control-label>img{
+            width:24px;
+        }
+        #filebtn{
+            position: relative;
+            border:1px solid lightgray;
+            overflow: hidden;
+            padding:0px;
+        }
+        #filebtn>.webuploader-pick{
+            padding: 6px 12px
+        }
+        #filebtn input{
+            position:absolute;
+            opacity:0;
+            right:0;
+            top:0;
+        }
+        .imgdivs{
+            text-align:center;
+            padding:15px;
+        }
+        .imgdivs>div>img{
+            width:73.5px;
+            height:73.5px;
+            border-radius:4px;
+        }
+        #successMessage .modal-body{
+            text-align:center;
+        }
+        #successMessage .modal-body>div{
+            margin:30px 0;
+        }
+        #successMessage .modal-footer{
+            text-align: center;
+            color:#2090b4   
+        }
+        #successMessage .modal-footer span{
+            cursor: pointer;   
+        }
+        #MessageBoardForm .form-group>label{
+            padding-right:0px
+        }
+        .imgdivs>div{
+            position:relative
+        }
+        .delRound{
+            width:20px;
+            height:20px;
+            font-weight:700;
+            border-radius: 50%;
+            background-color: red;
+            color:white;
+            position: absolute;
+            right:-8px;
+            top:-8px;
+            transform:rotate(45deg);
+            cursor:pointer;
+        }
+        #messageBoardBtn{
+            border-radius: 4px;
+        }
+
+         /* taskid=403 顾荣 任务:留言面板 样式结束 */
+    </style>
+</head>  
+<body>
+    <div class="whole">
+        <div class="head">
+            <div class="headLeft">
+                <img id="logo" class="logo" src="skin/chat2_GuoTai/images/headLogo.png" alt="logo">
+                <div class="titleCtn">
+                    <p id="title" class="title">国泰基金</p>
+                    <p class="intro" id="robotInfo">智能客服机器人，24小时竭诚为您服务</p>
+                </div>
+            </div>
+            <div class="headRight">
+               
+            </div>
+        </div>
+        <div class="body">
+            <div class="bodyLeft">
+                <div class="bodyLeftTop">
+                    <div id="chatCtn" class="chatCtn"></div>
+                </div>
+                <div class="bodyLeftBottom">
+                    <div class="writePanel">
+                        <div class="Panel_name" id="faceRoot" style="width:225px;">
+                            <!-- 表情 -->
+                            <span class="Panel_item" style="cursor:pointer;" title="表情">
+                                <div id="faceBtn" class="icon-bq_normal"></div>
+                            </span>
+
+                            <!-- 字号 -->
+                            <a class="Panel_item" href="javascript:void(0)" title="字号">
+                                <div id="font" class="icon-font_normal"></div>
+                            </a>
+
+                            <!-- 清空聊天记录 -->
+                            <a class="Panel_item" href="javascript:void(0)" title="清空聊天记录" id="clearBtn">
+                                <div id="trash" class="icon-clear_normal"></div>
+                            </a>
+                            <div class="popFont" style="display:none;">
+                                <div class="popFontS">
+                                    <span>字号：</span>
+                                    <select id="fonts">
+                                        <option value="14px">9</option>
+                                        <option value="15px">10</option>
+                                        <option value="16px">11</option>
+                                        <option value="17px">12</option>
+                                        <option value="18px">13</option>
+                                        <option value="19px">14</option>
+                                        <option value="20px">15</option>
+                                    </select>
+                                </div>
+                                <div class="popFontF">
+                                    <span>字体：</span>
+                                    <select id="fontf">
+                                        <option value="Microsoft YaHei" style="font-family:'Microsoft YaHei'">微软雅黑</option>
+                                        <option value="SimSun" style="font-family:'SimSun'">宋体</option>
+                                        <option value="SimHei" style="font-family:'SimHei'">黑体</option>
+                                        <option value="FangSong" style="font-family:'FangSong'">仿宋</option>
+                                        <option value="KaiTi" style="font-family:'KaiTi'">楷体</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Panel_word">
+                            <a class="Panel_item" href="javascript:void(0)" id="smallTip">
+                                <div id="skill" class="icon-tips_normal"></div>
+                            </a>
+                            <span class="popSpan">提问小技巧</span>
+                            <div class="popTips" style="display:none;">
+                                <div class="popTrans" style="position:absolute;width:400px;height:30px;bottom:-20px;left:0;"></div>
+                                <div class="popClose">&times;</div>
+                                <div class="popHead">
+                                    <div class="lPic">
+                                        <img src="./skin/chat2_GuoTai/images/tip1.png">
+                                    </div>
+                                    <div class="cam" id="cam">
+                                        <div class="tipMsg" id="tipMsg">
+                                            <div class="tipMsgItem" name="tipMsgItem" orderT="1">
+                                                <span>多个问题分别发送</span>
+                                                <p>建议一次只问一个问题哦，分开问才能准确哦。<br>
+                                                比如这个问题“我是新入职的员工，想问下公司的差旅费报销怎么报？通讯费标准是什么？”，其实这里面包含“差旅费报销怎么报？”和“通讯费标准是什么？”两个问题。</p>
+                                            </div>
+                                            <div class="tipMsgItem" name="tipMsgItem" orderT="2">
+                                                <span>问题简洁明了</span>
+                                                <p>发送您询问的主要关键字就可以了哦。<br>
+                                                比如这个问题“根据适当性要求，投资者和基金产品的分类？目前我司基金产品如何分类？”其实不用描述太多，直接问要点“投资者和基金产品分类是什么？”就可以了。</p>
+                                            </div>
+                                            <div class="tipMsgItem" name="tipMsgItem" orderT="3">
+                                                <span>一个问题不要拆开发送</span>
+                                                <p>只有将问题描述完整，才能给出完整解答哦。<br>
+                                                比如这个问题“怎么办？”，如果改成“我想要移动OA办公怎么办？”，那么我马上就能回答您了！</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popTail">
+                                    <div class="tailMiddle">
+                                        <div class="imgLeft">
+                                            <div id="tipToLeft" class="icon-tips_left_normal"></div>
+                                        </div>
+                                        <div class="imgRight">
+                                            <div id="tipToRight" class="icon-tips_right_normal"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputCtn">
+                        <p id="inputTip" class="inputTip">请输入</p>
+                        <textarea id="input" class="input" autocomplete="off"></textarea>
+                    </div>
+                    <div class="sendCtn">
+                        <div title="满意度评价" id="loveBtn">
+                        </div>
+                        <span id="sendBtn" class="sendBtn">发送</span>
+                        <span id="closeBtn" class="closeBtn">关闭</span>                        
+                    </div>
+                </div>
+            </div>
+            <div class="bodyRight">
+                <div class="bodyRightCtx">
+                    <div class="itemBtnCtn">
+                        <div class="commonQue itemCtn">
+                            <div class="itemHead1 itemHead itemHeadFocus" index="1">热点问题</div>
+                        </div>
+                        <div class="quickLink itemCtn">
+                            <div class="itemHead2 itemHead" index="2">快捷服务</div>
+                        </div>
+                        <div class="feedBack itemCtn">
+                            <div class="itemHead3 itemHead" index="3">意见反馈</div>
+                        </div>
+                        <div class="artiSearch itemCtn artiSearchHide">
+                            <div class="itemHead4 itemHead" index="4">智能搜索</div>
+                        </div>
+                        <div class="thirdURL itemCtn thirdURLRecommend">
+                            <div class="itemHead5 itemHead" index="5">推荐链接</div>
+                        </div>
+                        <!-- taskid=675 国泰基金快捷服务功能优化 顾荣 2018/1/22
+                        添加：添加快捷服务的网页Iframe窗口 -->
+                        <div id="serveIframe">
+                            <div id="cloQuIframe"></div>
+                            <iframe id="quickIframe" src="" frameborder="0" scrolling="yes">
+                                <!-- 快捷服务网页链接内容 -->
+                            </iframe>
+                        </div>
+                    </div>
+                    <div class="itemCtxCtn">
+                        <div id="commonQueBox" class="itemCtx" index="1">
+                            <div id="commonQue"></div>
+                        </div>
+                        <div id="quickLink"  class="itemCtx" index="2"></div>
+                        <form id="feedBackForm" class="itemCtx" index="3" autocomplete="off">
+                            <div class="feedBackCtn">
+                                <p>您对本次的服务满意吗？</p>
+                                <span class="servYes_hover servCos servYes">满意</span>
+                                <input class="servYesInput" type="radio" name="level" value="1" checked="">
+                                <span class="servCos servNo">不满意</span>
+                                <input class="servNoInput" type="radio" name="level" value="0">
+                                <div class="servNoReason">
+                                    <p>不满意的原因？</p>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+                                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+                                </div>
+                                <div class="feedBackWordCtn">
+                                    <p id="feedBackTip" class="feedBackTip">您的意见</p>
+                                    <textarea id="feedBackInput" class="feedBackInput" name="content"></textarea>
+                                    <span id="feedBackBtn" class="feedBackBtn">提交</span>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="artiSearch" class="itemCtx" index="4"></div>
+                        <div id="thirdUrl" class="itemCtx" index="5">
+                        	<iframe frameborder="0" width="100%" height="100%" src="thirdUrlDemo.html"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" aria-hidden="true" id="dialogFeedModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button aria-hidden="true" data-dismiss="modal" class="close closepage1" type="button">×</button>
+					<h4 class="modal-title">会话满意度评价</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="saveDialogform" class="form-horizontal">
+						<fieldset>
+							<div class="form-group">
+								<label class="rad"><a><input type="radio" name="satis" value="满意" checked/></a>满意</label>
+								<label class="rad"><a><input type="radio" name="satis" value="不满意" /></a>不满意</label>
+							</div>
+							<div class="form-group" id="muiList">
+								
+							</div>
+							<div class="form-group">
+								<textarea id="stapin" name="" style="text-indent:10px;padding-top:5px;resize:none;width: 100%;height: 100px;" placeholder="留下您的联系方式+反馈建议，以便我们提升服务水平和质量，谢谢！"></textarea>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm" id="dialogStaBtn">提交</button>
+				</div>
+			</div>
+		</div>
+    </div>
+    <!-- taskId=402 修改人：顾荣  任务：留言功能-->
+    <!-- 添加留言模态框和确定模态框 -->
+    <!-- 留言模态框开始 -->
+    <div class="modal" aria-hidden="true" id="MessageBoardModal" style="display:none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" onclick="$('#MessageBoardModal').css('display','none');clearform()"><span aria-hidden="true">&times;</span></button>
+                    <h1>留言板</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="MessageBoardForm">
+                            <div class="form-group">
+                                <label for="name" class="col-xs-2 control-label">
+                                    <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
+                                    <img src="./css/icon/one/name.png" style="width:20px">
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" placeholder="姓名" id="boardName" name="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="col-xs-2 control-label">
+                                    <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
+                                    <img src="./css/icon/one/call.png">
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" placeholder="手机号"  id="boardPhone" name="phone">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="QQ" class="col-xs-2 control-label">
+                                    <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
+                                    <img src="./css/icon/one/qq.png">
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" placeholder="QQ"  id="boardQQ" name="QQ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="col-xs-2 control-label">
+                                    <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i> -->
+                                    <img src="./css/icon/one/email.png">
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control"  placeholder="邮箱"  id="boardEmail" name="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ans_text" class="col-xs-2 control-label">
+                                    <!-- <i class="fa fa-pencil" aria-hidden="true"></i> -->
+                                    <img src="./css/icon/one/pen.png">
+                                </label>
+                                <div class="col-xs-9">
+                                    <div id="MessageBoard">
+                                        <textarea name="ans_text" class="form-control" id="ansText" placeholder="写点留言吧..."  maxlength="200"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">
+                                </label>
+                                <div class="col-xs-9" style="overflow:hidden">
+                                    <div id="picCav">
+                                        <!-- 添加图片 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">
+                                </label>
+                                <div class="col-xs-9" style="text-align:right" style="position:relative">
+                                    <span id="filebtn" class="btn btn-white">
+                                        上传图片  
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                </div>      
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-right" id="messageBoardBtn" onclick="msgSubmit()">提交</button>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 留言模态框结束 -->
+    <!-- 提交成功模态框开始 -->
+    <div class="modal" aria-hidden="true" id="successMessage" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <i class="fa fa-check-circle-o" style="font-size:60px;color:lightblue;"></i>                        
+                    </div>
+                    <div>
+                    您的留言已经提交,我们会尽快处理!                        
+                    </div>
+                </div>      
+                <div class="modal-footer">
+                    <div>
+                        <span id="messageAgain" style="margin-right:1.5rem;">继续留言>></span>
+                        <span id="backMessage">返回聊天页>></span>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 提交成功模态框结束 -->
+	<script>
+		$(document).ready(function(){
+            $("[name=satis]").eq(0).parent().css('background-position','-111px -15px');
+			$("[name=satis]").unbind('click').bind('click',function(){
+				if($(this).prop('checked')){
+					$(this).parent().css('background-position','-111px -15px');
+					$(this).parents('.rad').siblings().find('a').css('background-position','-96px -15px');
+				}
+				if($(this).val() == '不满意'){
+					Faqrobot.prototype.muiItem();
+				}else{
+					$('#muiList').html('');
+				}
+			});
+			$(document).delegate('[name=ckb]','click',function(){
+				if($(this).prop('checked')){
+					$(this).parent().css('background-position','129px 17px');
+				}else{
+					$(this).parent().css('background-position','145px 17px');
+				}
+				
+            })
+
+			// taskid=403 顾荣 任务:留言面板 2012.12.22开始部分
+            //点击继续留言
+            $("#messageAgain").click(function(){
+                clearform()
+                $("#successMessage").css("display","none");//关闭确定框
+                //清空图片预览区域
+            })
+            //点击返回聊天页
+            $("#backMessage").click(function(){
+                clearform()
+                $("#successMessage").css("display","none")
+                $("#MessageBoardModal").css("display","none")
+            })
+        })
+        function msgSubmit(){
+            var messageName=$("#boardName").val().trim()//姓名
+            var messagePhone=$("#boardPhone").val().trim()//电话号码
+            var messageQQ=$("#boardQQ").val().trim()//QQ号码
+            var messageEmail=$("#boardEmail").val().trim()//电子邮箱
+            var messageTxt=$("#ansText").val().trim()//留言内容
+            var imgs=[];//图片标签数组
+            if(messageName.length==1){
+                layer.msg("姓名不能少于2个字符！");
+                return;
+            }
+            var telNumReg=/^1[0-9]{10}$/;
+            if(!telNumReg.test(messagePhone)&&messagePhone!==""){
+                layer.msg("手机号码格式不正确！");
+                return;
+            }
+            var QQreg=/^[0-9]{4,14}$/;
+            if(!QQreg.test(messageQQ)&&messageQQ!==""){
+                layer.msg("QQ号码格式不正确！");
+                return;
+            }
+            var emailReg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/;
+            if(!emailReg.test(messageEmail)&&messageEmail!==""){
+                layer.msg("邮箱格式不正确！");
+                return;
+            }
+            if(messageTxt.length<1){
+                layer.msg("留言不能为空!");
+                return;
+            }
+
+
+            for(var i=0;i<$(".imgdivs").size();i++){
+                if($(".imgdivs").eq(i).attr('rel')){
+                    imgs.push($(".imgdivs").eq(i).attr('rel'))
+                }
+            }
+            imgs=imgs.join(",")
+            var urlEles=window.location.href.split("?")[1].split("&");
+            var sysNum='';//获取当前网址的sysNum值
+            for(var i=0;i<urlEles.length;i++){
+                if(urlEles[i].indexOf("sysNum")>-1){
+                sysNum=urlEles[i].split("=")[1]
+                }
+            }
+            $.ajax({
+                type:'post',
+                datatype:'json',
+                cache:false,//不从缓存中去数据,
+                url:encodeURI('../../servlet/AQ'),
+                data:{
+                    s: 'leavemsg',
+                    souceId:0,
+                    sysNum:sysNum,
+                    entrance:document.referrer,
+                    name:messageName,
+                    telNum:messagePhone,
+                    qq:messageQQ,
+                    email:messageEmail,
+                    content:messageTxt,
+                    imgUrls:imgs  
+                },
+                success:function(data){
+                    if(data.status==0){
+                        $("#successMessage").css("display","block")
+                    }else{
+                        layer.msg(data.message) 
+                    }
+                }
+            }) 
+        }
+        // 清空表单内容
+        function clearform(){			
+			$('.text-error').removeClass("text-error helper-font-small")
+            $("#boardName").val("")
+            $("#boardPhone").val("")
+            $("#boardQQ").val("")
+            $("#boardEmail").val("")
+            $("#ansText").val("")
+            $("#picCav").html("") 
+        } 
+	</script>
+</body>  
+</html>

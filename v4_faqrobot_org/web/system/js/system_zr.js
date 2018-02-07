@@ -242,11 +242,12 @@ function fadeBackList(pageNo, orderType) {
                             html += "<tr class=\"notRead\" id=\"list-tr-" + data.List[i].Id + "\">";
                         }
                         html += "<td><input type=\"checkbox\" name=\"ckb\" class=\"select_row\" value=\"" + data.List[i].Id + "\" /></td>";
-                        if (data.List[i].Sub === null) {
-                            html += "<td></td>";
-                        } else {
-                            html += "<td>" + data.List[i].Sub + "</td>";
-                        }
+                        // taskId=418 amend by zhaoyx 自如页面定制 不显示内容这一列
+                        // if (data.List[i].Sub === null) {
+                        //     html += "<td></td>";
+                        // } else {
+                        //     html += "<td>" + data.List[i].Sub + "</td>";
+                        // }
                         if (data.List[i].Content === null) {
                             html += "<td></td>";
                         } else {

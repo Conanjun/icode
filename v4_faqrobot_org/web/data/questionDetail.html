@@ -39,9 +39,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">访问问题明细统计</li>
+           
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -258,7 +256,7 @@
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {
@@ -405,11 +403,9 @@
         }
         var Xdata = [];
         var Ydata = [];
-        var AllList = [];
         for(var i = temp.length-1;i >= 0;i--){
             Xdata.push(temp[i].name);
             Ydata.push(temp[i].value);
-            AllList.push(temp[i].value);
         }
         /*for(var i = temp.length-1;i >= 0;i--){
 
@@ -420,13 +416,12 @@
             for(var i = temp.length-1;i >= 0;i--){
                 Xdata.push(temp[i].name2);
                 Ydata.push(temp[i].value2);
-                AllList.push(temp[i].value);
             }
             /*for(var i = temp.length-1;i >= 0;i--){
                 Ydata.push(temp[i].value2);
             }*/
         }
-        var maxY = Math.max.apply(null, AllList) < 4 ? 4 : Math.max.apply(null, AllList);
+        var maxY = Math.max.apply(null, Ydata) < 4 ? 4 : Math.max.apply(null, Ydata);
         // 初始 option1
         option1 = {
             title: {
@@ -455,7 +450,7 @@
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {

@@ -62,10 +62,21 @@
 		#AddQuesForm .tab-content {
 			margin-bottom: 0;
 		}
+		/*taskId=558  智能推荐功能优化 Amend by 赵宇星
+        *说明：修改智能推荐输入样式
+        */
 		#queManual .form-group {
 			padding: 0 15px;
 		}
-
+		.QueContainer .form-group:first-child {
+			max-width: 150px;
+		}
+		.QueContainer .form-group:nth-child(2) {
+			max-width: 570px;
+		}
+		[name=postQueInput]{
+            border-color:#348FE2;
+        }
 		#otherList td {
 		    word-wrap: break-word;
 			word-break: break-all;
@@ -310,6 +321,14 @@
 			height:20px;
 			width:20px;
 		}
+		/* taskId=719 选择视频时，显示视频名称,视频名称多余一行显示省略号 add by 赵宇星 */
+		.video-name{
+			width: 240px;
+			text-align: center;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+    		overflow: hidden;
+		}
 	</style>
 </head>
 
@@ -318,9 +337,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">添加问题</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">添加问题</h1>
@@ -424,11 +441,24 @@
 												<a data-toggle="modal"  data-target="#videoModel" class="btn btn-primary">选择视频</a>
 												<div name="ans_video" id="ans_video">
 													<div id="videoShow" class="m-t-5" style="height: auto; padding: 0; overflow: hidden; display: none;">
-														<video src="" style="width:245px;height:150px;margin-left:-9px;" controls='controls'/>
+														<video src="" style="width:245px;height:150px;margin-left:-9px;" controls='controls'></video>
+														<!-- taskId=719 选择视频时，显示视频名称 add by 赵宇星 -->
+														<p class="video-name"></p>
 													</div>
 													<input type="hidden" id="vodeoId">
 												</div>
-                                            </div>
+											</div>
+
+											<!-- taskid=630 提单人:孟凡华 知识图谱对接  顾荣 2018/1/16
+											修改：添加知识图谱答案类型 -->
+											<div class="tab-pane fade" id="graph">
+												<a data-toggle="modal"  data-target="#graphModel" class="btn btn-primary">选择知识图谱</a>
+												<div name="ans_graph" id="ans_graph">
+													<button class="btn btn-white m-t-5" disabled style="display: none;"></button>
+													<input type="hidden" id="graphId">
+												</div>
+											</div>
+											
                                             <div class="tab-pane fade" id="order">
 												<textarea name="ans_order" class="form-control" id="ans_order" style="height:300px;resize:none;" maxlength="200"></textarea>
 											</div>
@@ -1104,6 +1134,39 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- taskid=630 提单人：孟凡华  知识图谱对接  顾荣 2018/1/16
+			添加：添加选择知识图谱模态框 -->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="graphModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">选择知识图谱</h4>
+						</div>
+						<div class="modal-body">
+							<div id="graphDiv" style="margin-top:5px;">
+								<table class="table" id="graphList">
+									<thead>
+										<tr>
+											<th>选择</th>
+											<th>知识图谱名称</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="graphpageList" style="margin-bottom:0;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selgraphBtn">确定</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="modal fade" style="display: none;" aria-hidden="true" id="otherModel">
 				<div class="modal-dialog">
 					<div class="modal-content">

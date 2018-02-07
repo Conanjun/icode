@@ -1108,8 +1108,11 @@ _add="addClass";_remove="removeClass";_callback="trigger";_label="label";_cursor
           /**taskId=408 自如定制 输入引导bug
            * 说明：输入中文小于2个字，不出发匹配
           */
-          var reg = /^[\u4e00-\u9fa5]{1}$/;
-          if (!reg.test(This.$el.val())){
+          /**
+           * 说明：2/5 自如要求去除taskId=408功能 顾注释一下代码 Amend By zhaoyuxing
+           *           */
+          // var reg = /^[\u4e00-\u9fa5]{1}$/;
+          // if (!reg.test(This.$el.val())){
             MN_Base.request({
               prefix: This.options.prefix,//接口路径前缀(不能写根路径)
               url: This.options.url,
@@ -1158,7 +1161,7 @@ _add="addClass";_remove="removeClass";_callback="trigger";_label="label";_cursor
                 }
               }
             })
-          }
+          // }
           clearInterval(This.obj.timer)
         }
       }, 100)
@@ -2612,7 +2615,9 @@ function uploadFile (options) {
           recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
       }
       recordData=recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5');
-      This.$obj.$chatCtnId.append(recordData)//添加机器人的话
+      This.$obj.$chatCtnId.append(recordData)//添加机器人的话 
+      //自如发送表情时，不显示对话框的背景颜色,在调用完replaceFace，并将元素添加到页面时，调用
+      This.sendFaceBack();
       // $('#' + This.options.chatCtnId).append('<div class="flashOutDeal">以上为历史记录</div>')
       This.scrollbar.scrollTo('bottom', true);
     },
@@ -2726,10 +2731,12 @@ function uploadFile (options) {
         This.historyRecord()
         var oldH = This.$obj.$chatCtnId.outerHeight()
         This.$obj.$chatCtnId.prepend($(this).data('recordData'))
+         //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+        This.sendFaceBack(); 
         var newH = This.$obj.$chatCtnId.outerHeight()
         This.scrollbar.scrollTo(newH - oldH, true)// css 方式滚动
         /* 查看历史记录中图片的缩放 */
-        for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
+        for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg,.faceImg').length;k++){
             if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
                 if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
 
@@ -2956,7 +2963,8 @@ function uploadFile (options) {
           }
           //%%
           html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
-          for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
+          // 图片放大功能
+          for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg,.faceImg').length;k++){
             if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
                 if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
 
@@ -3188,6 +3196,8 @@ function uploadFile (options) {
       if(data.robotAnswer[0].thirdUrl){
         var url=data.robotAnswer[0].thirdUrl.url;
         var btnName='',btnClass='';//用于存储btn的名称和class
+        // taskId=759 跳转原生页按钮名称改为机器人传递的参数，不再写死 Amend by zhaoyuxing
+        btnName=data.robotAnswer[0].thirdUrl.urlTitle||'点击查看更多';
         if(url!=undefined&&url!=null&&url!=''){
           //url对照 添加按钮为题
           if(url=='http://ZRQuestionDetailLinkToUrlTypeContract.ziroom.com'){
@@ -3200,41 +3210,41 @@ function uploadFile (options) {
               return;
             }
             else{
-              btnName='我的合同';
+              // btnName='我的合同';
               btnClass='J_toHtList f0';
             }
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaningOrderList.ziroom.com'){
-            btnName='我的保洁';
+            // btnName='我的保洁';
             btnClass='J_toHtList f1';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeFortnight.ziroom.com'){
-            btnName='预约双周保洁';
+            btnName='自如客保洁';//更改按钮名称：将预约双周保洁 改为 自如客保洁
             btnClass='J_toHtList f2';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaning.ziroom.com'){
-            btnName='预约日常保洁';
+            // btnName='预约日常保洁';
             btnClass='J_toHtList  f3';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeXiaoSha.ziroom.com'){
-            btnName='预约消杀保洁';
+            // btnName='预约消杀保洁';
             btnClass='J_toHtList f4';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeShendu.ziroom.com'){
-            btnName='预约深度保洁';
+            // btnName='预约深度保洁';
             btnClass='J_toHtList f5';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeKaihuang.ziroom.com'){
-            btnName='预约开荒保洁';
+            // btnName='预约开荒保洁';
             btnClass='J_toHtList f6';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemoving.ziroom.com'){
-            btnName='预约搬家';
+            // btnName='预约搬家';
             btnClass='J_toHtList f7';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemovingOrderList.ziroom.com'){
-            btnName='我的搬家';
+            // btnName='我的搬家';
             btnClass='J_toHtList f8';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepair.ziroom.com'){
-            btnName='在线报修';
+            // btnName='在线报修';
             btnClass='J_toHtList f9';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepairOrderList.ziroom.com'){
-            btnName='我的报修';
+            // btnName='我的报修';
             btnClass='J_toHtList f10';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeKuanDai.ziroom.com'){
-            btnName='宽带报修';
+            // btnName='宽带报修';
             btnClass='J_toHtList f11';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousekeeper.ziroom.com'){
             //跳转'我的管家'  该按钮由后台添加 前端添加class
@@ -3246,14 +3256,14 @@ function uploadFile (options) {
               return;
             }
             else{
-              btnName='我的管家';
+              // btnName='我的管家';
               btnClass='J_toHtList f12';
             }
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeIintelligentlock.ziroom.com'){
-            btnName='智能门锁';
+            // btnName='智能门锁';
             btnClass='J_toHtList f13';
           }else if(url=='http://ZRQuestionDetailLinkToUrlTypeSuggestions.ziroom.com'){
-            btnName='投诉反馈';
+            // btnName='投诉反馈';
             btnClass='J_toHtList f14';
           }
            //获取最后一个问题，添加按钮
@@ -3279,6 +3289,9 @@ function uploadFile (options) {
           This.$obj.$chatCtnId.append(This.customHtml('<div class="FA_' + question.match(/ran\d+/) + ' FA_upFileCtn">loading...</div>'))//添加我的话
         } else {//问问题
           This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(filterXSS(question)))))//添加我的话
+            //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+            This.sendFaceBack();
+
           var $MN_ask = $('.MN_ask:last'),
             $MN_guideQues = $MN_ask.prevAll('.MN_answer').find('.MN_guideQue'),
             $lastGuide = $MN_guideQues.eq(-1)
@@ -3295,6 +3308,8 @@ function uploadFile (options) {
           if (This.robot.html || queParam) {// 当 This.robot.html 不为空时，走模拟答案
             data = JSON.parse('{"robotAnswer":[{"ansCon":"' + (This.robot.html).replace(/"/g, '\'').replace(/\s/g, '') + '"}]}')
             This.$obj.$chatCtnId.append(This.robotHtml(data))//添加机器人的话
+             //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+            This.sendFaceBack();
             This.options.getCallback(This.getCurrectWords(This.robotHtml(data)), data)//获取到答案后的回调
             This.recommendQue(data)//推荐问题
           } else {
@@ -3352,7 +3367,8 @@ function uploadFile (options) {
               *绑定事件:1、发送合同号 2、跳转链接
               */
               This.sendComCode();
-              // This.moreGo();
+              //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+              This.sendFaceBack();
             }
             This.recommendQue(data)//推荐问题
             This.recommendUrl(data)//推荐链接
@@ -3446,7 +3462,8 @@ function uploadFile (options) {
                   len = face[i][j][0].length,
                   str1 = data.substr(0, index),
                   str2 = data.substr(index + len)
-                data = str1 + (bool ? face[i][j][1] : ('<img src="' + src + j + '.' + faceType[2] + '">')) + str2
+                //自如发送表情时，不显示对话框的背景颜色，给发送的表情添加class=faceImg用以标识
+                data = str1 + (bool ? face[i][j][1] : ('<img src="' + src + j + '.' + faceType[2] + '" class="faceImg">')) + str2
               }
               if (!bool) {
                 while (data.indexOf(face[i][j][1]) + 1) {
@@ -3454,7 +3471,7 @@ function uploadFile (options) {
                     len = face[i][j][1].length,
                     str1 = data.substr(0, index),
                     str2 = data.substr(index + len)
-                  data = str1 + '<img src="' + src + j + '.' + faceType[2] + '">' + str2
+                  data = str1 + '<img src="' + src + j + '.' + faceType[2] + '" class="faceImg">' + str2
                 }
               }
             }
@@ -3462,6 +3479,13 @@ function uploadFile (options) {
         }
       }
       return data
+    },
+    //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+    sendFaceBack:function(){
+      var _faceEle=$('img.faceImg');
+      if(_faceEle.length){
+        _faceEle.parent().addClass('face-Ctn');
+      }
     },
     //转人工->s=needperson
     needPerson: function () {
@@ -3681,11 +3705,6 @@ function uploadFile (options) {
         }
       })
     },
-    //上传文件使用->s=uf
-    upFileNew:function(){
-
-    },
-
     //星座模块
     star: function () {
       var This = this

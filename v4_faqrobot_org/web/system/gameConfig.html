@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-2" style="text-align: right;">
-                                        <label class="bold">需要确认
+                                        <label class="bold">是否需要访客确认
                                             <span class="red">&nbsp;*</span>
                                         </label>
                                     </div>
@@ -170,9 +170,9 @@
                                         <input type="radio" name="gameItemC" value="0">不需要
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="isNeed">
                                     <div class="col-md-2" style="text-align: right;">
-                                        <label class="bold">确认提示信息
+                                        <label class="bold">访客确认提示语
                                             <span class="red">&nbsp;*</span>
                                         </label>
                                     </div>
@@ -199,13 +199,7 @@
     <div id="page-container" class="fade in">
         <div id="content" class="content">
             <ol class="breadcrumb pull-right">
-                <li>
-                    <a href="javascript:;">首页</a>
-                </li>
-                <li>
-                    <a href="javascript:;">系统管理</a>
-                </li>
-                <li class="active">策略配置</li>
+                
             </ol>
             <div class="row">
                 <h1 class="page-header">策略配置</h1>
@@ -497,6 +491,7 @@
                 $('.addGameItemBtn').on('click', function () {
                     gameItemIsAdd = true;// 是不是新增
                     strategyItemList($('[name=strategyMode]').val());
+                    $('#isNeed').show();
                 })
 
                 // 策略类型
@@ -604,6 +599,8 @@
                         }
                         $('[name=gameItemB]').val($('td:eq(1)', $tr).text());
                         $('[name=gameItemC][value=' + $('td:eq(2)', $tr).attr('value') + ']').prop('checked', true);
+                        var val = $('[name=gameItemC][value=' + $('td:eq(2)', $tr).attr('value') + ']').val();
+                        val == '1' ? $('#isNeed').show() : $('#isNeed').hide();
                         $('[name=gameItemD]').val($('td:eq(3)', $tr).text());
                     });
                 })
@@ -821,7 +818,13 @@
 
 
 
+                // 添加需要是否访客确认
 
+                $('input[name=gameItemC]').click(function() {
+                    var val = $(this).val();
+                    var isneed = $('#isNeed');
+                    val == '1' ? isneed.show() :  isneed.hide() ;
+                })
 
 
             }

@@ -1798,6 +1798,7 @@
                 remainWordId: 'remainWordId',
                 remainWordNum: '100',
                 commentFormId: 'commentFormId',//评论框formId
+                copyrightId:'copyright',// 版权及联系我们
                 commentInputCtnId: 'commentInputCtnId',//评论输入框Id
                 commentSendBtnId: 'commentSendBtnId',//评论发送按钮Id
                 commentTipWordId: 'commentTipWordId',//评论输入框提示语Id
@@ -2093,7 +2094,8 @@
             			This.options.initCallback(data);
             			$('#'+ This.options.inputCtnId).removeAttr('readonly');
             			This.setLogo(data);//设置logo->客服图标/客户图标
-            			This.sayHello(data);//欢迎语
+                  This.sayHello(data);//欢迎语
+                  This.getIsLogo(data);
                         This.quickService(data);//快捷服务
                         This.recommendLink(data);//推荐资讯
                         This.topQue(data);//热门、常见问题
@@ -2110,6 +2112,12 @@
                         }
             		},
             	});
+            },
+            getIsLogo: function(data) {
+              if(data&&data.showColumn==false){
+                $('#'+this.options.copyrightId).hide();
+                $('#webInfoId').hide();
+              }
             },
             // 历史记录
             historyRecord: function() {

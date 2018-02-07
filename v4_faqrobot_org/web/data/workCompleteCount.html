@@ -29,9 +29,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">工作完成统计</li>
+            
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -233,6 +231,13 @@
     function callback_chart (json) {
         showtable(json)
     }
+
+    //添加enter键按下事件
+    $('#DataSource').on('keyup',function(){
+        if(event.keyCode == '13') {
+			query();
+		}
+    })
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

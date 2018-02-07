@@ -673,7 +673,11 @@ var hidesetting = {
 	},
 	async : {
 		enable : true,
-		url : '../../classes/pageListClasses?mode=9&pageSize=1000',
+		/*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url : '../../classes/listClasses?m=9&pageSize=1000',
 		autoParam : ["id"],
 		dataFilter : function(treeId, parentNode, responseData) {
 			if (responseData) {
@@ -799,26 +803,30 @@ function preview_ans(type,value){
 			cache:false,//不从缓存中去数据
 			url:'../../Wxappmsg/findById?id='+value,
 			success:
+			/*
+				黄世鹏
+				修改：后台接口重构，第一个参数改为大写
+			 */
 			function(json){
 				if(json.result.status == 0){
 					var imgTxtHtml = [];
 					if(json.result.wxappmsg){
 						var wxlist=json.result.wxappmsg;
-						if(wxlist.wxappmsgDetails.length>0){
-							if(wxlist.wxappmsgDetails.length == 1){
-								imgTxtHtml.push('<div class="show"><a href="javascript:;" target="_blank"><p class="title">'+wxlist.wxappmsgDetails[0].title+'</p></a>');
-                imgTxtHtml.push('<p class="time">'+wxlist.timeStr+'</p>');
+						if(wxlist.WxappmsgDetails.length>0){
+							if(wxlist.WxappmsgDetails.length == 1){
+								imgTxtHtml.push('<div class="show"><a href="javascript:;" target="_blank"><p class="title">'+wxlist.WxappmsgDetails[0].Title+'</p></a>');
+                imgTxtHtml.push('<p class="time">'+wxlist.TimeStr+'</p>');
                 /**
                  * taksID=435 
                  * 原因：自定菜单展示预览图片，会有重复的内容。
                  * 修改：删除重复的内容（<p class="desc">'+wxlist.wxappmsgDetails[0].content+'</p>）
                  */
-								imgTxtHtml.push('<div class="pic"><img src="'+wxlist.wxappmsgDetails[0].imgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+wxlist.wxappmsgDetails[0].content+'</p></a></div></div>');
+								imgTxtHtml.push('<div class="pic"><img src="'+wxlist.WxappmsgDetails[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+wxlist.WxappmsgDetails[0].Content+'</p></a></div></div>');
 							}else{
-								imgTxtHtml.push('<div class="shows"><div class="showsTop"><p class="time">'+wxlist.timeStr+'</p>');
-								imgTxtHtml.push('<div class="pic"><img src="'+wxlist.wxappmsgDetails[0].imgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+wxlist.wxappmsgDetails[0].title+'</p></a></div></div>');
-								for(var m=1;m<wxlist.wxappmsgDetails.length;m++){
-									imgTxtHtml.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+wxlist.wxappmsgDetails[m].title+'</p></a><img src="'+wxlist.wxappmsgDetails[m].imgUrl+'" alt=""></div>');
+								imgTxtHtml.push('<div class="shows"><div class="showsTop"><p class="time">'+wxlist.TimeStr+'</p>');
+								imgTxtHtml.push('<div class="pic"><img src="'+wxlist.WxappmsgDetails[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+wxlist.WxappmsgDetails[0].Title+'</p></a></div></div>');
+								for(var m=1;m<wxlist.WxappmsgDetails.length;m++){
+									imgTxtHtml.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+wxlist.WxappmsgDetails[m].Title+'</p></a><img src="'+wxlist.WxappmsgDetails[m].ImgUrl+'" alt=""></div>');
 								}
 								imgTxtHtml.push('</div>');
 							}
@@ -1134,20 +1142,24 @@ function imgTextList(pageNo){
 
 					var html=[];
 					var htmlRight=[];
+					/*
+                        黄世鹏，
+                        修改：后台接口重构，将返回的参数名第一个字母大写
+                    */
 					for(var i=0;i<curList.length;i++){
-						var curImg=curList[i].wxappmsgDetails;
+						var curImg=curList[i].WxappmsgDetails;
 						if((i+1)%2==1){
 							if(curImg.length==1){
 								//单图文
-								html.push('<div class="show" rel="'+curList[i].id+'"><a href="javascript:;" target="_blank"><p class="title">'+curImg[0].title+'</p></a>');
-								html.push('<p class="time">'+curList[i].timeStr+'</p>');
-								html.push('<div class="pic"><img src="'+curImg[0].imgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+curImg[0].content+'</p></a></div><p class="desc">'+curImg[0].content+'</p></div>');
+								html.push('<div class="show" rel="'+curList[i].Id+'"><a href="javascript:;" target="_blank"><p class="title">'+curImg[0].Title+'</p></a>');
+								html.push('<p class="time">'+curList[i].TimeStr+'</p>');
+								html.push('<div class="pic"><img src="'+curImg[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+curImg[0].Content+'</p></a></div><p class="desc">'+curImg[0].Content+'</p></div>');
 							}else{
 								//多图文
-								html.push('<div class="shows" rel="'+curList[i].id+'"><div class="showsTop"><p class="time">'+curList[i].timeStr+'</p>');
-								html.push('<div class="pic"><img src="'+curImg[0].imgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+curImg[0].title+'</p></a></div></div>');
+								html.push('<div class="shows" rel="'+curList[i].Id+'"><div class="showsTop"><p class="time">'+curList[i].TimeStr+'</p>');
+								html.push('<div class="pic"><img src="'+curImg[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+curImg[0].Title+'</p></a></div></div>');
 								for(var m=1;m<curImg.length;m++){
-									html.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+curImg[m].title+'</p></a><img src="'+curImg[m].imgUrl+'" alt=""></div>');
+									html.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+curImg[m].Title+'</p></a><img src="'+curImg[m].ImgUrl+'" alt=""></div>');
 								}
 								html.push('</div>');
 							}
@@ -1155,15 +1167,15 @@ function imgTextList(pageNo){
 						}else{
 							if(curImg.length==1){
 								//单图文
-								htmlRight.push('<div class="show" rel="'+curList[i].id+'"><a href="javascript:;" target="_blank"><p class="title">'+curImg[0].title+'</p></a>');
-								htmlRight.push('<p class="time">'+curList[i].timeStr+'</p>');
-								htmlRight.push('<div class="pic"><img src="'+curImg[0].imgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+curImg[0].content+'</p></a></div><p class="desc">'+curImg[0].content+'</p></div>');
+								htmlRight.push('<div class="show" rel="'+curList[i].Id+'"><a href="javascript:;" target="_blank"><p class="title">'+curImg[0].Title+'</p></a>');
+								htmlRight.push('<p class="time">'+curList[i].TimeStr+'</p>');
+								htmlRight.push('<div class="pic"><img src="'+curImg[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+curImg[0].Content+'</p></a></div><p class="desc">'+curImg[0].Content+'</p></div>');
 							}else{
 								//多图文
-								htmlRight.push('<div class="shows" rel="'+curList[i].id+'"><div class="showsTop"><p class="time">'+curList[i].timeStr+'</p>');
-								htmlRight.push('<div class="pic"><img src="'+curImg[0].imgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+curImg[0].title+'</p></a></div></div>');
+								htmlRight.push('<div class="shows" rel="'+curList[i].Id+'"><div class="showsTop"><p class="time">'+curList[i].TimeStr+'</p>');
+								htmlRight.push('<div class="pic"><img src="'+curImg[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+curImg[0].Title+'</p></a></div></div>');
 								for(var m=1;m<curImg.length;m++){
-									htmlRight.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+curImg[m].title+'</p></a><img src="'+curImg[m].imgUrl+'" alt=""></div>');
+									htmlRight.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+curImg[m].Title+'</p></a><img src="'+curImg[m].ImgUrl+'" alt=""></div>');
 								}
 								htmlRight.push('</div>');
 							}
@@ -1386,26 +1398,30 @@ function getImgTxtById(id){
 	cache:false,//不从缓存中去数据
 	url:'../../Wxappmsg/findById?id='+id,
 	success:
+	/*
+		黄世鹏
+		修改：后台接口重构，第一个参数改为大写
+	 */
 	function(json){
 		if(json.result.status == 0){
 			var imgTxtHtml = [];
 			if(json.result.wxappmsg){
 				var wxlist=json.result.wxappmsg;
-				if(wxlist.wxappmsgDetails.length>0){
-					if(wxlist.wxappmsgDetails.length == 1){
-						imgTxtHtml.push('<div class="show"><a href="javascript:;" target="_blank"><p class="title">'+wxlist.wxappmsgDetails[0].title+'</p></a>');
-            imgTxtHtml.push('<p class="time">'+wxlist.timeStr+'</p>');
+				if(wxlist.WxappmsgDetails.length>0){
+					if(wxlist.WxappmsgDetails.length == 1){
+						imgTxtHtml.push('<div class="show"><a href="javascript:;" target="_blank"><p class="title">'+wxlist.WxappmsgDetails[0].Title+'</p></a>');
+            imgTxtHtml.push('<p class="time">'+wxlist.TimeStr+'</p>');
             /**
              * taksID=435 
              * 原因：自定菜单展示预览图片，会有重复的内容。
              * 修改：删除重复的内容（<p class="desc">'+wxlist.wxappmsgDetails[0].content+'</p>）
              */
-						imgTxtHtml.push('<div class="pic"><img src="'+wxlist.wxappmsgDetails[0].imgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+wxlist.wxappmsgDetails[0].content+'</p></a></div></div>');
+						imgTxtHtml.push('<div class="pic"><img src="'+wxlist.WxappmsgDetails[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="javascript:;" target="_blank"><p class="desc">'+wxlist.WxappmsgDetails[0].Content+'</p></a></div></div>');
 					}else{
-						imgTxtHtml.push('<div class="shows"><div class="showsTop"><p class="time">'+wxlist.timeStr+'</p>');
-						imgTxtHtml.push('<div class="pic"><img src="'+wxlist.wxappmsgDetails[0].imgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+wxlist.wxappmsgDetails[0].title+'</p></a></div></div>');
-						for(var m=1;m<wxlist.wxappmsgDetails.length;m++){
-							imgTxtHtml.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+wxlist.wxappmsgDetails[m].title+'</p></a><img src="'+wxlist.wxappmsgDetails[m].imgUrl+'" alt=""></div>');
+						imgTxtHtml.push('<div class="shows"><div class="showsTop"><p class="time">'+wxlist.TimeStr+'</p>');
+						imgTxtHtml.push('<div class="pic"><img src="'+wxlist.WxappmsgDetails[0].ImgUrl+'" alt=""><div class="showMask"></div><a href="#" target="_blank"><p class="desc">'+wxlist.WxappmsgDetails[0].Title+'</p></a></div></div>');
+						for(var m=1;m<wxlist.WxappmsgDetails.length;m++){
+							imgTxtHtml.push('<div class="showsBelow"><a href="#" target="_blank"><p class="title">'+wxlist.WxappmsgDetails[m].Title+'</p></a><img src="'+wxlist.WxappmsgDetails[m].ImgUrl+'" alt=""></div>');
 						}
 						imgTxtHtml.push('</div>');
 					}

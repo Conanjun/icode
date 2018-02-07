@@ -231,7 +231,11 @@ var materialsetting = {
 	},
 	async: {
 		enable: true,
-		url: "../../classes/pageListClasses?mode=9",
+		/*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url: "../../classes/listClasses?m=9",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilterMaterial
 	},
@@ -419,6 +423,11 @@ function() {
 	if ($(this)[0].checked) {
 		$(this).parents('form').find('.selAll').iCheck('uncheck');
 		$(this).parents('ul').find('.mokuaiSel').iCheck('uncheck');
+		/*
+			taskid=668,黄世鹏
+			开发：如果子选项全部选中，那么父选项也选中
+ 		*/
+		$(this).parents('.col-md-12:first').find('.resFids').iCheck('uncheck')
 	}
 });
 
@@ -779,3 +788,22 @@ function showModal(clickBtn, clickClass, modalId) {
 		})
 	}
 }
+
+/*
+	taskid=668,黄世鹏
+	开发：如果子选项全部选中，那么父选项也选中
+ */
+$('.auth_list').on('ifChecked', "input[name=moduleIds]",
+function() {
+	if($(this).parents('.col-md-12:first').find('input[name=moduleIds]:checked').length==$(this).parents('.col-md-12:first').find('input[name=moduleIds]').length){
+		$(this).parents('.col-md-12:first').find('input:first').iCheck('check')
+	}
+});
+$('.auth_list').on('ifChanged','.resFids',
+function(){
+	if($(this).parents('form').find('.resFids:checked').length==$(this).parents('form').find('.resFids').length){
+		$(this).parents('form').find('.selAll').iCheck('check');
+	}else{
+		$(this).parents('form').find('.selAll').iCheck('uncheck');
+	}
+})

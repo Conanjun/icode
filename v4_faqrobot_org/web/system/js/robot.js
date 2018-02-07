@@ -80,7 +80,6 @@ $(document).ready(function () {
         url: 'tipHelp/check',
         params: {
             code: 'robot',
-            webId: -1
         },
         callback: function (data) {
             if (data.status) { } else {
@@ -601,10 +600,15 @@ function getRobotBySourceId() {
         } else {
             $('.edui-editor-toolbarboxouter').hide()
         }
-        if (txt == '微信' || txt == '微博' || txt == '支付宝' || txt == 'API') {
-            $('#yyhSwitch').add('#yyh').hide();
-            setSwitchery(mySwitchery, false)
-        } else {
+        /**
+         * taskid=663 每个渠道都可以设置欢迎语问题引导 顾荣 2018/1/19
+         * 修改：所有渠道都展示欢迎语问题引导
+         */
+        
+        // if (txt == '微信' || txt == '微博' || txt == '支付宝' || txt == 'API') {
+        //     $('#yyhSwitch').add('#yyh').hide();
+        //     setSwitchery(mySwitchery, false)
+        // } else {
             $('#yyhSwitch').add('#yyh').show();
             if (data.question && data.question.length > 0) {
                 setSwitchery(mySwitchery, true)
@@ -612,7 +616,7 @@ function getRobotBySourceId() {
                 setSwitchery(mySwitchery, false);
                 $('#yyh').hide()
             }
-        }
+        // }
     })
 }
 

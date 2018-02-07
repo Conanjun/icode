@@ -25,7 +25,11 @@ var setting = {
 	},
 	async: {
 		enable: true,
-		url: "../../classes/pageListClasses?mode=9&pageSize=1000",
+		/*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url: "../../classes/listClasses?m=9&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},

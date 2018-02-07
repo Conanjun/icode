@@ -1,4 +1,10 @@
 /*
+ * taskId = 676 微信未知问题语音问题记录不能展示
+ * 通过点击的问题来进行判断是否匹配的当前记录
+ * 设置全局变量chatQuestion来存放查看聊天记录时当前点击的问题
+* */
+var chatQuestion = '';
+/*
  * 查看聊天记录通用js
  * staff/visitorLog
  * temp/qBList
@@ -1205,7 +1211,7 @@ function lookChat(obj, locateContent){
 	var userId2=$(obj).attr('cv')=='undefined'?'':$(obj).attr('cv');
 	$('.tempValue').val(userId2);
 	$('.chatV').val(userId2);
-  $('.locateContent').val(locateContent);
+  	$('.locateContent').val('');
 	//设置本次记录按钮active
 	$('.bcjl').addClass('active');
 	$('ul.nav-pills li').eq(0).addClass('active');
@@ -1219,6 +1225,7 @@ function lookChat(obj, locateContent){
   	if(newlocation.indexOf('intelLearnDeal.html') < 0){
 		$('#chatModal').modal('show');
 	}
+	chatQuestion = locateContent;
 	// 此处判断是否为访客日志中聊天查看
 	var visitorLocation = window.location.href;
 	if(visitorLocation.indexOf('visitorLogNew.html') > -1&&$("a[class=chooseName]").size()>0){
@@ -1246,7 +1253,8 @@ function searchClear(){
 function chatRecords(pageNo){
 	$('#visiterForm .visiterInfo').html("")//清除上次访客信息
 	if(!pageNo)pageNo=1;
-  var locateContentFlag = false;
+  	var locateContentFlag = false;
+	var locatedIdFlag = true;
   if(arguments.length===2&&arguments[1]==='search'){
     locateContentFlag = true;
   } else {
@@ -1352,6 +1360,25 @@ function chatRecords(pageNo){
 									html +=(data.list[i].Question || '　');
 								}
 								html +='</div></li>';
+								/*
+								* taskId = 676 微信未知问题语音问题记录不能展示
+								* 通过点击的问题来进行判断是否匹配的当前记录中的某一条
+								* */
+								if(locatedIdFlag){
+									if(chatQuestion != '' && chatQuestion != undefined && chatQuestion != null){
+										if(data.list[i].Question.split('__xgn_iyunwen_')){
+											if(chatQuestion == data.list[i].Question.split('__xgn_iyunwen_')[0]){
+												data.locateId = data.list[i].Id;
+												locatedIdFlag = false;
+											}
+										}else{
+											if(chatQuestion == data.list[i].Question){
+												data.locateId = data.list[i].Id;
+												locatedIdFlag = false;
+											}
+										}
+									}
+								}
 							}
 							
 							if(reply){

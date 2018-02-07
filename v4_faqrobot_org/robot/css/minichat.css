@@ -24,7 +24,7 @@ h2 { font-size: 16px; }
 h3 { font-size: 14px; }
 h4, h5, h6 { font-size: 100%; }
 
-address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+address, cite, dfn, var { font-style: normal; } /* 将斜体扶正 */
 code, kbd, pre, samp, tt { font-family: "Microsoft YaHei", Courier, monospace; } /* 统一等宽字体 */
 small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
 
@@ -721,10 +721,15 @@ hr {
     text-indent: 20px;
     cursor: pointer;
 }
+/*
+*taskid=677
+*英文换行
+*删除 word-break: break-all;
+*/
 .MN_answer, .MN_ask  {
     position: relative;
     padding: 5px 20px;
-    word-break: break-all;
+    /* word-break: break-all; */
     word-wrap: break-word;
 }
 .MN_answer img, .MN_ask img  {
@@ -752,8 +757,11 @@ hr {
     border: 1px solid #fff;
     background: #fff;
 }
+/*
+    taskId=703 修改富文本设置边框不显示问题
+*/
 .MN_kfCtn p {
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .MN_kfCtn a {
     color: #008CEE;

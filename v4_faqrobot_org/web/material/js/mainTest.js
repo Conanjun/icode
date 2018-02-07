@@ -423,8 +423,12 @@ var setting = {
 		removeHoverDom: removeHoverDom
 	},
 	async: {
-		enable: true,
-		url: "../../classes/pageListClasses?mode=9&pageSize=1000",
+        enable: true,
+        /*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url: "../../classes/listClasses?m=9&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},
@@ -642,7 +646,7 @@ var classsetting = {
 	},
 	async: {
 		enable: true,
-		url: "../../classes/pageListClasses?mode=9&pageSize=1000",
+		url: "../../classes/listClasses?m=9&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},

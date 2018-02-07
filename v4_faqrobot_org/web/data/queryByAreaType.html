@@ -29,9 +29,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">访问问题区域统计</li>
+           
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -409,7 +407,7 @@
                 left: 'right',
                 top: 'center',
                 feature: {
-                    //dataView: {readOnly: true},
+                    dataView: {readOnly: true},
                     restore: {},
                     saveAsImage: {}
                 }
@@ -443,7 +441,17 @@
                 trigger: 'item',
                 formatter: '{a} <br/>{b} : {c} ({d}%)'
             },
-
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: true},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
             series: [
                 {
                     name: '访问问题次数',

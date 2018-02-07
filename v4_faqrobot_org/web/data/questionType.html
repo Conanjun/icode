@@ -29,9 +29,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">访问问题类别统计</li>
+           
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -138,7 +136,10 @@
 <script type="text/javascript">
     function showData (json) {
         var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
-        var len = json.List.length
+        var len=0;
+        if(json.List){
+            len = json.List.length  
+        }
         if (len > 19) {
             len = 19
         }
@@ -184,7 +185,7 @@
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {
@@ -211,7 +212,10 @@
 
     function showtable (json) {
         var table = ''
-        var Nlen = json.List.length
+        var Nlen = 0
+        if(json.List){
+            Nlen = json.List.length  
+        }
         var count1 = 0
         if (Nlen == 0) {
             table += '<tr >'

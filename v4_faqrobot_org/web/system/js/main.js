@@ -112,7 +112,11 @@ $('#addCode').add('#editCode').on('click', function (e) {
             $('input[name=styleRdo]').each(function (i) {
                 if ($(this).is(':checked')) {
                     styleRdo = $(this).val()
-                    picUrl = $('.picUrl').eq(i).attr('src')
+                    /*
+                        taskid=550,黄世鹏
+                        修改：将绝对路径传给后台
+                     */
+                    picUrl =window.location.protocol + "//" +window.location.hostname+'/'+(localStorage.getItem('Subdomain') || "") + $('.picUrl').eq(i).attr('src').substring(6,$('.picUrl').eq(i).attr('src').length)
                 }
             })
             var param2 = {
@@ -167,7 +171,11 @@ $('#addCode').add('#editCode').on('click', function (e) {
             $('input[name=styleR]').each(function (i) {
                 if ($(this).is(':checked')) {
                     styleR = $(this).val()
-                    picUrl = $('.picUrl2').eq(i).attr('src')
+                     /*
+                        taskid=550,黄世鹏
+                        修改：将绝对路径传给后台
+                     */
+                    picUrl =window.location.protocol + "//" +window.location.hostname+'/'+(localStorage.getItem('Subdomain') || "") + $('.picUrl2').eq(i).attr('src').substring(6,$('.picUrl2').eq(i).attr('src').length)
                 }
             })
             var param3 = {
@@ -205,13 +213,30 @@ $('#addCode').add('#editCode').on('click', function (e) {
                 Base.gritter('请设置图标位置', false)
             }
             break
-
         case 4:
             var dis1 = $('input[name=mLeft]').val(), dis2 = $('input[name=mBtom]').val(),
                 width = $('input[name=width]').val(), height = $('input[name=height]').val(), pageName = '',
-                direction = '', picUrl = $('.cosImg-payCode img').attr('src')
-            kfPic = $('.cosImg-payCode1 img').attr('src')
-            khPic = $('.cosImg-payCode2 img').attr('src')
+                direction = '';
+                 /*
+                taskid=632,黄世鹏
+                修改原因：当未点击选择图片时上传的图片地址自带域名和协议
+                修改逻辑：判断图片地址是否有域名，有则不修改，没有则添加
+                */
+                if($('.cosImg-payCode img').attr('src').indexOf(window.location.hostname) !=-1){
+                    picUrl= $('.cosImg-payCode img').attr('src')
+                }else{
+                    picUrl = window.location.protocol + "//" + window.location.hostname+'/'+(localStorage.getItem('Subdomain') || "") + $('.cosImg-payCode img').attr('src').substring(6,$('.cosImg-payCode img').eq(0).attr('src').length)
+                }
+                if($('.cosImg-payCode1 img').attr('src').indexOf(window.location.hostname) != -1){
+                    kfPic =$('.cosImg-payCode1 img').attr('src')
+                }else{
+                    kfPic = window.location.protocol + "//" + window.location.hostname+'/'+$('.cosImg-payCode1 img').attr('src').substring(6,$('.cosImg-payCode1 img').eq(0).attr('src').length)
+                };
+                if($('.cosImg-payCode2 img').attr('src').indexOf(window.location.hostname) !=-1){
+                    khPic =$('.cosImg-payCode2 img').attr('src')
+                }else{
+                   khPic = window.location.protocol + "//" + window.location.hostname+'/'+$('.cosImg-payCode2 img').attr('src').substring(6,$('.cosImg-payCode2 img').eq(0).attr('src').length)
+                }
             mode = ''
             $('input[name=pageName]').each(function () {
                 if ($(this).is(':checked')) {

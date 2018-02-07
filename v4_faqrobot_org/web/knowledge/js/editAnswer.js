@@ -97,6 +97,98 @@ function setrolename() {
 }
 /*********************tree end***********************/
 
+/**
+ * taskid=630 提单人：孟凡华   知识图谱对接  顾荣 2018/1/16
+ *添加：点击选择知识图谱时获取知识图谱列表 
+ */
+//选择知识图谱
+$('#graphModel').on('show.bs.modal', function () {
+    graphList(1);
+});
+
+function graphList(pageNo) {
+    if (!pageNo) pageNo = 1;
+    // $('#voiceList').tableAjaxLoader2(3);
+    $.ajax({
+        type: 'get',
+        datatype: 'json',
+        cache: false,
+        //不从缓存中去数据
+        url: encodeURI('../../kgmanager/listConf?pageSize=' + 5 + '&pageNo=' + pageNo),
+        success: function (data) {
+            if (data.status === 0) {
+                if (data.list.length > 0) {
+                    var html = "";
+                    for (var i = 0; i < data.list.length; i++) {
+                        html += "<tr id='list-tr-" + data.list[i].id  + "'>";
+                        html += "<td><input type='radio' name='row_sel_graph' class='select_row' value=" + data.list[i].id + "></td>";
+                        html += "<td>" + data.list[i].kgName + "</td>";
+                        html += "</tr>";
+                    }
+                    $('#graphList').find('tbody').html(html);
+					icheckInit();
+					$('#timePicker').on('ifChecked', function () {
+                        $('#dateTime').show();
+                    }).on('ifUnchecked', function () {
+                        $('#dateTime').hide();
+                        $('#ansRuleForm [name=StartTime]').val('');
+                        $('#ansRuleForm [name=EndTime]').val('');
+                    });
+                    $('#graphList td').click(function () {
+                        $(this).parent().find('.select_row').iCheck('check');
+                    });
+                    //下面开始处理分页
+                    var options = {
+                        currentPage: data.currentPage,
+                        totalPages: data.totlePages,
+                        onPageClicked: function (event, originalEvent, type, page) {
+                            graphList(page);
+                        }
+                    };
+                    setPage('graphpageList', options);
+                } else {     
+                    $('#graphList').find('tbody').html('<tr><td colspan=\"3\"  style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');                  
+                    $('#graphpageList').html('');
+                }
+            } else {
+                yunNoty(data);
+            }
+        }
+    });
+}
+
+$('#selgraphBtn').click(function () {
+    var id = getSelectedIds_graph();
+    $('#graphId').val(id);
+    $('#ans_graph button').html($('#graphDiv #list-tr-' + id).children('td').eq(1).html());
+    if ($('#ans_graph button').html() === '') {
+        $('#ans_graph button').hide();
+    } else {
+        $('#ans_graph button').show();
+    }
+    $('#graphModel').modal('hide');
+});
+
+function getSelectedIds_graph() {
+    var cboxs = document.getElementsByName('row_sel_graph');
+    if (typeof cboxs == "undefined") {
+        return -1;
+    }
+    var inputvalue = "";
+    for (var i = 0; i < cboxs.length; i++) {
+        if (cboxs[i].checked === true) {
+            inputvalue = cboxs[i].value;
+        }
+    }
+    return inputvalue;
+}
+
+
+
+
+
+
+
 //选择语音
 $('#voiceModel').on('show.bs.modal', function () {
 	voiceList(1);
@@ -655,7 +747,9 @@ function videoList(pageNo, type1) {
 					for (var i = 0; i < data.list.length; i++) {
 						var li=$('<li class=\'videoLi\'></li>').appendTo(ul);
 						var src=data.list[i].Path;
-						var video=$('<video src=\'/'+src+'\' controls=\'controls\'>您的浏览器不支持 video 标签。</video>').appendTo(li);						
+						// taskId=719 选择视频时，显示视频名称 add by 赵宇星
+						var videoName=data.list[i].Name||'';
+						var video=$('<video src=\'/'+src+'\' controls=\'controls\'>您的浏览器不支持 video 标签。</video>'+"<p class='video-name'>"+videoName+"</p>").appendTo(li);						
 						li.data('Id',data.list[i].Id);
 						li.data('src',data.list[i].Path);
 					}
@@ -663,9 +757,13 @@ function videoList(pageNo, type1) {
 						$(this).click(function(){
 							$('#vodeoId').val($(this).data('Id'));
 							var src=$(this).data('src');
+							var videoName=$(this).find('.video-name').html();
 							$('#vodeoId').prevAll().children('video').attr('src','/'+src);
 							$('#vodeoId').prev().css('display','block');
-							
+
+							// taskId=719 选择视频时，显示视频名称 add by 赵宇星
+							$("#videoShow").find('.video-name').html(videoName);
+
 							if($('#delVideo')[0] == undefined) {
 								$('#videoShow').after('<div style="margin-top:4px;"><div class="btn btn-default" id="delVideo">删除</div></div>');
 							}
@@ -696,6 +794,10 @@ $('body').on('click', '#delVideo', function() {
 	$('#videoShow').css('display', 'none');
 	$('#vodeoId').val('');
 	$(this).parent().remove();
+	 /**taskId=719 选择视频时，显示视频名称 add by 赵宇星
+     * 说明：删除视频时，将视频的名称清空
+     * */ 
+    $('#videoShow').children(".video-name").html('');
 });
 
 
@@ -860,32 +962,36 @@ function imgTextList(pageNo) {
 					$('#ib0').empty();
 					$('#ib1').empty();
 					$('#ib2').empty();
+					/*
+                        黄世鹏，
+                        修改：后台接口重构，将返回的参数名第一个字母大写
+                    */
 					for (var i = 0; i < json.result.list.length; i++) {
 						var imgTxtHtml = '';
-						if (json.result.list[i].wxappmsgDetails.length == 1) {
+						if (json.result.list[i].WxappmsgDetails.length == 1) {
 							imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
 							imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px; max-height: 280px; overflow: hidden;padding: 5px;">';
-							imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+							imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
 							imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-							imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-							imgTxtHtml += '<p style="padding: 4px 8px;"><span>'+json.result.list[i].timeStr+'</span></p>';
-							imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="'+json.result.list[i].wxappmsgDetails[0].imgUrl+'" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+							imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+							imgTxtHtml += '<p style="padding: 4px 8px;"><span>'+json.result.list[i].TimeStr+'</span></p>';
+							imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
 							imgTxtHtml += '</div></div>';
 						} else {
 							imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
 							imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px;">';
-							imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+							imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
 							imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-							imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-							imgTxtHtml += '<p style="padding: 4px 8px;"><span>'+json.result.list[i].timeStr+'</span></p>';
-							imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="'+json.result.list[i].wxappmsgDetails[0].imgUrl+'" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+							imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+							imgTxtHtml += '<p style="padding: 4px 8px;"><span>'+json.result.list[i].TimeStr+'</span></p>';
+							imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
 							imgTxtHtml += '</div>';
-							for(var j = 1; j < json.result.list[i].wxappmsgDetails.length; j++){
+							for(var j = 1; j < json.result.list[i].WxappmsgDetails.length; j++){
 								imgTxtHtml += '<div style="border-top: 1px solid #D4D4D4;"></div>';
 								imgTxtHtml += '<div class="sub-msg-item" style="max-width: 320px; margin:5px 0; padding:10px 12px;">';
 								imgTxtHtml += '<div style="display: table;"></div>';
-								imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>'+json.result.list[i].wxappmsgDetails[j].title+'</span></h4></div>';
-								imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="'+json.result.list[i].wxappmsgDetails[j].imgUrl+'" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
+								imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>'+json.result.list[i].WxappmsgDetails[j].Title+'</span></h4></div>';
+								imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="'+json.result.list[i].WxappmsgDetails[j].ImgUrl+'" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
 								imgTxtHtml += '<div style="display: table; clear: both;"></div>';
 								imgTxtHtml += '</div>';
 							}
@@ -1054,7 +1160,20 @@ function Edit() {
 			yunNotyError('答案长度需在2-200个字符之间！');
 			return false;
 		}
+	}else if ($('#graph').hasClass('active')) {
+        /**
+         * taskid=630 提单人：孟凡华 知识图谱对接  顾荣 2018/1/16\
+         * 修改：新增知识图谱答案类型
+         */
+        mode = 13;
+        modeValue = $('#graphId').val();
+        if (modeValue === '') {
+            yunNotyError("请选择知识图谱！");
+            return false;
+        }
 	}
+	
+
 	// taskid=467  顾荣 推荐链接返回错误bug 链接不为空或者不为“http://”或者不符合正则则返回格式不正确 2017/12/21
 	var urlreg=/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%/~\+#])?/;
 	if (thirdUrl!= ''&&thirdUrl!= 'http://'&&!thirdUrl.match(urlreg)) {
@@ -1302,6 +1421,8 @@ function findAnswerDetail(id) {
 							$('#AnswerNav a[href="#video"]').tab('show');
 							$('#vodeoId').val(data.answer.ModeValue);
 							$('#videoShow').children('video').attr('src','/'+data.answer.Material.Path);
+							/* taskId=719 页面加载时，显示视频名称,视频名称多余一行显示省略号 add by 赵宇星 */
+							$('#videoShow').find('.video-name').html(data.answer.Material.Name||'');
 							$('#vodeoId').prev().css('display','block');
 							if($('#delVideo')[0] == undefined) {
 								$('#videoShow').after('<div style="margin-top:4px;"><div class="btn btn-default" id="delVideo">删除</div></div>');
@@ -1329,6 +1450,7 @@ function findAnswerDetail(id) {
 					$('ol.breadcrumb').find('li.active').html('修改流程描述');
 					$('#labelAoF').html('流程描述');
 					$('#labelEQ').html('流程');
+					$('.edui-for-添加标准问题').remove()
 					//是流程就删除其他tab
 					$('#AnswerNav a[href="#flow"]').parent().siblings().remove();
 					flowUE.addListener('ready', function() {
@@ -1377,6 +1499,15 @@ function findAnswerDetail(id) {
 				}else if(data.answer.Mode == '12') {
 					$('#AnswerNav a[href="#order"]').tab('show');
 					$('#ans_order').val(data.answer.Answer);
+				}else if(data.answer.Mode == '13') {
+				/**
+				 * taskid=630 提单人：孟凡华   知识图谱对接  顾荣 2018/1/16
+				 *添加：点击选择知识图谱时获取知识图谱列表 
+				*/
+					$('#AnswerNav a[href="#graph"]').tab('show');
+					$("#ans_graph button").css("display","block");
+					$("#ans_graph button").html(data.answer.Answer);
+					$('#graphId').val(data.answer.ModeValue);
 				}
 				if(data.answer.ThirdUrl){
 					$('#AddQuesForm input[name=thirdUrl]').val(data.answer.ThirdUrl);
@@ -1426,7 +1557,7 @@ $(document).ready(function() {
 			$('.page-header').html('新增答案');
 			$('ol.breadcrumb').find('li.active').html('新增答案');
 			$('#formCancel').after('<input type="checkbox" id="isAgain"><span class="m-l-5" id="isAgainSpan">是否连续新增答案</span>');
-			// taskid= 顾荣 如果为新增答案thirdUrl则输入'http://'
+			// taskid=467 顾荣 如果为新增答案thirdUrl则输入'http://'
 			$('#AddQuesForm input[name=thirdUrl]').val('http://');
 		}
 		$('#isAgain').iCheck({
@@ -1690,7 +1821,14 @@ function getRule() {
                                             break;
                                         case 12:
                                             dicType = 'order';
-                                            break;
+											break;
+										/**
+										 * taskid=630 提单人：孟凡华   知识图谱对接  顾荣 2018/1/16
+										 *添加：点击选择知识图谱时获取知识图谱列表 
+										*/
+										case 13:
+											dicType = 'graph';
+										break;
                                     }
                                 }
                                 if (dicList[j].DicDesc == '场景式问答') {

@@ -176,7 +176,8 @@ $.fn.extend({
 						return;
 					}
 					keepCount=0;//如果有消息发送，请求的次数恢复到0；
-					getNewTime(parsed);
+          getNewTime(parsed);
+          getIsLogo(parsed);
 					if(typeof successed == "function"){
 						successed(parsed);
 					}
@@ -191,7 +192,17 @@ $.fn.extend({
 			});
 
 		}
-	};
+  };
+  /**
+   * 判断是否显示版权 
+   */
+  function getIsLogo(data) {
+    if(data&&data.showColumn==false){
+      $('#'+options.copyrightId).hide();
+      $('#webInfoId').hide();
+    }
+  };
+
 	//展示错误的消息内容
 	function showErrorMsg(msg,otherUrl,timeOut){
 		//此部分是展示错误信息的方法
@@ -1268,7 +1279,8 @@ $.FaqRobot.defaults = {
 	topQuestionDiv :"topQuestions",		//配置常见问题展示的id
 	newQuestionDiv :"newQuestions",		//配置新增问题的展示的id
 	sugQuestionDiv :"sugQuestions",		//配置推荐问题的展示的id
-	viewUrlDiv :"viewUrlDiv",			//配置
+  viewUrlDiv :"viewUrlDiv",			//配置
+  copyrightId:'copyright',// 版权及联系我们
 	dataType : "json",					//json,jsonp
 	extraParams :"",					//其他的请求的参数集合
 	webUrl :"http://www.faqrobot.org",	//站点的url地址

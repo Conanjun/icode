@@ -62,6 +62,9 @@
 		.pull-right>.dropdown-menu{
 			left: 0;
 		}
+		#problemList img{
+			width:100%;
+		}
 	</style>
 </head>
 
@@ -76,9 +79,7 @@
 <div id="page-container" class="fade in">
 	<div id="content" class="content">
 		<ol class="breadcrumb pull-right">
-			<li><a href="javascript:;">首页</a></li>
-			<li><a href="javascript:;">知识库管理</a></li>
-			<li class="active">问题导入</li>
+			
 		</ol>
 		<div class="row">
 			<h1 class="page-header">问题导入</h1>
@@ -280,51 +281,38 @@
 		$('#openRollback').on('click', RBG)
 		// 新手引导(需要引导的页面的code即为页面名称)
 		Base.request({
-			url: 'tipHelp/add',
+			url: 'tipHelp/check',
 			params: {
 				code: 'importQuestion',
-				webId: -1,
 			},
 			callback: function(data) {
-				if(data.status) {//!=0 旧
+				if(data.status) {//旧
+				}else {//新
+					introJs().setOptions({
+						'prevLabel': '上一步',
+						'nextLabel': '下一步',
+						'skipLabel': '　',
+						'doneLabel': '　',
+						'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
+					}).start().onexit(function() {//非常规退出
+					}).oncomplete(function() {//正常完成
+					}).onchange(function(obj) {//已完成当前一步
+						var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
 
-				}else {//=0 新
-					Base.request({
-						url: 'tipHelp/check',
-						params: {
-							code: 'importQuestion',
-							webId: -1,
-						},
-						callback: function(data) {
-							if(data.status) {//旧
-							}else {//新
-								introJs().setOptions({
-									'prevLabel': '上一步',
-									'nextLabel': '下一步',
-									'skipLabel': '　',
-									'doneLabel': '　',
-									'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
-								}).start().onexit(function() {//非常规退出
-								}).oncomplete(function() {//正常完成
-								}).onchange(function(obj) {//已完成当前一步
-									var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
-
-									$('.tipStep'+ (curNum-1)).hide();//隐藏前一个
-									$('.tipStep'+ (curNum+1)).hide();//隐藏后一个
-									$(obj).show();//显示当前
-								});
-							}
-						},
+						$('.tipStep'+ (curNum-1)).hide();//隐藏前一个
+						$('.tipStep'+ (curNum+1)).hide();//隐藏后一个
+						$(obj).show();//显示当前
 					});
 				}
 			},
 		});
 
-
 		App.init();
 		icheckBindInit();
 		problem_Import();
-		queStatus();//一进页面请求当前是否有导入任务
+		// taskid=738 一进入页面就加载进度条 顾荣 2018/1/27
+		// 修改：进入页面后不再请求进度条 
+		// queStatus();//一进页面请求当前是否有导入任务
 		$('#affix1inner').slimScroll({
 			height: $(window).height() - 150 + 'px',
 			allowPageScroll: false
@@ -332,6 +320,7 @@
 		//上传
 		$(function () {
 			'use strict';
+			//上传excel
 			$('#exlfileupload').fileupload({
 				url: '../../question/jQueryFileUpload',
 				dataType: 'json',
@@ -386,7 +375,7 @@
 			}
 		},500);
 	});
-
+	//获取进度条进度
 	function queStatus() {
 		$.ajax({
 			type: 'get',
@@ -452,7 +441,7 @@
 		if(asd)$('#menuDown').html($(asd).html()+'<span class="caret"></span>');
 		if (!pageNo) pageNo = 1;
 		if (!orderType) orderType = 20;
-		$('#problemList').tableAjaxLoader2(6);
+		$('#problemList').tableAjaxLoader2(11);
 		if(sessionStorage.getItem('sentenceValue') == 1){
 			$('#problemList thead').html('<tr>'+
 					'<th width="50" class="table_checkbox" ><input type="checkbox" name="select_rows" class="select_rows" data-tableid="problemList"/></th>'+

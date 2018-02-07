@@ -53,7 +53,7 @@ function showPie (json) {
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {

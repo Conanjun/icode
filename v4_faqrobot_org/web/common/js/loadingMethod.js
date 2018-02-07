@@ -29,6 +29,7 @@
             // url: '../../WordDocExcel/importFile?mode=2',
             url: uploadUrl,
             dataType: 'json',
+            pasteZone:$(btnDom),
             change: function(e, data) {
               
               var flag = true;

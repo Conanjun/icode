@@ -29,9 +29,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">访客次数统计</li>
+           
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -141,7 +139,10 @@
         var NList = []
         var OList = []
         var value = json.IntervalDays
-        var Alen = json.List.length
+        var Alen = 0
+        if(json.List){
+            Alen = json.List.length
+        }
         //如果数据为空，return
         if (Alen == 0) {
             DList.push('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月')
@@ -224,7 +225,7 @@
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {
@@ -259,7 +260,10 @@
 
     function showtable (json) {
         var table = ''
-        var Dlen = json.List.length
+        var Dlen = 0
+        if(json.List){
+            Dlen = json.List.length
+        }
         var value = json.IntervalDays
         var count1 = 0
         var count2 = 0

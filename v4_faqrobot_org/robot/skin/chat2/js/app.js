@@ -20,7 +20,17 @@
                     '<div class="MN_helpful"><span class="MN_reasonSend">submit</span><span class="MN_yes">Satisfied</span><span class="MN_no">Dissatisfied</span></div>',//是否满意组合
                     '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="%kfPic%"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%relateListHtml%%commentHtml%</div></div>'//回答组合
                 ],//客服结构(所有的属性和%xxx%都必须存在)
+            /**
+             * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
+             * 原因：区分是机器人客服还是人工客服
+             * 修改：添加服图标分为机器人和人工客服
+             */
             kfPic: 'robot/skin/chat2/images/robot.png',  //客服图标
+            kf_Robot_Pic: 'robot/skin/chat2/images/robot.png',  //机器人客服图标
+            kf_Person_Pic: 'robot/skin/chat2/images/robot.png',  //人工客服图标
+            kf_Robot_Name:'',//机器人客服名字，此处只是声明个变量，不用赋值
+            kf_Person_Name:'',//人工客服名字
+
             khPic: 'robot/skin/chat2/images/serv.png', //客户图标
             formatDate: '%hour%:%minute%:%second% %year%-%month%-%date%',//配置时间格式(默认10:42:52 2016-06-24)
             topQueId: 'commonQue',//热门、常见问题Id --------
@@ -30,12 +40,14 @@
             inputCtnId: 'input',//输入框Id y   --------
             sendBtnId: 'sendBtn',//发送按钮Id y   ------
             tipWordId: 'inputTip',
+            copyrightId:'copyright',// 版权及联系我们
             tipWord: 'please input here',//输入框提示语
             commentTipWord: 'Enter your comments, so that we can improve the service level and quality! ',
             commentFormId: 'feedBackForm',//评论框formId -------
             commentInputCtnId: 'feedBackInput',//评论输入框Id ----
             commentSendBtnId: 'feedBackBtn',//评论发送按钮Id ---------
             commentTipWordId: 'feedBackTip',//评论输入框提示语Id
+            remainWordNum: '300',
             artiSearchId: 'artiSearch',//智能搜索
             artiSearchCallback: function(data) {
                 if(data.fullTextSearch) {
@@ -124,7 +136,17 @@
             artiTitleChange: true,// 人工时是否修改标题
             artiTitle: '人工客服',// 人工时的标题
             robotInfo:'robotInfo',
+            /**
+             * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
+             * 原因：区分是机器人客服还是人工客服
+             * 修改：添加服图标分为机器人和人工客服
+             */
             kfPic: 'robot/skin/chat2/images/robot.png',  //客服图标
+            kf_Robot_Pic: 'robot/skin/chat2/images/robot.png',  //机器人客服图标
+            kf_Person_Pic: 'robot/skin/chat2/images/robot.png',  //人工客服图标
+            kf_Robot_Name:'',//机器人客服名字，此处只是声明个变量，不用赋值
+            kf_Person_Name:'',//人工客服名字
+
             khPic: 'robot/skin/chat2/images/serv.png', //客户图标
             formatDate: '%month%月%date%日 %hour%:%minute%:%second%',//配置时间格式(默认10:42:52 2016-06-24)
             topQueId: 'commonQue',//热门、常见问题Id --------
@@ -133,6 +155,7 @@
             chatCtnId: 'chatCtn',//聊天展示Id y   --------------
             inputCtnId: 'input',//输入框Id y   --------
             sendBtnId: 'sendBtn',//发送按钮Id y   ------
+            copyrightId:'copyright',// 版权及联系我们
             tipWordId: 'inputTip',
             commentFormId: 'feedBackForm',//评论框formId -------
             commentInputCtnId: 'feedBackInput',//评论输入框Id ----

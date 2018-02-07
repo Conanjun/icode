@@ -33,7 +33,7 @@ function formList(pageNo){
 	success:
 	function(data){
 		if(data.status==0){
-			if(data.list.length>0){
+			if(data.list && data.list.length>0){
         modelList = data.list;
 				var temp=[];
 				for(var i=0;i<data.list.length;i++){

@@ -215,19 +215,28 @@ function genLexiconItem(listThis, listArr, level) {
             'mode':2
         },
         success: function(data) {
-			if(data.messageError!==""){
-				yunNotyError(data.messageError);
-			}
-			if(data.messageSuccess!==""){
-				var json={
-					status:0,
-					message:data.messageSuccess
-				}
-				yunNoty(json);
-				$('#synonym').val('');
-				$("#addModal").modal('hide');
-				initSrc();
-			}
+
+					/**
+					 * taskid=623    同义词添加修改返回信息错误   2018/1/10
+					 * 原因：返回参数改变；
+					 * 修改：变更返回参数
+					 */
+						if(data.status===1){
+							yunNotyError(data.message, false);
+						}else{
+							if(data.messageError){
+								yunNotyError(data.messageError, false);
+							};
+							if(data.messageSuccess){
+								var json={
+									status:0,
+									message:data.messageSuccess
+								}
+								yunNoty(json)
+								$('#addModal').modal('hide');
+								initSrc();
+							}
+						}
         }
       });
     }

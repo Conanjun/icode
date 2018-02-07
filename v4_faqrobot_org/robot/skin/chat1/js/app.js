@@ -55,6 +55,7 @@
         //showMsgId: 'showMsgId',//展示信息Id
         chatCtnId: 'chatCtn',//聊天展示Id y   --------------
         inputCtnId: 'input',//输入框Id y   --------
+        copyrightId:'copyright',// 版权及联系我们
         sendBtnId: 'sendBtn',//发送按钮Id y   ------
         tipWordId: 'inputTip',//输入框提示语Id ----
         //tipWord: '请输入您要咨询的问题',//输入框提示语

@@ -34,12 +34,30 @@ function listUser(pageNo){
 							html += "<td>"+email+"</td>";
 							var QQ=data.list[i].Qq===null?'':data.list[i].Qq;
 							html += "<td>"+QQ+"</td>";
+							/*
+								taskid=698,黄世鹏
+								开发：添加状态列
+							*/
+							if(data.list[i].Status==0){
+								html += "<td >启用</td>";
+							}else{
+								html += "<td style='color:red'>禁用</td>";
+							}
 							if(data.list[i].RoleName==='' || data.list[i].RoleName===null){
 								html += "<td></td>";
 							}else{
 								html += "<td><span title=\""+data.list[i].RoleName+"\">"+limitstr(data.list[i].RoleName,30)+"</span></td>";
 							}
-							html += "<td><a value=\""+data.list[i].Id+"\" title=\"编辑\" onclick=\"repModal(this)\" style=\"cursor:pointer;\"><i class=\"glyphicon glyphicon-pencil\"></i></a>  <a class=\"timeTip\" data-placement=\"top\" data-toggle=\"tooltip\" data-original-title=\"重置密码\" href=\"javascript:void(0);\" rel=\""+data.list[i].Id+"\" onClick=\"resetPwd(this); return false;\"><i class=\"glyphicon glyphicon-refresh\"></i></a>  <a class=\"m-del\" title=\"删除\" rel=\""+data.list[i].Id+"\" style=\"cursor:pointer; \" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+							/*
+								taskid=698,黄世鹏
+								开发：添加改变状态的图标
+							*/
+							if(data.list[i].Status==0){
+								html += "<td id="+data.list[i].Id+"> <a style='color:#337ab7' ><i  value=\""+data.list[i].Id+"\" style=\"cursor:pointer\" class=\"timeTip edit-synonym glyphicon glyphicon-ok\" title=\"点击禁用此用户\"></i></a>  <a  value=\""+data.list[i].Id+"\" title=\"编辑\" onclick=\"repModal(this)\" style=\"cursor:pointer;\"><i class=\"glyphicon glyphicon-pencil\"></i></a>  <a class=\"timeTip\" data-placement=\"top\" data-toggle=\"tooltip\" data-original-title=\"重置密码\" href=\"javascript:void(0);\" rel=\""+data.list[i].Id+"\" onClick=\"resetPwd(this); return false;\"><i class=\"glyphicon glyphicon-refresh\"></i></a>  <a class=\"m-del\" title=\"删除\" rel=\""+data.list[i].Id+"\" style=\"cursor:pointer; \" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+								html += "</tr>";
+							}else{
+								html += "<td id="+data.list[i].Id+"> <a style='color:#337ab7' ><i value=\""+data.list[i].Id+"\"  style=\"cursor:pointer\" class=\"timeTip edit-synonym glyphicon glyphicon-remove\" title=\"点击启用此用户\"></i></a>  <a value=\""+data.list[i].Id+"\" title=\"编辑\" onclick=\"repModal(this)\" style=\"cursor:pointer;\"><i class=\"glyphicon glyphicon-pencil\"></i></a>  <a class=\"timeTip\" data-placement=\"top\" data-toggle=\"tooltip\" data-original-title=\"重置密码\" href=\"javascript:void(0);\" rel=\""+data.list[i].Id+"\" onClick=\"resetPwd(this); return false;\"><i class=\"glyphicon glyphicon-refresh\"></i></a>  <a class=\"m-del\" title=\"删除\" rel=\""+data.list[i].Id+"\" style=\"cursor:pointer; \" ><i class=\"glyphicon glyphicon-trash\" ></i></a></td>";
+							}
 							html += "</tr>";
 						}
 						$('#userList').find('tbody').html(html);
@@ -70,6 +88,45 @@ function listUser(pageNo){
 				}
 			}
 	});
+}
+/*
+	taskid=698,黄世鹏
+	开发：改变状态的方法
+*/
+$('body').on('click', '.edit-synonym', function() {
+	var id = $(this).parents('td').attr('id');
+	if ($(this).parents('tr').find('td').eq(5).text()=='启用') {
+		status = 4;
+	} else {
+		/*
+			taskid=724,黄世鹏
+			开发：当点击启用时，同时弹出弹出编辑按钮的模态框。
+		 */
+		status = 0;
+		repModal(this);
+	};
+	$.ajax({
+		type:'post',
+		datatype:'json',
+		cache:false,
+		url:encodeURI('../../user/editStatus'),
+		data:{
+			id: id,
+			status: status,
+		},
+		success:
+			function(data){
+				if(status=4){
+					listCurrentPage(listUser,'pageList');
+				}
+					yunNoty(data);
+			}
+	});
+	
+});
+
+function fresh(){
+	listCurrentPage(listUser,'pageList');
 }
 
 //添加用户表单提交

@@ -62,9 +62,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">访客日志</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">访客日志</h1>
@@ -142,20 +140,21 @@
 									<li> <a href="#" onClick="visiterLog(1,28);return false;">访客类型倒序</a> </li>
 								</ul>
 							</div>
-							<!--<div class="form-group">-->
-								<!--<label class="control-label pagination-right">地域：</label>-->
-								<!--<input type="text" class="form-control" name="location" onkeypress="searchKey(event)">-->
-							<!--</div>-->
-							<!--<div class="form-group">-->
-								<!--<label class="control-label pagination-right">问题：</label>-->
-								<!--<input type="text" class="form-control" name="question" onkeypress="searchKey(event)">-->
-							<!--</div>-->
-							<!--<div class="form-group">-->
-                            	<!--<button class="btn btn-primary" onclick="visiterLog()" type="button"><i class="glyphicon glyphicon-search"></i></button>-->
-								<!-- -->
-                            <!--</div>-->
-							
-
+							<!-- 
+								taskId=490 黄世鹏
+								原因：聊天记录导出
+							 -->
+							 <div class="btn-group" id="chatLog">
+								<button id="biandong" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										导出聊天记录
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li> <a href="#" onClick="digOut(1)">今天</a> </li>
+									<li> <a href="#" onClick="digOut(2)">昨天</a> </li>
+									<li> <a href="#" onClick="digOut(3)">最近三天</a> </li>
+									<li> <a href="#" onClick="digOut(4)">最近一周</a> </li>
+								</ul>
+							</div>
 						</form>
 						<table class="table" id="visiterlogList">
 							<thead>
@@ -401,21 +400,32 @@
 		visiterLog()
 		}
 	});
-		$(document).ready(function() {
-			$('.confirm').off('click').click(function(){
-				$('#myDropdown').parent().removeClass('open');
-				visiterLog('','','1');
-			})
+	$(document).ready(function() {
+		 /*
+            taskId=490 黄世鹏
+			开发：消息导出的配置项
+        */
+		
+		if(sessionStorage.getItem('chatLogExportShow')==0){
+       		$("#chatLog").addClass('hide');
+    	}else if((sessionStorage.getItem('chatLogExportShow')==1)){
+        	$("#chatLog").removeClass('hide');
+		}
+		   
+		$('.confirm').off('click').click(function(){
+			$('#myDropdown').parent().removeClass('open');
+			visiterLog('','','1');
+		})
 
-			$('.chooseArea').click(function(){
-				$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
-				$('#ABC').attr('name','location');
-			});
-			$('.chooseQue').click(function(){
-				$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
-				$('#ABC').attr('name','keywords');
-			});
-			App.init();
+		$('.chooseArea').click(function(){
+			$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+			$('#ABC').attr('name','location');
+		});
+		$('.chooseQue').click(function(){
+			$('.chooseWay').html($(this).text() +'&nbsp;'+ '<span class="caret"></span>');
+			$('#ABC').attr('name','keywords');
+		});
+		App.init();
 			//visiterLog(1);
 
     var myDate = new Date();
@@ -423,7 +433,6 @@
     var myDateD = myDate.getDate();//日
     var myDateHou = myDate.getHours();//时
     var myDateMin = myDate.getMinutes()+2;//分
-
     function updateTime(){
         myDate = new Date();
         myDateM = myDate.getMonth()+1;//月
@@ -442,7 +451,8 @@
     }
     if(myDateMin<10){//判断现在分钟格式
         myDateMin = "0"+myDateMin;
-    }
+	}
+
   //页面初始化 默认一周自动填充时间
   function  apply(){//获取一周前时间
     var newDatew = new Date();
@@ -627,6 +637,63 @@
 			time1 = Date.parse(new Date(time1));
 			time2 = Date.parse(new Date(time2));
 			return time3 = Math.abs(parseInt((time2 - time1)/1000/3600/24));
+		}
+		/*
+			taskid=490 黄世鹏
+			原因：聊天记录导出
+		*/
+		//点击事件
+		function digOut(value){
+			updataDate(new Date());
+			var beginTime=startTime;
+			if(value==1){
+				updataDate(new Date());
+			}else if(value==2){
+				updataDate(new Date(new Date().getTime()-24*60*60*1000));
+				endTime=beginTime;
+			}else if(value==3){
+				updataDate(new Date(new Date().getTime()-24*60*60*1000*3));
+			}else{
+				updataDate(new Date(new Date().getTime()-24*60*60*1000*7));
+			}
+			location.href="../../LoginSummary/exporChatLog?"+'startTime='+startTime+'&endTime='+endTime;
+		}
+
+		//获取日期
+		function updataDate(myDate){
+			var year= myDate.getFullYear();//年
+			var month = myDate.getMonth()+1;//月
+			var day = myDate.getDate();//日
+			var hour = myDate.getHours();//时
+			var minute = myDate.getMinutes();//分
+			var second = myDate.getSeconds()//秒
+			if(month<10){
+				month='0'+month;
+			};
+			if(day<10){
+				day='0'+day;
+			}
+			if(hour<10){
+				hour='0'+hour;
+			}
+			if(minute<10){
+				minute='0'+minute;
+			}
+			if(second<10){
+				second='0'+second
+			}
+			/*
+			  taskid=603,黄世鹏
+			  修改：判断开始时间：如果是超过一天则从那天的这个时刻开始否则从0点开始。
+			*/
+			if(new Date().getTime()-myDate.getTime()>24*60*60*1000){
+				startTime=year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
+			}else{
+				startTime=year+'-'+month+'-'+day+' '+'00'+':'+'00'+':'+'00';
+			}
+			if(new Date().getTime()-myDate.getTime()<10000){
+				endTime=year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
+			}
 		}
 	</script>
 </body>

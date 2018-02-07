@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">  
+<head>  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>美的公告详情</title>
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+   <style type="text/css">
+   .center{
+        text-align: center;
+   }
+   .content{
+        text-indent: 2em;
+        word-wrap: break-word;
+        word-break: normal;
+   }
+   .content img{
+        /* width: 400px; */
+        margin: 15px;
+   }
+
+   /* @media screen and (max-width: 1400px) {
+        .content img{
+            left: 26%
+        }
+    }
+    @media screen and (max-width: 1200px) {
+        .content img{
+            left: 18%
+        }
+    }
+    @media screen and (max-width: 800px) {
+        .content img{
+            left: 5%
+        }
+    } */
+</style>
+</head>  
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+            <div class="col-xs-16 col-sm-16 col-md-16 col-lg-16" id="newsContent">
+                
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+        </div>
+    </div>
+</div>
+</body>  
+<script src="js/jquery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    if(!window.location.search.split('?')[1] || window.location.search.split('?')[1] != ''){
+        getNewListDetial(window.location.search.split('?')[1]);
+    }
+
+})
+
+function getNewListDetial(id){
+    $.ajax({
+        type: 'get',
+        datatype: 'json',
+        cache: false,
+        url: encodeURI('/news/noticeDetail?noticeNo='+id),
+        success: function(data) {
+            if (!data.status) {
+                if(data.notice){
+                    var newData = data.notice;
+                    var newsHtml = '<h2 class="center">'+newData.Title+'</h2>'+
+                        '<p class="center" style="color:#ccc;">'+newData.Time+'</p>'+
+                        '<div class="content">'+newData.Content+'</div>'
+                    $('#newsContent').html(newsHtml);   
+                }else{
+                    $('#newsContent').html('<p>哎呀，这条公告出差了～</p>');
+                }
+            } else {
+                alert(data.message);
+            }
+        }
+    });
+}
+
+</script>
+</html>

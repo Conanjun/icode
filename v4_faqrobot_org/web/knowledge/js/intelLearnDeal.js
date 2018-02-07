@@ -242,7 +242,7 @@ $(document).ready(function () {
                         }
                         var options = {
                             data: [data, 'List', 'total'],
-                            currentPage: data.currentPage,
+                            currentPage: (data.currentPage > data.totlePages ? data.totlePages : data.currentPage),
                             totalPages: data.totlePages ? data.totlePages : 1,
                             alignment: 'right',
                             onPageClicked: function (event, originalEvent, type, page) {
@@ -269,9 +269,14 @@ $(document).ready(function () {
                         $('.ansAndLearn').removeClass('btn-primary').addClass('btn-default').attr('disabled', 'disabled');
                     });
                     icheckInit();
-                    $('.chats').slimScroll({
-                        height: ($(window).height() - 300) + 'px'
-                    });
+                    /**
+                     * taskid=544 
+                     * 查看聊天记录第一次无法锁定记录位置
+                     * 删除设定聊天框固定高度
+                     */
+                    // $('.chats').slimScroll({
+                    //     height: ($(window).height() - 300) + 'px'
+                    // });
 
                     //绑定lookChat方法点击事件
                     $('.tbody1').undelegate('.checkChat', 'click').delegate('.checkChat', 'click', function () {
@@ -912,8 +917,11 @@ $(document).ready(function () {
             nxQiYong(answer.length > 0 && aalen2.length >= 2);
             return false;
         });
-
-        UE.getEditor('ans-textarea').on('keyup', function (e) {
+        /*
+        * taskId = 646 智能学习，未知问题选择编辑答案回答优化
+        * 将ueditor的keyup事件改成selectionchange事件
+        * */
+        UE.getEditor('ans-textarea').on('selectionchange', function (e) {
             answer = UE.getEditor('ans-textarea').getContent();
             var aalen4 = $('input[name=ansQueInput]').val();
             nxQiYong(answer.length > 0 && aalen4.length >= 2);

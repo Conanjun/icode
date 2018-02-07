@@ -174,68 +174,48 @@
         }
 
         //新手引导
-        /*//增加code
-        MN_Base.request({
-            url: 'tipHelp/add',
-            params: {
-                code: 'artiMonitorHelp',
-                webId: -1,
-            },
-            callback: function(data) {
-                if(data.status) {//!=0 旧
-
-                }else {//=0 新
-
-                }
-            },
-        });*/
-
-        /*//删除code
-        MN_Base.request({
-            url: 'tipHelp/del',
-            params: {
-                code: 'artiMonitorHelp',
-                webId: -1,
-            },
-            callback: function(data) {
-
-            },
-        });*/
-
-        //检查code
+        //增加code
         MN_Base.request({
             url: 'tipHelp/check',
             params: {
                 code: 'artiMonitorHelp',
-                webId: -1,
             },
             callback: function(data) {
+                loadingBox.close();
+                $('.body').animate({'opacity': 1});
+                $(window).trigger('resize');
                 if(data.status) {//旧
                     runStep2();
+                    $('.intro').hide();
                 }else {//新
-                    loadingBox.close();
-                    $('.body').animate({'opacity': 1});
-                    $(window).trigger('resize');
+                    /*
+                        taskid=713,黄世鹏
+                        修改：教学演示错位
+                        逻辑：定位到屏幕中央
+                    */ 
+                    $('.intro').show();
                     //1
-                    $('body').append('<div class="tipStep1 tipStep" data-step="1" data-intro="现在跟我一起学习如何使用人工监控吧！"></div>');
+                    $('.intro').append('<div class="tipStep1 tipStep" data-step="1" data-intro="现在跟我一起学习如何使用人工监控吧！"></div>');
                     //2
-                    $('.rightBodyCtn').append('<div class="tipStep2 tipStep" data-step="2" data-intro="这里是当前在线的用户，您可以通过点击当前用户进行监控和查看用户信息"></div>');
+                    $('.intro').append('<div class="tipStep2 tipStep" data-step="2" data-intro="这里是当前在线的用户，您可以通过点击当前用户进行监控和查看用户信息"></div>');
                     //3
-                    $('.midBodyCtn').append('<div class="tipStep3 tipStep" data-step="3" data-intro="点击监控或接管按钮来监控和接管该用户"></div>');
+                    $('.intro').append('<div class="tipStep3 tipStep" data-step="3" data-intro="已被监控的用户可以对其进行停止监控，或者进行人工接管操作"></div>');
                     //4
-                    $('.midHeadRightCtn').append('<div class="tipStep4 tipStep" data-step="4" data-intro="被监控用户将出现在这里，点击该用户查看聊天信息"></div>');
+                    $('.intro').append('<div class="tipStep4 tipStep" data-step="4" data-intro="管理员在此处可以标记用户的身份信息"></div>');
                     //5
-                    $('.midBodyLeftCtn').append('<div class="tipStep5 tipStep" data-step="5" data-intro="被监控用户的聊天内容会即时刷新，点击接管按钮接管该用户"></div>');
+                    $('.intro').append('<div class="tipStep5 tipStep" data-step="5" data-intro="被接管的用户进入被接管的分组"></div>');
                     //6
-                    $('.midBodyLeftCtn').append('<div class="tipStep6 tipStep" data-step="6" data-intro="点击编辑按钮，弹出用户信息框，在此编辑用户的信息，信息即时保存"></div>');
+                    $('.intro').append('<div class="tipStep6 tipStep" data-step="6" data-intro="转人工后可查看用户转人工的原因，若发现恶意转人工，管理员可将当前用户加入黑名单"></div>');
                     //7
-                    $('.midBodyLeftCtn').append('<div class="tipStep7Ctn"><div class="tipStep7 tipStep" data-step="7" data-intro="您可以通过点击停止接管按钮来释放当前会话，用户回到监控列表"></div></div>');
+                    $('.intro').append('<div class="tipStep7 tipStep" data-step="7" data-intro="转人工后管理员可发送表情、截屏、上传文件等"></div>');
                     //8
-                    $('.knowBodyCtn').append('<div class="tipStep8 tipStep" data-step="8" data-intro="这里是快捷回复的内容，你可以通过新增回复按钮进行添加快捷回复"></div>');
+                    $('.intro').append('<div class="tipStep8 tipStep" data-step="8" data-intro="客服可在机器人业务后台搜索知识回复用户"></div>');
                     //9
-                    $('.knowBodyCtn').append('<div class="tipStep9 tipStep" data-step="9" data-intro="这里是后台知识库的内容，你可以通过不同的回复方式进行回复来访者"></div>');
+                    $('.intro').append('<div class="tipStep9 tipStep" data-step="9" data-intro="根据用户咨询的内容，机器人自动去业务后台匹配答案，辅助客服服务用户"></div>');
                     //10
-                    $('body').append('<div class="tipStep10 tipStep" data-step="10" data-intro="您已经完成新手引导的学习，开始体验吧！"></div>');
+                    $('.intro').append('<div class="tipStep10 tipStep" data-step="10" data-intro="设置客服回复频率较高的内容，提升工作效率"></div>');
+                    //11
+                    $('.intro').append('<div class="tipStep11 tipStep" data-step="11" data-intro="您已经完成新手引导的学习，开始体验吧！"></div>');
 
                     $('.tipStep').hide();
                     $('.tipStep1').show();
@@ -250,12 +230,12 @@
                     }).start().onexit(function() {//非常规退出
                         $('.tipStep').remove();
                         $('.tipStep7Ctn').remove();
-
+                        $('.intro').hide();
                         runStep2();
                     }).oncomplete(function() {//正常完成
                         $('.tipStep').remove();
                         $('.tipStep7Ctn').remove();
-
+                        $('.intro').hide();
                         runStep2();
                     }).onchange(function(obj) {//已完成当前一步
                         var curNum = parseInt($(obj).attr('class').match(/\d+/)[0]);//当前的下标
@@ -264,9 +244,23 @@
                         $('.tipStep'+ (curNum+1)).hide();//隐藏后一个
                         $(obj).show();//显示当前
                     });
+                    runStep2();
                 }
             },
         });
+
+        /*//删除code
+        MN_Base.request({
+            url: 'tipHelp/del',
+            params: {
+                code: 'artiMonitorHelp',
+                webId: -1,
+            },
+            callback: function(data) {
+
+            },
+        });*/
+
 
         //全局断点
         function runStep2() {
@@ -660,7 +654,7 @@
                         MN_Base.request({
                             url: 'QuickReply/delQuickReply',
                             params: {
-                                Id: $(this).attr('Id'),
+                                id: $(this).attr('Id'),
                             },
                             callback: function(data) {//重新渲染快捷回复
                                 getQuickGroup();
@@ -676,17 +670,14 @@
             function getQuickGroup() {
                 MN_Base.request({
                     url: 'QuickReply/getAllGroupName',
-                    params: {
-
-                    },
+                    params: {},
                     callback: function(data) {
                         var isExist = [];//是否存在该问题分类
-
                         for(var i=0; i<data.list.length; i++) {
                             isExist[i] = 1;
                             if(data.list[i].Name == 'onlyGroupName') {//存在直接获取
                                 isExist[i] = 0;
-                                getQuickAns(data.list[i].Id);//获取快捷回复列表
+                                getQuickAns();//获取快捷回复列表
                             }
                         }
                         var res = 1;
@@ -701,7 +692,7 @@
                                 },
                                 callback: function(data) {
                                     if(!data.status) {
-                                        getQuickAns(data.Classes.Id);//获取快捷回复列表
+                                        getQuickAns();//获取快捷回复列表
 
                                     }
                                 },
@@ -711,41 +702,42 @@
                 });
             }
 
-            //快捷回复分组下的答案 -> url = '/QuickReply/getAllByGroupId'
-            function getQuickAns(groupId) {
+            //快捷回复分组下的答案 -> url = '/QuickReply/getAllQuickReply'
+            function getQuickAns() {
                 MN_Base.request({
-                    url: 'QuickReply/getAllByGroupId',
-                    params: {
-                        groupId: groupId,
-                    },
+                    url: 'QuickReply/getAllQuickReply',
+                    params: {},
                     callback: function(data) {
                         //渲染快捷回复
                         var html = '',
                             ranNum = parseInt(Math.random()*100000);
+                        if(data.status == 0){
+                            for(var i=0; i<data.List.length; i++) {
+                                html += '<div class="item"><span class="quickQueNum" data-title="删除该回复" Id="'+ data.List[i].Id +'">'+ (i+1) +'</span><span quickRanNum="'+ (ranNum+i) +'" class="quickQueWord" data-title="'+ data.List[i].Content +'">'+ MN_Base.addDots(data.List[i].Content, 13) +'</span></div>';
+                            }
 
-                        for(var i=0; i<data.List.length; i++) {
-                            html += '<div class="item"><span class="quickQueNum" data-title="删除该回复" Id="'+ data.List[i].Id +'">'+ (i+1) +'</span><span quickRanNum="'+ (ranNum+i) +'" class="quickQueWord" data-title="'+ data.List[i].Content +'">'+ MN_Base.addDots(data.List[i].Content, 13) +'</span></div>';
+                            $('.quickWordCtn').attr({'groupId': groupId}).empty().append(html);
+
+                            $('.quickWordCtn .item').each(function(i) {
+                                var $quickRanNum = $('[quickRanNum="'+ (ranNum+i) +'"]');
+                                new jBox('Mouse', {
+                                    maxWidth: '200px',
+                                    attach: $quickRanNum,
+                                    content: $quickRanNum.attr('data-title'),
+                                    animation: false,
+                                    closeOnClick: 'body',
+                                });
+                                new jBox('Mouse', {
+                                    maxWidth: '200px',
+                                    attach: $quickRanNum.prev(),
+                                    content: '删除该回复',
+                                    animation: false,
+                                    closeOnClick: 'body',
+                                });
+                            });
+                        }else{
+                            $('.quickWordCtn').attr({'groupId': groupId}).empty().append(html);
                         }
-
-                        $('.quickWordCtn').attr({'groupId': groupId}).empty().append(html);
-
-                        $('.quickWordCtn .item').each(function(i) {
-                            var $quickRanNum = $('[quickRanNum="'+ (ranNum+i) +'"]');
-                            new jBox('Mouse', {
-                                maxWidth: '200px',
-                                attach: $quickRanNum,
-                                content: $quickRanNum.attr('data-title'),
-                                animation: false,
-                                closeOnClick: 'body',
-                            });
-                            new jBox('Mouse', {
-                                maxWidth: '200px',
-                                attach: $quickRanNum.prev(),
-                                content: '删除该回复',
-                                animation: false,
-                                closeOnClick: 'body',
-                            });
-                        });
                     },
                 });
             }
@@ -755,7 +747,6 @@
                 MN_Base.request({
                     url: 'QuickReply/addReply',
                     params: {
-                        groupId: $('.quickWordCtn').attr('groupId'),
                         content: $('.editAskArea').val(),
                     },
                     callback: function(data) {//重新渲染快捷回复

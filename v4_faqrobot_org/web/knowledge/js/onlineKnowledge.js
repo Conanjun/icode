@@ -109,12 +109,14 @@ $(document).ready(function() {
             key : {
                 name : "Name"
             }
-        },
+		},
+		// tasksId=686 后台接口更改，加载分类树时需要传递参数吗m=0
         async : {
             enable : true,
-            url : "../../classes/listClasses",
-            autoParam : ["id"],
-            dataFilter : ajaxDataFilter1
+			url : "../../classes/listClasses",
+			autoParam : ["id"],
+			otherParam:{m:0},
+			dataFilter : ajaxDataFilter1
         },
 		callback: {
 			onClick: function(event, treeId, treeNode) {

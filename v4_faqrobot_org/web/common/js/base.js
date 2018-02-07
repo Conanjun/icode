@@ -35,7 +35,11 @@ $(function () {
                     //回调函数
                 },
                 options = $.extend({}, defaults, options)
-            formData = $.extend({}, This.formatSeriData((options.$formObj.serialize())), options.dataObj) //中文乱码,使用decodeURIComponent解码即可
+                /**
+                 * 原因：场景式问答修改数据添加空格后序列化后转换+号
+                 * 修改：替换+好为空格
+                 */
+            formData = $.extend({}, This.formatSeriData((options.$formObj.serialize().replace(/\+/g," "))), options.dataObj) //中文乱码,使用decodeURIComponent解码即可
             $.ajax({
                 url: encodeURI(options.prefix + (options.url || '...')),
                 //...为基础地址

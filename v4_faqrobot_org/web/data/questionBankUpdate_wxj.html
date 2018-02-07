@@ -45,9 +45,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">题库更新统计</li>
+           
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -126,11 +124,16 @@
                                 <th rowspan="2">日期、时间</th>
                                 <th rowspan="2">所属目录</th>
                                 <th rowspan="2" width="300">标准问问题</th>
-                                <th rowspan="2">答案修改</th>
+                           <!-- taskid=496 顾荣 无限极题库更新统计 2017.12.27
+                                修改：添加答案新增，修改，删除字段 -->
+                                <th colspan="3">答案</th>
                                 <th colspan="3">标准问</th>
                                 <th colspan="3">相似问</th>
                             </tr>
                             <tr>
+                                <th>新增</th>
+                                <th>修改</th>
+                                <th>删除</th>
                                 <th>新增</th>
                                 <th>修改</th>
                                 <th>删除</th>
@@ -680,36 +683,47 @@
                 if (data.status == 0) {
                     if (Nlen == 0) {
                         table += '<tr >'
-                        table += '<td colspan=5 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+                        /**
+                         * taskid=548,顾荣  题库满意度统计-无数据的展示不居中  2018/1/3
+                         * 原因：无数据时“暂无数据”提示不居中，且显示页数
+                         * 修改：将colspan改为12，无数据时，将页数内容清空
+                        */
+                        table += '<td colspan=12 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
                         table += '</tr>'
                         $('#visitDataTable').html(table)
-                    }
-                    for (var t = 0; t < Nlen; t++) {
-                        table += '<tr >'
-                        table += '<td class="tab_tr_bg">' + (data.questionLog[t].DateTime ? data.questionLog[t].DateTime : '') + '</td>'
-                        table += '<td class="tab_tr_bg">' + (data.questionLog[t].GroupName ? data.questionLog[t].GroupName : 0) + '</td>'
-                        table += '<td class="tab_tr_bg">' + (data.questionLog[t].Question ? data.questionLog[t].Question : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].AnsEdit ? data.questionLog[t].AnsEdit : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueAdd ? data.questionLog[t].QueAdd : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueEdit ? data.questionLog[t].QueEdit : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueDel ? data.questionLog[t].QueDel : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimAdd ? data.questionLog[t].SimAdd : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimEdit ? data.questionLog[t].SimEdit : 0) + '</td>'
-                        table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimDel ? data.questionLog[t].SimDel : 0) + '</td>'
-                        table += '</tr>'
-                    }
-                    $('#visitDataTable').html(table)
-                    var options = {
-                        data: [data, 'questionLog', 'total'],
-                        currentPage: data.currentPage,
-                        totalPages: data.totalPages ? data.totalPages : 1,
-                        alignment: 'right',
-                        onPageClicked: function (event, originalEvent, type, page) {
-                            pageNo = page
-                            showtable(pageNo)
+                        $('#pageList').html("")
+                    }else{
+                        for (var t = 0; t < Nlen; t++) {
+                            table += '<tr >'
+                            table += '<td class="tab_tr_bg">' + (data.questionLog[t].DateTime ? data.questionLog[t].DateTime : '') + '</td>'
+                            table += '<td class="tab_tr_bg">' + (data.questionLog[t].GroupName ? data.questionLog[t].GroupName : 0) + '</td>'
+                            table += '<td class="tab_tr_bg">' + (data.questionLog[t].Question ? data.questionLog[t].Question : 0) + '</td>'
+                        // taskid=496 顾荣 无限极题库更新统计 2017.12.27
+                        // 修改：添加答案新增，修改，删除字段 
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].AnsAdd ? data.questionLog[t].AnsAdd : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].AnsEdit ? data.questionLog[t].AnsEdit : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].AnsDel ? data.questionLog[t].AnsDel : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueAdd ? data.questionLog[t].QueAdd : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueEdit ? data.questionLog[t].QueEdit : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].QueDel ? data.questionLog[t].QueDel : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimAdd ? data.questionLog[t].SimAdd : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimEdit ? data.questionLog[t].SimEdit : 0) + '</td>'
+                            table += '<td class="tab_tr_sec_bg">' + (data.questionLog[t].SimDel ? data.questionLog[t].SimDel : 0) + '</td>'
+                            table += '</tr>'
                         }
+                        $('#visitDataTable').html(table)
+                        var options = {
+                            data: [data, 'questionLog', 'total'],
+                            currentPage: data.currentPage,
+                            totalPages: data.totalPages ? data.totalPages : 1,
+                            alignment: 'right',
+                            onPageClicked: function (event, originalEvent, type, page) {
+                                pageNo = page
+                                showtable(pageNo)
+                            }
+                        }
+                        $('#pageList').bootstrapPaginator(options)                        
                     }
-                    $('#pageList').bootstrapPaginator(options)
                 } else {
                     yunNoty(data)
                 }

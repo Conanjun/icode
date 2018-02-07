@@ -6,7 +6,7 @@
         var winW = $(window).width(),
             winH = $(window).height();
         $('html').css('fontSize', winW<750 ? winW : 750);
-        $('.chatScroll').height(winH-$('.editCtn').outerHeight()-50);
+        $('.chatScroll').height(winH-$('.editCtn').outerHeight() - 20);
     }
 
     $(window).on('resize', function() {
@@ -134,91 +134,119 @@
 
     //留言
     $('.leaveMsg').on('click', function() {
-        layerCtn = layer.open({
-            type: 1,
-            title: '留言',
-            content: $('.leaveMsgLayer'),
-            area: ['1rem', '100%'],
-            end: function() {	
-                //taskid=403 顾荣 任务：留言面板 2017.12.20 清除表单验证
-                $("#leaveMsgForm .form-group>label").remove()			
-                $('.text-error').removeClass("text-error helper-font-small")
-                set_chatScroll_height();
-            },
-        });
-        //taskid=403 顾荣 任务：留言面板 2017.12.20
+    /**
+        * taskId=494;顾荣
+        * 原因：在ios浏览器上弹出软键盘留言板布局会乱
+        * 修改：删除原本的layer弹出框
+        */   
+        // layerCtn = layer.open({
+        //     type: 1,
+        //     title: '留言',
+        //     content: $('.leaveMsgLayer'),
+        //     area: ['1rem', '100%'],
+        //     end: function() {	
+        //         //taskid=402 顾荣 任务：留言面板 2017.12.20 清除表单验证
+        //         $("#leaveMsgForm .form-group>label").remove()			
+        //         $('.text-error').removeClass("text-error helper-font-small")
+        //         set_chatScroll_height();
+        //     },
+        // });
+        //taskid=402 顾荣 任务：留言面板 2017.12.20
         // 点击返回聊天页关闭留言板
-        $("#backMessage").click(function(){
-            parent.layer.close(layerCtn)
-        })
+        // $("#backMessage").click(function(){
+        //     parent.layer.close(layerCtn)
+        // })
+        $("#leaveMsgBox").css("display","block");
         FAQ.writeMsg()
     });
 
 
-    //taskid=403 顾荣 任务：留言面板 2017.12.20
+    //taskid=402 顾荣 任务：留言面板 2017.12.20
     // 添加a链接弹出框
     $("body").on("click",".LeaveMsg",function(){
-        layerCtn = layer.open({
-            type: 1,
-            title: '留言',
-            content: $('.leaveMsgLayer'),
-            area: ['1rem', '100%'],
-            end: function() {
-                //taskid=403 顾荣 任务：留言面板 2017.12.20 清除表单验证
-                $("#leaveMsgForm .form-group>label").remove()
-                $('.text-error').removeClass("text-error helper-font-small")
-                set_chatScroll_height();
-            },
-        });
-        $("#backMessage").click(function(){
-            parent.layer.close(layerCtn)
-        })
+    /**
+        * taskId=494;顾荣
+        * 原因：在ios浏览器上弹出软键盘留言板布局会乱
+        * 修改：删除原本的layer弹出框
+        */ 
+        // layerCtn = layer.open({
+        //     type: 1,
+        //     title: '留言',
+        //     content: $('.leaveMsgLayer'),
+        //     area: ['1rem', '100%'],
+        //     end: function() {
+        //         //taskid=403 顾荣 任务：留言面板 2017.12.20 清除表单验证
+        //         $("#leaveMsgForm .form-group>label").remove()
+        //         $('.text-error').removeClass("text-error helper-font-small")
+        //         set_chatScroll_height();
+        //     },
+        // });
+        // $("#backMessage").click(function(){
+        //     parent.layer.close(layerCtn)
+        // })
+        $("#leaveMsgBox").css("display","block");
         FAQ.writeMsg()
     })
+
+
     /*点击输入框下面图标变蓝*/
     $('body').on('click',function(e){
         //图片
         if($(e.target).is('#sendPic input')){
             $(e.target).parent().addClass('sendPicClick');
             $(e.target).parents('.editCtn_com').siblings().find('span').removeClass('sendVoiceClick sendCameraClick sendFaceClick sendFileClick commonQueClick feedbackClick leaveMsgClick');
+            $(e.target).parent().siblings('p').addClass('btnClass')
         }
         //语音
         else if($(e.target).is('#sendVoice')){
             $(e.target).addClass('sendVoiceClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendCameraClick sendFaceClick sendFileClick commonQueClick feedbackClick leaveMsgClick');
+            addClassFN(e.target)
         }
         //拍照
         else if($(e.target).is('#sendCamera')){
             $(e.target).addClass('sendCameraClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendFaceClick sendFileClick commonQueClick feedbackClick leaveMsgClick');
+            addClassFN(e.target)
         }
         //表情
         else if($(e.target).is('#sendFace')){
             $(e.target).addClass('sendFaceClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFileClick commonQueClick feedbackClick leaveMsgClick');
+            // $(e.target).siblings('p').addClass('btnClass');
+            addClassFN(e.target)
         }
         //文件
         else if($(e.target).is('#sendFile')){
             $(e.target).addClass('sendFileClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFaceClick commonQueClick feedbackClick leaveMsgClick');
+            addClassFN(e.target)
         }
         //常见问题
         else if($(e.target).is('#sendCommonQue')){
             $(e.target).addClass('commonQueClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFaceClick sendFileClick feedbackClick leaveMsgClick');
+            addClassFN(e.target)
         }
         //意见反馈
         else if($(e.target).is('#sendFeedBack')){
             $(e.target).addClass('feedbackClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFaceClick sendFileClick commonQueClick leaveMsgClick');
+            addClassFN(e.target)
         }
         //留言
         else if($(e.target).is('#sendLeaveMsg')){
             $(e.target).addClass('leaveMsgClick');
             $(e.target).parent().siblings().find('span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFaceClick sendFileClick commonQueClick feedbackClick');
+            addClassFN(e.target)
         }else{
             /*点击其他变回原来的颜色*/
             $('.editCtn_com span').removeClass('sendPicClick sendVoiceClick sendCameraClick sendFaceClick sendFileClick commonQueClick feedbackClick leaveMsgClick');
+            $('.editCtn_com p').removeClass('btnClass')
+        }
+
+        function addClassFN (ele) {
+          $(ele).siblings('p').addClass('btnClass')
         }
     });
 
@@ -237,7 +265,17 @@
         artiTitle: '人工客服',// 人工时的标题
         titleInsteadId: 'title',// 代替标题Id
         //userInfoId: 'userInfoId',//用户信息Id
+        /**
+         * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
+         * 原因：区分是机器人客服还是人工客服
+         * 修改：添加服图标分为机器人和人工客服
+         */
         kfPic: 'robot/skin/h5chat/images/robot.png',  //客服图标
+        kf_Robot_Pic: 'robot/skin/h5chat/images/robot.png',  //机器人客服图标
+        kf_Person_Pic: 'robot/skin/h5chat/images/robot.png',  //人工客服图标
+        kf_Robot_Name:'',//机器人客服名字，此处只是声明个变量，不用赋值
+        kf_Person_Name:'',//人工客服名字
+
         khPic: 'robot/skin/h5chat/images/user.png', //客户图标
         formatDate: '%month%月%date%日 %hour%:%minute%:%second%',//配置时间格式(默认10:42:52 2016-06-24)
         topQueId: 'commonQueLayer',//热门、常见问题Id --------

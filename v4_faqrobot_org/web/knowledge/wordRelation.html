@@ -24,6 +24,18 @@
 
 	<link href="../common/css/radioskin/blue.css" rel="stylesheet">
 	<link href="../common/css/commonCSS.css" rel="stylesheet">
+	<style>
+		.text-tip{
+			font-weight: bold;
+			color: #EA5200;
+			display: none;
+		}
+		.max-tip{
+			border: 1px solid;
+			background: #ffdedd none repeat scroll 0 0 !important;
+			border-color: #ff5b57 !important;
+		}
+	</style>
 </head>
 
 <body class="pace-done">
@@ -31,9 +43,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">关联词列表</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">关联词</h1>
@@ -75,7 +85,7 @@
 								<tr>
 									<th width="50"><input type="checkbox" name="select_rows" class="select_rows" data-tableid="wordweightList"/></th>
 									<th>关联词</th>
-									<th>关联度</th>
+									<th width="70">关联度</th>
 									<th width="70">操作</th>
 								</tr>
 							</thead>
@@ -102,13 +112,15 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">关联词<span class="red">&nbsp;*</span></label>
                                 <div class="col-md-7">
-                                    <input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="100">
+									<!-- taskId=782 关联词添加、修改长度限制为1000 -->
+									<input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="1000">
+									<p for="word" class="text-tip">关联词输入的最大长度为1000</p>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">关联度<span class="red">&nbsp;*</span></label>
                                 <div class="col-md-7">
-                                    <input type="text" placeholder="相识度越高，关联度越高（1-100）" class="form-control" name="score" maxlength="3">
+									<input type="text" placeholder="相识度越高，关联度越高（1-100）" class="form-control" name="score" maxlength="3">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -137,7 +149,9 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">关联词<span class="red">&nbsp;*</span></label>
                                 <div class="col-md-7">
-                                    <input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="100">
+									<!-- taskId=782 关联词添加、修改长度限制为1000 -->
+									<input type="text" placeholder="请输入关联词" class="form-control" name="word" maxlength="1000">
+									<p for="word" class="text-tip">关联词输入的最大长度为1000</p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -235,15 +249,94 @@
 				}
 			  return false;
 			}, "关联词至少需要两个！");
+
+
+			
+		/**
+		 * taskId=782 关联词添加、修改长度限制为1000
+		 * 说明：关联度1-100，完善等级限制；使用validate.js 增加验证方法
+		*/
+		jQuery.validator.addMethod("scoreCount", function(value, element) {
+			var count=parseInt(value);
+			if(count>=1&&count<=100){
+				return true;
+			}else{
+				return false;
+			}
+		}, "关联等级在1-100之间");
+		/**
+		 * taskId=782 关联词添加、修改长度限制为1000
+		 * 说明：关联词添加、修改长度为1000时，显示提示语；使用validate.js 增加验证方法
+		*/
+		//实时监控input中的值变化   非IE
+		$('#addModal [name=word]').on('input',function(){
+			if($(this).val().length==1000){
+				$(this).addClass('max-tip');
+				$(this).siblings('.text-tip').show();
+			}else{
+				$(this).removeClass('max-tip');
+				$(this).siblings('.text-tip').hide();
+			}
+		})
+		 //实时监控input中的值变化   IE
+		 $('#addModal [name=word]').on('propertychange',function(){
+			if($(this).val().length==1000){
+				$(this).addClass('max-tip');
+				$(this).siblings('.text-tip').show();
+			}else{
+				$(this).removeClass('max-tip');
+				$(this).siblings('.text-tip').hide();
+			}
+		})
+
+		$('#editModal [name=word]').on('input',function(){
+			if($(this).val().length==1000){
+				$(this).addClass('max-tip');
+				$(this).siblings('.text-tip').show();
+			}else{
+				$(this).removeClass('max-tip');
+				$(this).siblings('.text-tip').hide();
+			}
+		})
+
+		$('#editModal [name=word]').on('propertychange',function(){
+			if($(this).val().length==1000){
+				$(this).addClass('max-tip');
+				$(this).siblings('.text-tip').show();
+			}else{
+				$(this).removeClass('max-tip');
+				$(this).siblings('.text-tip').hide();
+			}
+		})
+
+		$('#editModal [name=word]').on('focus',function(){
+			if($(this).val().length==1000){
+				$(this).addClass('max-tip');
+				$(this).siblings('.text-tip').show();
+			}else{
+				$(this).removeClass('max-tip');
+				$(this).siblings('.text-tip').hide();
+			}
+		})
+		//模态框消失时，移除提醒样式
+		$('[data-dismiss=modal]').on('click',function(){
+			$('.text-tip').hide();
+			$('[name=word]').removeClass('max-tip');
+		})
+		/**
+		 * taskId=782 关联词添加、修改长度限制为1000
+		 * 说明：关联度1-100，完善等级限制；使用validate.js 增加验证方法,scoreCount
+		*/	
 			$('#addForm').validate({
 				rules:{
 					word:{
 						required:true,
-						isRelationWord:true
+						isRelationWord:true,
 					},
 					score:{
 						required:true,
-						number:true
+						number:true,
+						scoreCount:true
 					}
 				},
 				messages:{
@@ -253,19 +346,24 @@
 					score:{
 						required:"请输入关联度！",
 						number:"请输入数字！"
-					}
+					},
 				},
 				submitHandler: addWW
 			});
+		/**
+		 * taskId=782 关联词添加、修改长度限制为1000
+		 * 说明：关联度1-100，完善等级限制；使用validate.js 增加验证方法,scoreCount
+		*/	
 			$('#save_form').validate({
 				rules:{
 					word:{
 						required:true,
-						isRelationWord:true
+						isRelationWord:true,
 					},
 					score:{
 						required:true,
-						number:true
+						number:true,
+						scoreCount:true
 					}
 				},
 				messages:{
@@ -286,8 +384,11 @@
 		});
 
 		function listWordWeight(pageNo) {
-			//不勾选全选
-			//$('.select_rows').iCheck('uncheck');
+			/**
+			 * taskId=782 关联词添加、修改长度限制为1000
+			 * 说明：批量删除成功后，去除全选的状态
+			*/	
+			$('.select_rows').iCheck('uncheck');
 			if (!pageNo) pageNo = 1;
 			$('#wordweightList').tableAjaxLoader2(3);
 			$.ajax({
@@ -340,7 +441,7 @@
 							//单个删除
 							$('.m-del').on('click',function(){
 								var self = this;
-	              $(self).adcCreator(function() {
+	              				$(self).adcCreator(function() {
 									delById(self,'../../WordDoc/deleteRelationWord',listWordWeight,'pageList');
 								});
 							});
@@ -384,6 +485,9 @@
 					if(data.status===0){
 						yunNoty(data);
 						$('#addModal').modal('hide');
+						//隐藏所有的提示状态
+						$('.text-tip').hide();
+						$('[name=word]').removeClass('max-tip');
 						listCurrentPage(listWordWeight,'pageList');
 					}else{
 						yunNoty(data);
@@ -400,11 +504,14 @@
 
 
 		function editWW(){
+			//隐藏所有的提示状态
+			$('.text-tip').hide();
+			$('[name=word]').removeClass('max-tip');
 			saveModal('../../WordDoc/updateRelationWord','save_form','editModal',listWordWeight,'pageList');
 		}
 
 		// 进度条函数
-    	loadingfn('#exlfileupload','../../WordDocExcel/importFile?mode=6','../../WordDocExcel/getStatus','listWordWeight',400)
+		loadingfn('#exlfileupload','../../WordDocExcel/importFile?mode=6','../../WordDocExcel/getStatus','listWordWeight',400)
 	</script>
 </body>
 </html>

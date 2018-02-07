@@ -81,7 +81,10 @@ window.ichecklock = true;
 			$tip1.hide();
 			$tip2.hide();
 			id = parseInt(id[1]);
-
+			/*
+				黄世鹏
+				修改：后台接口重构，第一个参数改为大写
+			 */
 			Base.request({
 			    url: 'Wxappmsg/findById',
 			    params: {
@@ -101,32 +104,32 @@ window.ichecklock = true;
 			    	}
 
 			    	window.ichecklock = false;
-			    	for(var i=0; i<data.result.wxappmsg.count; i++) {
+			    	for(var i=0; i<data.result.wxappmsg.Count; i++) {
 			    		$('.msg-ctn').children(':not(.msgBtn-last)').each(function(j) {
-			    			var curData = data.result.wxappmsg.wxappmsgDetails[j],
+			    			var curData = data.result.wxappmsg.WxappmsgDetails[j],
 			    				linkLock = 0;
 
-			    			if(curData.sourceurl) {
+			    			if(curData.Sourceurl) {
 								linkLock = 1;
 			    			}
 
 			    			$(this).data({
-			    				title: curData.title,
-			    				author: curData.author,
-			    				content: curData.content,
+			    				title: curData.Title,
+			    				author: curData.Author,
+			    				content: curData.Content,
 			    				linkLock: linkLock,//
-			    				linkUrl: curData.sourceurl,
-			    				wordNum1: curData.title.length,
-			    				wordNum2: curData.title.length,
+			    				linkUrl: curData.Sourceurl,
+			    				wordNum1: curData.Title.length,
+			    				wordNum2: curData.Title.length,
 			    				wordNum3: 0,
-			    				coverLock: curData.showPic,
-			    				coverHtml: '<img src="'+ curData.imgUrl +'">',
-			    				coverImg: curData.imgUrl,
+			    				coverLock: curData.ShowPic,
+			    				coverHtml: '<img src="'+ curData.ImgUrl +'">',
+			    				coverImg: curData.ImgUrl,
 			    			});
 
 							showData($(this));
 			    		});
-			    		if(i < data.result.wxappmsg.count-1) {
+			    		if(i < data.result.wxappmsg.Count-1) {
 			    			$('.msgBtn-last').trigger('click');
 			    		}
 			    	}
@@ -473,10 +476,15 @@ window.ichecklock = true;
 
 	//保存
 	$('.save').on('click', function() {
+		/*
+			taskid=610,黄世鹏
+			修改原因：保存时，上传给后台的图片是ueditor自带的loading图片，导致加载出的是loading图片
+			修改逻辑：在点击保存的时候先调用bindData($current)方法，更新保存内容
+		 */
+		bindData($current);		
 		if(valid($('.msg-ctn'))) {
 			showPop($('.release-ctx'), true);
 		}
-		
 	});
 
 	//清空

@@ -634,6 +634,13 @@ function ParametersPage(pageNo) {
 						if($(this).parents('tr').find("tr").find('td:eq(0)').text() == 'switch.learnque.third.knowledge'){
 							sessionStorage.setItem('thirdKnowledgeSystem',$(this).parents('tr').find('td:eq(1) input').val());
 						}
+						/*
+							 taskId=490 黄世鹏
+							 原因：聊天记录导出
+						*/
+						if($(this).parents('tr').find("tr").find('td:eq(0)').text() == 'switch.chatlog.export.show'){
+							sessionStorage.setItem('chatLogExportShow',$(this).parents('tr').find('td:eq(1) input').val());
+						}
 					});
 					//删除
 					$(".fm_del").on('click',function(){

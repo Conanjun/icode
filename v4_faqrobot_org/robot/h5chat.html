@@ -10,11 +10,11 @@
 
     <link rel="stylesheet" href="css/minichat.css?dev=2">
     <link rel="stylesheet" href="skin/h5chat/css/app.css?dev=1">
-    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../web/common/css/font-awesome.css" rel="stylesheet" />
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <!-- <link href="../assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" /> -->
     <link rel="stylesheet prefetch" href="skin/h5chat/css/photoswipe.css">
     <link rel="stylesheet prefetch" href="skin/h5chat/css/default-skin.css">
-    <link href="../web/common/css/commonCSS.css" rel="stylesheet">
+    <link href="./css/commonCSS.css" rel="stylesheet">
 	<style>
 		.hide{
 			display:none !important;
@@ -31,6 +31,8 @@
             height: 100%;
             margin: 0;
         }
+        /* taskid=402 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 */
+        /* 样式开始 */
         #leaveMsgForm .form-group{
             padding:0 7px;
             position:relative;
@@ -41,15 +43,16 @@
             width:0.06rem;
             position: absolute;
             left: 0.04rem;
-            top: 0.03rem;
+            top: 0.02rem;
         }
         #leaveMsgForm .form-group>input{
             border:1px solid lightgray; 
             padding-left:0.1rem; 
+            height:0.107rem;
         }
         #leaveMsgCtn{
             border:1px solid lightgray;
-            border-radius:2px;
+            border-radius:4px;
             height:0.5rem;
         }
         #successMessage{
@@ -90,11 +93,38 @@
             display:inline-block;
             text-align: center;
         }
+    /**
+        * taskId=494;顾荣 2017.12.27
+        * 原因：在ios浏览器上弹出软键盘留言板布局会乱
+        * 修改：删除原本的layer弹出框
+        */ 
+        #leaveMsgBox{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background-color:white;
+            z-index:1000;
+            display:none;
+            overflow-y:scroll;
+            -webkit-overflow-scrolling: touch; 
+        }
+        #leaveMsgHeader{
+            padding:0 0.03rem;
+            color:gray;
+        }
+        #leaveMsgBox hr{
+            margin:0 0 0.04rem;
+        }
+        .btnClass{
+          color: #3DA5FE;
+        }
 	</style>
-    <script src="skin/h5chat/js/minichat.js?time=1513"></script>
-    <script src="../web/common/js/jquery.validate.js"></script>
+    <script src="js/minichat.js?time=1513"></script>
+    <script src="./js/jquery.validate.js"></script>
     <script src="skin/h5chat/js/app.js?dev=2"></script>
-    <script src="../web/common/js/webuploader.min.js"></script>
+    <script src="./js/webuploader.min.js"></script>
     <script src="skin/h5chat/js/photoswipe.js"></script>
     <script src="skin/h5chat/js/photoswipe-ui-default.min.js"></script>
 
@@ -127,38 +157,45 @@
     	<!-- 意见反馈结束 -->
         <!-- taskid=403 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 -->
     	<!-- 留言开始 -->
-		<div class="leaveMsgLayer">
-			<form class="leaveMsgForm" id="leaveMsgForm">
-                <div class="form-group">
-                    <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
-                    <img src="./css/icon/two/name.png" style="width:0.05rem;top:0.02rem">
-                    <input type="text" class="form-control" name="name" placeholder="姓名">
+        <div id="leaveMsgBox">
+            <!-- <div class="leaveMsgLayer"> -->
+            <div id="leaveMsgDiv">
+                <div id="leaveMsgHeader">
+                    <h4>留言<span class="pull-right" id="closeLeaveMsgBox">关闭</span></h4>
                 </div>
-                <div class="form-group">
-                    <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
-                    <img src="./css/icon/two/call.png">
-				    <input type="text" class="form-control" name="telNum" placeholder="手机号码">                    
-                </div>
-                <div class="form-group">
-                    <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
-                    <img src="./css/icon/two/qq.png">
-                    <input type="text" class="form-control" name="qq" placeholder="QQ">
-                </div>
-                <div class="form-group">
-                    <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i>    -->
-                    <img src="./css/icon/two/email.png">
-                    <input type="text" class="form-control" name="email" placeholder="邮箱">
-                </div>
-                <div class="form-group"> 
-                    <textarea class="MN_commentCtn" id="leaveMsgCtn" maxlength="200" name="content"></textarea>
-                </div>
-                <div class="form-group">
-                    <div id="imgsDiv">
+                <hr>
+                <form class="leaveMsgForm" id="leaveMsgForm">
+                    <div class="form-group">
+                        <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
+                        <img src="./css/icon/two/name.png" style="width:0.05rem">
+                        <input type="text" class="form-control" name="name" placeholder="姓名">
                     </div>
-                </div>
-                    <p style="text-align:center"><span id="filebtn" class=" btn btn-white">上传图片</span></p> 
-				<div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn" onclick="$('#leaveMsgForm').submit()">提交</div>
-			</form>
+                    <div class="form-group">
+                        <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
+                        <img src="./css/icon/two/call.png">
+                        <input type="text" class="form-control" name="telNum" placeholder="手机号码">                    
+                    </div>
+                    <div class="form-group">
+                        <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
+                        <img src="./css/icon/two/qq.png">
+                        <input type="text" class="form-control" name="qq" placeholder="QQ">
+                    </div>
+                    <div class="form-group">
+                        <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i>    -->
+                        <img src="./css/icon/two/email.png" style="top:0.03rem;">
+                        <input type="text" class="form-control" name="email" placeholder="邮箱">
+                    </div>
+                    <div class="form-group"> 
+                        <textarea class="MN_commentCtn" id="leaveMsgCtn" maxlength="200" name="content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div id="imgsDiv">
+                        </div>
+                    </div>
+                        <p style="text-align:center"><span id="filebtn" class=" btn btn-white">上传图片</span></p> 
+                    <div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn" onclick="$('#leaveMsgForm').submit()">提交</div>
+                </form>
+            </div>
 		</div>
         <!-- 留言结束 -->
         
@@ -190,7 +227,7 @@
     		<p>网页由云问前端开发人员提供</p>
     	</div> -->
     	<div class="front">
-			<div class="header">
+			<div class="header hide">
 				<!-- <span class="backQuit"><img src="skin/h5chat/images/back2@2x.png"/></span> -->
 				<span class="headName"></span>
 			</div>
@@ -214,9 +251,11 @@
     				</div>
     			</div>
     			<div class="editHide">
-                    <div class="sendPicCtn editCtn_com">
-                        <span id="sendPic" class="sendPic"></span>
-                    </div>
+
+            <div class="sendPicCtn editCtn_com">
+                <span id="sendPic" class="sendPic"></span>
+                <p>图片</p>
+            </div>
 					<!--<div class="sendVoiceCtn editCtn_com">
 						<span id="sendVoice" class="sendVoice"></span>
 						&lt;!&ndash;<p>发送语音</p>&ndash;&gt;
@@ -225,7 +264,8 @@
 						<span id="sendCamera" class="sendCamera"></span>
 					</div>-->
 					<div class="sendFaceCtn editCtn_com">
-						<span id="sendFace" class="sendFace faceBtn"></span>
+            <span id="sendFace" class="sendFace faceBtn"></span>
+            <p>表情</p>
 					</div>
 					<!--<div class="sendFileCtn editCtn_com">
 						<span id="sendFile" class="sendFile"></span>
@@ -237,15 +277,15 @@
     				</div>-->
     				<div class="commonQueCtn editCtn_com">
     					<span id="sendCommonQue" class="commonQue"></span>
-    					<!--<p>常见问题</p>-->
+    					<p>热点问题</p>
     				</div>
     				<div class="feedbackCtn editCtn_com">
     					<span id="sendFeedBack" class="feedback"></span>
-    					<!--<p>意见反馈</p>-->
+    					<p>意见反馈</p>
     				</div>
     				<div class="leaveMsgCtn editCtn_com">
     					<span id="sendLeaveMsg" class="leaveMsg"></span>
-    					<!--<p>留言</p>-->
+    					<p>留言</p>
     				</div>
     			</div>
             </div>
@@ -454,31 +494,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
     };
 
     initPhotoSwipeFromDOM('.my-gallery');
-    /**
-      * taskId=370;赵永平
-      * 原因：在ios上键盘会遮住input输入框
-      * 修改：点击后触发延迟100ms 后调用scrollIntoView解决
-      */
-      // $('#textarea').on('click',function() {
-      //   var self = this;
-      //   setTimeout(function() {
-      //     self.scrollIntoView(true);
-      //   },100)
-      // });
 
-    var timer1;  
-    $('#textarea').on('focus',function() {
-      var self = this;
-      timer1 = setTimeout(function() {
-        self.scrollIntoView(false);
-      },100)
-    });
-
-    $('#textarea').on('blur',function() {
-      if(timer1){
-        clearInterval(timer1);  
-      }
-    });
     
 </script> 
 </html>

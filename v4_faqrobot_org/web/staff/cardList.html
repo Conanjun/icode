@@ -28,9 +28,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">客户名片列表</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">客户名片列表</h1>
@@ -213,11 +211,31 @@
 				initialFrameHeight: 120
 			});
 			//添加新增用户表单验证
+			/*
+				taskId=485,黄世鹏
+				修改：添加正则：姓名不能有数字和符号标点，邮箱不能有数字
+			*/
+			$.validator.addMethod("checkName",function(value,element){
+				var reg=/^[\u4e00-\u9fa5_a-zA-Z]{2,10}$/
+				if(reg.test(value.trim()) ){
+					return true;
+				}else{
+					return false;
+				}
+			},"请输入2到10位汉字或字母");
+			$.validator.addMethod("emailCheck",function(value,element){
+				var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/;
+				if(emailreg.test(value.trim())){
+					return true;
+				}else{
+					return false;
+				}
+			},"请输入一个有效的邮箱地址！");
 			$('#addCard_form').validate({
 				rules:{
 					name:{
-						required:true
-						//<span style="color:#FF0000;"><strong>isChar</strong></span>:true,
+						required:true,
+						checkName:true
 					},
 					sex:{
 						required:true
@@ -229,7 +247,8 @@
 					},
 					email:{
 						required:true,
-						email:true
+						email:true,
+						emailCheck:true
 					},
 					telNum:{
 						required:true,

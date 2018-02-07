@@ -98,6 +98,15 @@ domUtils.on(window, 'load', function () {
 		answer = '';
 		sQue();
 	});
+	/*
+	* taskId = 653 流程关联标准问题，搜索标准问题时应支持回车搜索
+	* 回车时触发btnSearch2按钮点击事件
+	* */
+	$('.search-input-addSrc2').on('keyup',function(e){
+		if(e.keyCode == 13){
+			$('.btnSearch2').trigger('click');
+		}
+	})
 	// 点击td自动选中input
 	$('body').on('click', '.cosInput', function () {
 		$(this).parents('tr').find('input').iCheck('check');

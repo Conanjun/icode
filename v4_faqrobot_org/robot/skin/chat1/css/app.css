@@ -162,6 +162,7 @@ body {
   vertical-align: middle;
   max-height: 70px;
   margin-right: 20px;
+  max-width:400px;
 }
 .whole .head .headLeft .titleCtn {
   vertical-align: middle;

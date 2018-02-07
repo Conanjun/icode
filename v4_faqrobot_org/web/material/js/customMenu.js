@@ -278,22 +278,26 @@ function getImgTxtById(id){
 	cache:false,//不从缓存中去数据
 	url:'../../Wxappmsg/findById?id='+id,
 	success:
+	/*
+		黄世鹏
+		修改：后台接口重构，第一个参数改为大写
+	 */
 	function(json){
 		if(json.result.status == 0){
 			var imgTxtHtml = '';
 			if(json.result.wxappmsg){
 				var wxlist=json.result.wxappmsg;
-				if(wxlist.wxappmsgDetails.length>0){
-					if(wxlist.wxappmsgDetails.length == 1){
+				if(wxlist.WxappmsgDetails.length>0){
+					if(wxlist.WxappmsgDetails.length == 1){
 						imgTxtHtml += '<div style=\"margin:0 auto; width:350px;\">';
 						imgTxtHtml += '<div id=\"imgTxt_check\" class=\"b-dib vt msg-col\" style=\"text-align:center;\">';
 						imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 						imgTxtHtml += '<div class=\"msg-item appmsgItem\">';
-						imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+wxlist.wxappmsgDetails[0].title+'</span></h4>';
-						imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+wxlist.timeStr+'</span></p>';
+						imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+wxlist.WxappmsgDetails[0].Title+'</span></h4>';
+						imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+wxlist.TimeStr+'</span></p>';
 						imgTxtHtml += '<div class=\"cover\">';
 						imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p> ';
-						imgTxtHtml += '<img src=\"'+wxlist.wxappmsgDetails[0].imgUrl+'\" class=\"i-img\">';
+						imgTxtHtml += '<img src=\"'+wxlist.WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\">';
 						imgTxtHtml += '<p class=\"msg-text\"></p>';
 						imgTxtHtml += '</div></div>';
 						imgTxtHtml += '<span class=\"img_active\"><i class=\"icon-ok icon-white\"></i></span> </div></div>';
@@ -303,20 +307,20 @@ function getImgTxtById(id){
 						imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 						imgTxtHtml += '<div class=\"msg-item multi-msg\">';
 						imgTxtHtml += '<div id=\"appmsgItem1\" class=\"appmsgItem\">';
-						imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+wxlist.timeStr+'</span></p>';
+						imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+wxlist.TimeStr+'</span></p>';
 						imgTxtHtml += '<div class=\"cover\">';
 						imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p>';
-						imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+wxlist.wxappmsgDetails[0].title+'</span></h4>';
-						imgTxtHtml += '<img src=\"'+wxlist.wxappmsgDetails[0].imgUrl+'\" class=\"i-img\"> ';
+						imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+wxlist.WxappmsgDetails[0].Title+'</span></h4>';
+						imgTxtHtml += '<img src=\"'+wxlist.WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\"> ';
 						imgTxtHtml += '</div></div>';
-						for(var j = 1; j < wxlist.wxappmsgDetails.length; j++){
+						for(var j = 1; j < wxlist.WxappmsgDetails.length; j++){
 							imgTxtHtml += '<div class=\"rel sub-msg-item appmsgItem\" id=\"appmsgItem2\">';
 							imgTxtHtml += '<span class=\"thumb\">';
 							imgTxtHtml += '<span class=\"default-tip\" style=\"display:none\">缩略图</span>';
-							imgTxtHtml += '<img src=\"'+wxlist.wxappmsgDetails[j].imgUrl+'\" class=\"i-img\">';
+							imgTxtHtml += '<img src=\"'+wxlist.WxappmsgDetails[j].ImgUrl+'\" class=\"i-img\">';
 							imgTxtHtml += '</span>';
 							imgTxtHtml += '<h4 class=\"msg-t\">';
-							imgTxtHtml += '<span class=\"i-title\">'+wxlist.wxappmsgDetails[j].title+'</span>';
+							imgTxtHtml += '<span class=\"i-title\">'+wxlist.WxappmsgDetails[j].Title+'</span>';
 							imgTxtHtml += '</h4></div>';	       
 						}
 						imgTxtHtml += '</div></div>';
@@ -929,43 +933,47 @@ function listImgTxt(pageNo){
 		if(json.result.list.length == 0){
 			$("#img_boxs").empty().append("<p style=\"text-align:center\"><i class=\"icon-exclamation-sign\"></i>暂无图文！</p>");
 	    }else{
-	    	$("#img_boxs").empty();
+			$("#img_boxs").empty();
+			/*
+                        黄世鹏，
+                        修改：后台接口重构，将返回的参数名第一个字母大写
+            */
 	    	for(var i = 0;i<json.result.list.length;i++){
 	    		var imgTxtHtml = '';
 	    		if((i+1)%2==1){
-	    			if(json.result.list[i].wxappmsgDetails.length == 1){
+	    			if(json.result.list[i].WxappmsgDetails.length == 1){
 	    				imgTxtHtml += '<div class=\"b-dib vt msg-col yun_float_left img_hover\">';
-	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].id+'\" value=\"'+json.result.list[i].wxappmsgDetails[0].title+'\"/>';
+	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].Id+'\" value=\"'+json.result.list[i].WxappmsgDetails[0].Title+'\"/>';
 			    		imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 			    		imgTxtHtml += '<div class=\"msg-item appmsgItem\">';
-			    		imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-			    		imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+json.result.list[i].timeStr+'</span></p>';
+			    		imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+			    		imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+json.result.list[i].TimeStr+'</span></p>';
 			    		imgTxtHtml += '<div class=\"cover\">';
 			    		imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p> ';
-			    		imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[0].imgUrl+'\" class=\"i-img\">';
+			    		imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\">';
 			    		imgTxtHtml += '<p class=\"msg-text\"></p>';
 			    		imgTxtHtml += '</div></div>';
 			    		imgTxtHtml += '<span class=\"img_active\"><i class=\"icon-ok icon-white\"></i></span> </div>';
 	    			}else{
 	    				imgTxtHtml += '<div class=\"b-dib vt msg-col yun_float_left img_hover\">';
-	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].id+'\" value=\"'+json.result.list[i].wxappmsgDetails[0].title+'\"/>';
+	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].Id+'\" value=\"'+json.result.list[i].WxappmsgDetails[0].Title+'\"/>';
 	    				imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 	    				imgTxtHtml += '<div class=\"msg-item multi-msg\">';
 	    				imgTxtHtml += '<div id=\"appmsgItem1\" class=\"appmsgItem\">';
-	    				imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+json.result.list[i].timeStr+'</span></p>';
+	    				imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+json.result.list[i].TimeStr+'</span></p>';
 	    				imgTxtHtml += '<div class=\"cover\">';
 	    				imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p>';
-	    				imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-	    				imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[0].imgUrl+'\" class=\"i-img\"> ';
+	    				imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+	    				imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\"> ';
 	    				imgTxtHtml += '</div></div>';
-	    				for(var j = 1; j < json.result.list[i].wxappmsgDetails.length; j++){
+	    				for(var j = 1; j < json.result.list[i].WxappmsgDetails.length; j++){
 		    				imgTxtHtml += '<div class=\"rel sub-msg-item appmsgItem\" id=\"appmsgItem2\">';
 		    				imgTxtHtml += '<span class=\"thumb\">';
 		    				imgTxtHtml += '<span class=\"default-tip\" style=\"display:none\">缩略图</span>';
-		    				imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[j].imgUrl+'\" class=\"i-img\">';
+		    				imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[j].ImgUrl+'\" class=\"i-img\">';
 		    				imgTxtHtml += '</span>';
 		    				imgTxtHtml += '<h4 class=\"msg-t\">';
-		    				imgTxtHtml += '<span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[j].title+'</span>';
+		    				imgTxtHtml += '<span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[j].Title+'</span>';
 		    				imgTxtHtml += '</h4></div>';	       
 	    				}
 	          
@@ -973,39 +981,39 @@ function listImgTxt(pageNo){
 	    				imgTxtHtml += '<span class=\"img_active\"><i class=\"icon-ok icon-white\"></i></span> </div>';
 	    			}
 	    		}else{
-	    			if(json.result.list[i].wxappmsgDetails.length == 1){
+	    			if(json.result.list[i].WxappmsgDetails.length == 1){
 	    				imgTxtHtml += '<div class=\"b-dib vt msg-col yun_float_right img_hover\">';
-	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].id+'\" value=\"'+json.result.list[i].wxappmsgDetails[0].title+'\"/>';
+	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].Id+'\" value=\"'+json.result.list[i].WxappmsgDetails[0].Title+'\"/>';
 			    		imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 			    		imgTxtHtml += '<div class=\"msg-item appmsgItem\">';
-			    		imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-			    		imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+json.result.list[i].timeStr+'</span></p>';
+			    		imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+			    		imgTxtHtml += '<p class=\"msg-meta\"><span class=\"msg-date\">'+json.result.list[i].TimeStr+'</span></p>';
 			    		imgTxtHtml += '<div class=\"cover\">';
 			    		imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p> ';
-			    		imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[0].imgUrl+'\" class=\"i-img\">';
+			    		imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\">';
 			    		imgTxtHtml += '<p class=\"msg-text\"></p>';
 			    		imgTxtHtml += '</div></div>';
 			    		imgTxtHtml += '<span class=\"img_active\"><i class=\"icon-ok icon-white\"></i></span> </div>';
 	    			}else{
 	    				imgTxtHtml += '<div class=\"b-dib vt msg-col yun_float_right img_hover\">';
-	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].id+'\" value=\"'+json.result.list[i].wxappmsgDetails[0].title+'\"/>';
+	    				imgTxtHtml += '<input type=\"hidden\" class=\"idValue\" id=\"'+json.result.list[i].Id+'\" value=\"'+json.result.list[i].WxappmsgDetails[0].Title+'\"/>';
 	    				imgTxtHtml += '<div class=\"msg-item-wrapper\">';
 	    				imgTxtHtml += '<div class=\"msg-item multi-msg\">';
 	    				imgTxtHtml += '<div id=\"appmsgItem1\" class=\"appmsgItem\">';
-	    				imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+json.result.list[i].timeStr+'</span></p>';
+	    				imgTxtHtml += '<p class=\"msg-meta\"> <span class=\"msg-date\">'+json.result.list[i].TimeStr+'</span></p>';
 	    				imgTxtHtml += '<div class=\"cover\">';
 	    				imgTxtHtml += '<p class=\"default-tip\" style=\"display:none\">封面图片</p>';
-	    				imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[0].title+'</span></h4>';
-	    				imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[0].imgUrl+'\" class=\"i-img\"> ';
+	    				imgTxtHtml += '<h4 class=\"msg-t\"><span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[0].Title+'</span></h4>';
+	    				imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[0].ImgUrl+'\" class=\"i-img\"> ';
 	    				imgTxtHtml += '</div></div>';
-	    				for(var j = 1; j < json.result.list[i].wxappmsgDetails.length; j++){
+	    				for(var j = 1; j < json.result.list[i].WxappmsgDetails.length; j++){
 		    				imgTxtHtml += '<div class=\"rel sub-msg-item appmsgItem\" id=\"appmsgItem2\">';
 		    				imgTxtHtml += '<span class=\"thumb\">';
 		    				imgTxtHtml += '<span class=\"default-tip\" style=\"display:none\">缩略图</span>';
-		    				imgTxtHtml += '<img src=\"'+json.result.list[i].wxappmsgDetails[j].imgUrl+'\" class=\"i-img\">';
+		    				imgTxtHtml += '<img src=\"'+json.result.list[i].WxappmsgDetails[j].ImgUrl+'\" class=\"i-img\">';
 		    				imgTxtHtml += '</span>';
 		    				imgTxtHtml += '<h4 class=\"msg-t\">';
-		    				imgTxtHtml += '<span class=\"i-title\">'+json.result.list[i].wxappmsgDetails[j].title+'</span>';
+		    				imgTxtHtml += '<span class=\"i-title\">'+json.result.list[i].WxappmsgDetails[j].Title+'</span>';
 		    				imgTxtHtml += '</h4></div>';	       
 	    				}
 	          

@@ -41,9 +41,7 @@
 	<div id="content" class="content">
 		<!-- begin breadcrumb -->
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">人员管理</a></li>
-            <li>资源管理</li>
+            
         </ol>
         <!-- end breadcrumb -->
         <!-- begin page-header -->
@@ -261,10 +259,11 @@ $(function() {
 				},
 				options = $.extend({}, defaults, options);
 			formData = $.extend({}, This.formatSeriData(decodeURIComponent(($('#' + options.formId).serialize()))), options.dataObj); //中文乱码,使用decodeURIComponent解码即可  
-			$.ajax({
+            
+            $.ajax({
 				url: encodeURI(options.prefix + (options.url || '...')),
 				//...为基础地址  
-				type: 'get',
+				type: 'post',
 				dataType: options.dataType || 'json',
 				data: $.extend({}, params, options.params, formData),
 				cache: false,

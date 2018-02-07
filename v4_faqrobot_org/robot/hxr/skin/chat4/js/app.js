@@ -155,7 +155,8 @@ $(function() {
 	    chatCtnId: 'left_content',//聊天展示Id y   --------------
 	    inputCtnId: 'sendtxt',//输入框Id y   --------
 	    sendBtnId: 'inputPR',//发送按钮Id y   ------
-	    tipWordId: 'inputTip',//输入框提示语Id ----
+      tipWordId: 'inputTip',//输入框提示语Id ----
+      copyrightId:'copyright',// 版权及联系我们
 	    //tipWord: '请输入您要咨询的问题',//输入框提示语
 	    remainWordId: 'wordremain',
 	    remainWordNum: '100',

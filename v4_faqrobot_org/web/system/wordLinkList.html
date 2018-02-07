@@ -40,9 +40,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">系统管理</a></li>
-				<li class="active">文字链接</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">文字链接</h1>
@@ -374,7 +372,7 @@
 				datatype:'json',
 				cache:false,//不从缓存中去数据
 				url:encodeURI('../../textLink/listTextLink?pageSize='+10+'&pageNo='+pageNo),
-				data:'queryStr='+$('#searchwords').val()+'&type='+modaltype,
+				data:'queryStr='+encodeURI($('#searchwords').val())+'&type='+modaltype,
 				success:
 				function(data){
 					if(data.status==0){

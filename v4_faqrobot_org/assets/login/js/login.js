@@ -203,7 +203,15 @@ function autoLogin() {
                 //存入Session Storage
                 localStorage.setItem('Subdomain',Subdomain);
                 window.location.href = (localStorage.getItem('Subdomain')||"") + "/index.html";
-			}
+			}else if(data.status == -101){
+        /**
+         * 美的登陆提示消息
+         */
+        yunNoty({
+          message: data.message,
+          status: '1'
+        });
+      }
 		}
 	});
 }

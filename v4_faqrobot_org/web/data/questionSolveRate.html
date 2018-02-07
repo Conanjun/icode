@@ -22,6 +22,11 @@
     <link href="../../assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet"/>
     <link href="../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
     <link href="../common/css/commonCSS.css" rel="stylesheet">
+    <style>
+        .table thead th,tbody td{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body class="pace-done">
@@ -29,9 +34,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">问题解决率统计</li>
+            
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -99,14 +102,17 @@
                     <table class="table" style="min-width:760px">
                         <thead>
                         <tr>
-                            <th>日期</th>
-                            <th>已解决次数</th>
-                            <th>未解决次数</th>
-                            <th>未评价次数</th>
-                            <th>答案与问题不匹配</th>
+                            <th class="markth">日期</th>
+                            <th class="markth">已解决次数</th>
+                            <th class="markth">未解决次数</th>
+                            <th class="markth">未评价次数</th>
+                            <!-- <th>答案与问题不匹配</th>
                             <th>答案太长</th>
                             <th>答案表述模糊</th>
-                            <th>其他</th>
+                            <th>其他</th> -->
+                            <!-- 答案与问题不匹配*0_答案太长*0_答案表述模糊，不容易理解*0_其他（请填写您的宝贵意见）*0
+                            taskid=773 ReasonName展示前面5个 2018/2/1
+                            修改：展示前面5条 -->
                         </tr>
                         </thead>
                         <tbody id="visitDataTable">
@@ -143,6 +149,7 @@
 <script src="js/util.js"></script>
 <script type="text/javascript">
     function showData (json) {
+        $(".table thead th").not(".markth").remove()//移除表头
         var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
         var myChart2 = echarts.init(document.getElementById('main2'), 'macarons')
         var len = json.List.length
@@ -216,50 +223,51 @@
 
         var dataList2 = []
 
-        var type1 = 0
-        var type2 = 0
-        var type3 = 0
-        var type4 = 0
+        var typeArr=[]//ReasonName前5个的和数组
         //答案与问题不匹配*0_答案太长*0_答案表述模糊，不容易理解*0_其他（请填写您的宝贵意见）*0
-        for (var i = 0; i < len; i++) {
-            var dataStr = json.List[i].ReasonName
-            if (dataStr) {
-                var array1 = dataStr.split('_')
-                if (array1[0]) {
-                    type1 += Number(array1[0].split('*')[1])
+        // taskid=773 ReasonName展示前面5个 2018/2/1
+        // 修改：展示前面5条
+        var optionData2=[]
+        if(json.List&&json.List.length>0){//处理满意度反馈条目饼状图数据
+                for (var i = 0; i < json.List.length; i++) {
+                    var dataStr = json.List[i].ReasonName
+                    if (dataStr) {
+                        var array1 = dataStr.split('_')
+                        var len1=array1.length<5?array1.length:5;
+                        for(var j=0;j<len1;j++){
+                            if(typeArr[j]){
+                                typeArr[j]+=array1[j].split("*")[1]/1
+                            }else{
+                                typeArr[j]=array1[j].split("*")[1]/1
+                            }
+
+                        }
+                    }
                 }
-                if (array1[1]) {
-                    type2 += Number(array1[1].split('*')[1])
+                if (json.List[0].ReasonName) {//生成满意度反馈条目饼状图数据
+                    var array1= json.List[0].ReasonName.split("_")
+                    var len1=array1.length<5?array1.length:5;
+                    for(var j=0;j<len1;j++){
+                        var dataMap={};
+                        dataMap.name = array1[j].split('*')[0]
+                        dataMap.value = typeArr[j]
+                        optionData2[j]=dataMap.name
+                        $("<th>"+dataMap.name+"</th>").appendTo($(".table thead tr"))
+                        dataList2.push(dataMap)
+                    }
+                    $(".table thead th:last").css("width","200px")
+                }else{
+                    dataList2=[{
+                        name:'暂无数据',
+                        value:0
+                    }]
                 }
-                if (array1[2]) {
-                    type3 += Number(array1[2].split('*')[1])
-                }
-                if (array1[3]) {
-                    type4 += Number(array1[3].split('*')[1])
-                }
-            }
+        }else{
+            dataList2=[{
+                name:'暂无数据',
+                value:0
+            }]
         }
-
-        var dataMap = {}
-        dataMap.name = '答案与问题不匹配'
-        dataMap.value = type1
-        dataList2.push(dataMap)
-
-        var dataMap = {}
-        dataMap.name = '答案太长'
-        dataMap.value = type2
-        dataList2.push(dataMap)
-
-        var dataMap = {}
-        dataMap.name = '答案表述模糊'
-        dataMap.value = type3
-        dataList2.push(dataMap)
-
-        var dataMap = {}
-        dataMap.name = '其他'
-        dataMap.value = type4
-        dataList2.push(dataMap)
-
         // 初始 option2
         option2 = {
             title: {
@@ -270,7 +278,7 @@
                 formatter: '{a} <br/>{b} : {c}次({d}%)'
             },
             legend: {
-                data: ['答案与问题不匹配', '答案太长', '答案表述模糊', '其他'],
+                data: optionData2,
             },
             toolbox: {
                 show: true,
@@ -279,7 +287,7 @@
                 orient: 'vertical',
                 feature: {
                     dataView: {
-                        show: false,
+                        show: true,
                         readOnly: true
                     },
                     restore: {
@@ -314,16 +322,13 @@
     function showtable (json) {
         var table = ''
         var Dlen = json.List.length
-        var count1 = 0
-        var count2 = 0
-        var count2z = 0
-        var count3 = 0
-        var count4 = 0
-        var count5 = 0
-        var count6 = 0
+        var count1 = 0//已解决次数总和
+        var count2 = 0//未解决次数总和
+        var count2z = 0//未评价次数总和
+        var countList=[]//ReasonName前5个的和数组
         if (Dlen == 0) {
             table += '<tr>'
-            table += '<td colspan="8" style="text-align:center"><i class="glyphicon glyphicon-warning-sign"></i>暂无数据</td>'
+            table += '<td colspan="10" style="text-align:center"><i class="glyphicon glyphicon-warning-sign"></i>暂无数据</td>'
             table += '</tr>'
             $('#visitDataTable').html(table)
             return
@@ -338,62 +343,27 @@
                 table += '<td>' + json.List[t].UseFull + '</td>'
                 table += '<td>' + json.List[t].UseLess + '</td>'
                 table += '<td>' + rnull(json.List[t].EvaluateNone) + '</td>'
-                if (array1[0]) {
-                    table += '<td>' + array1[0].split('*')[1] + '</td>'
-                } else {
-                    table += '<td>0</td>'
-                }
-                if (array1[1]) {
-                    table += '<td>' + array1[1].split('*')[1] + '</td>'
-                } else {
-                    table += '<td>0</td>'
-                }
-                if (array1[2]) {
-                    table += '<td>' + array1[2].split('*')[1] + '</td>'
-                } else {
-                    table += '<td>0</td>'
-                }
-                if (array1[3]) {
-                    table += '<td>' + array1[3].split('*')[1] + '</td>'
-                } else {
-                    table += '<td>0</td>'
+                for(var i=0;i<array1.length;i++){
+                    if(i>=5){//最多展示5项
+                        continue;
+                    }
+                    table += '<td>' + array1[i].split("*")[1] + '</td>'
+                    if(countList[i]){
+                        countList[i]+=array1[i].split("*")[1]/1
+                    }else{
+                        countList[i]=array1[i].split("*")[1]/1;
+                    }
                 }
                 table += '</tr>'
                 count1 += json.List[t].UseFull
                 count2 += json.List[t].UseLess
                 count2z += rnull(json.List[t].EvaluateNone)
-                if (array1[0]) {
-                    count3 += parseInt(array1[0].split('*')[1])
-                } else {
-                    count3 += 0
-                }
-                if (array1[1]) {
-                    count4 += parseInt(array1[1].split('*')[1])
-                } else {
-                    count4 += 0
-                }
-                if (array1[2]) {
-                    count5 += parseInt(array1[2].split('*')[1])
-                } else {
-                    count5 += 0
-                }
-                if (array1[3]) {
-                    count6 += parseInt(array1[3].split('*')[1])
-                } else {
-                    count6 += 0
-                }
-
             } else {
                 table += '<tr>'
                 table += '<td>' + json.List[t].Day + '</td>'
-                //table += '<td>' + getSourceName(json.sourceId)+ '</td>';
                 table += '<td>' + json.List[t].UseFull + '</td>'
                 table += '<td>' + json.List[t].UseLess + '</td>'
                 table += '<td>' + rnull(json.List[t].EvaluateNone) + '</td>'
-                table += '<td>0</td>'
-                table += '<td>0</td>'
-                table += '<td>0</td>'
-                table += '<td>0</td>'
                 table += '</tr>'
                 count1 += json.List[t].UseFull
                 count2 += json.List[t].UseLess
@@ -401,7 +371,11 @@
             }
 
         }
-        table += '<tr><td>总计</td><td>' + count1 + '</td><td>' + count2 + '</td><td>' + count2z + '</td><td>' + count3 + '</td><td>' + count4 + '</td><td>' + count5 + '</td><td>' + count6 + '</td></tr>'
+        table += '<tr><td>总计</td><td>' + count1 + '</td><td>' + count2 + '</td><td>' + count2z + '</td>'
+        for(var n=0; n<countList.length; n++){
+            table += '<td>'+countList[n]+'</td>'
+        }
+        table +='</tr>'
         $('#visitDataTable').html(table)
     }
 

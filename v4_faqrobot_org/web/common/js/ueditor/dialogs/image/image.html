@@ -40,10 +40,14 @@
 		<div id="gbs" style="float:left;position: relative;width: 100px;display:none;">
 			<div style="margin-left: 10px;margin-top: 6px;display: inline-block;">
 				<a href="javascript:;" id="queSel" onClick="showMenu(); return false;" style="cursor:pointer;color: #337ab7;text-decoration: none;">全部分类</a>
-			</div>
-			<div id="menuContent" class="form-group" style="width:100%;display: inline-block; position: absolute; left: 0; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
+            </div>
+            <!-- 
+                taskId=483,黄世鹏，
+                分类名不能完全展示
+             -->
+			<div id="menuContent" class="form-group" style="display: inline-block; position: absolute; left: 0; top: 35px; background-color: #fff; border: 1px solid #E4E4E4; z-index: 500; border-radius:4px;">
 				<div class="treeDivOfConfigure" tabindex="0" id="classTree">
-					<ul id="treeClasses" class="ztree"></ul>
+					<ul id="treeClasses" class="ztree" style="border:1px solid #ccc"></ul>
 				</div>
 			</div>
 		</div>

@@ -144,6 +144,9 @@
         fieldset[disabled] .btn-default.active {
             background-color: #929ba1 !important;
         }
+        ul li{
+            list-style: none;
+        }
     </style>
 </head>
 
@@ -516,17 +519,85 @@
             </div>
         </div>
     </div>
+    <!-- 分类模态框 -->
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="queClassModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">选择分类</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="treeName">
+                    <input type="hidden" name="treeId">
+                        <span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeQueClass',true);" style="cursor:pointer;"></span>
+                        <span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeQueClass',false);" style="cursor:pointer;"></span>
+                        <div class="treeDivModal">
+                            <ul id="ztree4" class="ztree"></ul>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selClassBtn">确定</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类模态框 -->
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="editQueClassModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">选择分类</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="treeName">
+                    <input type="hidden" name="treeId">
+                        <span class="glyphicon glyphicon-plus-sign" onclick="showTree('treeQueClass',true);" style="cursor:pointer;"></span>
+                        <span class="glyphicon glyphicon-minus-sign"  onclick="showTree('treeQueClass',false);" style="cursor:pointer;"></span>
+                        <div class="treeDivModal">
+                            <ul id="ztree5" class="ztree"></ul>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="editQueClassBtn">确定</button>
+                    <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 备注框 -->
+    <div class="modal fade" style="display: none;" aria-hidden="true" id="editReMarkModel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">备注</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="form-control">
+                            <div class="form-group">
+                                <input type="hidden" name="id" value="">
+                                <textarea class="form-control" name="remark" id="" style="min-height:100px;width:570px;resize:none;height:auto;overflow:hidden;"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="editReMarkBtn">确定</button>
+                        <a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div id="page-container" class="fade in">
         <div id="content" class="content">
             <!-- begin breadcrumb -->
             <ol class="breadcrumb pull-right">
-                <li>
-                    <a href="javascript:;">首页</a>
-                </li>
-                <li>
-                    <a href="javascript:;">知识库管理</a>
-                </li>
-                <li>未知问题</li>
+                
             </ol>
             <!-- end breadcrumb -->
             <!-- begin page-header -->
@@ -544,13 +615,6 @@
                                 <strong>友情提示：</strong> 学习机器人未知的问题。您也可以在这里回复客户的问题哦！他们下次来访时可以看到哦！
                                 <span class="close" data-dismiss="alert">×</span>
                             </div>
-                            <!--  <ul class="nav nav-tabs" role="tablist" style="background: transparent;">
-                <li role="presentation" class="has active"><a href="t1" role="tab" data-toggle="tab">已分类</a></li>
-                <li class="hasnt" role="presentation"><a href="t2" role="tab" data-toggle="tab">未分类</a></li>
-                <li class="talk" role="presentation"><a href="t3" role="tab" data-toggle="tab">寒暄</a></li>
-                <li class="meaningLess" role="presentation"><a href="t4" role="tab" data-toggle="tab">无意义</a></li>
-                <button class="notmSearch btn btn-primary pull-right" type="button" style="display:none;border-radius: 3px;">不再提醒</button>
-              </ul> -->
                             <div class="tab-content" style="padding: 0;margin-top: -1px;margin-bottom: 9px;">
                                 <div role="tabpanel" class="tab-pane active" id="t1"></div>
                                 <div role="tabpanel" class="tab-pane" id="t2"></div>
@@ -619,6 +683,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu" style="min-width: 125px; left: 0; right: auto;">
                                                         <li>
+                                                            <a class="mult-editClassify" href="#">批量修改分类</a>
+                                                        </li>
+                                                        <li>
                                                             <a class="mult-ig" href="#">批量删除</a>
                                                         </li>
                                                         <li>
@@ -641,7 +708,7 @@
                                                             <a class="outExl" href="#">导出未知问题</a>
                                                         </li>
                                                         <li>
-                                                            <a class="outExl2" href="#">导出操作类型详细</a>
+                                                            <a class="outExl2" href="#">导出操作日志</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -715,7 +782,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-10  col-xs-10 toHide" style="padding-right: 0;">
-                                            <table class="table table1" style="margin-top: 0px;" id="tb01">
+                                            <table class="table table1" style="margin-top: 0px;overflow: auto" id="tb01">
                                                 <thead>
                                                     <tr>
                                                         <th width="45">
@@ -730,7 +797,8 @@
                                                         </th>
                                                         <th style="width: 60px;">渠道</th>
                                                         <th style="width: 150px;">时间</th>
-                                                        <th width="110">操作</th>
+                                                        <th width="140">备注</th>
+                                                        <th width="140">操作</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="tbody1">

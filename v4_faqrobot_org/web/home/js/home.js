@@ -143,5 +143,17 @@ function showStyle(json) {
 		$(myChart1).resize();
 		$(myChart2).resize();
 	});
+
+	/*
+		taskid=748,黄世鹏
+		将平台对接的数据存入localStorage
+	 */
+	var accessArr=[]
+	json.User.SystemMenus[5].ModuleMenus[0].PageMenus.map(function(obj){
+		if(obj.NewUrl.indexOf('#')==-1){
+			accessArr.push(obj)
+		}
+		localStorage.setItem('access',JSON.stringify(accessArr))
+	})
 }
 

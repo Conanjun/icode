@@ -448,6 +448,15 @@ ul li {
     font-size: 25px;
     color:#9E9E9E;
 }
+/* 自如发送表情不显示对话框 */
+.face-Ctn{
+    background: transparent !important;
+    border: 1px solid transparent !important;
+}
+.face-Ctn .MN_khTriangle1,.face-Ctn .MN_khTriangle2{
+    border-left-color:transparent !important;
+}
+
 /*TaskId:  408 自如页面定制
 *说明:设置显示更多操作工具栏图标
 */
@@ -692,7 +701,7 @@ ul li {
 /*TaskId:  708 自如页面优化 评价框超出范围可滚动
 *说明：使用iframe嵌入输入框，设置iframe的样式
 */
-.helpCtn iframe{
+/* .helpCtn iframe{
     width: 100%;
     height: 106px;
     outline: none;
@@ -700,7 +709,7 @@ ul li {
     background: #fff;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
-}
+} */
  input,textarea {
     -webkit-user-select: auto!important;
     -khtml-user-select: auto!important;

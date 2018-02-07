@@ -119,9 +119,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">流程详细</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">流程详细</h1>
@@ -137,14 +135,14 @@
 								<!--div class="col-md-2">
 									<a data-toggle="modal" class="btn btn-primary" id="btnAddFlowModal" href="#addFlowModal">添加新的流程项</a>
 								</div-->
-							<form class="form-inline">
+							<div class="form-inline">
 								<div class="form-group pull-right">
 									<div class="input-group" style="margin-right:95px;">
 										<input class="form-control" type="text" placeholder="搜索流程项" id="searchString">
 										<a href="javascript:;" name="searchInput" class="input-group-addon btn btn-primary" onclick="listFlowItems();"><span class="fa fa-search"></span></a>
 									</div>
 								</div>
-							</form>
+							</div>
 						</div>
 						<div class="row" id="flowContent" data-step="1" data-intro='这里是流程项的详细内容，点击添加按钮可以添加新的流程项哦！'></div>
 						<legend class="m-t-15">相似问法</legend>
@@ -322,9 +320,10 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-							<h4 class="modal-title" id="tipTitle"></h4>
+							<h4 class="modal-title" id="tipTitle">删除流程</h4>
 						</div>
 						<div class="modal-body">
+							<input type="hidden" class="delAnsFlowId"><!-- 流程id -->
 							<p id="tipWord"></p>
 						</div>
 						<div class="modal-footer">
@@ -484,7 +483,27 @@
 			        </div>
 			    </div>
             </div>
-            
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delFlowItemConfirm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程项</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" class="nowId"><!-- 删除的id -->
+							<input type="hidden" class="corSetId"><!-- 不进入回收站id -->
+							<input type="hidden" class="flowId"><!-- 标问id -->
+							<input type="hidden" class="flowItemRel">
+							<p>确定删除该流程项？</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delFlowItem">是</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+						</div>
+					</div>
+				</div>
+			</div>
             <!-- 删除关联流程项 -->
 			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowItemDelModel">
 				<div class="modal-dialog">
@@ -494,7 +513,13 @@
 							<h4 class="modal-title">删除流程项</h4>
 						</div>
 						<div class="modal-body">
-							<p></p>
+							<p class="flowTipWord">删除该流程项将会一并删除与之相关的答案、相似问法，确认删除该流程项？</p>
+							<p>&nbsp;&nbsp;该流程项与其他流程、问题或流程项存在被引用关系，删除将导致引用流程无法正常使用，您可以解除引用关系后再进行删除，<span style="color:red;">或者点击删除全部按钮将引用流程一并删除。</span></p>
+							<p>&nbsp;&nbsp;引用关系流程：</p>
+							<input type="hidden" class="nowId"><!-- 删除的id -->
+							<input type="hidden" class="corSetId"><!-- 回收站标问的id -->
+							<input type="hidden" class="flowId"><!-- 要删除的id -->
+							<div class="flowList"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowItemBtn">删除全部</button>
@@ -513,10 +538,16 @@
 							<h4 class="modal-title">删除流程</h4>
 						</div>
 						<div class="modal-body">
-							<p></p>
+							<p class="flowTipWord"></p>
+							<p>&nbsp;&nbsp;该流程与其他问题或流程存在被引用关系，删除将导致引用问题或流程无法正常使用，您可以解除引用关系后再进行删除，<span style="color:red;">或者点击删除全部按钮将引用流程一并删除。</span></p>
+							<p>&nbsp;&nbsp;引用关系流程：</p>
+							<input type="hidden" class="nowId"><!-- 删除的id -->
+							<input type="hidden" class="corSetId"><!-- 回收站标问的id -->
+							<input type="hidden" class="flowId"><!-- 要删除的id -->
+							<div class="flowList"></div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowBtn">删除全部</button>
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowAllBtn">删除全部</button>
 							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
 						</div>
 					</div>

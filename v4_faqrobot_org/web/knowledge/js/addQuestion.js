@@ -169,41 +169,27 @@ if (getUrlParam('tsFlag')) {
 $(document).ready(function () {
     // 新手引导(需要引导的页面的code即为页面名称)
     Base.request({
-        url: 'tipHelp/add',
+        url: 'tipHelp/check',
         params: {
             code: 'addQuestion',
-            webId: -1,
         },
         callback: function (data) {
-            if (data.status) {//!=0 旧
+            if (data.status) {//旧
+            } else {//新
+                introJs().setOptions({
+                    'prevLabel': '上一步',
+                    'nextLabel': '下一步',
+                    'skipLabel': '　',
+                    'doneLabel': '　',
+                    'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
+                }).start().onexit(function () {//非常规退出
+                }).oncomplete(function () {//正常完成
+                }).onchange(function (obj) {//已完成当前一步
+                    var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
 
-            } else {//=0 新
-                Base.request({
-                    url: 'tipHelp/check',
-                    params: {
-                        code: 'addQuestion',
-                        webId: -1,
-                    },
-                    callback: function (data) {
-                        if (data.status) {//旧
-                        } else {//新
-                            introJs().setOptions({
-                                'prevLabel': '上一步',
-                                'nextLabel': '下一步',
-                                'skipLabel': '　',
-                                'doneLabel': '　',
-                                'showBullets': false,//隐藏直接跳转按钮(避免onchangebug)
-                            }).start().onexit(function () {//非常规退出
-                            }).oncomplete(function () {//正常完成
-                            }).onchange(function (obj) {//已完成当前一步
-                                var curNum = parseInt($(obj).attr('data-step').match(/\d+/)[0]);//当前的下标
-
-                                $('.tipStep' + (curNum - 1)).hide();//隐藏前一个
-                                $('.tipStep' + (curNum + 1)).hide();//隐藏后一个
-                                $(obj).show();//显示当前
-                            });
-                        }
-                    },
+                    $('.tipStep' + (curNum - 1)).hide();//隐藏前一个
+                    $('.tipStep' + (curNum + 1)).hide();//隐藏后一个
+                    $(obj).show();//显示当前
                 });
             }
         },
@@ -412,17 +398,27 @@ $(document).ready(function () {
     $(window).on("resize", setScroll);
 
 
-    //智能推荐列表
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+     * 说明：智能推荐列表 点击智能按钮时，直接执行与点击input相同操作
+     * */
     $("#queManual").on("click", ".zntjo", function () {
-        if ($(this).parent().next().children().val('') != '') {
-            $(this).html('智能推荐');
-            if ($(this).hasClass('btn-white')) {
-                $(this).removeClass('btn-white').addClass('btn-primary');
+        if( $(this).html()=='手动'){
+            if ($(this).parent().next().children().val('') != '') {
+                $(this).html('智能');
+                if ($(this).hasClass('btn-white')) {
+                    $(this).removeClass('btn-white').addClass('btn-primary');
+                }
+                $(this).parent().next().children().val('').attr('rel', 0);
             }
-            $(this).parent().next().children().val('').attr('rel', 0);
+        }else if( $(this).html()=='智能'){
+            QandFIndex = $(this).parent().parent().index();
+            showQueModal();
         }
+       
     });
-
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+     * 说明：最少为1条，减少到1条后，隐藏删除按钮
+     */
     $('#queManual').on('click', 'a[name=delpostInput]', function () {
         if ($('#queManual a[name=delpostInput]').size() > 1) {
             $(this).parent().parent().remove();
@@ -431,20 +427,36 @@ $(document).ready(function () {
             $('#queManual [name=postQueInput]').removeAttr('srel');
             $('#queManual [name=postQueInput]').val('');
         }
+        $("#queManual a[name=addpostInput] span").show()
+        if ($("#queManual a[name=delpostInput]").length <= 1) {
+            $("#queManual a[name=delpostInput] span").hide()
+        }
     });
     $('#queManual').on('click', '[name=postQueInput]', function () {
         QandFIndex = $(this).parent().parent().index();
         showQueModal();
     });
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+     * 说明：最多可添加10条，添加到10条后，隐藏添加按钮
+     */
     $('#queManual').on('click', 'a[name=addpostInput]', function () {
-        if ($('#queManual a[name=addpostInput]').size() < 5) {
-            $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-lg-3"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-7 col-lg-7"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" rel="0"></div><div class="form-group col-xs-3  col-lg-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+        if ($('#queManual a[name=addpostInput]').size() < 10) {
+            $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-lg-3"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7 col-lg-7"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" rel="0"></div><div class="form-group col-xs-3  col-lg-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+        }
+        $("#queManual a[name=delpostInput] span").show()
+        if ($("#queManual a[name=addpostInput]").length >= 10) {
+            $("#queManual a[name=addpostInput] span").hide()
         }
     });
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+     * 说明：添加推荐问题——选择流程 不加载流程内容
+     * 原因：$('#queDivNav a')没有href属性，应该通过data-target属性判断问题的分类
+     * 修改：$(this).attr('href')改为$(this).attr('data-target')
+     */
     $('#queDivNav a').click(function (e) {
-        if ($(this).attr('href') == '#queManualQue') {
+        if ($(this).attr('data-target') == '#queManualQue') {
             sQue();
-        } else if ($(this).attr('href') == '#queManualFlow') {
+        } else if ($(this).attr('data-target') == '#queManualFlow') {
             fQue();
         }
     });
@@ -632,7 +644,7 @@ function getInfo() {
     });
     $('#queManual').empty();
     for (var p = 0; p < 5; p++) {
-        $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-lg-3"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-7  col-lg-7"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput"></div><div class="form-group col-xs-3  col-lg-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+        $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-lg-3"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7  col-lg-7"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput"></div><div class="form-group col-xs-3  col-lg-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
     }
 
 }
@@ -1401,7 +1413,10 @@ function check_question(e) {
 }
 
 /**
- * 手动设置智能推荐确定
+ * 手动设置智能推荐确定 
+ * amend by zhaoyuxing 
+ *说明：不显示浏览次数
+ *
  */
 $('#queManualConfirm').click(function () {
     var addFlag = false;
@@ -1412,13 +1427,15 @@ $('#queManualConfirm').click(function () {
     if (targetInput.val() === '') {
         addFlag = true;
     }
-
+    if(hits==null||hits==''||hits==undefined){
+        hits=0;
+    }
     if(id){
       targetInput.attr('rel', id);
       targetInput.attr('Srel', SolutionId);
-      targetInput.val('（浏览' + hits + '次）' + $('#queDiv #list-tr-' + id).children('td').eq(1).html());
+      targetInput.val($('#queDiv #list-tr-' + id).children('td').eq(1).html());
       targetInput.parent().prev().children().removeClass('btn-primary').addClass('btn-white');
-      targetInput.parent().prev().children().html('手动推荐');
+      targetInput.parent().prev().children().html('手动');
       $('#queManualModal').modal('hide');
       if (addFlag) {
           /*if($('#queManual a[name=addpostInput]').size() < 5) {
@@ -1541,7 +1558,7 @@ function sQue(pageNo) {
                     for (var i = 0; i < data.questionList.length; i++) {
                         //禁用列表中已经存在的问题
                         if ($.inArray(data.questionList[i].Id, existIds) >= 0) {
-                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + dataFilter(data.questionList[i].Hits) + "'>";
                             html += "<td><input disabled='' type=\"radio\" name=\"row_sel1\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                             if (data.questionList[i].AnswerStatus == -4) {
                                 html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger m-l-5\">已过期</a></td>";
@@ -1550,7 +1567,7 @@ function sQue(pageNo) {
                             }
                             html += "</tr>";
                         } else {
-                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" +  dataFilter(data.questionList[i].Hits) + "'>";
                             html += "<td><input type=\"radio\" name=\"row_sel1\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                             if (data.questionList[i].AnswerStatus == -4) {
                                 html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger m-l-5\">已过期</a></td>";
@@ -1622,7 +1639,7 @@ function fQue(pageNo) {
                     for (var i = 0; i < data.questionList.length; i++) {
                         //禁用列表中已经存在的问题
                         if ($.inArray(data.questionList[i].Id, existIds) >= 0) {
-                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" +  dataFilter(data.questionList[i].Hits) + "'>";
                             html += "<td><input disabled='' type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                             if (data.questionList[i].AnswerStatus == -4) {
                                 html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger b-l-5\">已过期</a></td>";
@@ -1631,7 +1648,7 @@ function fQue(pageNo) {
                             }
                             html += "</tr>";
                         } else {
-                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                            html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" +  dataFilter(data.questionList[i].Hits) + "'>";
                             html += "<td><input type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                             if (data.questionList[i].AnswerStatus == -4) {
                                 html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger b-l-5\">已过期</a></td>";
@@ -1680,6 +1697,103 @@ function fQue(pageNo) {
         }
     });
 }
+
+/**
+ * taskid=630 提单人：孟凡华   知识图谱对接  顾荣 2018/1/16
+ *添加：点击选择知识图谱时获取知识图谱列表 
+ */
+//选择知识图谱
+$('#graphModel').on('show.bs.modal', function () {
+    graphList(1);
+});
+
+function graphList(pageNo) {
+    if (!pageNo) pageNo = 1;
+    // $('#voiceList').tableAjaxLoader2(3);
+    $.ajax({
+        type: 'get',
+        datatype: 'json',
+        cache: false,
+        //不从缓存中去数据
+        url: encodeURI('../../kgmanager/listConf?pageSize=' + 5 + '&pageNo=' + pageNo),
+        success: function (data) {
+            if (data.status === 0) {
+                if (data.list.length > 0) {
+                    var html = "";
+                    for (var i = 0; i < data.list.length; i++) {
+                        html += "<tr id='list-tr-" + data.list[i].id  + "'>";
+                        html += "<td><input type='radio' name='row_sel_graph' class='select_row' value=" + data.list[i].id + "></td>";
+                        html += "<td>" + data.list[i].kgName + "</td>";
+                        html += "</tr>";
+                    }
+                    $('#graphList').find('tbody').html(html);
+                    icheckInit();
+                    $('#timePicker').on('ifChecked', function () {
+                        $('#dateTime').show();
+                    }).on('ifUnchecked', function () {
+                        $('#dateTime').hide();
+                        $('#ansRuleForm [name=StartTime]').val('');
+                        $('#ansRuleForm [name=EndTime]').val('');
+                    });
+                    $('#graphList td').click(function () {
+                        $(this).parent().find('.select_row').iCheck('check');
+                    });
+                    //下面开始处理分页
+                    var options = {
+                        currentPage: data.currentPage,
+                        totalPages: data.totlePages,
+                        onPageClicked: function (event, originalEvent, type, page) {
+                            graphList(page);
+                        }
+                    };
+                    setPage('graphpageList', options);
+                } else {     
+                    $('#graphList').find('tbody').html('<tr><td colspan=\"3\"  style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>');                  
+                    $('#graphpageList').html('');
+                }
+            } else {
+                yunNoty(data);
+            }
+        }
+    });
+}
+
+$('#selgraphBtn').click(function () {
+    var id = getSelectedIds_graph();
+    $('#graphId').val(id);
+    $('#ans_graph button').html($('#graphDiv #list-tr-' + id).children('td').eq(1).html());
+    if ($('#ans_graph button').html() === '') {
+        $('#ans_graph button').hide();
+    } else {
+        $('#ans_graph button').show();
+    }
+    $('#graphModel').modal('hide');
+});
+
+function getSelectedIds_graph() {
+    var cboxs = document.getElementsByName('row_sel_graph');
+    if (typeof cboxs == "undefined") {
+        return -1;
+    }
+    var inputvalue = "";
+    for (var i = 0; i < cboxs.length; i++) {
+        if (cboxs[i].checked === true) {
+            inputvalue = cboxs[i].value;
+        }
+    }
+    return inputvalue;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //选择语音
 $('#voiceModel').on('show.bs.modal', function () {
@@ -2249,7 +2363,9 @@ function videoList(pageNo, type1) {
                     for (var i = 0; i < data.list.length; i++) {
                         var li = $("<li class='videoLi'></li>").appendTo(ul);
                         var src = data.list[i].Path;
-                        var video = $("<video src='/" + src + "' controls='controls'>您的浏览器不支持 video 标签。</video>").appendTo(li);
+                        // taskId=719 选择视频时，显示视频名称 add by 赵宇星
+                        var videoName=data.list[i].Name||'';
+                        var video = $("<video src='/" + src + "' controls='controls'>您的浏览器不支持 video 标签。</video><p class='video-name'>"+videoName+"</p>").appendTo(li);
                         li.data("Id", data.list[i].Id);
                         li.data("src", data.list[i].Path);
                     }
@@ -2257,9 +2373,11 @@ function videoList(pageNo, type1) {
                         $(this).click(function () {
                             $('#vodeoId').val($(this).data("Id"));
                             var src = $(this).data("src");
+                            var videoName=$(this).find('.video-name').html();
                             $("#vodeoId").prevAll().children("video").attr("src", "/" + src);
                             $("#vodeoId").prev().css("display", "block");
-
+                             // taskId=719 选择视频时，显示视频名称 add by 赵宇星
+                             $("#videoShow").find('.video-name').html(videoName);
                             if ($('#delVideo')[0] == undefined) {
                                 $('#videoShow').after('<div style="margin-top:4px;"><div class="btn btn-default" id="delVideo">删除</div></div>');
                             }
@@ -2291,6 +2409,10 @@ $('body').on('click', '#delVideo', function () {
     $('#videoShow').css('display', 'none');
     $('#vodeoId').val('');
     $(this).parent().remove();
+    /**taskId=719 选择视频时，显示视频名称 add by 赵宇星
+     * 说明：删除视频时，将视频的名称清空
+     * */ 
+    $('#videoShow').children(".video-name").html('');
 });
 
 
@@ -2459,32 +2581,36 @@ function imgTextList(pageNo) {
                     $("#ib0").empty();
                     $("#ib1").empty();
                     $("#ib2").empty();
+                    /*
+                        黄世鹏，
+                        修改：后台接口重构，将返回的参数名第一个字母大写
+                    */
                     for (var i = 0; i < json.result.list.length; i++) {
                         var imgTxtHtml = '';
-                        if (json.result.list[i].wxappmsgDetails.length == 1) {
+                        if (json.result.list[i].WxappmsgDetails.length == 1) {
                             imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
                             imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px; max-height: 280px; overflow: hidden;padding: 5px;">';
-                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
                             imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].wxappmsgDetails[0].title + '</span></h4>';
-                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].timeStr + '</span></p>';
-                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].wxappmsgDetails[0].imgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].WxappmsgDetails[0].Title + '</span></h4>';
+                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].TimeStr + '</span></p>';
+                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].WxappmsgDetails[0].ImgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
                             imgTxtHtml += '</div></div>';
                         } else {
                             imgTxtHtml += '<div class="m-t-5 m-b-5" name="pictureBlock">';
                             imgTxtHtml += '<div style="border: 1px solid #D4D4D4; border-radius: 3px;">';
-                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].id + '"/>';
+                            imgTxtHtml += '<input type="hidden" class="idValue" value="' + json.result.list[i].Id + '"/>';
                             imgTxtHtml += '<div class="head-msg-item" style="display: inline-block; width: 100%; position: relative;">';
-                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].wxappmsgDetails[0].title + '</span></h4>';
-                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].timeStr + '</span></p>';
-                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].wxappmsgDetails[0].imgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
+                            imgTxtHtml += '<h4 style="max-width: 320px;position: absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;bottom: 0;margin: 0;width: 100%;color: #fff;overflow: hidden;"><span style="word-wrap: break-word;padding: 0 4px;line-height: 28px;">' + json.result.list[i].WxappmsgDetails[0].Title + '</span></h4>';
+                            imgTxtHtml += '<p style="padding: 4px 8px;"><span>' + json.result.list[i].TimeStr + '</span></p>';
+                            imgTxtHtml += '<div style="height: 160px; overflow: hidden; width: 100%;"><img src="' + json.result.list[i].WxappmsgDetails[0].ImgUrl + '" style="min-height: 50px; width: 100%; max-width: 320px;"></div>';
                             imgTxtHtml += '</div>';
-                            for (var j = 1; j < json.result.list[i].wxappmsgDetails.length; j++) {
+                            for (var j = 1; j < json.result.list[i].WxappmsgDetails.length; j++) {
                                 imgTxtHtml += '<div style="border-top: 1px solid #D4D4D4;"></div>';
                                 imgTxtHtml += '<div class="sub-msg-item" style="max-width: 320px; margin:5px 0; padding:10px 12px;">';
                                 imgTxtHtml += '<div style="display: table;"></div>';
-                                imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>' + json.result.list[i].wxappmsgDetails[j].title + '</span></h4></div>';
-                                imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="' + json.result.list[i].wxappmsgDetails[j].imgUrl + '" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
+                                imgTxtHtml += '<div style="width: 66.67%;float: left;min-height: 1px;"><h4><span>' + json.result.list[i].WxappmsgDetails[j].Title + '</span></h4></div>';
+                                imgTxtHtml += '<div style="width: 33.33%;float: left;min-height: 1px;"><img src="' + json.result.list[i].WxappmsgDetails[j].ImgUrl + '" style="border: 1px solid #b2b8bd;display: block;max-width: 100%;height: auto;"></div>';
                                 imgTxtHtml += '<div style="display: table; clear: both;"></div>';
                                 imgTxtHtml += '</div>';
                             }
@@ -2594,7 +2720,9 @@ function Add() {
     var effectiveRules = [];
     //相似问法
     var similarQues = '';
-    var editIfs = '';
+    /*taskId=558 delete by 赵宇星 智能推荐优化 editIfs不需要传，改为sugQuestionOrders*/
+    // var editIfs = '';
+    var sugQuestionOrders='';//手动推荐的位置顺序
     var wSgId = '';
     //二维数组表头
     $.each($('#tabArrayThead').find('a[tabId]'), function (i, item) {
@@ -2695,6 +2823,17 @@ function Add() {
             yunNotyError("答案长度需在2-200个字符之间！");
             return false;
         }
+    }else if ($('#graph').hasClass('active')) {
+        /**
+         * taskid=630 提单人：孟凡华 知识图谱对接  顾荣 2018/1/16\
+         * 修改：新增知识图谱答案类型
+         */
+        mode = 13;
+        modeValue = $('#graphId').val();
+        if (modeValue === '') {
+            yunNotyError("请选择知识图谱！");
+            return false;
+        }
     }
     if ($('#AddQuesForm [name=StartTime]').val() !== '' || $('#AddQuesForm [name=EndTime]').val() !== '') {
         answerStartTime = $('#AddQuesForm [name=StartTime]').val();
@@ -2709,18 +2848,30 @@ function Add() {
     // if($('#otherName').val() != '') {
     // 	thirdUrl = $('#otherName').val();
     // }
+
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+    *获取手动推荐问题id，顺序,推荐问题的总数，作为参数传递给后端
+    */
     if ($('#queManual [name=postQueInput]').size() > 0) {
-        $('#queManual [name=postQueInput]').each(function () {
+        $('#queManual [name=postQueInput]').each(function (i) {
             if ($(this).attr('srel') !== undefined) {
                 sugQIds += $(this).attr('rel') + ',';
                 sugSids += $(this).attr('srel') + ',';
-                editIfs += '1,';
+                // editIfs += '1,';
+                sugQuestionOrders+=(i+1)+',';//i必须从1开始，
             }
+            i++;
         });
         sugQIds = sugQIds.substring(0, sugQIds.length - 1);
         sugSids = sugSids.substring(0, sugSids.length - 1);
-        editIfs = editIfs.substring(0, editIfs.length - 1);
+        sugQuestionOrders = sugQuestionOrders.substring(0, sugQuestionOrders.length - 1);
+        // editIfs = editIfs.substring(0, editIfs.length - 1);
     }
+    //获取问题推荐的总条数
+    var sugQuestionNum=$('#queManual .QueContainer').length;
+    if(sugQuestionNum==0){
+        sugQuestionNum='';
+    }  
     if (suggestMode == 1 && sugQIds === "") {
         yunNotyError("请手动添加智能推荐！");
         return false;
@@ -2737,7 +2888,6 @@ function Add() {
     } else {
         effectiveRule1.roleIds = effectiveRule1.roleIds.substring(0, effectiveRule1.roleIds.length - 1);
     }
-    //console.log(effectiveRule1.roleIds);
     var effectiveRule2 = {
         'type': 2,
         'roleIds': ""
@@ -2748,11 +2898,9 @@ function Add() {
     if (effectiveRule2.roleIds === "") {
         effectiveRule2.roleIds = "-1";
     }
-    //console.log(effectiveRule2.roleIds);
     effectiveRules.push(effectiveRule1);
     effectiveRules.push(effectiveRule2);
     effectiveRules = JSON.stringify(effectiveRules);
-    //console.log(JSON.stringify(effectiveRules));
     if ($('#isAgain').attr('checked') == 'checked') {
         isAgain = true;
     }
@@ -2764,9 +2912,11 @@ function Add() {
         });
         similarQues = similarQues.substring(0, similarQues.length - 1);
     }
-
+    /**taskId=558 智能推荐功能优化 Amend by 赵宇星
+    *说明：智能推荐传递参数更改
+    *修改：增加手动推荐顺序,推荐问题的总数，去除editIfs参数
+    */
     var entityStr = $("#EntitysList .entitys").val();
-
     var dataJSON = null;
     if (getUrlParam('tsFlag')) {
         var tsJSON = null;
@@ -2784,10 +2934,10 @@ function Add() {
             endTime: answerEndTime,
             answer: answer,
             suggestMode: suggestMode,
-            //thirdUrl : thirdUrl,
             sugQIds: sugQIds,
             sugSids: sugSids,
-            editIfs: editIfs,
+            sugQuestionNum:sugQuestionNum,//问题推荐的总条数
+            sugQuestionOrders:sugQuestionOrders,//手动推荐的位置顺序
             effectiveRules: effectiveRules,
             similarQues: similarQues,
             id: tsJSON.Id,
@@ -2807,7 +2957,8 @@ function Add() {
             suggestMode: suggestMode,
             sugQIds: sugQIds,
             sugSids: sugSids,
-            editIfs: editIfs,
+            sugQuestionNum:sugQuestionNum,//问题推荐的总条数
+            sugQuestionOrders:sugQuestionOrders,//手动推荐的位置顺序
             effectiveRules: effectiveRules,
             similarQues: similarQues,
             sgIds: sgIds,
@@ -2825,6 +2976,13 @@ function Add() {
     if ($('#thirdUrl').val().trim()!= ''&&$('#thirdUrl').val().trim()!= 'http://'&&!$('#thirdUrl').val().trim().match(urlreg)) {
         yunNotyError("网址格式不正确！");
         return;
+    }else{
+    /**
+        * taskId=495;顾荣 2017.12.27
+        * 原因：thirdUrl参数未传
+        * 修改：添加thirUrl参数
+        */ 
+        dataJSON.thirdUrl=$('#thirdUrl').val().trim()
     }
 
     if ($('#keyWord').val() != '') {
@@ -2842,7 +3000,6 @@ function Add() {
     if ($('#requestRegex').val() != '') {
         dataJSON.requestRegex = $('#requestRegex').val();
     }
-    //console.log(dataJSON);
     if (flag_add) {
         return;
     }
@@ -3054,6 +3211,9 @@ function getRule() {
                                     case 12:
                                         dicType = 'order';
                                         break;
+                                    case 13:
+                                        dicType = 'graph';
+                                    break;
                                 }
                             }
 

@@ -29,7 +29,15 @@ $(document).ready(function () {
         }
     });
     var entityList = '';
+    /**taskId=558  智能推荐功能优化 Amend by 赵宇星 
+     * 功能：用于存储当前的推荐问题状态，用于切换状态时显示刷新按钮使用
+     */
+    var SuggestModeTab='';
 
+    /**taskId=558  智能推荐功能优化 Amend by 赵宇星 
+     * 功能：获取智能推荐填充问题
+     */
+    var sugQuestionList=[];//智能推荐填充问题数组
     function initSrc() {
         Base.request({
             url: 'question/getQuestionById',
@@ -56,6 +64,10 @@ $(document).ready(function () {
 
                             //问题答案类型对应的小图标
                             var imgMode = '', imgTitle = '';
+                            /**taskId=719 答案类型为视频时，显示视频名称 add by 赵宇星
+                             * 说明：判断答案类型，如果为视频；则创建一个元素填充视频名称，拼接在答案下面
+                            */
+                            var audioName='',audioNameEle='';
                             switch (ListAnswer[j].Mode) {
                                 case 0:
                                     imgMode = 'text.png';
@@ -83,6 +95,8 @@ $(document).ready(function () {
                                             case 3:
                                                 imgMode = 'audio.png';
                                                 imgTitle = '视频';
+                                                audioName=ListAnswer[j].Material.Name||'';
+                                                audioNameEle="<p class='video-name'>视频名称："+audioName+"</p>";
                                                 break;
                                         }
                                     }
@@ -112,6 +126,10 @@ $(document).ready(function () {
                                     imgMode = 'instructions.png';
                                     imgTitle = '指令';
                                     break;
+                                case 13:
+                                    imgMode = 'graph.png';
+                                    imgTitle = '知识图谱';
+                                    break;
                                 default:
                                     imgMode = 'custom.png';
                                     imgTitle = '场景';
@@ -119,7 +137,6 @@ $(document).ready(function () {
                             }
 
                             var AnswerStatus = '';
-                            //AnswerStatus += '<option value="0">已发布</option><option value="-1">暂存</option><option value="-2">等待审核</option><option value="-3">被退回</option><option value="-4">已过期</option><option value="-5">等待生效</option>';
                             AnswerStatus += '<option value="0">已发布</option><option value="-2">等待审核</option><option value="-3">被退回</option><option value="-4">已过期</option><option value="-5">等待生效</option>';
 
                             var imgstr = '';
@@ -128,12 +145,13 @@ $(document).ready(function () {
                             } else {
                                 imgstr = 'style="background:url(images/' + imgMode + ') no-repeat"'
                             }
-
-                            ansStr += '<div class="ansItem ' + ansItem_focus + '" Id="' + ListAnswer[j].Id + '" GroupId="' + ListAnswer[j].GroupId + '" SolutionId="' + ListAnswer[j].SolutionId + '" Webid="' + ListAnswer[j].Webid + '" SubSolutionId="' + ListAnswer[j].SubSolutionId + '"><div class="ansItemCtn"><span class="timeTip ansItemImg" ' + imgstr + ' title="' + imgTitle + '"></span><span class="ansIndex">答案' + ansThisIndex + '</span>' + ListAnswer[j].Answer + '</div><div class="ansItemFrom"><span>来自:<em>' + ListAnswer[j].UserName + '</em></span><span class="dot">|</span>' + showRule(ListAnswer[j], data.sourceList) + '<span>浏览<em>' + (ListAnswer[j].Hits || 0) + '</em>次</span><span class="dot">|</span><a><span><select cur="' + ListAnswer[j].AnswerStatus + '">' + AnswerStatus + '</select></span></a><span class="dot">|</span><span><span class="glyphicon glyphicon-thumbs-up" title="赞"></span><em>' + (ListAnswer[j].Usefull || 0) + '</em>次</span><span class="dot">|</span><span><span class="glyphicon glyphicon-thumbs-down" title="踩"></span><em>' + (ListAnswer[j].Useless || 0) + '</em>次</span><span class="dot">|</span>' + (ListAnswer[j].StartTime ? '<span>生效时间：' + ListAnswer[j].StartTime + '-' + ListAnswer[j].EndTime + '</span><span class="dot">|</span>' : '') + '<a class="lookBe" href="#modal-history" data-toggle="modal"><span class="timeTip glyphicon glyphicon-eye-open" title="历史版本"></span></a><a href="../../web/knowledge/editAnswer.html?solutionId=' + ListAnswer[j].SolutionId + '&groupId=' + ListAnswer[j].GroupId + '&answerId=' + ListAnswer[j].Id + '&question=' + encodeURIComponent(data.question.Question) + '&tmpNum=' + tmpNum + '" data-num="0" data-name="编辑答案"><span class="timeTip glyphicon glyphicon-pencil" title="编辑答案"></span></a>' + (ListAnswer.length - 1 ? '<a><span class="oneDelAns timeTip glyphicon glyphicon-trash" title="删除答案"></span></a>' : '') + '</div></div>';
+                            /**taskId=719 答案类型为视频时，显示视频名称 add by 赵宇星
+                             * 说明：在ListAnswer[j].Answer 后拼接audioNameEle
+                            */
+                            ansStr += '<div class="ansItem ' + ansItem_focus + '" Id="' + ListAnswer[j].Id + '" GroupId="' + ListAnswer[j].GroupId + '" SolutionId="' + ListAnswer[j].SolutionId + '" Webid="' + ListAnswer[j].Webid + '" SubSolutionId="' + ListAnswer[j].SubSolutionId + '"><div class="ansItemCtn"><span class="timeTip ansItemImg" ' + imgstr + ' title="' + imgTitle + '"></span><span class="ansIndex">答案' + ansThisIndex + '</span>' + ListAnswer[j].Answer + audioNameEle + '</div><div class="ansItemFrom"><span>来自:<em>' + ListAnswer[j].UserName + '</em></span><span class="dot">|</span>' + showRule(ListAnswer[j], data.sourceList)+ '<span>浏览<em>' + (ListAnswer[j].Hits || 0) + '</em>次</span><span class="dot">|</span><a><span><select cur="' + ListAnswer[j].AnswerStatus + '">' + AnswerStatus + '</select></span></a><span class="dot">|</span><span><span class="glyphicon glyphicon-thumbs-up" title="赞"></span><em>' + (ListAnswer[j].Usefull || 0) + '</em>次</span><span class="dot">|</span><span><span class="glyphicon glyphicon-thumbs-down" title="踩"></span><em>' + (ListAnswer[j].Useless || 0) + '</em>次</span><span class="dot">|</span>' + (ListAnswer[j].StartTime ? '<span>生效时间：' + ListAnswer[j].StartTime + '-' + ListAnswer[j].EndTime + '</span><span class="dot">|</span>' : '') + '<a class="lookBe" href="#modal-history" data-toggle="modal"><span class="timeTip glyphicon glyphicon-eye-open" title="历史版本"></span></a><a href="../../web/knowledge/editAnswer.html?solutionId=' + ListAnswer[j].SolutionId + '&groupId=' + ListAnswer[j].GroupId + '&answerId=' + ListAnswer[j].Id + '&question=' + encodeURIComponent(data.question.Question) + '&tmpNum=' + tmpNum + '" data-num="0" data-name="编辑答案"><span class="timeTip glyphicon glyphicon-pencil" title="编辑答案"></span></a>' + (ListAnswer.length - 1 ? '<a><span class="oneDelAns timeTip glyphicon glyphicon-trash" title="删除答案"></span></a>' : '') + '</div></div>';
                         }
 
                         var Status = '';
-                        //Status += '<option value="0">已发布</option><option value="-1">暂存</option><option value="-2">等待审核</option><option value="-3">被退回</option><option value="-4">已过期</option><option value="-5">等待生效</option>';
                         Status += '<option value="0">已发布</option><option value="-2">等待审核</option><option value="-3">被退回</option><option value="-4">已过期</option><option value="-5">等待生效</option>';
 
                         var editAnswer = '<a href="../../web/knowledge/editAnswer.html?solutionId=' + data.question.SolutionId + '&groupId=' + data.question.GroupId + '&question=' + data.question.Question + '&tmpNum=' + tmpNum + '" data-num="0" data-name="新增答案"><span class="timeTip glyphicon glyphicon-plus" title="新增答案"></span></a>';
@@ -160,33 +178,49 @@ $(document).ready(function () {
                         html += '<tr Id="' + data.question.Id + '" entity="' + entityList + '" sgId="' + data.question.SgId + '" GroupId="' + data.question.GroupId + '" SolutionId="' + data.question.SolutionId + '"><td style="border-top: none;"><div class="theWholeCtn"><legend>问题<!-- <button class="pull-right btn btn-white" onclick="history.go(-1);">返回上一页</button> --></legend><div class="titleCtn margint10"><span class="queTitle">' + data.question.Question + '</span><a><span class="editQue timeTip glyphicon glyphicon-edit" title="修改问题"></span></a></div>  <div class="queWholeCtn margint10"><span>来自:<em>' + data.question.UserName + '</em></span><span class="dot">|</span><span>分类:<a class="editClass"><em class="timeTip" data-original-title="选择分类：问题分类是创建知识的基础，不建分类无法创建知识">' + ListAnswer[0].GroupName + '</em></a></span><span class="dot">|</span><span>标签:<a class="editLabels"><em  class="timeTip" data-original-title="标签：便于解决知识交叉分类的需求">' + labelName + '</em></a></span><span class="dot">|</span>' + ('<span>关键词:<a style="cursor: pointer;" href="#modal-keyword" data-type="keyword" data-toggle="modal" class="keyWord"><em  class="timeTip" data-original-title="设置关键词：关键词添加用逗号隔开，当访客问题中涉及到该关键词，给出该问题的答案。若多个问题添加该关键词，机器人匹配给出反问引导">' + (data.question.Keyword || '暂无') + '</em></a></span><span class="dot">|</span>') + ('<span>公式:<a style="cursor: pointer;" href="#modal-formula" data-toggle="modal" data-type="RequestRegex" class="requestRegex"><em  class="timeTip" data-original-title="设置公式：判断用户问题是否符合该正则表达式，若符合，给出该问题的答案">' + (tmpRequestRegex || '暂无') + '</em></a></span><span class="dot">|</span>') + ('<span class="interTerm1" title="" style="display:none;">智能句式:<a style="cursor: pointer;" data-toggle="modal tooltip" data-type="SgName"><em class="timeTip">' + (data.question.SgName || '暂无') + '</em></a><span class="spanInter" style="opacity:0;"></span></span><span class="dot">|</span>') + '<span>浏览<em>' + (data.question.Hits || 0) + '次</em></span><span class="dot">|</span><a><span><select class="editStatus" cur="' + data.question.Status + '">' + Status + '</select></span></a><span><span class="dot">|</span><span class="glyphicon glyphicon-thumbs-up" title="赞"></span><em>' + (data.question.Usefull || 0) + '</em>次</span><span class="dot">|</span><span><span class="glyphicon glyphicon-thumbs-down" title="踩"></span><em>' + (data.question.Useless || 0) + '</em>次</span></span><span class="dot">|</span><span>' + editAnswer + '<a class="queEditor"><span class="oneDelQue timeTip glyphicon glyphicon-trash" title="删除问题"></span></a></span></div></div>  <div class="theWholeCtn"><legend>答案</legend><div class="queCtn">' + ansStr + '</div></div></td></tr>';
 
                         //智能推荐
+                        /*taskId=558  智能推荐功能优化 按照顺序显示问题推荐 不显示浏览次数
+                        *说明：按照SuggestQuestion[i].SuggestQuestionOrder的顺序显示，从1开始顺序；如果出现断序，则插入智能推荐
+                        */ 
+                        var sugQuesNum=data.question.SugQuestionNum;//该问题后台返回问题推荐的数量,用户设置的推荐问题条数
+                        var SuggestQuestion = data.question.SuggestQuestion;//获取问题推荐的数组，可能多于设置的条数
 
-                        var SuggestQuestion = data.question.SuggestQuestion;
-
-                        var len = 5;//SuggestQuestion.length;
+                        var len = sugQuesNum;
                         $('#queManual').empty();
-                        for (var p = 0; p < len; p++) {
+                        var p=0;//遍历数组SuggestQuestion[]
+                        for (var j = 1; j <=len; j++) {//该循环用来计数 用于对比手动推荐问题序号SugQuestionOrder
                             if (SuggestQuestion[p]) {
-                                if (SuggestQuestion[p].EditIf == 0) {
-                                    //Amend By zhaoyuxing At 20171213 单号:369
-                                    //说明：去除字符串拼接的‘SuggestQuestion[p].Question’变量，采用查找元素进行添加
-                                    $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-sm-2"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-7 col-sm-8"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" value="（浏览' + SuggestQuestion[p].Hits + '次）'+ '" rel="' + SuggestQuestion[p].Id + '" srel="' + SuggestQuestion[p].SolutionId + '"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
-
-                                    var _thisInput=$('[name=postQueInput]').eq(p);
-                                    var hits=_thisInput.val();
-                                    _thisInput.val(hits+SuggestQuestion[p].Question);
-                                } else {
-                                    //Amend By zhaoyuxing At 20171213 单号:369
-                                    //说明：去除字符串拼接的‘SuggestQuestion[p].Question’变量，采用查找元素进行添加
-                                    $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-sm-2"><button type="button" class="btn btn-white zntjo">手动推荐</button></div><div class="form-group col-xs-7 col-sm-8"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" value="（浏览' + SuggestQuestion[p].Hits + '次）'+ '" rel="' + SuggestQuestion[p].Id + '" srel="' + SuggestQuestion[p].SolutionId + '"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
-
-                                    var _thisInput=$('[name=postQueInput]').eq(p);
-                                    var hits=_thisInput.val();
-                                    _thisInput.val(hits+SuggestQuestion[p].Question);
+                                //计数变量与当前问题的排序号一致，正常显示
+                                if(SuggestQuestion[p].SugQuestionOrder==j){
+                                    if (SuggestQuestion[p].EditIf == 0) {//存储智能推荐的内容
+                                        sugQuestionList.push(SuggestQuestion[p]);
+                                        //Amend By zhaoyuxing At 20171213 单号:369
+                                        //说明：去除字符串拼接的‘SuggestQuestion[p].Question’变量，采用查找元素进行添加 不显示聊天记录 
+                                        $('#queManual').append('<div class="QueContainer row interQ"><div class="form-group col-xs-2 col-sm-1"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7 col-sm-5"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" value="（浏览' + dataFilter(SuggestQuestion[p].Hits) + '次）'+ '" rel="' + SuggestQuestion[p].Id + '" srel="' + SuggestQuestion[p].SolutionId + '"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+                                        var _thisInput=$('[name=postQueInput]').eq(j-1);
+                                        // var hits=_thisInput.val();
+                                        _thisInput.val(SuggestQuestion[p].Question);
+                                    } else {
+                                        //Amend By zhaoyuxing At 20171213 单号:369
+                                        //说明：去除字符串拼接的‘SuggestQuestion[p].Question’变量，采用查找元素进行添加
+                                        $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-2 col-sm-1"><button type="button" class="btn btn-white zntjo">手动</button></div><div class="form-group col-xs-7 col-sm-5"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" value="（浏览' + dataFilter(SuggestQuestion[p].Hits) + '次）'+ '" rel="' + SuggestQuestion[p].Id + '" srel="' + SuggestQuestion[p].SolutionId + '"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+    
+                                        var _thisInput=$('[name=postQueInput]').eq(j-1);
+                                        // var hits=_thisInput.val();
+                                        _thisInput.val(SuggestQuestion[p].Question);
+                                    }
+                                    p++;
+                                }else{ //计数变量与当前问题的排序号不一致，插入空的智能推荐
+                                    $('#queManual').append('<div class="QueContainer row interQ"><div class="form-group col-xs-2 col-sm-1"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7 col-sm-5"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
                                 }
-                            } else {
-                                $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-sm-2"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-7 col-sm-8"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+                            } else {//推荐问题无值，插入智能推荐
+                                $('#queManual').append('<div class="QueContainer row interQ"><div class="form-group col-xs-2 col-sm-1"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7 col-sm-5"><input class="form-control" type="text" readonly style="cursor:pointer" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a> <a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
                             }
+                        }
+                        
+                        SuggestModeTab=data.question.SuggestMode;//保存推荐问题状态
+                        //存储多余智能推荐条数的问题
+                        for(var q=len;q<SuggestQuestion.length;q++){
+                            sugQuestionList.push(SuggestQuestion[q]);
                         }
                         switch (data.question.SuggestMode) {
                             case 0: //关闭
@@ -197,7 +231,6 @@ $(document).ready(function () {
                             case 2: //智能推荐
                                 $('.recomBtn').eq(1).trigger('click');
                                 $('.recomBtn a').eq(1).trigger('click');
-
                                 break;
                         }
                     }
@@ -524,17 +557,20 @@ $(document).ready(function () {
         This.location.href = 'importQuestion.html';
     });
 
-    var suggestMode = 0,
-        sugQIds = '',
+    /*taskId=558  智能推荐功能优化
+    *说明：创建变量，doSetSugQuestions接口所需参数
+    */ 
+    var suggestMode = 0,//是否开启问题推荐功能 0：关闭 2：开始
+        sugQIds = '',//问题id
         sugSids = '',
-        editIfs = '';
+        sugQuestionOrders='';//手动推荐的位置顺序
 
     //手动添加推荐问题
     $('.reflashRec').on('click', function () {
         var index = 0;
         sugQIds = '';
         sugSids = '';
-        editIfs = '';
+        sugQuestionOrders='';
         $('.recomBtn').each(function (i) {
             if ($(this).is('.active')) {
                 index = i;
@@ -549,39 +585,68 @@ $(document).ready(function () {
                 suggestMode = 2;
                 break;
         }
-
+        /*taskId=558  智能推荐功能优化 Amend by 赵宇星
+        *说明：获取手动推荐问题id，以及顺序
+        *修改：仅传输手动推荐
+        */ 
         $('input[name=postQueInput]').each(function (i) {
             if ($(this).attr('srel')) {
                 if ($(this).parent().prev().children().hasClass('btn-white')) {
                     sugQIds += $(this).attr('rel') + ',';
                     sugSids += $(this).attr('srel') + ',';
-                    editIfs += '1,';
-                } else {
-                    sugQIds += $(this).attr('rel') + ',';
-                    sugSids += $(this).attr('srel') + ',';
-                    editIfs += '0,';
-                }
+                    sugQuestionOrders+=(i+1)+',';//i必须从1开始，
+                } 
             }
+            i++;
         });
-
         sugQIds = sugQIds.replace(/\,$/, '');
         sugSids = sugSids.replace(/\,$/, '');
-        editIfs = editIfs.replace(/\,$/, '');
+        sugQuestionOrders=sugQuestionOrders.replace(/\,$/, '');
+        // editIfs = editIfs.replace(/\,$/, '');
 
+        /*taskId=558  智能推荐功能优化 Amend by 赵宇星
+        *说明：点击刷新按钮，仅发送手动推荐的内容
+        *修改：去除editIfs，增加sugQuestionNum 问题推荐总数，sugQuestionOrders 手动推荐问题的序号
+        */ 
+
+        //获取问题推荐的总条数
+        var sugQuestionNum=$('#queManual .QueContainer').length;
+        if(sugQuestionNum==0){
+            sugQuestionNum='';
+        }
         Base.request({
-            url: 'question/doSetSugQuestions',
+            url: 'question/doSetSugQuestions', 
             params: {
-                solutionId: $('.tbody1 tr').attr('solutionid'),
-                suggestMode: suggestMode,
-                sugQIds: sugQIds,
+                solutionId: $('.tbody1 tr').attr('solutionid'),//问题Id
+                suggestMode: suggestMode,//是否开启问题推荐功能 0：关闭 2：开始
+                sugQIds: sugQIds,//问题id
                 sugSids: sugSids,
-                editIfs: editIfs
+                sugQuestionNum:sugQuestionNum,//问题推荐的总条数
+                sugQuestionOrders:sugQuestionOrders//手动推荐的位置顺序
             },
             callback: function (data) {
                 yunNoty(data);
+                //重新加载页面
+                window.location.reload();
             },
         });
     });
+
+
+    /*taskId=558  智能推荐功能优化 add by zhaoyuxing 
+    *说明：默认状态下无刷新按钮，切换推荐问题状态时，出现刷新按钮
+    */ 
+    $('.recomBtn').on('click',function(){
+        var nowTab='';
+        if($(this).children().html()=='关闭'){
+            nowTab=0;
+        }else if($(this).children().html()=='问题推荐'){
+            nowTab=2;
+        }
+        if(nowTab!=SuggestModeTab){
+            $('.reflashRec').css('display','inline-block');
+        }
+    })
 
     var $ansItem = null,
         $tr = null;
@@ -610,28 +675,7 @@ $(document).ready(function () {
             });
         }
         if (title == '删除问题') {
-            Base.request({
-                url: 'question/delOptQuestionByIds',
-                params: {
-                    ids: $tr.attr('id'),
-                },
-                callback: function (data) {
-                    $('#delAnsConfirm').modal('hide');
-                    if (data.status) {
-                        yunNoty(data);
-                    } else {
-                        $.gritter.add({
-                            title: "提醒",
-                            text: data.message,
-                            time: 3000,
-                            after_close: function () {
-                                var ifT = iframeTab.init({ iframeBox: '' });
-                                ifT.closeActIframe('', parent.$('#tabHeader li[data-num="' + getUrlParam('tmpNum') + '"]').attr('data-tab'));
-                            }
-                        });
-                    }
-                },
-            });
+            queDetele('#delAnsConfirm');
         }
     });
 
@@ -655,15 +699,197 @@ $(document).ready(function () {
                 $('#tipWord').text('确认删除该答案？');
             }
         }
-        if ($(e.target).is('.oneDelQue')) { //单个删除问题
-            $('#delAnsConfirm').modal('show');
-            $('#tipTitle').text('删除问题');
-            $('#tipWord').text('删除该问题将会一并删除与之相关的答案、相似问法，确认删除该问题？（删除的问题可在知识库回收站中找回）');
-
+        /*
+         *  taskId = 543 删除问题、流程、流程项的处理
+         *  1、单个删除时查询问题或流程是否存在关联关系
+         *     如果data.ref存在且data.ref等于1则有关联关系：
+         *  2、有关联关系时判断是否能进入回收站：
+         *      （1）：如果data.canNotRenewSolutionList的长度为0：
+         *            可以进入回收站
+         *      （2）否则不能进入回收站：
+         *            通过SolutionType判断关联的是流程还是问题  SolutionType==1 问题   SolutionType==2 流程
+         *            删除点击删除全部时不进入回收站
+         *@param  _tr:删除的问题或流程的id
+         *@param  isQue:判断删除的是流程还是问题
+         *@param  html：拼接关联的问题或流程
+         *@param  corSetId：不进入回收站的id
+         *@param  nowId 页面选中的id
+         *@param  flowId:引用的id
+         */
+        if ($(e.target).is('.oneDelQue')) {
+            var _tr = $(e.target).parents('tr').attr('id');//该问题或流程的id
+            var html = '';
+            var corSetId = '';
+            var flowId = '';
+            var nowId = '';
+            Base.request({
+                url: 'question/findSolutionCor',
+                params: {
+                    ids: _tr
+                },
+                callback: function (data) {
+                    if(data.status == 0){
+                        if(data.ref && data.ref == 1){
+                            $('#queDelModel').modal('show');
+                            for(var i = 0;i < data.solutionList.length;i++){
+                                if(data.solutionList[i].SolutionType == 1){
+                                    html+='<p><a href="../../web/knowledge/queDetail.html?id='+data.solutionList[i].Id+'" data-num="0" data-name="问题详细">'+data.solutionList[i].Question+'</a></p>';
+                                }else{
+                                    html+='<p><a href="../../web/knowledge/editFlow.html?questionId='+data.solutionList[i].Id+'&groupId='+data.solutionList[i].GroupId+'&solutionId='+data.solutionList[i].SolutionId+'&tmpNum='+tmpNum+'" data-num="0" data-name="流程详细">'+data.solutionList[i].Question+'</a></p>';
+                                }
+                            }
+                            if(data.canNotRenewSolutionList.length == 0){
+                                //可以进入回收站
+                                relationMine = 1;
+                                $('#queDelModel .delQueAnsTitle').html('&nbsp;&nbsp;删除该问题将会一并删除与之相关的答案、相似问法，确认删除该问题？（删除的问题或流程可在知识库回收站中找回）');
+                            }else{
+                                //不进入回收站的id
+                                for(var j = 0;j < data.canNotRenewSolutionList.length;j++){
+                                    corSetId += data.canNotRenewSolutionList[j].Id+',';
+                                }
+                                relationMine = 0;
+                                $('#queDelModel .delQueAnsTitle').html('&nbsp;&nbsp;删除该问题将会一并删除与之相关的答案、相似问法，确认删除该问题？（引用了其他问题或流程，删除后不可恢复！）');
+                            }
+                            /*引用的标问的id*/
+                            for(var i = 0;i < data.resultIds.length;i++){
+                                flowId += data.resultIds[i]+',';
+                            }
+                            /*关联的id*/
+                            for(var i = 0;i < data.deleteSolutionIds.length;i++){
+                                nowId += data.deleteSolutionIds[i]+',';
+                            }
+                            $('#queDelModel .nowId').val(nowId.substring(0,nowId.length-1));
+                            $('#queDelModel .corSetId').val(corSetId.substring(0,corSetId.length-1));
+                            $('#queDelModel .flowId').val(flowId.substring(0,flowId.length-1));
+                            $('#queDelModel .flowList').html(html);
+                        }else{
+                            if(data.canNotRenewSolutionList.length == 0){
+                                relationMine = 1;
+                                $('#delAnsConfirm #tipWord').html('&nbsp;&nbsp;删除该问题将会一并删除与之相关的答案、相似问法，确认删除该问题？（删除的问题或流程可在知识库回收站中找回）');
+                            }else{
+                                relationMine = 0;
+                                $('#delAnsConfirm #tipWord').html('&nbsp;&nbsp;删除该问题将会一并删除与之相关的答案、相似问法，确认删除该问题？（引用了其他问题或流程，删除后不可恢复！）');
+                            }
+                            //不是进入回收站
+                            for(var j = 0;j < data.canNotRenewSolutionList.length;j++){
+                                corSetId += data.canNotRenewSolutionList[j].Id+',';
+                            }
+                            /*引用的标问的id*/
+                            for(var i = 0;i < data.resultIds.length;i++){
+                                flowId += data.resultIds[i]+',';
+                            }
+                            /*关联的标问的id*/
+                            for(var i = 0;i < data.deleteSolutionIds.length;i++){
+                                nowId += data.deleteSolutionIds[i]+',';
+                            }
+                            $('#delAnsConfirm').modal('show')
+                            $('#delAnsConfirm .nowId').val(nowId.substring(0,nowId.length-1));
+                            $('#delAnsConfirm .corSetId').val(corSetId.substring(0,corSetId.length-1));
+                            $('#delAnsConfirm .flowId').val(flowId.substring(0,flowId.length-1));
+                            $('#delAnsConfirm .delAnsFlowId').val(_tr);
+                        }
+                    }else{
+                        Base.gritter(data.message, false)
+                    }
+                },
+            })
         }
     });
+    /* 存在关联关系  点击删除全部 */
+    $('#selQueBtn').on('click',function(){
+        queDetele('#queDelModel');
+    })
+    function queDetele(obj){
+        //获得选中问题或流程的id放入ids[]中
+        var ids = []
+        $('.singleCos').each(function () {
+            var $tr = $(this).parents('tr'),
+                id = $tr.attr('Id')
+            if ($(this).is(':checked')) {
+                ids.push(id)
+            }
+        })
+        //ID : flowId加上nowId去重
+        var NowID = $(obj).find('.nowId').val();
+        var FlowId = $(obj).find('.flowId').val();
+        var Ids = [];
+        if(NowID){
+            Ids.push(NowID);
+        }
+        if(FlowId){
+            Ids.push(FlowId);
+        }
+        Array.prototype.unique3 = function(){
+            var res = [];
+            var json = {};
+            for(var i = 0;i < this.length;i++){
+                if(!json[this[i]]){
+                    res.push(this[i]);
+                    json[this[i]] = 1;
+                }
+            }
+            return res;
+        }
+        if(relationMine == 1){//进入回收站
+            Base.request({
+                url: 'question/delOptQuestionByIds',//有关联关系  删除全部
+                params: {
+                    ids:Ids.unique3().toString()
+                },
+                callback: function (data) {
+                    $(obj).modal('hide');
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        $.gritter.add({
+                            title: "提醒",
+                            text: data.message,
+                            time: 3000,
+                            after_close: function () {
+                                var ifT = iframeTab.init({ iframeBox: '' });
+                                ifT.closeActIframe('', parent.$('#tabHeader li[data-num="' + getUrlParam('tmpNum') + '"]').attr('data-tab'));
+                            }
+                        });
+                    }
 
+                },
+            })
+        }else{
+            Base.request({
+                url: 'question/delOptQuestionByIds',//删除关联关系
+                params: {
+                    ids:Ids.unique3().toString()
+                },
+                callback: function (data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        Base.request({
+                            type:'get',
+                            cache:false,
+                            url: 'question/clearQuestionByIds',//不进入回收站
+                            params: {
+                                ids:$(obj).find('.corSetId').val()
+                            },
+                            callback: function (data) {
+                                $(obj).modal('hide');
+                                $.gritter.add({
+                                    title: "提醒",
+                                    text: data.message,
+                                    time: 3000,
+                                    after_close: function () {
+                                        var ifT = iframeTab.init({ iframeBox: '' });
+                                        ifT.closeActIframe('', parent.$('#tabHeader li[data-num="' + getUrlParam('tmpNum') + '"]').attr('data-tab'));
+                                    }
+                                });
+                            },
+                        })
+                    }
 
+                },
+            })
+        }
+    }
     var pageNo2 = 1, //当前页
         pageSize2 = 10, //每页数量
         isJpage2 = 0, //是否已实例化jpage
@@ -742,7 +968,7 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "../../KnSentenceGroup/siToJs",
-            data: { "simiId": simiId, "solutionId": solutionId },
+            data: { "simiId": simiId, "solutionId": (solutionId||"") },
             async: true,
             cache: true,
             success: function (data) {
@@ -1249,14 +1475,27 @@ $(document).ready(function () {
     });
 
     //智能推荐列表
+    /*taskId=558  智能推荐功能优化 Amend by 赵宇星
+    *说明：1、默认状态刷新按钮隐藏，对推荐进行了操作（如关闭、开启智能推荐、修改智能推荐，  增加推荐、删除推荐），则出现刷新按钮
+        2、手动推荐转为智能推荐时，页面中所有的智能推荐的问题按照后台返回的顺序显示
+        3、点击智能推荐时，切换为手动推荐，执行手动推荐的逻辑
+    */
     $("#queManual").on("click", ".zntjo", function () {
-        if ($(this).parent().next().children().val() != '') {
-            $(this).html('智能推荐');
-            if ($(this).hasClass('btn-white')) {
-                $(this).removeClass('btn-white').addClass('btn-primary');
+        if( $(this).html()=='手动'){//手动推荐切换为智能推荐时，1、原先有智能推荐的值，则还原改值；2、原先无值，但有多余的推荐问题，若有则添加多余；3、无多余的推荐问题，添加空的智能推荐
+            if ($(this).parent().next().children().val() != '') {
+                $(this).html('智能');
+                $(this).parent().parent().addClass('interQ');
+                if ($(this).hasClass('btn-white')) {
+                    $(this).removeClass('btn-white').addClass('btn-primary');
+                }
+                refreshInterQ();
             }
-            $(this).parent().next().children().val('').attr('rel', 0);
+        }else if( $(this).html()=='智能'){
+            QandFIndex = $(this).parent().parent().index();
+            showQueModal();
+            $('.reflashRec').css('display','inline-block');
         }
+        $('.reflashRec').css('display','inline-block');
     });
 
     $('#queManual').on('click', 'a[name=delpostInput]', function () {
@@ -1271,22 +1510,71 @@ $(document).ready(function () {
         if ($("#queManual a[name=delpostInput]").length <= 1) {
             $("#queManual a[name=delpostInput] span").hide()
         }
-
+        $('.reflashRec').css('display','inline-block');
     });
 
 
+    /*taskId=558  智能推荐功能优化
+    *说明：点击输入框显示刷新按钮
+    */ 
     $('#queManual').on('click', '[name=postQueInput]', function () {
         QandFIndex = $(this).parent().parent().index();
         showQueModal();
+        $('.reflashRec').css('display','inline-block');
     });
+
+    /*taskId=558  智能推荐功能优化
+    *说明：去除手动推荐与后台返回的所有智能推荐去重
+    */ 
+    function filterRepeat(sug){
+        var handQ=[];//用于存储手动推荐的内容的id
+        $('#queManual .btn-white').each(function(index,ele){
+            handQ[($(ele).parent().next().children().attr('rel'))]=1;
+        })
+        if(handQ[sug.Id]){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    /*taskId=558  智能推荐功能优化
+    *说明：始终在按照后台传来智能推荐问题的顺序显示智能推荐
+    */ 
+    function refreshInterQ(){
+        $('#queManual .interQ').each(function(index,ele){//给每个推荐问题重新赋值
+            if(sugQuestionList[index]){//如果有智能推荐则填充智能推荐内容
+                //去重
+                if(filterRepeat(sugQuestionList[index])){
+                    $(ele).find('input').eq(0).attr('rel',sugQuestionList[index].Id)  
+                    .attr('srel',sugQuestionList[index].SolutionId)
+                    .val(sugQuestionList[index].Question);  
+                }else{
+                    index++;
+                }
+            }else{//没有则添加空内容
+                $(ele).find('input').eq(0).attr('rel',0)  
+                                .attr('srel',0)
+                                .val('')        
+            }
+        })
+    }
+    /*taskId=558  智能推荐功能优化
+    *说明：开启智能推荐 推荐问题最多10条，最少1条；点击添加时，页面中的智能推荐按照后台传来的顺序重新显示
+    *修改：点击加号增加时:显示刷新按钮；queManual（推荐问题表单）等于10条，隐藏增加按钮；等于1条，隐藏减少按钮;
+    */ 
+    
     $('#queManual').on('click', 'a[name=addpostInput]', function () {
-        if ($('#queManual a[name=addpostInput]').size() < 5) {
-            $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-3 col-sm-2"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-7 col-sm-8"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" rel="0"></div><div class="form-group col-xs-3 col-sm-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+        if ($('#queManual a[name=addpostInput]').size() < 10) {
+
+            $('#queManual').append('<div class="QueContainer row interQ"><div class="form-group col-xs-2 col-sm-1"><button type="button" class="btn btn-primary zntjo">智能</button></div><div class="form-group col-xs-7 col-sm-5"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="暂无数据，待被问后自动填充智能推荐问题，也可点击手动选择推荐问题" name="postQueInput" rel="0"></div><div class="form-group col-xs-3 col-sm-2 m-t-5 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div>');
+
+            refreshInterQ();
         }
         $("#queManual a[name=delpostInput] span").show()
-        if ($("#queManual a[name=addpostInput]").length >= 5) {
+        if ($("#queManual a[name=addpostInput]").length >= 10) {
             $("#queManual a[name=addpostInput] span").hide()
         }
+        $('.reflashRec').css('display','inline-block');
     });
     $('#queDivNav a').click(function (e) {
         if ($(this).attr('href') == '#queManualQue') {
@@ -1605,7 +1893,7 @@ $(document).ready(function () {
     /*********************tree end***********************/
 
     /**
-     * 手动设置智能推荐确定
+     * 手动设置智能推荐确定  不显示浏览次数
      */
     $('#queManualConfirm').click(function () {
         var addFlag = false;
@@ -1616,14 +1904,17 @@ $(document).ready(function () {
         if (targetInput.val() === '') {
             addFlag = true;
         }
-
         if(id){
           targetInput.attr('rel', id);
           targetInput.attr('Srel', SolutionId);
-          targetInput.val('（浏览' + hits + '次）' + $('#queDiv #list-tr-' + id).children('td').eq(1).html());
+          targetInput.val( $('#queDiv #list-tr-' + id).children('td').eq(1).html());
           targetInput.parent().prev().children().removeClass('btn-primary').addClass('btn-white');
-          targetInput.parent().prev().children().html('手动推荐');
+          targetInput.parent().prev().children().html('手动');
+          //taskId=558 切换为手动推荐后去除父元素中智能推荐class标记
+          targetInput.parent().parent().removeClass('interQ');
+          $(this).parent().parent()
           $('#queManualModal').modal('hide');
+          refreshInterQ();
           if (addFlag) {
               /*if ($('#queManual a[name=addpostInput]').size() < 5) {
                $('#queManual').append('<div class="QueContainer row"><div class="form-group col-xs-2"><button type="button" class="btn btn-primary zntjo">智能推荐</button></div><div class="form-group col-xs-8"><input class="form-control" type="text" readOnly style="cursor:pointer;" placeholder="此条为智能推荐,可选择问题手动推荐" name="postQueInput" rel="0"></div><div class="form-group col-xs-2 m-l-5"><a href="javascript:;" name="delpostInput" class="m-l-5"><span class="fa fa-minus-circle fa-2x"></span></a>&nbsp;<a href="javascript:;" name="addpostInput" class="m-l-5"><span class="fa fa-plus-circle fa-2x"></span></a></div></div');
@@ -1730,7 +2021,7 @@ $(document).ready(function () {
         $.fn.zTree.init($("#treeHide"), hidesetting, []);
         hideMenu();
     });
-
+ 
     //智能推荐问题模态窗列表
     function sQue(pageNo) {
         if (!pageNo) pageNo = 1;
@@ -1752,7 +2043,7 @@ $(document).ready(function () {
                         for (var i = 0; i < data.questionList.length; i++) {
                             //禁止列表中已经存在的问题被选择
                             if ($.inArray(data.questionList[i].Id, existIds) >= 0) {
-                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + dataFilter(data.questionList[i].Hits)+ "'>";
                                 html += "<td><input disabled='' type=\"radio\" name=\"row_sel1\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                                 if (data.questionList[i].AnswerStatus == -4) {
                                     html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger m-l-5\">已过期</a></td>";
@@ -1761,7 +2052,7 @@ $(document).ready(function () {
                                 }
                                 html += "</tr>";
                             } else {
-                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + dataFilter(data.questionList[i].Hits)+ "'>";
                                 html += "<td><input type=\"radio\" name=\"row_sel1\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                                 if (data.questionList[i].AnswerStatus == -4) {
                                     html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger m-l-5\">已过期</a></td>";
@@ -1821,7 +2112,7 @@ $(document).ready(function () {
                         for (var i = 0; i < data.questionList.length; i++) {
                             //禁止列表中已经存在的问题
                             if ($.inArray(data.questionList[i].Id, existIds) >= 0) {
-                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + dataFilter(data.questionList[i].Hits) + "'>";
                                 html += "<td><input disabled='' type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                                 if (data.questionList[i].AnswerStatus == -4) {
                                     html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger b-l-5\">已过期</a></td>";
@@ -1830,7 +2121,7 @@ $(document).ready(function () {
                                 }
                                 html += "</tr>";
                             } else {
-                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + data.questionList[i].Hits + "'>";
+                                html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\" hits='" + dataFilter(data.questionList[i].Hits)+ "'>";
                                 html += "<td><input type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                                 if (data.questionList[i].AnswerStatus == -4) {
                                     html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger b-l-5\">已过期</a></td>";

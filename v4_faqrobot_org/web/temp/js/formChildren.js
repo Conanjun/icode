@@ -19,6 +19,14 @@
         formId = formId[1];
         $('[name=formId]').val(formId);
     }
+    /**
+     * taskid=710
+     * 场景式问答表单列表添加数据会修改数据
+     * 添加数据修改isAdd=1
+     */
+    $('#addForm').click(function() {
+      isAdd = 1;
+    })
     //添加
     $('.form-synonym').validate({
         rules:{

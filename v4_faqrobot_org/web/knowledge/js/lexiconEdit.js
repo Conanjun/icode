@@ -29,6 +29,7 @@ $(document).ready(function () {
     if (sessionStorage) {
         lexiconList = JSON.parse(getSessionStorage("lx_list"));
     }
+    
     // 单个词点击事件
     $(document).on('click', '.word-container', function () {
         var self = this;
@@ -140,10 +141,19 @@ $(document).ready(function () {
             success: function (data) {
                 var html = '';
                 if (data.status == 0) {
-                    if (data.natureList) {
+                    if (data.natureList.length>0) {
                         for (var i = 0; i < data.natureList.length; i++) {
                             html += '<option value="' + data.natureList[i].IntValue + '">' + data.natureList[i].StrValue + '</option>';
                         }
+                        $("#feature").html(html);
+                        getNature(synonymTyc);
+                    }else{
+                        /**
+                         * taskid=623    同义词添加修改返回信息错误   2018/1/10
+                         * 原因：返回数组为空时拿不到词性；
+                         * 修改：为空时添加一个为无的词性
+                         */
+                        html += '<option value="' + 0 + '">' + '无' + '</option>';
                         $("#feature").html(html);
                         getNature(synonymTyc);
                     }
@@ -290,6 +300,9 @@ $(document).ready(function () {
                                 $('#parentBtn').text($('#synonym-tyc').val());
                                 getLexiconList(1);
                                 $('#synonym-dialog').modal('hide');
+                                setTimeout(function(){
+                                    window.location.href = window.location.href.split('?')[0]+'?word='+encodeURI($('#synonym-tyc').val())
+                                },1000)
                             }
                         },
                         error: function (data) {
@@ -340,7 +353,7 @@ $(document).ready(function () {
                     });
                 }
                 editTopFlag = false;
-                $('#synonym-dialog').modal('hide');
+                //$('#synonym-dialog').modal('hide');
             }
             // 保存同义词
             $.ajax({
@@ -395,21 +408,26 @@ $(document).ready(function () {
                                     tyc: $('#synonym-form [name=ttc]').val()
                                 },
                                 success: function (data) {
-                                    if (data.messageError) {
-                                        yunNotyError(data.messageError);
-                                    }
-                                    if (data.messageSuccess) {
-                                        var dataNew = {
-                                            status: 0,
-                                            message: data.messageSuccess
+                                    /**
+                                     * taskid=623    同义词添加修改返回信息错误   2018/1/10
+                                     * 原因：返回参数改变；
+                                     * 修改：变更返回参数
+                                     */
+                                    if(data.status===1){
+                                        yunNotyError(data.message, false);
+                                    }else{
+                                        if(data.messageError){
+                                            yunNotyError(data.messageError, false);
+                                        };
+                                        if(data.messageSuccess){
+                                            var json={
+                                                status:0,
+                                                message:data.messageSuccess
+                                            }
+                                            yunNoty(json)
+                                            $('#synonym-dialog').modal('hide');
                                         }
-                                        yunNoty(dataNew);
-                                        $('#synonym-dialog').modal('hide');
                                     }
-                                    if (data.message) {
-                                        yunNotyError(data.message);
-                                    }
-
                                 }
                             });
                             return;
@@ -427,20 +445,27 @@ $(document).ready(function () {
                             tyc: $('#synonym-form [name=ttc]').val()
                         },
                         success: function (data) {
-                            if (data.messageError) {
-                                yunNotyError(data.messageError);
-                            }
-                            if (data.messageSuccess) {
-                                var dataNew = {
-                                    status: 0,
-                                    message: data.messageSuccess
+                            /**
+                             * taskid=623    同义词添加修改返回信息错误   2018/1/10
+                             * 原因：返回参数改变；
+                             * 修改：变更返回参数
+                             */
+                            if(data.status===1){
+                                yunNotyError(data.message, false);
+                            }else{
+                                if(data.messageError){
+                                    yunNotyError(data.messageError, false);
+                                };
+                                if(data.messageSuccess){
+                                    var json={
+                                        status:0,
+                                        message:data.messageSuccess
+                                    }
+                                    yunNoty(json)
+                                    $('#synonym-dialog').modal('hide');
                                 }
-                                yunNoty(dataNew);
-                                $('#synonym-dialog').modal('hide');
                             }
-                            if (data.message) {
-                                yunNotyError(data.message);
-                            }
+
                         }
                     });
                 },
@@ -787,7 +812,6 @@ function getRandomInt(min, max) {
 function getLexiconListFromStorage() {
     var htmlArr = [];
     var level = 0;
-    // $('#first').val(getUrlParam('word'));
     $('#parentBtn').text(getUrlParam('word'));
     if (lexiconList.length > 0 && lexiconList[0].lowestWord) {
     } else {

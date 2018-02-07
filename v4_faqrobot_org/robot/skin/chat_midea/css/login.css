@@ -1,0 +1,163 @@
+html{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+body{
+    background: url(../img/background.png) repeat scroll center center;
+    background-size: cover;
+    background-image: url(../img/background.png)\9; 
+    background-size:100%\9;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/background.png',sizingMethod='scale');
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.headerMidea{
+    background: #292e41;
+    width: 100%;
+    height: 62px;
+}
+.headerLogo{
+    margin-left: 10%;
+    height: 62px;
+    line-height: 62px;
+}
+.headerLogo img{
+    height: 28px;
+}
+.headerLogo span{
+    display: inline-block;
+    margin-left:10px;
+}
+.headerLogo .headerLine{
+    vertical-align: middle;
+    font-size: 20px;
+    color: #4e5366;
+}
+.headerLogo .headerTitle{
+    vertical-align: sub;
+    color: #efeff2;
+}
+
+.login-context{
+    width:600px;
+    margin:0 auto;
+}
+.login-titel{
+    color: #2B95ED;
+    padding: 18px;
+    font-size: 30px;
+}
+
+.login-text{
+    color: #2B95ED;
+    font-size: 25px;
+    padding: 10px;
+}
+
+.lo-titelContent{
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing:2px;
+}
+
+.login-from{
+    padding: 0px 50px;
+}
+
+#frominput input{
+    border-radius: 2px; 
+    padding-left: 40px;
+    border-color: #DBDBDD;
+    height: 40px;
+}
+
+.shadowTop{
+    box-shadow: 1px 1px 10px 0px #DBDBDD;
+}
+.shadowButton{
+    box-shadow: 1px 4px 30px 0px #DBDBDD;
+}
+.from-button{
+    margin-top: 45px; 
+}
+.from-button button {
+    width: 100%;
+    background: #148DF5;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 15px;
+    padding: 8px;
+}
+.userM{
+    position: relative;
+    width: 100%;
+    display: inline-block;
+}
+.userM .ileft{
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    z-index: 999;
+    font-size: 18px; 
+    color: #148DF5;
+}
+.iRight{
+    position: absolute;
+    right: 13px;
+    top: 10px;
+    z-index: 999;
+    font-size: 18px; 
+    color: #99999A;
+    cursor: pointer;
+}
+.checkedBox{
+    padding-left: 6px !important;  
+    
+}
+.checkbox i{
+    z-index: 99999;
+    font-size: 18px;
+    position: relative;
+    top: 2px;
+    left: -5px;
+    width: 15px;
+    color: #E5E6E8;
+}
+
+.checkbox input{
+    opacity: 0;
+}
+.button-text{
+    color: #D3D4D6;
+    padding: 25px 0px;
+    display: block;
+    text-align: center;
+}
+.loginFoot{
+    position: absolute;
+    bottom: 0;
+}
+
+.loginFoot ul{
+    padding: 20px 0px;
+    color: #9D9EA0;
+}
+.loginFoot ul li{
+    list-style: none;
+    float: left;
+    text-align: center;
+}
+
+ul,li{
+    margin: 0px;
+    padding: 0px;
+}
+.error, .text-error{
+	color:red;
+}
+button, a {
+    outline: none;
+}

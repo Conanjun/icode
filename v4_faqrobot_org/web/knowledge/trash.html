@@ -34,9 +34,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">问题回收站</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">问题回收站</h1>
@@ -350,6 +348,15 @@
 			});
 			return false;
 		}
+		/*
+			taskid=643,黄世鹏
+			修改：添加按下enter键的事件
+		*/
+		$('#question').on('keydown',function(){
+			if(event.keyCode==13){
+				listTrash()
+			}
+		})
 	</script>
 </body>
 </html>

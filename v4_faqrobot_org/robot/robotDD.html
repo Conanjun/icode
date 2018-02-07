@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:foo>
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>小当家</title>
+
+	<link rel="stylesheet" href="skin/robotDD/css/minichat.css"/>
+	<link rel="stylesheet" href="skin/robotDD/css/Dang.css" />
+	<link rel="stylesheet" href="skin/robotDD/css/robot.css" />
+	<link rel="stylesheet" href="skin/robotDD/css/skins/red.css" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+	<script type="text/javascript" src="js/minichat.js" sysNum="1000000"></script>
+	<script type="text/javascript" src="http://static.ddimg.cn/js/login/LoginWindow.js?20160913"></script>
+	<script type="text/javascript" src="skin/robotDD/js/jquery.twbsPagination.min.js"></script>
+	<script type="text/javascript" src="skin/robotDD/js/jquery.slimscroll.min.js"></script>
+	<!--<script type="text/javascript" src="skin/robotDDi/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="skin/robotDDi/js/bootstrap-paginator.js"></script>-->
+	<script type="text/javascript" src="skin/robotDD/js/app.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.oSpan{
+	        background: #FE6868;
+	        color: #fff;
+	        padding: 0px 4px 2px 4px;
+	        height: 16px;
+	        line-height: 16px;
+	        font-size: 14px;
+	        display: inline-block;
+	        border-radius: 5px;
+			font-family: "微软雅黑";
+	    }
+	    .oTitle{
+			font-size: 14px;
+			font-family: "微软雅黑";
+			color: #6E6E6E;
+			margin-bottom:2px;
+		}
+		.show{
+			line-height: 25px;
+		}
+		.show span:last-child{
+			font-size: 12px;
+			font-family: "微软雅黑";
+			color: #6e6e6e;
+		}
+	</style>
+</head>
+<body>
+	<div id="backdrop"></div>
+	<div class="container">
+		<!-- 头部开始 -->
+		<div class="header">
+			<!-- 标题栏开始 -->
+			<div class="robot_top">
+				<!-- 标题栏logo开始 -->
+				<ul class="robot_top_icon">
+					<img id="weblogo" src="skin/robotDD/images/head.png"/>
+				</ul>
+				<!-- 标题栏logo结束 -->
+				<!-- 标题栏文案开始 -->
+				<ul class="robot_top_name">
+					<h4>小当家机器人</h4>
+					<p>24小时竭诚为您服务~</p>
+				</ul>
+				<!-- 标题栏文案结束 -->
+				<!-- 标题栏右侧开始 -->
+				<ul class="robot_top_pic">
+					<img id="ArtiServicePica" src="skin/robotDD/images/kefu_2.png"/>
+				</ul>
+				<!-- 标题栏右侧结束 -->
+			</div>
+			<!-- 标题栏结束 -->
+		</div>
+		<!-- 头部结束 -->
+		<!-- 内容开始 -->
+		<div class="content">
+			<!-- 内容左侧开始 -->
+			<div class="contentLeft">
+				<div class="writeRoot">
+					<div class="chatArea" id="chatContent">
+					</div>
+				</div>
+				<div class="writeArea">
+					<div class="writePanel">
+						<div class="Panel_name" id="faceRoot" style="width:225px;">
+							<span class="Panel_item" style="cursor:pointer;" title="表情">
+								<div id="faceBtn" class="icon-bq_normal"></div>
+							</span>
+							<a class="Panel_item" href="javascript:void(0)" title="字号">
+								<div id="font" class="icon-font_normal"></div>
+							</a>
+							<a class="Panel_item" href="javascript:void(0)" title="清空聊天记录" id="clearBtn">
+								<div id="trash" class="icon-clear_normal"></div>
+							</a>
+							<a class="Panel_item" id="love" href="javascript:void(0)" title="满意度评价">
+								<div class="icon-my_hover"></div>
+								<div style="vertical-align: super;color:#FF2832;">满意度评价</div>
+							</a>
+							<div class="popFont" style="display:none;">
+								<div class="popFontS">
+									<span>字号：</span>
+									<select id="fonts">
+										<option value="14px">9</option>
+										<option value="15px">10</option>
+										<option value="16px">11</option>
+										<option value="17px">12</option>
+										<option value="18px">13</option>
+										<option value="19px">14</option>
+										<option value="20px">15</option>
+									</select>
+								</div>
+								<div class="popFontF">
+									<span>字体：</span>
+									<select id="fontf">
+										<option value="Microsoft YaHei" style="font-family:'Microsoft YaHei'">微软雅黑</option>
+										<option value="SimSun" style="font-family:'SimSun'">宋体</option>
+										<option value="SimHei" style="font-family:'SimHei'">黑体</option>
+										<option value="FangSong" style="font-family:'FangSong'">仿宋</option>
+										<option value="KaiTi" style="font-family:'KaiTi'">楷体</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="Panel_word">
+							<a class="Panel_item" href="javascript:void(0)" id="smallTip">
+								<div id="skill" class="icon-tips_normal"></div>
+							</a>
+							<span class="popSpan">提问小技巧</span>
+							<div class="popTips" style="display:none;">
+								<div class="popTrans" style="position:absolute;width:400px;height:30px;bottom:-20px;left:0;"></div>
+								<div class="popClose">&times;</div>
+								<div class="popHead">
+									<div class="lPic">
+										<img src="skin/robotDD/images/tips1.png">
+									</div>
+									<div class="cPic">
+										<img src="skin/robotDD/images/dang_tips.png">
+									</div>
+									<div class="cam" id="cam">
+										<div class="tipMsg" id="tipMsg">
+											<div class="tipMsgItem" name="tipMsgItem" orderT="1">
+												<span>多个问题分别发送</span>
+												<p>小当家一次只能回答一个问题哦，分开问才能准确哦。<br>
+												比如这个问题“我的订单怎么还没收到？已经发货的订单可以取消吗？”，其实这里面包含“我的订单怎么还没收到？”和“已经发货的订单可以取消吗？”两个问题。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="2">
+												<span>问题简洁明了</span>
+												<p>发送您询问的主要关键字就可以了哦。<br>
+												比如这个问题“我刚下了订单已付款，但要修改信息取消了订单，什么时候退款啊？”其实不用描述太多，直接问要点就可以了。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="3">
+												<span>一个问题不要拆开发送</span>
+												<p>只有将问题描述完整小当家才能给出完整解答哦。<br>
+												比如这个问题“怎么办？”，如果改成“商品发错了怎么办？”，那么我马上就能回答您了！</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="4">
+												<span>推荐商品查询</span>
+												<p>您直接输入【推荐，价格区间，商品】或者【搜索，价格区间，商品】，小当家可以直接为您推荐商品哦。<br>
+												比如：推荐2000-3000的冰箱。</p>
+											</div>
+											<div class="tipMsgItem" name="tipMsgItem" orderT="5">
+												<span>查询物流</span>
+												<p>您直接输入【快递，快递名称，包裹号】，小当家可以直接为您查询最新物流信息哦。</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="popTail">
+									<div class="tailMiddle">
+										<div class="imgLeft">
+											<div id="tipToLeft" class="icon-tips_left_normal"></div>
+										</div>
+										<div class="imgRight">
+											<div id="tipToRight" class="icon-tips_right_normal"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="writeInput">
+						<div style="display:none;" id="hdnWord"></div>
+						<div style="display:none;" id="hdnTipWord" class="hdnTipWord"></div>
+						<div style="display:none;"><div style="display:none;" id="hdnCommentTip"></div></div>
+						<ul class="inputArea">
+							<textarea maxlength="100" id="message"></textarea>
+						</ul>
+					</div>
+					<dl class="inputSend" id="sendBtn">
+						<dd>发送</dd>
+					</dl>
+					<dl class="inputClose" id="closeBtn">
+						<dd>关闭</dd>
+					</dl>
+				</div>
+			</div>
+			<!-- 内容左侧结束 -->
+			<!-- 内容右侧开始 -->
+			<div class="contentRight">
+				<div class="hotSpot">
+					<div class="nav">
+						<div class="navRow navRowOn" id="hotzero">
+							最近订单
+						</div>
+						<div class="navRow" id="hotone">
+							常见问题
+						</div>
+						<div class="navRow" id="hottwo">
+							快捷通道
+						</div>
+						<div class="navRow" id="hotthree">
+							个人空间
+						</div>
+						<div class="slider" id="slider">
+							<img class="sliderImg" src="skin/robotDD/images/icon_to.png">
+						</div>
+					</div>
+					<div class="robot_hot" id="showhotzero">
+						<div style="text-align:center; margin-top: 200px;">
+							<img src="skin/robotDD/images/no_orders.png">
+						</div>
+						<div class="null" style="color: #C4C4C4;">很抱歉，没有找到相关的订单信息</div>
+					</div>
+					<div class="robot_hot" style="display:none" id="showhotone">
+						<div class="null">常见问题暂无内容</div>
+					</div>
+					<div class="robot_hot" style="display:none" id="showhottwo">
+						<div class="null">快捷通道暂无内容</div>
+					</div>
+					<div class="robot_hot" style="display:none" id="showhotthree">
+						<div id="hotThreeContent">
+							<div class="moodDiv">
+								<div class="weatherImg"></div>
+								<div class="weatherDetail"></div>
+								<div class="mood">
+									<div class="moodPic icon-ico_clothes"></div>
+									<div id="wearSug"></div>
+								</div>
+								<div class="mood">
+									<div class="moodPic icon-normal"></div>
+									心情：
+									<div id="moodSpan">开心</div>
+								</div>
+							</div>
+							<div class="row">
+								<a href="javascript:;" id="telJoke">
+									<div class="col">
+										<div class="pic">
+											<div class="icon-Dang_d1"></div>
+										</div>
+										<p>讲笑话</p>
+									</div>
+								</a>
+								<a href="javascript:;" id="telStar">
+									<div class="col">
+										<div class="pic">
+											<div class="icon-Dang_d2"></div>
+										</div>
+										<p>星座分析</p>
+									</div>
+								</a>
+								<a href="javascript:;" id="tiaoxi">
+									<div class="col">
+										<div class="pic">
+											<div class="icon-Dang_d3"></div>
+										</div>
+										<p>调戏小当家</p>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 内容右侧结束 -->
+		</div>
+		<!-- 内容结束 -->
+		<!-- 底部开始 -->
+		<div class="footer"></div>
+		<!-- 底部结束 -->
+	</div>
+	<div class="fadeBackContent" style="display:none">
+		<form class="feedbackForm" id="feedbackForm">
+			<div class="feedback">
+				<p>您对本服务是否满意？</p>
+				<div>
+					<input type="radio" name="level" checked value="1" id="rdoGood">
+					满意
+					<input type="radio" name="level" value="0" id="rdoBad">
+					不满意
+				</div>
+			</div>
+			<div id="hid" style="display:none">
+				<p>您不满意的原因是？</p>
+				<div>
+					<input type="checkbox" name="reason[]" value="回答不准确" checked="">
+					回答不准确
+					<input type="checkbox" name="reason[]" value="答非所问">
+					答非所问
+					<input type="checkbox" name="reason[]" value="机器人骂人">
+					机器人骂人
+				</div>
+			</div>
+			<div class="comment">
+				<textarea name="content" id="cont" maxlength="100" style="font-family: Microsoft Yahei;"></textarea>
+			</div>
+			<div class="send">
+				<input type="button"  value="提交" id="fadeBackId" style="font-family: Microsoft Yahei;" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>

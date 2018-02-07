@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>微博列表</title>
+	<title>微博接入</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -29,12 +29,10 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">系统管理</a></li>
-				<li class="active">微博列表</li>
+				
 			</ol>
 			<div class="row">
-				<h1 class="page-header">微博列表</h1>
+				<h1 class="page-header">微博接入</h1>
 				<div class="panel">
 					<div class="panel-body">
 						<p class="black mgtop10">添加后你可以使用云问智能客服机器人统一接收与回复粉丝的私信</p>
@@ -383,7 +381,7 @@
 				datatype: 'json',
 				cache: false,
 				url: encodeURI('../../WeiboConfig/addEnd'),
-				data: 'name=' + $('#form_weibo input[name=weiboName]').val()+'&id=' + $('#form_weibo input[name=id]').val() + '&accessToken=' + $('#form_weibo input[name=accessToken]').val()+'',
+				data: 'name=' + encodeURI($('#form_weibo input[name=weiboName]').val())+'&id=' + $('#form_weibo input[name=id]').val() + '&accessToken=' + $('#form_weibo input[name=accessToken]').val()+'',
 				success: function(data) {
 					flag_add=false;
 					if (data.status == 0) {

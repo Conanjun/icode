@@ -5,7 +5,8 @@ body, html {
     height: 100%;
 }
 body {
-    overflow: hidden;
+    overflow-y: hidden;
+    min-width:1000px;
 }
 #iframeCtn {
     width: 100%;

@@ -41,17 +41,23 @@
 				}
 				if (data.ProgressToKnowledge == 100) {
 					if (data.ErrorMsg != '') {
-						yunNoty({
-							status: 1,
-							message: data.ErrorMsg
-						});
 						$('#queDelModal').modal('show');
-						$('.queDelTip').html(data.ErrorMsg);
+						if(data.SuccessMsg){
+							$('.queDelTip').html(data.SuccessMsg+'<br/>'+data.ErrorMsg);
+						}else{
+							$('.queDelTip').html(data.ErrorMsg);
+						}
 					} else {
 						yunNoty({
 							status: 0,
 							message: '导入成功！'
-						});
+                        });
+                        if(data.SuccessMsg){
+                            yunNoty({
+                                status:0,
+                                message:data.SuccessMsg
+                            });
+                        }
 						$('.fileName').html(data.SuccessResult.Name);
 						$("#rheInsert_X,#failInsert_X,.x-Info1,#queInsert_X").text('+X('+data.SuccessResult.TitleX+')');
 						$("#rheInsert_Y,#failInsert_Y,.y-Info1,#queInsert_Y").text('+Y('+data.SuccessResult.TitleY+')');

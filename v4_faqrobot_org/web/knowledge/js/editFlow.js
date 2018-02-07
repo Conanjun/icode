@@ -94,7 +94,6 @@ $(document).ready(function () {
             url: 'tipHelp/check',
             params: {
                 code: 'editFlow',
-                webId: -1,
             },
             callback: function (data) {
                 if (data.status) {//旧
@@ -734,27 +733,8 @@ $('#delYes').on('click', function() {
 			}
 		});
 	}
-	if(title == '删除问题') {
-		$.ajax({
-			type:'get',
-			datatype:'json',
-			cache:false,
-			url:encodeURI('../../Question/delOptQuestionByIds'),
-			data:{
-				ids: $tr.attr('id'),
-			},
-			success: function(data) {
-				if(data.status == "0") {
-					yunNoty(data,function() {
-				    var ifT = iframeTab.init({iframeBox: ''});
-				    ifT.closeActIframe('',parent.$('#tabHeader li[data-num="'+getUrlParam('tmpNum')+'"]').attr('data-tab'));
-					});
-					$('#delAnsConfirm').modal('hide');
-				} else {
-					yunNoty(data);
-				}
-			}
-		});
+	if(title == '删除流程') {//没有关联关系  确定删除
+		queDetele('#delAnsConfirm');
 	}
 });
 
@@ -773,23 +753,189 @@ $('body').on('click', '.oneDelAns, .multDelAns, .oneDelQue, .multDelQue', functi
 			$('#tipWord').text('确认删除该答案？');
 		}
 	}
-	if($(e.target).is('.oneDelQue')) {//单个删除流程
-		$('#delAnsConfirm').modal('show');
-		$('#tipTitle').text('删除流程');
-        $('#tipWord').text('删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？');
-
-       /*  $('#flowDelModel').modal('show');
-        $('#tipTitle').text('删除流程');
-        $('#tipWord').text('删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？'); */
-
+	/*
+	 *  taskId = 543 删除问题、流程、流程项的处理
+	 *  1、单个删除时查询流程是否存在关联关系
+	 *     如果data.ref存在且data.ref等于1则有关联关系：
+	 *  2、有关联关系时判断是否能进入回收站：
+	 *      （1）：如果data.canNotRenewSolutionList的长度为0：
+	 *            可以进入回收站
+	 *      （2）否则不能进入回收站：
+	 *            通过SolutionType判断关联的是流程还是问题  SolutionType==1 问题   SolutionType==2 流程
+	 *            删除点击删除全部时不进入回收站
+	 *@param  _tr:删除的问题或流程的id
+	 *@param  isQue:判断删除的是流程还是问题
+	 *@param  html：拼接关联的问题或流程
+	 *@param  corSetId：不进入回收站的id
+	 *@param  nowId 页面选中的id
+	 *@param  flowId:引用的id
+	 */
+	if($(e.target).is('.oneDelQue')) {
+		var _tr = $(e.target).parents('tr').attr('id');
+		var html = '';
+		var corSetId = '';
+		var flowId = '';
+		var nowId = '';
+		Base.request({
+			url: 'question/findSolutionCor',
+			params: {
+				ids: _tr
+			},
+			callback: function (data) {
+				if(data.status == 0){
+					if(data.ref && data.ref == 1){
+						$('#flowDelModel').modal('show');
+						for(var i = 0;i < data.solutionList.length;i++){
+							if(data.solutionList[i].SolutionType == 1){
+								html+='<p><a href="../../web/knowledge/queDetail.html?id='+data.solutionList[i].Id+'" data-num="0" data-name="问题详细">'+data.solutionList[i].Question+'</a></p>';
+							}else{
+								html+='<p><a href="../../web/knowledge/editFlow.html?questionId='+data.solutionList[i].Id+'&groupId='+data.solutionList[i].GroupId+'&solutionId='+data.solutionList[i].SolutionId+'&tmpNum='+tmpNum+'" data-num="0" data-name="流程详细">'+data.solutionList[i].Question+'</a></p>';
+							}
+						}
+						if(data.canNotRenewSolutionList.length == 0){
+							//进入回收站
+							relationMine = 1;
+							$('#flowDelModel .flowTipWord').html('&nbsp;&nbsp;删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？（删除的流程可在知识库回收站中找回）');
+						}else{
+							//不进入回收站
+							for(var j = 0;j < data.canNotRenewSolutionList.length;j++){
+								corSetId += data.canNotRenewSolutionList[j].Id+',';
+							}
+							relationMine = 0;
+							$('#flowDelModel .flowTipWord').html('&nbsp;&nbsp;删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？（引用了其他问题或流程，删除后不可恢复！）');
+						}
+						/*引用的标问的id*/
+						for(var i = 0;i < data.resultIds.length;i++){
+							flowId += data.resultIds[i]+',';
+						}
+						/*关联的标问的id*/
+						for(var i = 0;i < data.deleteSolutionIds.length;i++){
+							nowId += data.deleteSolutionIds[i]+',';
+						}
+						$('#flowDelModel .nowId').val(nowId.substring(0,nowId.length-1));
+						$('#flowDelModel .corSetId').val(corSetId.substring(0,corSetId.length-1));
+						$('#flowDelModel .flowId').val(flowId.substring(0,flowId.length-1));
+						$('#flowDelModel .flowList').html(html);
+					}else{
+						if(data.canNotRenewSolutionList.length == 0){
+							relationMine = 1;
+							$('#delAnsConfirm #tipWord').html('&nbsp;&nbsp;删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？（删除的问题可在知识库回收站中找回）');
+						}else{
+							relationMine = 0;
+							$('#delAnsConfirm #tipWord').html('&nbsp;&nbsp;删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？（引用了其他问题或流程，删除后不可恢复！）');
+						}
+						//不进入回收站
+						for(var j = 0;j < data.canNotRenewSolutionList.length;j++){
+							corSetId += data.canNotRenewSolutionList[j].Id+',';
+						}
+						/*引用的标问的id*/
+						for(var i = 0;i < data.resultIds.length;i++){
+							flowId += data.resultIds[i]+',';
+						}
+						/*关联的标问的id*/
+						for(var i = 0;i < data.deleteSolutionIds.length;i++){
+							nowId += data.deleteSolutionIds[i]+',';
+						}
+						$('#delAnsConfirm').modal('show')
+						$('#tipTitle').text('删除流程')
+						$('#tipWord').text('删除该流程将会一并删除与之相关的答案、相似问法，确认删除该流程？（删除的流程可在知识库回收站中找回）')
+						$('#delAnsConfirm .nowId').val(nowId.substring(0,nowId.length-1));
+						$('#delAnsConfirm .corSetId').val(corSetId.substring(0,corSetId.length-1));
+						$('#delAnsConfirm .flowId').val(flowId.substring(0,flowId.length-1));
+						$('#delAnsConfirm .delAnsFlowId').val(_tr);
+					}
+				}else{
+					Base.gritter(data.message, false)
+				}
+			},
+		})
 	}
 });
+/* 流程存在关联关系 点击删除全部 */
+$('#selflowAllBtn').on('click',function(){
+	queDetele('#flowDelModel');
+})
+function queDetele(obj){
+	//ID : flowId加上nowId去重
+	var NowID = $(obj).find('.nowId').val();
+	var FlowId = $(obj).find('.flowId').val();
+	var Ids = [];
+	if(NowID){
+		Ids.push(NowID);
+	}
+	if(FlowId){
+		Ids.push(FlowId);
+	}
+	Array.prototype.unique3 = function(){
+		var res = [];
+		var json = {};
+		for(var i = 0;i < this.length;i++){
+			if(!json[this[i]]){
+				res.push(this[i]);
+				json[this[i]] = 1;
+			}
+		}
+		return res;
+	}
+	if(relationMine == 1){//进入回收站
+		Base.request({
+			url: 'question/delOptQuestionByIds',//有关联关系  删除全部
+			params: {
+				ids:Ids.unique3().toString()
+			},
+			callback: function (data) {
+				$(obj).modal('hide');
+				if (data.status) {
+					Base.gritter(data.message, false)
+				} else {
+					$.gritter.add({
+						title: "提醒",
+						text: data.message,
+						time: 3000,
+						after_close: function () {
+							var ifT = iframeTab.init({ iframeBox: '' });
+							ifT.closeActIframe('', parent.$('#tabHeader li[data-num="' + getUrlParam('tmpNum') + '"]').attr('data-tab'));
+						}
+					});
+				}
+			},
+		})
+	}else{
+		Base.request({
+			url: 'question/delOptQuestionByIds',//删除关联关系
+			params: {
+				ids:Ids.unique3().toString()
+			},
+			callback: function (data) {
+				if (data.status) {
+					Base.gritter(data.message, false)
+				} else {
+					Base.request({
+						type:'get',
+						cache:false,
+						url: 'question/clearQuestionByIds',//不进入回收站
+						params: {
+							ids:$(obj).find('.corSetId').val()
+						},
+						callback: function (data) {
+							$(obj).modal('hide');
+							$.gritter.add({
+								title: "提醒",
+								text: data.message,
+								time: 3000,
+								after_close: function () {
+									var ifT = iframeTab.init({ iframeBox: '' });
+									ifT.closeActIframe('', parent.$('#tabHeader li[data-num="' + getUrlParam('tmpNum') + '"]').attr('data-tab'));
+								}
+							});
+						},
+					})
+				}
 
-    /* 删除流程 */
-    $('#selflowBtn').on('click',function(){
-
-    })
-
+			},
+		})
+	}
+}
 //选择答案对应的流程项
 function listFlowItemModal(bool) {
 	var url = null;
@@ -1033,28 +1179,158 @@ function editFlow(){
 	}
 	});
 }
-
+/*
+ *  taskId = 543 删除问题、流程、流程项的处理
+ *  1、单个删除时查询流程是否存在关联关系
+ *     如果data.ref存在且data.ref等于1则有关联关系：
+ *  2、有关联关系时判断是否能进入回收站：
+ *      （1）：如果data.canNotRenewSolutionList的长度为0：
+ *            可以进入回收站
+ *      （2）否则不能进入回收站：
+ *            通过SolutionType判断关联的是流程还是问题  SolutionType==1 问题   SolutionType==2 流程
+ *            删除点击删除全部时不进入回收站
+ *@param  _tr:删除的问题或流程的id
+ *@param  isQue:判断删除的是流程还是问题
+ *@param  html：拼接关联的问题或流程
+ *@param corSetId:不进入回收站时的标问id
+ *@param  flowId:该流程的关联关系id
+ */
 function flowItemModal(obj){
-    delFlow(obj);
-    /* $('#flowItemDelModel').modal('show');
-    $('#selflowItemBtn').click(function(){
-        delFlow(obj);
-    }); */
-}
-//删除流程项
-function delFlow(obj){
-	$.getJSON('../../flowitem/deleteFlowItemById', 'id=' + $(obj).attr('rel') + '&solutionId=' + SolutionId,
-	function(data) {
-		if (data.status == 0) {
-			listFlowItems();
-			yunNoty(data);
-			return false;
-		} else {
-			yunNoty(data);
+    //delFlow(obj);
+	var html = '';
+	var corSetId = '';
+	var flowId = '';
+	var nowId = '';
+	$.ajax({
+		type:'post',
+		cache:false,//不从缓存中去数据
+		url:encodeURI('../../question/deleteFlowItemById'),
+		data:{
+			id:$(obj).attr('rel'),
+			solutionId:SolutionId
+		},
+		success:function(data){
+			if(data.status==0){
+				if(data.ref && data.ref == 1){
+						$('#flowItemDelModel').modal('show');
+						for(var i = 0;i < data.questionList.length;i++){
+							if(data.questionList[i].SolutionType == 1){
+								html+='<p><a href="../../web/knowledge/queDetail.html?id='+data.questionList[i].Id+'" data-num="0" data-name="问题详细">'+data.questionList[i].Question+'</a></p>';
+							}else{
+								html+='<p><a href="../../web/knowledge/editFlow.html?questionId='+data.questionList[i].Id+'&groupId='+data.questionList[i].GroupId+'&solutionId='+data.questionList[i].SolutionId+'&tmpNum='+tmpNum+'" data-num="0" data-name="流程详细">'+data.questionList[i].Question+'</a></p>';
+							}
+							/*要删除的标问的id*/
+							flowId += data.questionList[i].Id+',';
+						}
+						if(data.canNotRenewSolutionList.length == 0){
+							//可以进入回收站
+							relationMine = 1;
+						}else{
+							//不进入回收站
+							for(var j = 0;j < data.canNotRenewSolutionList.length;j++){
+								nowId += data.canNotRenewSolutionList[j].Id+',';
+							}
+							relationMine = 0;
+						}
+						for(var i = 0;i < data.refFlowItemIdList.length;i++){
+							corSetId += data.refFlowItemIdList[j]+',';
+						}
+						$('#flowItemDelModel .nowId').val(nowId.substring(0,nowId.length-1));
+						$('#flowItemDelModel .corSetId').val(corSetId.substring(0,corSetId.length-1));
+						$('#flowItemDelModel .flowId').val(flowId.substring(0,flowId.length-1));
+						$('#flowItemDelModel .flowList').html(html);
+				}else{
+					$('#delFlowItemConfirm').modal('show')
+					$('#delFlowItemConfirm .flowItemRel').val($(obj).attr('rel'));
+				}
+			}else{
+				yunNoty(data);
+			}
 		}
 	});
 }
-
+/* 流程项存在关联关系，删除全部 */
+$('#selflowItemBtn').on('click',function(){
+	flowDelete('#flowItemDelModel')
+})
+/* 流程项不存在关联关系 确定删除流程项 */
+$('#delFlowItem').off('click').on('click',function(){
+	$.getJSON('../../question/deleteFlowItemByIds', 'ids=' +$('#delFlowItemConfirm .flowItemRel').val(),
+		function(data) {
+			if (data.status == 0) {
+				listFlowItems();
+				yunNoty(data);
+				$('#delFlowItemConfirm').modal('hide');
+				return false;
+			} else {
+				yunNoty(data);
+			}
+		});
+});
+function flowDelete(obj){
+	// relationMine==1 进入回收站，relationMine==0 不进入回收站
+	if(relationMine == 1){
+		Base.request({
+			url: 'question/deleteFlowItemByIds',//删除流程项
+			params: {
+				ids:$(obj).find('.corSetId').val()
+			},
+			callback: function (data) {
+				Base.request({
+					url: 'question/delOptQuestionByIds',//删除标准问题
+					params: {
+						ids:$(obj).find('.flowId').val()
+					},
+					callback: function (data) {
+						if(data.status == 0){
+							Base.gritter(data.message, true)
+							$(obj).modal('hide');
+							listFlowItems();
+						}else{
+							Base.gritter(data.message, false)
+						}
+					},
+				})
+			},
+		})
+	}else{
+		Base.request({
+			url: 'question/deleteFlowItemByIds',//删除关联关系
+			params: {
+				ids:$(obj).find('.corSetId').val()
+			},
+			callback: function (data) {
+				Base.request({
+					url: 'question/delOptQuestionByIds',//删除标准问题
+					params: {
+						ids:$(obj).find('.flowId').val()
+					},
+					callback: function (data) {
+						Base.request({
+							type:'get',
+							cache:false,
+							url: 'question/clearQuestionByIds',//不进入回收站
+							params: {
+								ids:$(obj).find('.nowId').val()
+							},
+							callback: function (data) {
+								if(data.status == 0) {
+									yunNoty(data,function() {
+										var ifT = iframeTab.init({iframeBox: ''});
+										ifT.closeActIframe('',parent.$('#tabHeader li[data-num="'+getUrlParam('tmpNum')+'"]').attr('data-tab'));
+									});
+									$(obj).modal('hide');
+								} else {
+									yunNoty(data);
+								}
+							},
+						})
+					},
+				})
+			},
+		})
+	}
+}
 //设置句式树
   var termsetting = {
     view: {
@@ -1302,7 +1578,7 @@ function listSimilar(pageNo,orderType){
 		$.ajax({
 			type:"post",
 			url:"../../KnSentenceGroup/siToJs",
-			data:{"simiId":simiId,"solutionId":solutionId},
+			data:{"simiId":simiId,"solutionId":(solutionId||"")},
 			async:true,
 			cache:true,
 			success:function(data){

@@ -136,13 +136,18 @@ ul li {
     white-space: nowrap;/*不换行*/
     text-overflow:ellipsis;/*超出部分文字以...显示*/
 }
-/**/
-.editCtn {
-    background: #fff;
-    position: absolute;
-    left: 0;
-    bottom: -15px;
-    width: 100%;
+/**
+ * taskId=370;赵永平
+ * 原因：在ios上键盘会遮住input输入框
+ * 修改：采用fixed定位到底部，bottom为0
+ */
+ .editCtn {
+  background: #fff;
+  position: absolute;
+  left: 0px;
+  /* bottom: 0px; */
+  /* top: 300px; */
+  width: 100%;
 }
 .editCtn .editShow {
     position: relative;

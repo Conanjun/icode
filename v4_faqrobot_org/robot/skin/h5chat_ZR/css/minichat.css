@@ -858,6 +858,15 @@ hr {
 }
 /*客户对话框箭头结束*/
 
+/* 自如发送表情不显示对话框 */
+.face-Ctn{
+    background: transparent !important;
+    border: 1px solid transparent !important;
+}
+.face-Ctn .MN_kfTriangle1,.face-Ctn .MN_kfTriangle2{
+    border-right-color: transparent !important;
+}
+
 .MN_khTriangle3 {
     border-right: 8px solid transparent;
     border-left: 8px solid transparent;

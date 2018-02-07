@@ -46,13 +46,7 @@
         <div id="content" class="content">
             <!-- begin breadcrumb -->
             <ol class="breadcrumb pull-right">
-                <li>
-                    <a href="javascript:;">首页</a>
-                </li>
-                <li>
-                    <a href="javascript:;">知识库管理</a>
-                </li>
-                <li>智能学习</li>
+               
             </ol>
             <!-- end breadcrumb -->
             <!-- begin page-header -->
@@ -82,7 +76,7 @@
                                             <!--<button class="btnSearch btn btn-primary m-r-4" type="button" style="border-radius: 3px;">-->
                                             <!--<i class="glyphicon glyphicon-search"></i>-->
                                             <!--</button>-->
-                                            <div class="input-group" style="width:250px; margin-right:-12px;">
+                                            <div class="input-group" style="margin-right: 1px;">
                                                 <input id="searchQueInput" type="text" class="search-input-addSrc form-control" placeholder="输入搜索的词">
                                                 <span class="input-group-btn">
                                                     <button class="btnSearch btn btn-primary" type="button" id="btnSearchDate">
@@ -90,8 +84,11 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            <div class="btn-group" style="margin-right:1px;">
-                                                <button id="myDropdown" type="button" class="m-l-2 ttw btn-toggle btn btn-primary dropdown-toggle fsortgo" aria-haspopup="true"
+                                            <a class="btn btn-primary outExcel" href="#">
+                                                <span>导出操作日志</span>
+                                            </a>
+                                            <div class="btn-group">
+                                                <button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle fsortgo" aria-haspopup="true"
                                                     aria-expanded="false">最近七天&nbsp;
                                                     <span class="caret"></span>
                                                 </button>
@@ -123,7 +120,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div id="DataSource" class="btn-group" style="cursor:pointer; margin-right:-3px;" role="group" aria-label="...">
+                                            <div id="DataSource" class="btn-group" style="cursor:pointer;" role="group" aria-label="...">
                                                 <a class="sourceType btn btn-toggle dropdown-toggle btn-primary tsortgo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">全部渠道&nbsp;
                                                     <span class="caret"></span>
                                                 </a>
@@ -137,7 +134,7 @@
                                             <div class="aa btn-group">
 
                                                 <button type="button" class="sortgo btn-toggle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false" style="margin-left: 3px; border-radius: 3px; border-left-color: transparent;">默认排序&nbsp;
+                                                    aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认排序&nbsp;
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
@@ -185,8 +182,8 @@
                                                     <tr>
                                                         <th style="width:800px">问题详细</th>
                                                         <th style="min-width:70px">访问量</th>
-                                                        <th style="min-width:90px">待学习数量</th>
-                                                        <th class="col-md-1" style="min-width: 150px;">时间</th>
+                                                        <th style="min-width:100px">待学习数量</th>
+                                                        <th class="col-md-1" style="min-width:200px;">时间</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="tbody1">
@@ -427,9 +424,10 @@
             App.init();
             iframeTab.init({ iframeBox: '' });
             var This = this,
+                isInit = false,
                 pageNo = 1, //当前页
                 pageSize = 20, //每页数量
-                orderType = 32,
+                orderType = 4,
                 isLeaf = 0,
                 groupId = 0,
                 question = '', //搜索的问题
@@ -485,9 +483,16 @@
                         return;
                     }
                 }
-
                 $('#xcd').tableAjaxLoader2(7);
 
+                //选择分类时，需要初始化分页，即从第一页开始
+                if(isInit){
+                    pageNo = 1;
+                }else{
+                    pageNo = sessionStorage.getItem('intel_pageNo')||1;
+                }
+                
+                groupId = sessionStorage.getItem('intel_groupId')||0;
                 Base.request({
                     url: 'LearnQue/listNeedLearn',
                     params: {
@@ -550,11 +555,13 @@
                                 }
                                 var options = {
                                     data: [data, 'List', 'total'],
-                                    currentPage: data.currentPage,
+                                    currentPage: (data.currentPage > data.totlePages?data.totlePages:data.currentPage),
                                     totalPages: data.totlePages ? data.totlePages : 1,
                                     alignment: 'right',
                                     onPageClicked: function (event, originalEvent, type, page) {
                                         pageNo = page;
+                                        sessionStorage.setItem('intel_pageNo',pageNo);
+                                        isInit = false;
                                         initSrc();
                                     }
                                 };
@@ -587,9 +594,15 @@
                     },
                 });
             }
-
+            //导出exl2
+            $('.outExcel').on('click', function () {
+                var time = new Date().getTime();
+                location.href = '../../report/LearnQuestion/showChart?excelFlag=1' + '&startT=' + ($('[name=startT]').val() || '') + '&endT=' + ($('[name=endT]').val() || '')+'&sourceId='+sourceType+'&type=2'+'&noCache='+time
+            })
             function initTree() {
-                //断点
+                /*
+                * 页面分类树，记录每次点击的节点，用于页面刷新后保持点击的节点
+                */
                 var setting1 = {
                     data: {
                         simpleData: {
@@ -602,52 +615,53 @@
                     check: {
                         //enable: true,
                     },
-                    callback: {
-                        onClick: function (event, treeId, treeNode) {
-                            groupId = treeNode.id - 1;
-                            pageNo = 1;
-                            initSrc();
-                        },
-                    }
-                };
-
-                //获取问题分类
-                Base.request({
-                    url: 'classes/listClasses',
-                    params: {
-                        m: 0,
-                    },
-                    callback: function (data) {
-                        if (data.status) {
-                            Base.gritter(data.message, false);
-                        } else {
-                            var html = '';
-                            if (data.list[0]) {
-                                var formatData = [],
-                                    len = data.list.length;
-
-                                for (var key in data.list) {
-                                    formatData[key] = {};
-                                    formatData[key]['name'] = data.list[key]['Name'];
-                                    formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
-                                    formatData[key]['id'] = data.list[key]['Id'] + 1;
-                                }
-
-                                formatData[len] = {};
-                                formatData[len]['name'] = '全部分类';
-                                formatData[len]['pId'] = 0;
-                                formatData[len]['id'] = 1;
-                                formatData[len]['open'] = true;
-                                $.fn.zTree.init($("#ztree1"), setting1, formatData);
-                                treeObj = $.fn.zTree.getZTreeObj("ztree1");
-
+                    async: {
+                        enable:true,
+                        url: '../../classes/listClasses?m='+0,
+                        dataFilter: function(treeId, parentNode, data){
+                            if (data.status) {
+                                Base.gritter(data.message, false);
                             } else {
-
+                                var html = '';
+                                if (data.list[0]) {
+                                    var formatData = [],
+                                        len = data.list.length;
+                                    for (var key in data.list) {
+                                        formatData[key] = {};
+                                        formatData[key]['name'] = data.list[key]['Name'];
+                                        formatData[key]['pId'] = data.list[key]['ParentId'] + 1;
+                                        formatData[key]['id'] = data.list[key]['Id'] + 1;
+                                    }
+                                    formatData[len] = {};
+                                    formatData[len]['name'] = '全部分类';
+                                    formatData[len]['pId'] = 0;
+                                    formatData[len]['id'] = 1;
+                                    formatData[len]['open'] = true;
+                                    return formatData;
+                                }
                             }
-
                         }
                     },
-                });
+                    callback: {
+                        onClick: function (event, treeId, treeNode) {
+                            groupId = treeNode.id - 1
+                            sessionStorage.setItem('intel_groupId',(groupId||0));
+                            pageNo = 1;
+                            isInit = true;
+                            initSrc();
+                        },
+                        onAsyncSuccess: function(event, treeId, treeNode){
+                            var zTree = $.fn.zTree.getZTreeObj("ztree1");
+                            if(sessionStorage.getItem('intel_groupId')){
+                                isInit = false;
+                                var Node = zTree.getNodeByParam('id',(parseInt(sessionStorage.getItem('intel_groupId'))+1),null);  
+                                zTree.selectNode(Node);
+                            }
+                            
+                        }
+                    }
+                };
+                $.fn.zTree.init($("#ztree1"), setting1, []);
             }
             initSrc();
             //对选择的日期进行存储
@@ -701,7 +715,7 @@
             //排序
             $('.sort1').on('click', function () { //默认
                 $('.sortgo').html($(this).text() + '<span class="caret"></span>');
-                orderType = 32;
+                orderType = 4;
                 pageNo = 1;
                 if (sessionStorage) {
                     sessionStorage.setItem("il_sortgo", $('.sortgo').html());

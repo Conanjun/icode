@@ -635,9 +635,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">质检日志</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">质检日志</h1>

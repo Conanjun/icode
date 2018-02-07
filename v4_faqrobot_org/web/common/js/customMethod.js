@@ -512,36 +512,64 @@ function  showRule(data,sourceList){
 	var ruleQDHtml = '';//渠道
 	var ruleVisiterHtml='';//角色
 	var ruleHtml='';
+	var ruleArea = '';//区域
+	var ruleParent = '';//维度父级
 	if(data.ListRule) {
 		if(data.ListRule[0]) {
 			for(var k=0; k<data.ListRule.length; k++) {
-				if(data.ListRule[k].type == 1) {
-					$.each(data.ListRule[k].roleIds.split(','), function() {
-						for(var m in sourceList) {
-							if(sourceList[m].DicCode == this) {
-								ruleQDHtml += sourceList[m].DicDesc+',';
-							}
-						}
-					});
-				}else {
-					if(data.ListRule[k]) {
-						for(var m in data.ListRule[k].roleIds) {
-							for(var n in data.ListRule[k].roleIds[m]) {
-								ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
-							}
-						}
-					}
-				}
+                if(data.ListRule[k].ruleMode == 0){
+                    if(data.ListRule[k].type == 1) {
+                        $.each(data.ListRule[k].roleIds.split(','), function() {
+                            for(var m in sourceList) {
+                                if(sourceList[m].DicCode == this) {
+                                    ruleQDHtml += sourceList[m].DicDesc+',';
+                                }
+                            }
+                        });
+                    }else if(data.ListRule[k].type == 2){
+                        for(var m in data.ListRule[k].roleIds) {
+                            for(var n in data.ListRule[k].roleIds[m]) {
+                                ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
+                            }
+                        }
+                    }
+                }else if(data.ListRule[k].ruleMode == 1){
+                    /*
+					 * taskId = 480 自如知识库同步，问答总览增加区域维度展示
+					 * 根据ruleMode来判断，如果为0则展示生效角色，如果为1则展示区域维度
+					 * 通过type判断父级来对应展示
+					 * */
+                    for(var z = 0;z < data.listAnswerLaber.length;z++){
+                        var ruleSon = '';//维度子级
+                        if(data.ListRule[k].type == data.listAnswerLaber[z].Id){
+                            for(var m in data.ListRule[k].roleIds) {
+                                for(var n in data.ListRule[k].roleIds[m]) {
+                                    ruleSon += data.ListRule[k].roleIds[m][n] +',';
+                                }
+                            }
+                            ruleParent = data.listAnswerLaber[z].Name;
+                            if(ruleSon && ruleParent){
+                                ruleSon=ruleSon.replace(/,$/, '');
+                                ruleArea +=ruleParent+'：'+ruleSon+'；';
+                            }
+                        }
+                    }   
+                }
 			}
 		}
 	}
 	if(ruleQDHtml){
+		ruleQDHtml = ruleQDHtml.replace(/,$/, '');
 		ruleHtml +='生效渠道:'+ruleQDHtml;
 	}
-	ruleHtml=ruleHtml.replace(/,$/, '');
-	if(ruleVisiterHtml){
 
-		ruleHtml +=(ruleHtml?'<span class="dot">|</span>':'') +'来访者角色:'+ruleVisiterHtml;
+	if(ruleVisiterHtml){
+		ruleVisiterHtml = ruleVisiterHtml.replace(/,$/, '');
+		ruleHtml +=(ruleHtml?'<span class="dot">|</span>':'') +'来访者角色：'+ruleVisiterHtml;
+	}
+	if(ruleArea){
+		ruleArea = ruleArea.substring(0,ruleArea.length - 1);
+		ruleHtml += (ruleHtml?'<span class="dot">|</span>':'') +ruleArea;
 	}
 	ruleHtml=ruleHtml.replace(/,$/, '');
 	if(ruleHtml === '') {
@@ -549,6 +577,7 @@ function  showRule(data,sourceList){
 	} else {
 		return ruleHtml+'<span class="dot">|</span>';
 	}
+
 }
 
 function  showQuDao(data,sourceList){
@@ -558,23 +587,25 @@ function  showQuDao(data,sourceList){
 	if(data.ListRule) {
 		if(data.ListRule[0]) {
 			for(var k=0; k<data.ListRule.length; k++) {
-				if(data.ListRule[k].type == 1) {
-					$.each(data.ListRule[k].roleIds.split(','), function() {
-						for(var m in sourceList) {
-							if(sourceList[m].DicCode == this) {
-								ruleQDHtml += sourceList[m].DicDesc+',';
-							}
-						}
-					});
-				}else {
-					if(data.ListRule[k]) {
-						for(var m in data.ListRule[k].roleIds) {
-							for(var n in data.ListRule[k].roleIds[m]) {
-								ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
-							}
-						}
-					}
-				}
+                if(data.ListRule[k].ruleMode == 0){
+                    if(data.ListRule[k].type == 1) {
+                        $.each(data.ListRule[k].roleIds.split(','), function() {
+                            for(var m in sourceList) {
+                                if(sourceList[m].DicCode == this) {
+                                    ruleQDHtml += sourceList[m].DicDesc+',';
+                                }
+                            }
+                        });
+                    }else {
+                        if(data.ListRule[k]) {
+                            for(var m in data.ListRule[k].roleIds) {
+                                for(var n in data.ListRule[k].roleIds[m]) {
+                                    ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
+                                }
+                            }
+                        }
+                    }
+                }
 			}
 		}
 	}
@@ -591,31 +622,69 @@ function  showJueSe(data,sourceList){
 	if(data.ListRule) {
 		if(data.ListRule[0]) {
 			for(var k=0; k<data.ListRule.length; k++) {
-				if(data.ListRule[k].type == 1) {
-					$.each(data.ListRule[k].roleIds.split(','), function() {
-						for(var m in sourceList) {
-							if(sourceList[m].DicCode == this) {
-								ruleQDHtml += sourceList[m].DicDesc+',';
+                if(data.ListRule[k].ruleMode == 0){
+                    if(data.ListRule[k].type == 1) {
+                        $.each(data.ListRule[k].roleIds.split(','), function() {
+                            for(var m in sourceList) {
+                                if(sourceList[m].DicCode == this) {
+                                    ruleQDHtml += sourceList[m].DicDesc+',';
+                                }
+                            }
+                        });
+                    }else {
+                        if(data.ListRule[k]) {
+                            for(var m in data.ListRule[k].roleIds) {
+                                for(var n in data.ListRule[k].roleIds[m]) {
+                                    ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
+                                }
+                            }
+                        }
+                    }
+                }
+			}
+		}
+	}
+
+	ruleVisiterHtml=ruleVisiterHtml.replace(/,$/, '');
+	if(ruleVisiterHtml){
+		ruleHtml +='来访者角色：'+ruleVisiterHtml+'<br>';
+	}
+	return ruleHtml;
+}
+/*
+ * taskId = 480 自如知识库同步，问答总览增加区域维度展示
+ * 根据ruleMode来判断，如果为0则展示生效角色，如果为1则展示区域维度
+ * 通过type判断父级来对应展示  添加方法showQuYu
+ * */
+function showQuYu(data,sourceList){
+	var ruleArea = '';//区域
+	var ruleParent = '';//维度父级
+	if(data.ListRule) {
+		if(data.ListRule[0]) {
+			for(var k=0; k<data.ListRule.length; k++) {
+				if(data.ListRule[k].ruleMode == 1){
+					for(var z = 0;z < data.listAnswerLaber.length;z++){
+						var ruleSon = '';//维度子级
+						if(data.ListRule[k].type == data.listAnswerLaber[z].Id){
+							for(var m in data.ListRule[k].roleIds) {
+								for(var n in data.ListRule[k].roleIds[m]) {
+									ruleSon += data.ListRule[k].roleIds[m][n] +',';
+								}
+							}
+							ruleParent = data.listAnswerLaber[z].Name;
+							if(ruleSon && ruleParent){
+								ruleSon=ruleSon.replace(/,$/, '');
+								ruleArea +=ruleParent+'：'+ruleSon+'<br />';
 							}
 						}
-					});
-				}else {
-					if(data.ListRule[k]) {
-						for(var m in data.ListRule[k].roleIds) {
-							for(var n in data.ListRule[k].roleIds[m]) {
-								ruleVisiterHtml += data.ListRule[k].roleIds[m][n] +',';
-							}
-						}
+
 					}
 				}
 			}
 		}
 	}
-	ruleVisiterHtml=ruleVisiterHtml.replace(/,$/, '');
-	if(ruleVisiterHtml){
-		ruleHtml +='来访者角色:'+ruleVisiterHtml+'<br>';
-	}
-	return ruleHtml;
+	return ruleArea;
+
 }
 $.fn.addWordCount = function(num) {
 	var self = this;
@@ -810,4 +879,13 @@ function ifbOpenWindowInNewTab(url, title, id){
 		location.href=url;
 	}
 }
-
+/**taskId=558 智能推荐优化 add by 赵宇星
+ * 说明：过滤数据
+ * @data 传入需要过滤的数据
+*/
+function dataFilter(data){
+    if(!data){
+        data=0;
+    }
+    return data;
+}

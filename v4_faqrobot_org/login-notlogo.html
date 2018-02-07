@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta name="keywords" content="FAQ客服机器人,微信智能客服,智能客服机器人,智能问答,微信机器人,智能机器人,FAQ机器人,FAQ Robot,机器客服,智能问答机器人">
+		<meta name="description" content="中国领先的智能问答机器人系统，为企业、政府机构网站、微信、APP等提供先进的智能客服机器人云服务与智能问答系统解决方案。">
+		<link rel="shortcut icon" href="./assets/login/images/logo_min.png" type="/image/x-icon">
+		<title>登录</title>
+		<link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="./assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="./assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+		<link href="./assets/login/css/common.css" rel="stylesheet">
+		<link href="./assets/login/css/login.css" rel="stylesheet">
+		<style>
+			.click{
+				text-align: right;
+				margin-top: 30px;
+				margin-right: -10px;
+			}
+			.center{
+				text-align: center;
+			}
+			.Scan{
+				padding: 40px;
+				display: none;
+				width: 430px;
+				height: 100%;
+				border-radius: 8px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background: #ffffff;
+			}
+			.topRight{
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				display: inline-block;
+			}
+			.computerIcon{
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				display: inline-block;
+			}
+			.ieTip {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 9999999;
+				text-align: center;
+				display: none;
+			}
+			.ieTipCtn {
+				z-index: 1;
+				position: absolute;
+				width: 760px;
+				height: 750px;
+				left: 50%;
+				margin-left: -380px;
+				top: 50%;
+				margin-top: -1000px;
+				border-radius: 40px;
+				overflow: hidden;
+				background: #fff;
+			}
+			.ieTipMask {
+				display: inline-block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: #000;
+				opacity: .5;
+				filter: alpha(opacity=50);
+			}
+			.ieTipHeader {
+				margin: 30px auto 0;
+				width: 90%;
+				height: 75%;
+			}
+			.ieTipBrowser i {
+				display: inline-block;
+				width: 60px;
+				height: 111px;
+				margin: 0 15px;
+			}
+			.firefoxBrowser {
+				background: url(/assets/login/images/firefox.png) no-repeat center;
+				background-size: contain;
+			}
+			.chromeBrowser {
+				background: url(/assets/login/images/chrome.png) no-repeat center;
+				background-size: contain;
+			}
+			.ieBrowser {
+				background: url(/assets/login/images/ie.png) no-repeat center;
+				background-size: contain;
+			}
+			.threeBrowser {
+				color: #ccc;
+				font-size: 12px;
+			}
+			.threeBrowser a {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ieTip">
+			<div class="ieTipCtn">
+				<img class="ieTipHeader" src="./assets/login/images/browser.jpg" />
+				<div class="ieTipBrowser">
+					<a href="http://www.firefox.com.cn/" target="_blank"><img class="firefoxBrowser" src="./assets/login/images/firefox.png" /></a>
+					<a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html" target="_blank"><img class="chromeBrowser" src="./assets/login/images/chrome.png" /></a>
+					<a href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads" target="_blank"><img class="ieBrowser" src="./assets/login/images/ie.png" /></a>
+				</div>
+				<div class="threeBrowser">除了上面，我们还支持<a href="http://se.360.cn/" target="_blank">360安全浏览器</a>等等</div>
+			</div>
+			<i class="ieTipMask"></i>
+		</div>
+		<div class="header">
+			<div class="navbar navbar-custom navbar-white">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">
+							<!-- <img alt="Brand" src="./assets/login/images/logo.png"> -->
+						</a>
+					</div>
+					<div class="collapse navbar-collapse" id="navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="under"><a href="http://www.iyunwen.com/index.html">首页</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/chanpin.html">产品</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/cases.html">客户案例</a></li>
+							<li class="under"><a href="http://www.iyunwen.com/iyunwen/new/about.html">关于我们</a></li>
+							<!--li class="under"><a href="#">云问之家</a></li-->
+							<li><button type="button" class="btn btn-primary navbar-btn m-l-5" onclick="location.href='/login.html'">登录</button></li>
+							<li><button type="button" class="btn btn-white navbar-btn m-l-5" onclick="location.href='/register.html'">注册</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="first-wrapper">
+			<div class="page-header-bg-image"></div>
+		</div>
+		<div class="headnav">
+			<div class="container">
+				<div class="row">
+					<div class="l0"></div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="formC">
+			<form id="loginForm">
+				<!-- 右上角点击弹出二维码-->
+				<div class="topRight">
+					<img src="./assets/login/images/rightTopIcon.png"/>
+				</div>
+				<!-- 二维码出现-->
+				<div class="Scan">
+					<div class="computerIcon">
+						<img src="./assets/login/images/login.png"/>
+					</div>
+					<h2 class="form-signin-heading">钉钉版登录</h2>
+					<div id="QR_code" class="center">
+						<img src="./assets/login/images/QR_Code.png"/>
+					</div>
+					<h5 class="center">请使用钉钉扫描二维码登录</h5>
+					<div class="click">
+						<span>还没有开通钉钉版？</span><a href="https://h5.dingtalk.com/orgreg/isvIndex.html?qrCode=E7DB6709D3328D8DA05D9A5D9BC9D33CE5137E585AFC0E7FC3CBBE05806CB19DD01483DB34FA940949DB5E42A824C6CC3842286A5958D662B7C5296ADAF855CF7AF1FD0530BEB3F776FDA4EB6E3C5A0B96BB1DBF549ED26544D04C8E8370AB1D069B1E301FAEC198&signature=0572a3c608234cb40be86727ba7ec3df435a4423">戳这里开通</a>
+					</div>
+				</div>
+				<!-- 二维码结束-->
+				<h2 class="form-signin-heading">账号登录</h2>
+				<input type="text" name="un" id="userName" class="form-control" maxlength="60" placeholder="用户名/邮箱/手机号" autofocus="">
+                <div style="position:relative;">
+                  <input type="password" name="pwd" id="passWord" class="form-control" maxlength="25" placeholder="请输入密码">
+                  <input type="text" name="passWordShow" id="passWordShow" class="form-control" style="display:none; ime-mode:disabled;" onkeyup="value=value.replace(/[^\u0000-\u00FF]/ig,'');" onpaste="return false;" ondragenter="return false;" maxlength="25" placeholder="请输入密码">
+                  <span class="fa fa-eye-slash passwdIcon" id="changePasswd"></span>
+                </div>
+				<div class="row">
+                	<div class="col-md-12">
+                    	<div class="form-group" style="float:left; margin-bottom:0; ">
+                            <input type="text" name="code" id="code" class="form-control hide" maxlength="4" placeholder="请输入图形验证码" style="margin-top:0;">
+                        </div>
+                        <div class="form-group" style="float:right; margin-bottom:0; margin:0;">
+                            <img class="vcodeImg hide" src="./ImageCode" style="display:inline-block; border-radius:30px; height:32px;">
+                        </div>
+                    </div>             
+                </div>
+				<div class="checkbox">
+					<label for="autoLogin" class="forChk">
+						<input id="autoLogin" type="checkbox" name="saveFlag" value="saveFlag" class="chk" checked=""> 七天内自动登录
+					</label>
+				</div>
+				<button class="btn btn-primary btn-block" type="button" onclick="$('#loginForm').submit()">登录</button>
+				<div class="plus">
+					<a href="./register.html" style="float: left; text-decoration: none; color: #1F98FF;">注册新账号</a>
+					<a href="./retrievePwd.html" style="float: right; text-decoration: none; color: #1F98FF;">忘记密码?</a>
+				</div>
+			</form>
+
+		</div>
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>关于我们</h5>
+							<p>南京云问网络技术有限公司是目前中国领先的互联网人工智能技术服务提供商之一。</p>
+							<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=630406961&amp;site=qq&amp;menu=yes" class="btn btn-default" target="_blank">在线客服</a>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>联系我们</h5>
+							<ul>
+								<li><p>南京市江宁区</p></li>
+								<li><p><i class="glyphicon glyphicon-home"></i>胜利路89号紫金研发创业中心3号楼4层</p></li>
+								<li><p><i class="glyphicon glyphicon-envelope"></i>market@FaqRobot.org</p></li>
+								<li><p><i class="glyphicon glyphicon-earphone"></i>025-52208363</p></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>付费版本</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">商用版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">高级版本</a></li>
+								<li><a href="http://www.faqrobot.org/prices/index.html" target="_blank">专业版本</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-3">
+						<div class="inner">
+							<h5>帮助中心</h5>
+							<ul>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">新手引入</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">接入网站</a></li>
+								<li><a href="http://www.faqrobot.org/devdoc/helpDocument.html" target="_blank">对接微信</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<div class="yunwen p-t-40 p-b-40">
+					<!-- Copyright © 2012 - 2017 南京云问网络技术有限公司 版权所有<br>
+					<a href="http://www.miitbeian.gov.cn" target="_blank">网站备案编号：苏ICP备10216663号</a> -->
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./assets/plugins/jquery/jquery-1.11.3.min.js"></script>
+		<script>
+			$('.topRight').click(function(){
+				$('.Scan').css({'display':'block','z-index':'99'})
+			})
+			$('.computerIcon').click(function(){
+				$('.Scan').css({'display':'none','z-index':'0'})
+			})
+		</script>
+		<script type="text/javascript" src="./assets/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
+		<script type="text/javascript" src="./assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./assets/plugins/jquery-validate/jquery.validate.js"></script>
+		<script type="text/javascript" src="./assets/plugins/jquery-cookie/js.cookie.js"></script>
+		<script type="text/javascript" src="./assets/plugins/gritter/js/jquery.gritter.js"></script>
+		<script type="text/javascript" src="./web/common/js/security.js"></script>
+		<script type="text/javascript" src="./web/common/js/customMethod.js"></script>
+		<script type="text/javascript" src="./web/common/js/base.js"></script>
+		<script type="text/javascript" src="./web/common/js/jquery.easing.min.js"></script>
+		<!--[if lt IE 9]>
+			<script src="./assets/crossbrowserjs/html5shiv.js"></script>
+			<script src="./assets/crossbrowserjs/respond.min.js"></script>
+			<script src="./assets/crossbrowserjs/excanvas.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="./assets/login/js/login.js"></script>
+	</body>
+</html>

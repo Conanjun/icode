@@ -57,7 +57,7 @@
                             <span id="clearScreen" class="clRecord" title="清空记录">清空记录</span>
                         	<textarea id="sendtxt" maxlength="100"></textarea>
                             <div class="b-f-footer">
-                                <a class="link_a" target="_blank" href="http://www.faqrobot.org">Powered By YunWen</a>
+                                <a class="link_a" id='copyright' target="_blank" href="http://www.faqrobot.org">Powered By YunWen</a>
 								<div id="inputPR" class="b-f-f-right">发送</div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 <input id="submit" type="button" value="提交">
                             </form>
                         </div>
-                        <div class="contact">
+                        <div class="contact" id="webInfoId">
                         	<a href="http://www.faqrobot.org/" target="_blank"><img class="img1" src="skin/base1/images/logo.png" width="210" /></a>
                             <img class="img2" src="skin/base1/images/wc3.gif" width="340" />
                         </div>
@@ -133,7 +133,8 @@
 		logoDiv:"weblogo",
 		baseInfoDiv :"Contact_us",
 		wordremain:'wordremain',
-		fadeBackId:'submit',
+    fadeBackId:'submit',
+    copyrightId:'copyright',// 版权及联系我们
 		teachMetalk:'teachMetalk',
 		fadeBackIdLink:'fadeBackIdLink',
 		quickLink:'rservlist',

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -62,9 +61,11 @@
 		.wrap {
 			position: relative;
 		}
-		.mb10{
+
+		.mb10 {
 			margin-bottom: 10px;
 		}
+
 		.wrapInner {
 			display: none;
 			position: absolute;
@@ -85,22 +86,27 @@
 			right: 0;
 			z-index: 2;
 		}
-		.hasTest{
-			display:block;
-		
+
+		.hasTest {
+			display: block;
+
 		}
+
 		.minheight1 {
 			max-height: 100px;
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
+
 		.modalRight {
 			position: relative;
 		}
-		table td{
+
+		table td {
 			padding: 10px 15px;
 			border-bottom: 1px solid #efefef;
 		}
+
 		.pauseBtn {
 			vertical-align: middle;
 			display: inline-block;
@@ -110,22 +116,25 @@
 			background-size: contain;
 			cursor: pointer;
 		}
-		.max370{
+
+		.max370 {
 			max-height: 274px;
-			overflow:auto;
+			overflow: auto;
 		}
+
 		.sendCheck {
 			position: absolute;
 			top: 0;
 			left: 0;
 			width: 100%;
-			height:100%;
-			overflow:hidden;
+			height: 100%;
+			overflow: hidden;
 			z-index: 199;
 			padding: 20px;
 			box-sizing: border-box;
 			background: #fff;
 		}
+
 		.tri {
 			width: 0;
 			height: 0;
@@ -137,19 +146,23 @@
 			z-index: 189;
 			cursor: pointer;
 		}
-		.tanchu{
-			z-index:99;
-			background:#fff;
-			position:absolute;
+
+		.tanchu {
+			z-index: 99;
+			background: #fff;
+			position: absolute;
 			height: 300px;
 			overflow-y: scroll;
 		}
+
 		.leftTri {
 			border-right: 8px solid #aaa;
 		}
-		.lf{
-			float:left;
+
+		.lf {
+			float: left;
 		}
+
 		.rightTri {
 			border-left: 8px solid #aaa;
 		}
@@ -189,9 +202,11 @@
 			display: inline-block;
 			margin-left: 10px;
 		}
-		.red{
-			color:red;
+
+		.red {
+			color: red;
 		}
+
 		#logpageList span {
 			display: block;
 			margin-top: 30px;
@@ -215,46 +230,72 @@
 			display: block;
 			cursor: pointer;
 		}
+
 		/* 查看聊天记录头像样式 */
 
 		#chatCon .chats .image {
 			width: 30px;
 			height: 30px;
 		}
-		.greyRow{
+
+		.greyRow {
 			width: 100%;
 			margin: 10px 0 0 0;
 			padding: 10px;
 			background: #e2e7eb;
 		}
-		.padRow{
+
+		.padRow {
 			padding: 5px 0;
 			border-bottom: 1px solid #efefef;
 		}
+
 		.tbody2 p {
 			margin: 0;
 		}
+
 		.ccca {
 			padding: 5px;
 		}
+
 		.ccca:not(:first-child) {
 			border-top: 1px solid #e2e7eb;
 		}
+
 		.table td {
 			word-break: break-all;
 			word-wrap: break-word;
 		}
+
 		@media (max-width: 991px) {
-			#qualityForm .col-md-3{
+			#qualityForm .col-md-3 {
 				padding-right: 0;
 				padding-left: 0;
 			}
-			#qualityForm .col-md-6{
+			#qualityForm .col-md-6 {
 				padding-left: 0;
 			}
 		}
-		.btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled.focus, .btn-default[disabled].focus, fieldset[disabled] .btn-default.focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active{
-			background-color:#929ba1 !important;
+
+		.btn-default.disabled,
+		.btn-default[disabled],
+		fieldset[disabled] .btn-default,
+		.btn-default.disabled:hover,
+		.btn-default[disabled]:hover,
+		fieldset[disabled] .btn-default:hover,
+		.btn-default.disabled:focus,
+		.btn-default[disabled]:focus,
+		fieldset[disabled] .btn-default:focus,
+		.btn-default.disabled.focus,
+		.btn-default[disabled].focus,
+		fieldset[disabled] .btn-default.focus,
+		.btn-default.disabled:active,
+		.btn-default[disabled]:active,
+		fieldset[disabled] .btn-default:active,
+		.btn-default.disabled.active,
+		.btn-default[disabled].active,
+		fieldset[disabled] .btn-default.active {
+			background-color: #929ba1 !important;
 		}
 	</style>
 </head>
@@ -314,30 +355,38 @@
 					<div class="row-fluid sendCheck" style="display: none;">
 						<div class="row">
 							<form id="qualityForm">
-                                <input type="hidden" name="uuid">
-                                <input type="hidden" name="chatVersion">
-                                <input type="hidden" name="chatlogId">
-                                <label class="bold">问题</label>
-                                <input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue" style="margin-bottom: 10px;">
-                                <div  style="padding-left: 0;" class="col-md-3">
-                                    质检类型 <b class="red">*</b><select name="qualityModeId" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
-                                    <input type="hidden" name="recheckModeId">
-                                </div>
-                                <div class="col-md-3">
-                                    质检评分<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score" style="margin-bottom: 10px;">
-                                </div>
-                                <div class="col-md-6" style="padding-right:0px;">
-                                    质检评语<input type="text" placeholder="质检评语" class="col-md-12 form-control" name="qualityContent" style="resize: none; height: 34px;margin-bottom: 10px;">
-                                </div>
-                             </form>
+								<input type="hidden" name="uuid">
+								<input type="hidden" name="chatVersion">
+								<input type="hidden" name="chatlogId">
+								<label class="bold">问题</label>
+								<input type="text" placeholder="问题" class="col-md-12 form-control" name="formatQue" style="margin-bottom: 10px;">
+								<div style="padding-left: 0;" class="col-md-3">
+									质检类型
+									<b class="red">*</b>
+									<select name="qualityModeId" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;"></select>
+									<input type="hidden" name="recheckModeId">
+								</div>
+								<div class="col-md-3">
+									质检评分
+									<input type="text" placeholder="质检评分" class="col-md-12 form-control" name="score" style="margin-bottom: 10px;">
+								</div>
+								<div class="col-md-6" style="padding-right:0px;">
+									质检评语
+									<input type="text" placeholder="质检评语" class="col-md-12 form-control" name="qualityContent" style="resize: none; height: 34px;margin-bottom: 10px;">
+								</div>
+							</form>
 						</div>
 
 
 						<div class="row">
 							<ul class="nav nav-pills">
-							  <!--li status="3" class="active"><a href="#nav-pills-tab-1" data-toggle="tab" >相似问题答案回答</a></li-->
-							  <li status="1" class="active"><a href="#nav-pills-tab-2" data-toggle="tab" aria-expanded="true">已有答案回答</a></li>
-							  <li status="2"><a href="#nav-pills-tab-3" data-toggle="tab" aria-expanded="false">编辑答案回答</a></li>
+								<!--li status="3" class="active"><a href="#nav-pills-tab-1" data-toggle="tab" >相似问题答案回答</a></li-->
+								<li status="1" class="active">
+									<a href="#nav-pills-tab-2" data-toggle="tab" aria-expanded="true">已有答案回答</a>
+								</li>
+								<li status="2">
+									<a href="#nav-pills-tab-3" data-toggle="tab" aria-expanded="false">编辑答案回答</a>
+								</li>
 							</ul>
 							<!--切换的内容-->
 							<div style="padding: 0" class="tab-content">
@@ -383,81 +432,89 @@
 								<!-- 点击切换2-->
 								<div class="tab-pane active" id="nav-pills-tab-2">
 									<form id="nav-pills-tab-2-form">
-                                    	<input type="hidden" name="pageNo" value="1">
-                                        <input type="hidden" name="isLeaf" value="1">
-                                        <input type="hidden" name="status" value="0">
-                                        <input type="hidden" name="level" value="1">
-                                        <input type="hidden" name="pageSize" value="5">
-                                        <input type="hidden" id="tab2quetype" name="queryType" value="1">
-                                        <div class="row">
-                                            <span class="col-md-5">选择分类：
-                                                <a href="#" class="ztreeName2">全部分类</a>
-                                                <input type="hidden" name="groupId" value="0">
-                                            </span>
-    
-                                            <div class="ztree tanchu" id="tanchutree2" style="display: none;margin-top: 15px"></div>
-                                            <div class="input-group col-md-4 pull-right">
-                                                <input type="text" class="form-control" id="tab2que" name="question">
-                                                <div class="input-group-btn">
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'question');$('#tab2quetype').val('1');">问题</a></li>
-                                                        <li><a href="javascript:;" onclick="$('#tab2que').attr('name', 'answer');$('#tab2quetype').val('2');">答案</a></li>
-                                                    </ul>
-                                                    <button type="button" class="btn-toggle btn btn-primary dropdown-toggle curHtml" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">问题<span class="caret"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary searchHasAns">
-                                                        <i class="glyphicon glyphicon-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="max370">
-                                        <table class="table" style="width:100%;margin: 10px 0">
-                                            <thead>
+										<input type="hidden" name="pageNo" value="1">
+										<input type="hidden" name="isLeaf" value="1">
+										<input type="hidden" name="status" value="0">
+										<input type="hidden" name="level" value="1">
+										<input type="hidden" name="pageSize" value="5">
+										<input type="hidden" id="tab2quetype" name="queryType" value="1">
+										<div class="row">
+											<span class="col-md-5">选择分类：
+												<a href="#" class="ztreeName2">全部分类</a>
+												<input type="hidden" name="groupId" value="0">
+											</span>
+
+											<div class="ztree tanchu" id="tanchutree2" style="display: none;margin-top: 15px"></div>
+											<div class="input-group col-md-4 pull-right">
+												<input type="text" class="form-control" id="tab2que" name="question">
+												<div class="input-group-btn">
+													<ul class="dropdown-menu pull-right">
+														<li>
+															<a href="javascript:;" onclick="$('#tab2que').attr('name', 'question');$('#tab2quetype').val('1');">问题</a>
+														</li>
+														<li>
+															<a href="javascript:;" onclick="$('#tab2que').attr('name', 'answer');$('#tab2quetype').val('2');">答案</a>
+														</li>
+													</ul>
+													<button type="button" class="btn-toggle btn btn-primary dropdown-toggle curHtml" data-toggle="dropdown" aria-haspopup="true"
+													 aria-expanded="false">问题
+														<span class="caret"></span>
+													</button>
+													<button type="button" class="btn btn-primary searchHasAns">
+														<i class="glyphicon glyphicon-search"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+									</form>
+									<div class="max370">
+										<table class="table" style="width:100%;margin: 10px 0">
+											<thead>
 												<tr>
 													<td width="50"></td>
 													<th>问题</th>
 													<th id="gggggggg">答案</th>
 													<th width="160">时间</th>
 												</tr>
-                                            </thead>
-                                            <tbody class="tbody2"></tbody>
-                                        </table>
-                                    </div>
+											</thead>
+											<tbody class="tbody2"></tbody>
+										</table>
+									</div>
 									<div id="itemContainer2" style="margin-top: 5px;"></div>
 								</div>
 
 								<!-- 点击切换3-->
 								<div class="tab-pane " id="nav-pills-tab-3">
 									<div class="col-md-12">
-                                    	<div class="row mb10">
-                                            <span class="col-md-12" style="padding-left: 0;">问题分类<b class="red">*</b>：
-                                                <a class="ztreeName3" href="javascript:;">全部分类</a>
-                                                <input type="hidden" name="groupId" value="0">
-                                            </span>
-                                            <div class="ztree tanchu" id="tanchutree3" style="display: none;margin-top: 15px"></div>
-                                        </div>
-    
-                                        <div class="row mb10" id="warpRoles">
-                                            <span>生效角色：</span>&nbsp;&nbsp;
-                                            <a id="juese" href="#QuestionClassModel" data-toggle="modal" >来访者角色</a>
-                                        </div>
-                                        <div class="row mb10" id="warpRules">
-                                            <div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
-                                            	<span>生效渠道：</span>&nbsp;
-                                            </div>
-                                            <div class="col-md-10" style="margin-left:-20px;">
-                                            	<div id="chooseAll"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <span>输入答案<b class="red">*</b>：</span>
-                                        </div>
-                                        <div style="padding: 0" class="row">
-                                                <textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5"  name="title"></textarea>
-                                        </div>
-                                    </div>
+										<div class="row mb10">
+											<span class="col-md-12" style="padding-left: 0;">问题分类
+												<b class="red">*</b>：
+												<a class="ztreeName3" href="javascript:;">全部分类</a>
+												<input type="hidden" name="groupId" value="0">
+											</span>
+											<div class="ztree tanchu" id="tanchutree3" style="display: none;margin-top: 15px"></div>
+										</div>
+
+										<div class="row mb10" id="warpRoles">
+											<span>生效角色：</span>&nbsp;&nbsp;
+											<a id="juese" href="#QuestionClassModel" data-toggle="modal">来访者角色</a>
+										</div>
+										<div class="row mb10" id="warpRules">
+											<div class="col-md-2" style="margin-left: -10px;width: 88px;margin-top:10px;">
+												<span>生效渠道：</span>&nbsp;
+											</div>
+											<div class="col-md-10" style="margin-left:-20px;">
+												<div id="chooseAll"></div>
+											</div>
+										</div>
+										<div class="row">
+											<span>输入答案
+												<b class="red">*</b>：</span>
+										</div>
+										<div style="padding: 0" class="row">
+											<textarea class="form-control" id="insert" maxlength="200" cols="150" rows="5" name="title"></textarea>
+										</div>
+									</div>
 								</div>
 
 							</div>
@@ -465,7 +522,7 @@
 							<!-- 底部3按钮-->
 							<div style="position: absolute;bottom: 15px;right:30px" class="row">
 								<a href="javascript:;" class="cancel btn btn-sm btn-white">取消</a>
-								<a href="javascript:;"  class="testOnly btn btn-sm btn-primary" >仅质检</a>
+								<a href="javascript:;" class="testOnly btn btn-sm btn-primary">仅质检</a>
 								<button class="testAndlearn btn btn-sm btn-white btn-primary">质检并学习</button>
 							</div>
 						</div>
@@ -475,18 +532,41 @@
 							<form id="visiterForm" style="margin-bottom:0">
 								<table>
 									<tr>
-										<td style="padding-right: 5px;">起始时间</td>
 										<td>
-											<div class="input-append date form_datetime">
-												<input size="16" type="text" readonly class="yun_search_input form-control" style="width:132px;" name="startTime">
-												<span class="add-on yun_timer"><i class="icon-remove"></i></span> <span class="add-on yun_timer"><i class="icon-calendar"></i></span> </div>
-										</td>
-										<td>&nbsp;&nbsp;</td>
-										<td style="padding-right: 5px;">结束时间</td>
-										<td>
-											<div class="input-append date form_datetime">
-												<input size="16" type="text" readonly class="yun_search_input  form-control" style="width:132px;" name="endTime">
-												<span class="add-on yun_timer"><i class="icon-remove"></i></span> <span class="add-on yun_timer"><i class="icon-calendar"></i></span> </div>
+											<div class="btn-group">
+												<button id="myDropdown" type="button" class="ttw btn-toggle btn btn-primary dropdown-toggle" aria-haspopup="true" aria-expanded="false">最近七天&nbsp;&nbsp;
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu" style="min-width: 275px;">
+													<li>
+														<a class="ttw0" data-p="" href="#">昨天</a>
+													</li>
+													<li>
+														<a class="ttw1" data-p="" href="#">今天</a>
+													</li>
+													<li>
+														<a class="ttw2" data-p="" href="#">最近七天</a>
+													</li>
+													<li>
+														<a class="ttw3" data-p="" href="#">最近一个月</a>
+													</li>
+													<li>
+														<a class="ttw5" data-p="" href="#">最近三个月</a>
+													</li>
+													<li style="height: 120px; padding-top: 10px;margin-top: 10px;border-top: 1px solid #e2e7e8;">
+														<span style="margin-left: 15px">自定义时间范围：</span>
+														<div style="text-align: center">
+															<input id="tm1" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm" style="width:auto;display:inline-block"
+															 name="startT">
+															<input id="tm2" size="16" type="text" readonly class="form-control form_datetime m-2 input-sm" style="width:auto;display:inline-block"
+															 name="endT">
+														</div>
+														<div style="padding-top: 10px;margin-top: 4px;border-top: 1px solid #e2e7e8;" class="text-center ">
+															<button style="width:97%;" class="confirm btn btn-primary" type="button">确认</button>
+														</div>
+													</li>
+												</ul>
+											</div>
 										</td>
 										<td style="padding: 0 5px;">
 											<select name="isChecked" class="form-control">
@@ -499,8 +579,12 @@
 											</select>
 										</td>
 										<td colspan="3">
-											<button type="button" class="btn  btn-primary " style="margin-left:-16px;" id="searchChatRe2"><i class="glyphicon glyphicon-search"></i></button>
-											<button type="button" class="btn  btn-default " style="margin-left:1px;" id="resetBtn"><i class="glyphicon glyphicon-remove"></i></button>
+											<button type="button" class="btn  btn-primary " style="margin-left:-16px;" id="searchChatRe2">
+												<i class="glyphicon glyphicon-search"></i>
+											</button>
+											<button type="button" class="btn  btn-default " style="margin-left:1px;" id="resetBtn">
+												<i class="glyphicon glyphicon-remove"></i>
+											</button>
 										</td>
 									</tr>
 								</table>
@@ -514,11 +598,11 @@
 						<div class="slim">
 							<table class="table" id="visiterlogList">
 								<thead>
-								<tr>
-									<th style="width:115px">来源</th>
-									<th>次数</th>
-									<th style="width: 60px;">停留时间</th>
-								</tr>
+									<tr>
+										<th style="width:115px">来源</th>
+										<th>次数</th>
+										<th style="width: 60px;">停留时间</th>
+									</tr>
 								</thead>
 								<tbody class="yun_table_size_v"></tbody>
 							</table>
@@ -579,12 +663,12 @@
 							</section>
 						</div>
 					</div>
-					</div>
-
 				</div>
+
 			</div>
 		</div>
-</div>
+	</div>
+	</div>
 
 
 
@@ -605,7 +689,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" data-dismiss="modal" >确定</button>
+					<button type="button" class="btn btn-sm btn-primary" href="javascript:;" data-dismiss="modal">确定</button>
 					<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;" id="selClassBtn">取消</a>
 				</div>
 			</div>
@@ -639,10 +723,10 @@
 						<div class="chatCtnEdit" style="margin-bottom: 50px;">
 							<div class="">
 								<label class="bold">处理</label>
-                                <select name="type" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;">
-                                    <option value="0">未处理</option>
-                                    <option value="1">已处理</option>
-                                </select>
+								<select name="type" class="col-md-12 form-control" style="padding: 6px; height: 34px;margin-bottom: 10px;">
+									<option value="0">未处理</option>
+									<option value="1">已处理</option>
+								</select>
 							</div>
 							<div class="">
 								<label class="bold">处理意见</label>
@@ -663,13 +747,13 @@
 		</div>
 	</div>
 	<!-- ---- -->
-	<div class="fade in hide" id="page-loader"><span class="spinner"></span></div>
+	<div class="fade in hide" id="page-loader">
+		<span class="spinner"></span>
+	</div>
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">人员管理</a></li>
-				<li class="active">质检日志</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">质检日志</h1>
@@ -680,23 +764,33 @@
 							<form class="form-inline" action="">
 								<input type="text" style="display: none;" />
 
-								<button type="button" class="addCheck btn btn-primary"><i class="glyphicon glyphicon-plus"></i> 新增质检</button>
-								<button type="button" class="addCheckType btn btn-primary m-r-3"><i class="glyphicon glyphicon-pencil"></i> 质检类型</button>
+								<button type="button" class="addCheck btn btn-primary">
+									<i class="glyphicon glyphicon-plus"></i> 新增质检</button>
+								<button type="button" class="addCheckType btn btn-primary m-r-3">
+									<i class="glyphicon glyphicon-pencil"></i> 质检类型</button>
 
 								<div class="col-md-3 pull-right" style="padding: 0; text-align:right;">
 									<div class="input-group">
 										<input style="border-top-right-radius:0;border-bottom-right-radius:0;" class="form-control" type="text" name="content2" placeholder="请根据质检原因查询">
 										<span class="input-group-btn">
-	                                            <button class="search btn btn-primary" type="button" style="border-radius: 3px;border-bottom-left-radius:0;border-top-left-radius:0;">
-	                                                <i class="glyphicon glyphicon-search"></i>
-	                                            </button>
-                                                <button type="button" class="sortWord btn-toggle btn btn-primary m-l-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认状态&nbsp;<span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
-											<li><a class="sort1">默认状态</a></li>
-											<li><a class="sort2">未处理状态</a></li>
-											<li><a class="sort3">已处理状态</a></li>
-										</ul>
+											<button class="search btn btn-primary" type="button" style="border-radius: 3px;border-bottom-left-radius:0;border-top-left-radius:0;">
+												<i class="glyphicon glyphicon-search"></i>
+											</button>
+											<button type="button" class="sortWord btn-toggle btn btn-primary m-l-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+											 aria-expanded="false" style="border-radius: 3px; border-left-color: transparent;">默认状态&nbsp;
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" style="min-width: 130px; cursor: pointer;">
+												<li>
+													<a class="sort1">默认状态</a>
+												</li>
+												<li>
+													<a class="sort2">未处理状态</a>
+												</li>
+												<li>
+													<a class="sort3">已处理状态</a>
+												</li>
+											</ul>
 										</span>
 									</div>
 								</div>
@@ -704,8 +798,12 @@
 						</div>
 
 						<ul class="nav nav-pills listUl" style="margin-top: 15px;">
-							<li class="active"><a href="#chatCheck" data-toggle="tab">聊天质检</a></li>
-							<li><a href="#dialogCheck" data-toggle="tab">会话质检</a></li>
+							<li class="active">
+								<a href="#chatCheck" data-toggle="tab">聊天质检</a>
+							</li>
+							<li>
+								<a href="#dialogCheck" data-toggle="tab">会话质检</a>
+							</li>
 						</ul>
 
 						<div class="tab-content" style="padding: 0;">
@@ -722,13 +820,13 @@
 											<th width="150";>来源 </th>
 											<th width="90">状态</th>
 											<th>操作</th> -->
-											<th >质检内容</th>
+											<th>质检内容</th>
 											<th nowrap="">得分</th>
-											<th >质检类型</th>
+											<th>质检类型</th>
 											<th nowrap="">原因</th>
 											<th nowrap="">质检次数</th>
-											<th >来源 </th>
-											<th >状态</th>
+											<th>来源 </th>
+											<th>状态</th>
 											<th width="160">操作</th>
 										</tr>
 									</thead>
@@ -758,7 +856,9 @@
 					</div>
 				</div>
 			</div>
-			<a data-click="scroll-top" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
+			<a data-click="scroll-top" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" href="javascript:;">
+				<i class="fa fa-angle-up"></i>
+			</a>
 		</div>
 		<!-- ================== BEGIN BASE JS ================== -->
 		<script src="../../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
@@ -786,48 +886,49 @@
 		<script src="../common/js/base.js"></script>
 		<script src="../common/js/jquery.scrollbar.js"></script>
 		<script type="text/javascript">
-			$(document).ready(function() {
+			$(document).ready(function () {
 				App.init();
 				icheckInit();
+				//apply();
 				/*============判断农信配置是否启用=============*/
-				function nxQiYong(){
-					if(sessionStorage.getItem('qAndACloseValue') == 1){
+				function nxQiYong() {
+					if (sessionStorage.getItem('qAndACloseValue') == 1) {
 						$(".testAndlearn").css({
 							'pointer-events': 'all',
-							'color':'#fff'
+							'color': '#fff'
 						});
-						$('.testAndlearn').removeClass('btn-primary').addClass('btn-default').attr('disabled','disabled');
-					}else{
+						$('.testAndlearn').removeClass('btn-primary').addClass('btn-default').attr('disabled', 'disabled');
+					} else {
 						$(".testAndlearn").css({
 							'pointer-events': 'painted',
-							'color':'#fff'
+							'color': '#fff'
 						});
-						$('.testAndlearn').removeClass('btn-default').addClass('btn-primary').attr('disabled',false);
+						$('.testAndlearn').removeClass('btn-default').addClass('btn-primary').attr('disabled', false);
 					}
 				}
 
-				$('a[href=#nav-pills-tab-3]').click(function(){
+				$('a[href=#nav-pills-tab-3]').click(function () {
 					groupId = 0;
 					$('#nav-pills-tab-3 .ztreeName3').text('全部分类');
 					nxQiYong();
 				});
-				$('a[href=#nav-pills-tab-2]').click(function(){
+				$('a[href=#nav-pills-tab-2]').click(function () {
 					groupId = 0;
 					$('#nav-pills-tab-2 .ztreeName2').text('全部分类');
 					$(".testAndlearn").css({
 						'pointer-events': 'painted',
-						'color':'#fff'
+						'color': '#fff'
 					});
-					$('.testAndlearn').removeClass('btn-default').addClass('btn-primary').attr('disabled',false);
+					$('.testAndlearn').removeClass('btn-default').addClass('btn-primary').attr('disabled', false);
 				});
 
 				//点击取消 隐藏页面
-				$('.cancel').click(function(){$('.sendCheck').hide()});
+				$('.cancel').click(function () { $('.sendCheck').hide() });
 				//默认全选
-				$('.qqq').click(function(){$(this).toggleClass('btn-primary')});
-				$('#quanxuan').on('ifChecked', function(event){
+				$('.qqq').click(function () { $(this).toggleClass('btn-primary') });
+				$('#quanxuan').on('ifChecked', function (event) {
 					$('.qqq').addClass('btn-primary')
-				}).on('ifUnchecked',function(event){
+				}).on('ifUnchecked', function (event) {
 					$('.qqq').removeClass('btn-primary')
 				});
 				$('#quanxuan').iCheck('check');
@@ -835,7 +936,7 @@
 				// 渠道
 				Base.request({
 					url: 'Configuration/showSourceByWebId',
-					callback: function(data) {
+					callback: function (data) {
 						if (data.status) {
 							Base.gritter(data.message, false);
 						} else {
@@ -876,7 +977,7 @@
 					$tr = null; // 当前tr
 
 					//ENTER
-					$(document).on('keyup', function(e) {
+					$(document).on('keyup', function (e) {
 						var $activeEl = $(document.activeElement);
 
 						if ($activeEl.is('[name=content2]') && (e.keyCode == 13 || e.keyCode == 108)) {
@@ -884,7 +985,7 @@
 						}
 					});
 					//ENTER
-					$(document).on('keyup', function(e) {
+					$(document).on('keyup', function (e) {
 						var $activeEl = $(document.activeElement);
 
 						if ($activeEl.is('[name=value]') && (e.keyCode == 13 || e.keyCode == 108)) {
@@ -894,18 +995,18 @@
 
 					var status = '';
 					//状态
-					$('.sort1').on('click', function() { //默认状态
-						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+					$('.sort1').on('click', function () { //默认状态
+						$('.sortWord').html($(this).text() + ' ' + '<span class="caret"></span>');
 						status = '';
 						listCheckLogItem();
 					});
-					$('.sort2').on('click', function() { //未处理状态
-						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+					$('.sort2').on('click', function () { //未处理状态
+						$('.sortWord').html($(this).text() + ' ' + '<span class="caret"></span>');
 						status = 0;
 						listCheckLogItem();
 					});
-					$('.sort3').on('click', function() { //已处理状态
-						$('.sortWord').html($(this).text() +' '+ '<span class="caret"></span>');
+					$('.sort3').on('click', function () { //已处理状态
+						$('.sortWord').html($(this).text() + ' ' + '<span class="caret"></span>');
 						status = 1;
 						listCheckLogItem();
 					});
@@ -921,7 +1022,7 @@
 								status: status,
 								content: $('[name=content2]').val(),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 								} else {
@@ -937,12 +1038,12 @@
 											html += '<tr ' + params + ' ListChatlogQualityCheck2="' + ('' + JSON.stringify(data.list[i].ListChatlogQualityCheck).replace(/\"/g, '\'')) + '"><td>' + (data.list[i].Question || '') + '</td><td>' + (data.list[i].Average || '') +
 												'</td><td>' + (data.list[i].TypeName || '') + '</td><td>' + (data.list[i].QualityContent || '') + '</td><td>' + (data.list[i].Count || '') + '</td><td>' + toRoad(data.list[i].SourceId || '') + '(Id=' + (data.list[i].ChatUserId || '') +
 												')</td>';
-											html +='<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">未处理</a>') + '</td>';
-											html +='<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a>';
-											if(data.list[i].watched){
-												html +='<a class="chatRead btns" href="javascript:;" title="" style="color:#999">聊天记录 已读</a></td></tr>';
-											}else{
-												html +='<a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
+											html += '<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">未处理</a>') + '</td>';
+											html += '<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a>';
+											if (data.list[i].watched) {
+												html += '<a class="chatRead btns" href="javascript:;" title="" style="color:#999">聊天记录 已读</a></td></tr>';
+											} else {
+												html += '<a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
 											}
 										}
 
@@ -951,7 +1052,7 @@
 											currentPage: data.currentPage,
 											totalPages: data.totlePages,
 											alignment: 'right',
-											onPageClicked: function(event, originalEvent, type, page) {
+											onPageClicked: function (event, originalEvent, type, page) {
 												pageNo = page;
 												listCheckLogItem(); // 后台为返回分页
 											}
@@ -977,7 +1078,7 @@
 								status: status,
 								content: $('[name=content2]').val(),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 								} else {
@@ -992,14 +1093,14 @@
 											}
 											html += '<tr ' + params + ' ListChatlogQualityCheck2="' + ('' + JSON.stringify(data.list[i].ListLoginsummaryQualityCheck).replace(/\"/g, '\'')) + '"><td>' + (data.list[i].Score || '') + '</td><td>' + (data.list[i].TypeName || '') +
 												'</td><td>' + (data.list[i].QualityContent || '') + '</td><td>' + toRoad(data.list[i].SourceId || '') + '(Id=' + (data.list[i].ChatUserId || '') + ')</td>';
-											html +='<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">处理</a>') +'</td>';
-											html +='<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a>';
-											if(data.list[i].watched){
-												html +='<a class="chatRead btns" href="javascript:;" title="" style="color:#999">聊天记录 已读</a></td></tr>';
-											}else{
-												html +='<a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
+											html += '<td>' + ((data.list[i].IsDeal || '') ? '已处理' : '<a class="chatEdit btns" href="javascript:;" title="">处理</a>') + '</td>';
+											html += '<td style="white-space: nowrap;"><a class="chatDetail btns" href="javascript:;" title="">详情</a>';
+											if (data.list[i].watched) {
+												html += '<a class="chatRead btns" href="javascript:;" title="" style="color:#999">聊天记录 已读</a></td></tr>';
+											} else {
+												html += '<a class="chatRead btns" href="javascript:;" title="">聊天记录</a></td></tr>';
 											}
-											
+
 										}
 
 										var options = {
@@ -1007,7 +1108,7 @@
 											currentPage: data.currentPage,
 											totalPages: data.totlePages,
 											alignment: 'right',
-											onPageClicked: function(event, originalEvent, type, page) {
+											onPageClicked: function (event, originalEvent, type, page) {
 												pageNo = page;
 												listCheckLoginSummary(); // 后台为返回分页
 											}
@@ -1036,10 +1137,10 @@
 								content: $('[name=content]').val(),
 								result: $('[name=result]').val(),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								yunNoty(data);
-								
-								if (data.status) {} else {
+
+								if (data.status) { } else {
 									$('#modal-edit').modal('hide');
 								}
 							},
@@ -1047,7 +1148,7 @@
 					}
 
 					// 搜索
-					$('.search').on('click', function() {
+					$('.search').on('click', function () {
 						if (mode == 1) { // 1会话质检结果
 							listCheckLoginSummary();
 						} else { // 2聊天质检结果
@@ -1056,17 +1157,17 @@
 					})
 
 					// 切换tab
-					$('[href*=chatCheck]').on('click', function() {
+					$('[href*=chatCheck]').on('click', function () {
 						mode = 2; // 1会话质检结果 2聊天质检结果
 						listCheckLogItem();
 					})
-					$('[href*=dialogCheck]').on('click', function() {
+					$('[href*=dialogCheck]').on('click', function () {
 						mode = 1; // 1会话质检结果 2聊天质检结果
 						listCheckLoginSummary();
 					})
 
 					// 处理/详情
-					$('body').on('click', '.chatEdit, .chatDetail', function(e) {
+					$('body').on('click', '.chatEdit, .chatDetail', function (e) {
 						$tr = $(this).parents('tr');
 						// 处理
 						if ($(e.target).is('.chatEdit')) {
@@ -1082,7 +1183,7 @@
 						}
 						$('.question').text($tr.attr('question') || '');
 						$('.count').text($tr.attr('count') || '');
-						$('.isDeal').text(($tr.attr('isDeal')==0 || '') ? '未处理' : '已处理');
+						$('.isDeal').text(($tr.attr('isDeal') == 0 || '') ? '未处理' : '已处理');
 						/*if (+($tr.attr('isDeal') || '')) {
 							$('.chatCtnEdit').hide();
 						} else {
@@ -1095,11 +1196,11 @@
 						if (ListChatlogQualityCheck2) {
 							if (ListChatlogQualityCheck2[0]) {
 								for (var i = ListChatlogQualityCheck2.length - 1; i >= 0; i--) {
-                                    var ZJPYStr1 = ListChatlogQualityCheck2[i].QualityContent;
-								    if(!ListChatlogQualityCheck2[i].QualityContent){
-                                        ZJPYStr1 = "";
-									}else if(ListChatlogQualityCheck2[i].QualityContent == "null"){
-                                        ZJPYStr1 = "";
+									var ZJPYStr1 = ListChatlogQualityCheck2[i].QualityContent;
+									if (!ListChatlogQualityCheck2[i].QualityContent) {
+										ZJPYStr1 = "";
+									} else if (ListChatlogQualityCheck2[i].QualityContent == "null") {
+										ZJPYStr1 = "";
 									}
 
 									html += '<div class="chatCtnDetail"><label class="extend bold">第' + (ListChatlogQualityCheck2.length - i) + '次质检</label><div style="display: none;" class="chatCtnDetailCtn"><label class="bold">质检人</label><div>' +
@@ -1109,38 +1210,38 @@
 							}
 						}
 						var ZJPYStr = $tr.attr('QualityContent');
-                        if(!$tr.attr('QualityContent')){
-                            ZJPYStr = "";
-                        }else if($tr.attr('QualityContent') == "null"){
-                            ZJPYStr = "";
-                        }
+						if (!$tr.attr('QualityContent')) {
+							ZJPYStr = "";
+						} else if ($tr.attr('QualityContent') == "null") {
+							ZJPYStr = "";
+						}
 						html += '<div class="chatCtnDetail"><label class="extend bold">第' + (ListChatlogQualityCheck2 ? (ListChatlogQualityCheck2.length + 1) : 1) + '次质检</label><div class="chatCtnDetailCtn"><label class="bold">质检人</label><div>' + $tr.attr(
-								'Username') + '</div><label class="bold">质检得分</label><div>' + $tr.attr('Score') + '</div><label class="bold">质检类型</label><div>' + $tr.attr('TypeName') + '</div><label class="bold">质检时间</label><div>' + $tr.attr('DateTime') +
+							'Username') + '</div><label class="bold">质检得分</label><div>' + $tr.attr('Score') + '</div><label class="bold">质检类型</label><div>' + $tr.attr('TypeName') + '</div><label class="bold">质检时间</label><div>' + $tr.attr('DateTime') +
 							'</div><label class="bold">质检评语</label><div>' + ZJPYStr + '</div></div></div>';
 						$('.chatCtnBody').empty().append(html);
 						$('#modal-edit').modal('show');
 					})
 
 					// 显隐质检详细
-					$('body').on('click', '.extend', function() {
+					$('body').on('click', '.extend', function () {
 						$(this).siblings().slideDown().parents('.chatCtnDetail').siblings().find('.chatCtnDetailCtn').slideUp();
 					})
 
 					// 确认处理
-					$('.ensure-check').on('click', function() {
+					$('.ensure-check').on('click', function () {
 						addCheckResult();
 						$('.chatCtnEdit input').val('');
 						$('.chatCtnEdit textarea').val('');
-						
-						if($('#page-container .listUl li').eq(0).hasClass('active')){
+
+						if ($('#page-container .listUl li').eq(0).hasClass('active')) {
 							listCheckLogItem();
-						}else{
+						} else {
 							listCheckLoginSummary();
 						}
 					})
 					var firstTime = true;
 					// 聊天记录
-					$('body').on('click', '.chatRead', function() {
+					$('body').on('click', '.chatRead', function () {
 						firstTime = true;
 						$tr = $(this).parents('tr');
 						$('[name=chtvs]').val($tr.attr('ChatVersion') || '');
@@ -1159,28 +1260,28 @@
 						checkItemCount = 0;
 
 					// 弹出框
-					$('#chatCheckModal').on('shown.bs.modal', function() {
+					$('#chatCheckModal').on('shown.bs.modal', function () {
 						findQualityType();
 						getList();
 						chatRecords(1);
 						$('.sendCheck2').hide();
-						$('#visiterForm input').val('');
+						//$('#visiterForm input').val('');
 					});
 					// 隐藏框 #1
-					$('#chatCheckModal').on('hidden.bs.modal', function() {
+					$('#chatCheckModal').on('hidden.bs.modal', function () {
 						$('.sendCheck').hide();
 						groupId = 0;
 						$('#nav-pills-tab-2 .ztreeName2').text('全部分类');
 						$('#nav-pills-tab-3 .ztreeName3').text('全部分类');
 					});
 					// 隐藏框
-					$('#chatModal').on('hidden.bs.modal', function() {
+					$('#chatModal').on('hidden.bs.modal', function () {
 						$('[name=chtvs]').val('');
 						$('[name=chatUserId]').val('');
 					});
 
 					// 弹出质检框
-					$('.addCheck').on('click', function() {
+					$('.addCheck').on('click', function () {
 						$('#chatCheckModal').modal('show');
 					})
 
@@ -1192,7 +1293,7 @@
 						Base.request({
 							url: 'QualityCheck/findQualityType',
 							params: {},
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 									$('.addCheckType').trigger('click');
@@ -1210,16 +1311,16 @@
 											for (var key in data.list[i]) {
 												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
 											}
-											var tmpValue=data.list[i].Value;
+											var tmpValue = data.list[i].Value;
 											_html += '<tr ' + params + '><td>' + (tmpValue || '') + '</td><td>' + (data.list[i].AddTime || '') +
 												'</td>';
-											if(tmpValue=='句子重点匹配错误' || tmpValue=='未考虑上下文' || tmpValue=='缺乏语义层面匹配' || tmpValue=='缺乏相似问法/模板' || tmpValue=='缺乏近义词/等价词' || tmpValue=='核心实体匹配失败'){										
-												_html+='<td style="white-space: nowrap;">系统默认</td>';
-											}else{
-												_html+='<td style="white-space: nowrap;"><a class="typeEdit btns" href="javascript:;" title="">修改</a><a class="typeDel btns" href="javascript:;" title="">删除</a></td>';
+											if (tmpValue == '句子重点匹配错误' || tmpValue == '未考虑上下文' || tmpValue == '缺乏语义层面匹配' || tmpValue == '缺乏相似问法/模板' || tmpValue == '缺乏近义词/等价词' || tmpValue == '核心实体匹配失败') {
+												_html += '<td style="white-space: nowrap;">系统默认</td>';
+											} else {
+												_html += '<td style="white-space: nowrap;"><a class="typeEdit btns" href="javascript:;" title="">修改</a><a class="typeDel btns" href="javascript:;" title="">删除</a></td>';
 											}
-											
-											_html +='</tr>';
+
+											_html += '</tr>';
 										}
 									} else {
 										_html += '<tr><td colspan=\"9\" style=\"text-align:center;\"><i class=\"icon-exclamation-sign\"></i>  当前纪录为空！</td></tr>';
@@ -1233,18 +1334,18 @@
 					}
 
 					// 删除质检类型
-					$('body').on('click', '.typeDel', function() {
+					$('body').on('click', '.typeDel', function () {
 						$tr3 = $(this).parents('tr');
 						Base.request({
 							url: 'QualityCheck/delQualityType',
 							params: {
 								id: $tr3.attr('id'),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 								} else { //
-									$tr3=null;
+									$tr3 = null;
 									findQualityType();
 								}
 							},
@@ -1252,18 +1353,18 @@
 					})
 
 					// 修改质检类型
-					$('body').on('click', '.typeEdit', function() {
+					$('body').on('click', '.typeEdit', function () {
 						$tr3 = $(this).parents('tr');
 						$('[name=value]').val($tr3.attr('Value'));
 						$('.ensure-type').text('修改');
 					})
 
 					// 弹出质检类型框
-					$('.addCheckType').on('click', function() {
+					$('.addCheckType').on('click', function () {
 						$('#modal-type').modal('show');
 					})
 					// 确认添加质检类型
-					$('.ensure-type').on('click', function() {
+					$('.ensure-type').on('click', function () {
 						var id = '';
 						if ($tr3) {
 							id = $tr3.attr('id');
@@ -1274,35 +1375,35 @@
 								value: $('[name=value]').val(),
 								id: id,
 							},
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 								} else { //
-									$tr3=null;
+									$tr3 = null;
 									findQualityType();
-                                    $('#modal-type').modal('hide');
-                                    yunNoty(data);
+									$('#modal-type').modal('hide');
+									yunNoty(data);
 								}
 							},
 						});
 					})
 
 					// 质检类型框消失后
-					$('#modal-type').on('hidden.bs.modal', function() {
+					$('#modal-type').on('hidden.bs.modal', function () {
 						$tr3 = null;
 						$('[name=value]').val('');
 						$('.ensure-type').text('添加');
 					});
 
 					// 生成质检框 #1
-					$('body').on('click', '.wrapBtn', function(){
-						if(!$(this).hasClass('hasTest')){
+					$('body').on('click', '.wrapBtn', function () {
+						if (!$(this).hasClass('hasTest')) {
 							$li = $(this).prevAll('.out');
-							var	inN = $li.attr('question');
+							var inN = $li.attr('question');
 							$('[name=formatQue]').val(inN);
 							$('.sendCheck').show();
 							$('.wrap').trigger('mouseleave');
-							if (!+$('.pauseBtn').attr('isPause')){ // start
+							if (!+$('.pauseBtn').attr('isPause')) { // start
 								$('.pauseBtn').trigger('click');
 							}
 							$('#qualityForm input[name=uuid]').val($li.attr('uid'));
@@ -1312,15 +1413,15 @@
 							simiQue();
 							getRule();
 						}
-						
+
 					})
 					// 隐藏质检框
-					$('.closeCheck').on('click', function() {
+					$('.closeCheck').on('click', function () {
 						$('.sendCheck').hide();
 					})
 
 					// 确认会话质检
-					$('.ensure-check22').on('click', function() {
+					$('.ensure-check22').on('click', function () {
 						Base.request({
 							url: 'QualityCheck/checkLoginSummary',
 							params: {
@@ -1332,20 +1433,20 @@
 								score: $('[name=score2]').val(),
 								qualityContent: $('[name=qualityContent2]').val(),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								yunNoty(data);
-								if (data.status) {} else { //
+								if (data.status) { } else { //
 									$('.closeCheck').trigger('click');
 									$('[name=score2]').val('');
 									$('[name=qualityContent2]').val('');
 								}
 							},
 						});
-						
+
 					})
 
 					// 确认聊天质检
-					$('.ensure-check2').on('click', function() {
+					$('.ensure-check2').on('click', function () {
 						Base.request({
 							url: 'QualityCheck/checkLogItem',
 							params: {
@@ -1356,9 +1457,9 @@
 								score: $('[name=score]').val(),
 								qualityContent: $('[name=qualityContent]').val(),
 							},
-							callback: function(data) {
+							callback: function (data) {
 								yunNoty(data);
-								if (data.status) {} else { //
+								if (data.status) { } else { //
 									$('.closeCheck').trigger('click');
 									$('[name=score]').val('');
 									$('[name=qualityContent]').val('');
@@ -1369,7 +1470,7 @@
 						});
 					})
 					// 会话质检
-					$('.dialogCheckBtn').on('click', function() {
+					$('.dialogCheckBtn').on('click', function () {
 						if (!$tr2) {
 							yunNoty({
 								'status': 1,
@@ -1381,7 +1482,7 @@
 					})
 
 					// 收缩聊天区
-					$('.tri').on('click', function() {
+					$('.tri').on('click', function () {
 						if ($(this).is('.leftTri')) {
 							$('.modalLeft').hide();
 							$('.modalRight').css('width', '99%');
@@ -1394,13 +1495,13 @@
 					})
 
 					// 悬浮生成框
-					$('body').on('mouseenter', '.wrap', function() {
-						if($(this).attr('ischecked')=='1'){}else{
+					$('body').on('mouseenter', '.wrap', function () {
+						if ($(this).attr('ischecked') == '1') { } else {
 							$(this).find('.wrapInner').show().siblings('.wrapBtn').show();
 						}
 					})
-					$('body').on('mouseleave', '.wrap', function() {
-						if($(this).attr('ischecked')=='1'){}else{
+					$('body').on('mouseleave', '.wrap', function () {
+						if ($(this).attr('ischecked') == '1') { } else {
 							$(this).find('.wrapInner').hide().siblings('.wrapBtn').hide();
 						}
 					})
@@ -1411,7 +1512,7 @@
 						backClass: 'SC_backClass2',
 						frontClass: 'SC_frontClass2',
 						autoBottom: false, //内容改变，是否自动滚动到底部
-						moveCallback: function(top, direction) { // 运动时事件回调
+						moveCallback: function (top, direction) { // 运动时事件回调
 							if (!+$('.pauseBtn').attr('isPause')) { // start
 								$('.pauseBtn').trigger('click');
 							}
@@ -1420,7 +1521,7 @@
 
 
 					// 暂停播放
-					$('.pauseBtn').on('click', function() {
+					$('.pauseBtn').on('click', function () {
 						if (+$(this).attr('isPause')) { // start
 							$(this).attr('isPause', 0).css({
 								'background': 'url(images/pause.png) no-repeat center',
@@ -1429,7 +1530,7 @@
 							$('.startCtn').show();
 							$('.pauseCtn').hide();
 
-							timer = setInterval(function() {
+							timer = setInterval(function () {
 								if (scrollbar.maxScroll > -scrollbar.curPos) {
 									scrollbar.scrollTo(-scrollbar.curPos + 1 * parseInt($('[name=speed]').val()), true)
 								} else {
@@ -1449,7 +1550,7 @@
 					})
 
 					// 上一组
-					$('.prevPage').on('click', function() {
+					$('.prevPage').on('click', function () {
 						if ($('[cur]')[0]) {
 							$('[cur]').prev().trigger('click');
 						} else {
@@ -1457,7 +1558,7 @@
 						}
 					})
 					// 下一组
-					$('.nextPage').on('click', function() {
+					$('.nextPage').on('click', function () {
 						if ($('[cur]')[0]) {
 							$('[cur]').next().trigger('click');
 						} else {
@@ -1467,30 +1568,30 @@
 
 
 					// 切换质检
-					$('body').on('click', '.go', function() {
+					$('body').on('click', '.go', function () {
 						firstTime = false;
 						$tr2 = $(this);
 						$tr2.css('background', '#eee').attr('cur', 1).siblings().removeAttr('style').removeAttr('cur');
 						chatRecords(1);
 						$('.sendCheck2').show();
 					})
-					
+
 					// 搜索
-					$('#searchChatRe2').on('click', function() {
+					$('#searchChatRe2').on('click', function () {
 						getList();
 					})
 					// 清空
-					$('#resetBtn').on('click', function() {
+					$('#resetBtn').on('click', function () {
 						$('#visiterForm')[0].reset();
 					})
 
 					// 访客日志(仅)
 					function getList() {
-						var STime = $('#visiterForm input[name=startTime]').val();
-						var ETime = $('#visiterForm input[name=endTime]').val();
+						var STime = $('#visiterForm input[name=startT]').val();
+						var ETime = $('#visiterForm input[name=endT]').val();
 						var d1 = new Date(STime.replace(/\-/g, "\/")).getTime();
 						var d2 = new Date(ETime.replace(/\-/g, "\/")).getTime();
-						if(STime || ETime){
+						if (STime || ETime) {
 							if (STime === "" || ETime === "") {
 								Base.gritter('请输入完整的时间段！', false);
 								return false;
@@ -1506,9 +1607,10 @@
 								pageNo: pageNo2,
 								pageSize: pageSize2,
 								logItems: 1, // #1
+								level:-1
 							},
 							$formObj: $('#visiterForm'),
-							callback: function(data) {
+							callback: function (data) {
 								if (data.status) {
 									yunNoty(data);
 								} else {
@@ -1527,7 +1629,7 @@
 											currentPage: data.currentPage,
 											totalPages: data.totlePages,
 											alignment: 'right',
-											onPageClicked: function(event, originalEvent, type, page) {
+											onPageClicked: function (event, originalEvent, type, page) {
 												pageNo2 = page;
 												getList(); // 后台为返回分页
 											}
@@ -1546,7 +1648,6 @@
 									$('.modalLeft .slim').slimScroll({
 										height: 500
 									});
-									//$('#visiterlogList tbody').children('.go').eq(0).trigger('click');
 								}
 							},
 						});
@@ -1562,30 +1663,30 @@
 							cache: false, //不从缓存中去数据
 							url: encodeURI('../../chatlog/findLog?pageSize=' + pageSize + '&pageNo=' + pageNo + '&chatUserId=' + (firstTime ? ($tr ? $tr.attr('chatUserId') : '') : ($tr2 ? $tr2.attr('chatUserId') : '')) + '&chtvs=' + (firstTime ? ($tr ? $tr.attr(
 								'chatversion') : '') : ($tr2 ? $tr2.attr('chatversion') : ''))),
-							success: function(data) {
+							success: function (data) {
 								if (data.status === 0) {
 									if (data.list[0]) {
 										var visiterInfo = '';
 										var vInfo = '';
 										// 如果有身份信息则展示下列身份信息
 										if (typeof data.userCard != 'undefined' && data.userCard !== null) {
-											if(data.userCard.Name!='undefined' && data.userCard.Name!==null){
-												visiterInfo+=data.userCard.Name+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//姓名
+											if (data.userCard.Name != 'undefined' && data.userCard.Name !== null) {
+												visiterInfo += data.userCard.Name + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//姓名
 											}
-											if(data.userCard.Userid!='undefined' && data.userCard.Userid!==null){
-												visiterInfo+=data.userCard.Userid+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//卡号
+											if (data.userCard.Userid != 'undefined' && data.userCard.Userid !== null) {
+												visiterInfo += data.userCard.Userid + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//卡号
 											}
-											if(data.userCard.TelNum!='undefined' && data.userCard.TelNum!==null){
-												visiterInfo+=data.userCard.TelNum+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//联系方式
+											if (data.userCard.TelNum != 'undefined' && data.userCard.TelNum !== null) {
+												visiterInfo += data.userCard.TelNum + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//联系方式
 											}
-											if(data.userCard.Identity!='undefined' && data.userCard.Identity!==null){
-												visiterInfo+=data.userCard.Identity+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//身份类型
+											if (data.userCard.Identity != 'undefined' && data.userCard.Identity !== null) {
+												visiterInfo += data.userCard.Identity + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//身份类型
 											}
-											if(data.userCard.Company!='undefined' && data.userCard.Company!==null){
-												visiterInfo+=data.userCard.Company+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//公司
+											if (data.userCard.Company != 'undefined' && data.userCard.Company !== null) {
+												visiterInfo += data.userCard.Company + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//公司
 											}
-											if(data.userCard.Level!='undefined' && data.userCard.Level!==null){
-												visiterInfo+=data.userCard.Level+ '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//会员等级
+											if (data.userCard.Level != 'undefined' && data.userCard.Level !== null) {
+												visiterInfo += data.userCard.Level + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';//会员等级
 											}
 										}
 										if (typeof data.chatUser != 'undefined' && data.chatUser !== null) {
@@ -1597,103 +1698,103 @@
 											} else if (data.chatUser.SourceId == 4) {
 												sourceName = '微博'
 											} else if (data.chatUser.SourceId == 5) {
-												sourceName= '支付宝'
-											} else if (data.chatUser.SourceId == 3){
-												sourceName= 'APP'
-											} else if (data.chatUser.SourceId == 2){
-												sourceName= 'API'
-											} else{
-												sourceName='未知渠道'
+												sourceName = '支付宝'
+											} else if (data.chatUser.SourceId == 3) {
+												sourceName = 'APP'
+											} else if (data.chatUser.SourceId == 2) {
+												sourceName = 'API'
+											} else {
+												sourceName = '未知渠道'
 											}
-											if (data.chatUser.SysInfo&&data.chatUser.SysInfo !=="") {
-												visiterInfo +=data.chatUser.SysInfo + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
-											}else{
-												visiterInfo +='&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											if (data.chatUser.SysInfo && data.chatUser.SysInfo !== "") {
+												visiterInfo += data.chatUser.SysInfo + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
+											} else {
+												visiterInfo += '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
 											}
-											if (data.chatUser.Broswer&&data.chatUser.Broswer !=="") {
+											if (data.chatUser.Broswer && data.chatUser.Broswer !== "") {
 												visiterInfo += data.chatUser.Broswer + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
 											}
-											if (data.chatUser.Address&&data.chatUser.Address !=="") {
+											if (data.chatUser.Address && data.chatUser.Address !== "") {
 												visiterInfo += data.chatUser.Address + '&nbsp;<b style="color:#0088cc;">|</b>&nbsp;';
 											}
-											if (data.chatUser.HostIp&&data.chatUser.HostIp !=="") {
+											if (data.chatUser.HostIp && data.chatUser.HostIp !== "") {
 												visiterInfo += data.chatUser.HostIp;
 											}
-											$('.vInfo').html('访客信息 '+sourceName+visiterInfo);
+											$('.vInfo').html('访客信息 ' + sourceName + visiterInfo);
 										}
 									}
 
-										var html = '';
-										if (data.list[0]) {
-											for (var i = 0; i < data.list.length; i++) {
-												var reply = data.list[i].Reply;
-												if (data.list[i].Reply) {
-													var src = data.list[i].Reply.match(/src=\"([^\"]+)/);
-													if (src) {
-														reply = '<a href="' + src[1] + '" data-lightbox="gallery">' + (data.list[i].Reply || '　') + '</a>';
-													}
+									var html = '';
+									if (data.list[0]) {
+										for (var i = 0; i < data.list.length; i++) {
+											var reply = data.list[i].Reply;
+											if (data.list[i].Reply) {
+												var src = data.list[i].Reply.match(/src=\"([^\"]+)/);
+												if (src) {
+													reply = '<a href="' + src[1] + '" data-lightbox="gallery">' + (data.list[i].Reply || '　') + '</a>';
 												}
+											}
 
-												// 我的话添加参数
-												var params = '';
-												for (var key in data.list[i]) {
-													params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
-												}
-												
-												if(data.list[i].Question){
-													html += '<li class="right out" ' + params + '><span class="date-time">'+data.list[i].DateTime+'</span><a class="name">访客</a><a class="image"><img src="../common/images/user.png" alt=""></a><div class="message" id="'+data.list[i].Id+'">';
-													if(data.list[i].MsgType==1){
-														//图片
-														var tmpQue=data.list[i].Question;
-														if(tmpQue){
-															tmpQue=(tmpQue.split('__xgn_iyunwen_')[1] || '');
-														}
-														html+='<img src="'+tmpQue+'">';
-													}else if(data.list[i].MsgType==2){
-														//语音
-														var tmpQue=data.list[i].Question;
-														if(tmpQue){
-															tmpQue=tmpQue.split('__xgn_iyunwen_');
-														}
-														html +=tmpQue[0];
-													}else{
-														html +=(data.list[i].Question || '　');
+											// 我的话添加参数
+											var params = '';
+											for (var key in data.list[i]) {
+												params += key + '="' + ('' + data.list[i][key] || '').replace(/\"/g, '\'') + '" ';
+											}
+
+											if (data.list[i].Question) {
+												html += '<li class="right out" ' + params + '><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">访客</a><a class="image"><img src="../common/images/user.png" alt=""></a><div class="message" id="' + data.list[i].Id + '">';
+												if (data.list[i].MsgType == 1) {
+													//图片
+													var tmpQue = data.list[i].Question;
+													if (tmpQue) {
+														tmpQue = (tmpQue.split('__xgn_iyunwen_')[1] || '');
 													}
-													html +='</div></li>';
-											   }
-												if(reply){
-													html += '<li class="left in"><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">机器人</a><a class="image"><img src="../common/images/robot.png" alt=""></a><div class="message">' + reply + '</div>';
+													html += '<img src="' + tmpQue + '">';
+												} else if (data.list[i].MsgType == 2) {
+													//语音
+													var tmpQue = data.list[i].Question;
+													if (tmpQue) {
+														tmpQue = tmpQue.split('__xgn_iyunwen_');
+													}
+													html += tmpQue[0];
+												} else {
+													html += (data.list[i].Question || '　');
 												}
+												html += '</div></li>';
 											}
-										} else {
-											html += '<div colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</div>';
+											if (reply) {
+												html += '<li class="left in"><span class="date-time">' + data.list[i].DateTime + '</span><a class="name">机器人</a><a class="image"><img src="../common/images/robot.png" alt=""></a><div class="message">' + reply + '</div>';
+											}
 										}
-										$('#chatLogList').find('ul').html(html);
-										//下面开始处理分页
-										var options = {
-											currentPage: data.currentPage,
-											totalPages: data.totlePages,
-											onPageClicked: function(event, originalEvent, type, page) {
-												chatRecords(page);
-											}
-										};
-										setPage('chatpageList', options);
 									} else {
-										$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空</li>');
-										$('#chatpageList').html('');
+										html += '<div colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</div>';
 									}
+									$('#chatLogList').find('ul').html(html);
+									//下面开始处理分页
+									var options = {
+										currentPage: data.currentPage,
+										totalPages: data.totlePages,
+										onPageClicked: function (event, originalEvent, type, page) {
+											chatRecords(page);
+										}
+									};
+									setPage('chatpageList', options);
+								} else {
+									$('#chatLogList').find('ul').html('<li style=\"text-align:center;\"><i class=\"glyphicon glyphicon-warning-sign\"></i>  当前纪录为空</li>');
+									$('#chatpageList').html('');
+								}
 
 
 
 								// 给我的话和机器人的话加父级
-								$('.out').each(function() {
-									$(this).add($(this).next('.in')).wrapAll('<div class="wrap" ischecked="'+$(this).attr('ischecked')+'"></div>');
+								$('.out').each(function () {
+									$(this).add($(this).next('.in')).wrapAll('<div class="wrap" ischecked="' + $(this).attr('ischecked') + '"></div>');
 								})
-								if(sessionStorage.getItem('checklogValue') == 1){
-									$('.wrap').each(function() {
-										if($(this).attr('ischecked')==1){
+								if (sessionStorage.getItem('checklogValue') == 1) {
+									$('.wrap').each(function () {
+										if ($(this).attr('ischecked') == 1) {
 											$(this).append('<button type="button" class="wrapBtn btn  btn-default hasTest">已质检</button><div class="wrapInner hasTest"></div>');
-										}else{
+										} else {
 											$(this).append('<button type="button" class="wrapBtn btn  btn-primary">聊天质检</button><div class="wrapInner"></div>');
 										}
 									})
@@ -1724,12 +1825,12 @@
 							showIcon: false
 						},
 						callback: {
-							onClick: function(event, treeId, treeNode) {
+							onClick: function (event, treeId, treeNode) {
 								//获取当前分类的ID
-								$('#nav-pills-tab-1 input[name=groupId]').val(treeNode.id-1);
+								$('#nav-pills-tab-1 input[name=groupId]').val(treeNode.id - 1);
 								$('#tanchutree1').fadeOut();
-                                $('#nav-pills-tab-1 .ztreeName1').html(treeNode.name);
-                                pageNo2=1;
+								$('#nav-pills-tab-1 .ztreeName1').html(treeNode.name);
+								pageNo2 = 1;
 								simiQue();
 							}
 						}
@@ -1745,16 +1846,16 @@
 							showIcon: false
 						},
 						callback: {
-							onClick: function(event, treeId, treeNode) {
+							onClick: function (event, treeId, treeNode) {
 								$('#tanchutree2').fadeOut();
 								$('#nav-pills-tab-2 .ztreeName2').html(treeNode.name);
-                                $('#nav-pills-tab-2 input[name=groupId]').val(treeNode.id-1);
-                                pageNo2=1;
+								$('#nav-pills-tab-2 input[name=groupId]').val(treeNode.id - 1);
+								pageNo2 = 1;
 								/*
 								 * taskId = 429 智能学习未知问题编辑答案回答时，多次变价仅回答并学习按钮不置灰
 								 *  判断是否是已有答案回答，如果是则执行hasAns
 								 */
-								if($('.nav-pills li.active a[href="#nav-pills-tab-2"]').text() == '已有答案回答'){
+								if ($('.nav-pills li.active a[href="#nav-pills-tab-2"]').text() == '已有答案回答') {
 									hasAns();
 								}
 							}
@@ -1772,12 +1873,12 @@
 							showIcon: false
 						},
 						callback: {
-							onClick: function(event, treeId, treeNode) {
-								$('#nav-pills-tab-3 input[name=groupId]').val(treeNode.id-1);
+							onClick: function (event, treeId, treeNode) {
+								$('#nav-pills-tab-3 input[name=groupId]').val(treeNode.id - 1);
 								$('#tanchutree3').fadeOut();
 								$('.ztreeName3').html(treeNode.name);
 							},
-							onCheck: function(event, treeId, treeNode) {
+							onCheck: function (event, treeId, treeNode) {
 								if (isMove) {
 									if (treeNode.checked) {
 										Base.request({
@@ -1786,7 +1887,7 @@
 												groupId: treeNode.id - 1,
 												id: $move.attr('id'),
 											},
-											callback: function(data) {
+											callback: function (data) {
 												if (data.status) {
 													Base.gritter(data.message, false);
 												} else {
@@ -1808,14 +1909,14 @@
 						params: {
 							m: 0,
 						},
-						callback: function(data) {
+						callback: function (data) {
 							if (data.status) {
 								Base.gritter(data.message, false);
 							} else {
 								var html = '';
 								if (data.list[0]) {
 									var formatData = [],
-											len = data.list.length;
+										len = data.list.length;
 
 									for (var key in data.list) {
 										formatData[key] = {};
@@ -1841,15 +1942,15 @@
 					});
 
 					//点击弹出树
-					$('.ztreeName1').click(function(){
+					$('.ztreeName1').click(function () {
 						$('#tanchutree1').toggle();
 					});
 
-					$('.ztreeName2').click(function(){
+					$('.ztreeName2').click(function () {
 						$('#tanchutree2').toggle();
 					});
 
-					$('.ztreeName3').click(function(){
+					$('.ztreeName3').click(function () {
 						$('#tanchutree3').toggle();
 					});
 					//生效角色
@@ -1857,113 +1958,113 @@
 					var setting = {
 						check: {
 							enable: true,
-							chkboxType: { "Y" : "ps", "N" : "ps" }
+							chkboxType: { "Y": "ps", "N": "ps" }
 						},
-						data : {
-							simpleData : {
-								enable : true,
-								idKey : "Id",
-								pIdKey : "ParentId",
-								rootPId : 0
+						data: {
+							simpleData: {
+								enable: true,
+								idKey: "Id",
+								pIdKey: "ParentId",
+								rootPId: 0
 							},
-							key : {
-								name : "Name"
+							key: {
+								name: "Name"
 							}
 						},
-						view : {
+						view: {
 							dblClickExpand: false,
-							selectedMulti : false,
+							selectedMulti: false,
 							showIcon: false
 						},
-						async : {
+						async: {
 							enable: true,
 							url: "../../comb/loadCombs",
 							autoParam: ["id"],
-							dataFilter: function(treeId, parentNode, responseData) {
+							dataFilter: function (treeId, parentNode, responseData) {
 								if (responseData) {
 									return responseData.list;
 								}
 								return responseData;
 							}
 						},
-						callback : {
-							beforeClick: function(treeId, treeNode) {
+						callback: {
+							beforeClick: function (treeId, treeNode) {
 								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
 								zTree.checkNode(treeNode, !treeNode.checked, null, true);
 								return false;
 							},
-							onCheck: function(e, treeId, treeNode) {
+							onCheck: function (e, treeId, treeNode) {
 								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
 								nodes = zTree.getCheckedNodes(true);
 								v = "";
 								I = "";
-								for (var i=0, l=nodes.length; i<l; i++) {
+								for (var i = 0, l = nodes.length; i < l; i++) {
 									if (nodes[i].Leaf == 1) {
 										v += nodes[i].Name + ",";
 										I += nodes[i].Id + "~";
 									}
 								}
-								if (v.length > 0 ) v = v.substring(0, v.length-1);
-								if (I.length > 0 ) I = I.substring(0, I.length-1);
+								if (v.length > 0) v = v.substring(0, v.length - 1);
+								if (I.length > 0) I = I.substring(0, I.length - 1);
 
 								$("#juese").html(v);
 								$("#QuestionClassModel input[name=hasCheckedId]").val(I);
-								
+
 							},
-							onAsyncSuccess: function(event, treeId, treeNode) {
+							onAsyncSuccess: function (event, treeId, treeNode) {
 								var zTree = $.fn.zTree.getZTreeObj("treeQueClass");
 								var IdString = $("#QuestionClassModel input[name=hasCheckedId]").val();
-								if(IdString) {
+								if (IdString) {
 									var Ids = IdString.split('~');
 									var node = null;
-									for(i = 0 ; i < Ids.length; i ++ ) {
-										zTree.checkNode( zTree.getNodeByParam( "Id", Ids[i] ), true );
+									for (i = 0; i < Ids.length; i++) {
+										zTree.checkNode(zTree.getNodeByParam("Id", Ids[i]), true);
 									}
 								}
 							}
 						}
 					};
 
-					$('#QuestionClassModel').on('show.bs.modal',function(){
+					$('#QuestionClassModel').on('show.bs.modal', function () {
 						$.fn.zTree.init($("#treeQueClass"), setting);
 					})
 					// 点击td自动选中input
-					$('body').on('click', 'td', function() {
+					$('body').on('click', 'td', function () {
 						$(this).parents('tr').find('input').iCheck('check');
 					});
-					
-							//取消选择生效角色
-					$('#selClassBtn').click(function(){
+
+					//取消选择生效角色
+					$('#selClassBtn').click(function () {
 						$("#QuestionClassModel input[name=hasCheckedId]").val('');
 						$("#juese").html('来访者角色');
 					})
-					$('#nav-pills-tab-2 .dropdown-menu li>a').click(function(){
-						var tmpHtml=$(this).html();
-						if(tmpHtml=='问题'){
-							$('#nav-pills-tab-2 input[class=searchInput]').attr('name','question');
+					$('#nav-pills-tab-2 .dropdown-menu li>a').click(function () {
+						var tmpHtml = $(this).html();
+						if (tmpHtml == '问题') {
+							$('#nav-pills-tab-2 input[class=searchInput]').attr('name', 'question');
 							$('#nav-pills-tab-2 .curHtml').html('问题');
-						}else if(tmpHtml=='答案'){
+						} else if (tmpHtml == '答案') {
 							$('#nav-pills-tab-2 .curHtml').html('答案');
-							$('#nav-pills-tab-2 input[class=searchInput]').attr('name','answer');
+							$('#nav-pills-tab-2 input[class=searchInput]').attr('name', 'answer');
 						}
 					})
 					//质检得分只只能输入数字
-					$("#qualityForm input[name=score]").keyup(function(){ 
-						var tmptxt=$(this).val();       
-            			$(this).val(tmptxt.replace(/\D|^0/g,''));  
+					$("#qualityForm input[name=score]").keyup(function () {
+						var tmptxt = $(this).val();
+						$(this).val(tmptxt.replace(/\D|^0/g, ''));
 					})
-					$(".sendCheck2 input[name=score2]").keyup(function(){ 
-						var tmptxt=$(this).val();       
-            			$(this).val(tmptxt.replace(/\D|^0/g,''));  
+					$(".sendCheck2 input[name=score2]").keyup(function () {
+						var tmptxt = $(this).val();
+						$(this).val(tmptxt.replace(/\D|^0/g, ''));
 					})
-					
-					$('#nav-pills-tab-2 .searchHasAns').click(function(){
+
+					$('#nav-pills-tab-2 .searchHasAns').click(function () {
 						hasAns();
 					})
-					
+
 					//已有答案回答
 					function hasAns(pageNo2) {
-						if(!pageNo2){pageNo2=1}
+						if (!pageNo2) { pageNo2 = 1 }
 						$("#nav-pills-tab-2-form input[name=pageNo]").val(pageNo2);
 						$.ajax({
 							type: 'post',
@@ -1971,41 +2072,41 @@
 							cache: false,
 							url: encodeURI('../../question/getQueList'),
 							data: $("#nav-pills-tab-2-form").serialize(),
-							success: function(data) {
+							success: function (data) {
 								if (data.status == 0) {
 									if (data.questionList && data.questionList[0]) {
-										var html='';
+										var html = '';
 										for (var i = 0; i < data.questionList.length; i++) {
 											html += '<tr Id="' + (data.questionList[i].Id || '') + '"  SolutionId="' + (data.questionList[i].SolutionId || '') + '">';
 											html += '<td style="text-align: center;"><input class="singleAnsCos" type="radio" name="ansQue"></td>';
 											if (data.questionList[i].SolutionType == 2) {
 												var link = '../../web/knowledge/editFlow.html?questionId=' + data.questionList[i].Id + '&groupId=' + data.questionList[i].GroupId + '&solutionId=' + data.questionList[i].SolutionId;
-												html += '<td class="cosInput clickop" data-link="'+link+'" data-isf="1">' + (data.questionList[i].Question || '') + '</td>';
+												html += '<td class="cosInput clickop" data-link="' + link + '" data-isf="1">' + (data.questionList[i].Question || '') + '</td>';
 											} else {
 												link = '../../web/knowledge/queDetail.html?id=' + data.questionList[i].Id;
-												html += '<td class="cosInput clickop" data-link="'+link+'" data-isf="0">' + (data.questionList[i].Question || '') + '</td>';
+												html += '<td class="cosInput clickop" data-link="' + link + '" data-isf="0">' + (data.questionList[i].Question || '') + '</td>';
 											}
 											html += '<td class="cosInput" style="position:relative;"><div class="minheight1" style="max-width: 300px;">';
-											data.questionList[i].ListAnswer.forEach(function(el, i){
-												if(i == 0) {
+											data.questionList[i].ListAnswer.forEach(function (el, i) {
+												if (i == 0) {
 													html += '<div class="ccca">' + (el.Answer || '') + '</div>';
 												} else {
 													html += '<div class="ccca" style="display:none;">' + (el.Answer || '') + '</div>';
 												}
 											});
-											if(data.questionList[i].ListAnswer.length > 1) {
+											if (data.questionList[i].ListAnswer.length > 1) {
 												html += '</div><span style="position:absolute;top:10px;right:0;"><i class="fa fa-chevron-up rotog"></span></td>';
 											} else {
 												html += '</div></td>';
 											}
 											html += '<td>' + (data.questionList[i].AddTime || '') + '</td></tr>';
 										}
-		
+
 										var options = {
 											currentPage: data.currentPage,
 											totalPages: data.totlePages ? data.totlePages : 1,
 											alignment: 'right',
-											onPageClicked: function(event, originalEvent, type, page) {
+											onPageClicked: function (event, originalEvent, type, page) {
 												hasAns(page);
 											}
 										};
@@ -2016,8 +2117,8 @@
 									}
 									$('#nav-pills-tab-2 .tbody2').empty().append(html);
 									icheckInit();
-									$('.rotog').on('click', function(){
-										if($(this).hasClass('fa-chevron-up')) {
+									$('.rotog').on('click', function () {
+										if ($(this).hasClass('fa-chevron-up')) {
 											$(this).removeClass('fa-chevron-up').addClass('fa-chevron-down');
 											$(this).parent().parent().find('.minheight1').children(':not(:first-child)').show();
 										} else {
@@ -2025,8 +2126,8 @@
 											$(this).parent().parent().find('.minheight1').children(':not(:first-child)').hide();
 										}
 									});
-									$('.clickop').on('dblclick', function(){
-										if($(this).data('isf')) {
+									$('.clickop').on('dblclick', function () {
+										if ($(this).data('isf')) {
 											ifbOpenWindowInNewTab($(this).data('link'), '流程详细');
 										} else {
 											ifbOpenWindowInNewTab($(this).data('link'), '问题详细');
@@ -2038,13 +2139,13 @@
 							}
 						});
 					}
-		
-					$('#nav-pills-tab-1-form .searchSimiQue').click(function(){
+
+					$('#nav-pills-tab-1-form .searchSimiQue').click(function () {
 						simiQue();
 					})
 					// 相似问题答案回答
 					function simiQue(pageNo2) {
-						if(!pageNo2)pageNo2=1
+						if (!pageNo2) pageNo2 = 1
 						$("#nav-pills-tab-1-form input[name=pageNo]").val(pageNo2);
 						$.ajax({
 							type: 'post',
@@ -2052,10 +2153,10 @@
 							cache: false,
 							url: encodeURI('../../question/listQue'),
 							data: $("#nav-pills-tab-1-form").serialize(),
-							success: function(data) {
+							success: function (data) {
 								if (data.status == 0) {
-									if (data.ListQue && data.ListQue.length>0) {
-										var html='';
+									if (data.ListQue && data.ListQue.length > 0) {
+										var html = '';
 										for (var i = 0; i < data.ListQue.length; i++) {
 											html += '<tr Id="' + (data.ListQue[i].Id || '') + '"  SolutionId="' + (data.ListQue[i].SolutionId || '') + '">';
 											html += '<td width="50"><input class="singleAnsCos" type="radio" name="ansQue"></td>';
@@ -2067,7 +2168,7 @@
 											currentPage: data.currentPage,
 											totalPages: data.totlePages ? data.totlePages : 1,
 											alignment: 'right',
-											onPageClicked: function(event, originalEvent, type, page) {
+											onPageClicked: function (event, originalEvent, type, page) {
 												simiQue(page);
 											}
 										};
@@ -2092,19 +2193,19 @@
 							cache: false,
 							//不从缓存中去数据
 							url: encodeURI('../../Configuration/listAllItem'),
-							success: function(data) {
-								if(data.status === 0) {
+							success: function (data) {
+								if (data.status === 0) {
 									var List = [];
-									if(data.listItem) {
+									if (data.listItem) {
 										List = data.listItem;
 									} else {
 										return;
 									}
-									for(var i in List) {
-										if(List[i].ConfigItemDesc == '生效渠道') {
-											if(List[i].IsDisplay === 1) {
+									for (var i in List) {
+										if (List[i].ConfigItemDesc == '生效渠道') {
+											if (List[i].IsDisplay === 1) {
 												$('#warpRules').remove();
-											} else if(List[i].IsDisplay === 0) {
+											} else if (List[i].IsDisplay === 0) {
 												$.ajax({
 													type: 'post',
 													datatype: 'json',
@@ -2114,9 +2215,9 @@
 													data: {
 														itemId: List[i].Id
 													},
-													success: function(data) {
-														if(data.status === 0) {
-															if(data.listValue) {
+													success: function (data) {
+														if (data.status === 0) {
+															if (data.listValue) {
 																$('#chooseAll').empty();
 																$('#chooseAll').append('<input id="wayAll" type="checkbox"><label for="wayAll" style="margin: 5px;">全选</label>');
 																$('#wayAll').iCheck({
@@ -2124,16 +2225,16 @@
 																	radioClass: 'iradio_flat-blue',
 																	cursor: true
 																});
-																for(var key in data.listValue) {
-																	$('#chooseAll').append('<a class="btn btn-white m-r-5 m-b-5" fid="'+data.listValue[key].DicCode+'">'+data.listValue[key].DicDesc+'</a>');
+																for (var key in data.listValue) {
+																	$('#chooseAll').append('<a class="btn btn-white m-r-5 m-b-5" fid="' + data.listValue[key].DicCode + '">' + data.listValue[key].DicDesc + '</a>');
 																}
 															}
 														}
 													}
 												});
 											}
-										} else if(List[i].ConfigItemDesc == '生效角色') {
-											if(List[i].IsDisplay === 1) {
+										} else if (List[i].ConfigItemDesc == '生效角色') {
+											if (List[i].IsDisplay === 1) {
 												$('#warpRoles').remove();
 											}
 										}
@@ -2143,8 +2244,8 @@
 						});
 					}
 					//生效渠道
-					$('body').on('click', 'a[fid]', function(e) {
-						if($(e.target).hasClass('btn-primary')) {
+					$('body').on('click', 'a[fid]', function (e) {
+						if ($(e.target).hasClass('btn-primary')) {
 							$(e.target).removeClass('btn-primary');
 							$(e.target).attr('ckb', 0);
 						} else {
@@ -2152,7 +2253,7 @@
 							$(e.target).attr('ckb', 1);
 						}
 					});
-					$('body').on('ifClicked', '#wayAll', function() {
+					$('body').on('ifClicked', '#wayAll', function () {
 						if ($(this)[0].checked) {
 							$('a[fid]').removeClass('btn-primary');
 							$('a[fid]').attr('ckb', 0);
@@ -2161,107 +2262,107 @@
 							$('a[fid]').attr('ckb', 1);
 						}
 					});
-					
-					$('body').on('click','.testOnly',function(){
+
+					$('body').on('click', '.testOnly', function () {
 						replayTest(0);
 					})
-					$('body').on('click','.testAndlearn',function(){
+					$('body').on('click', '.testAndlearn', function () {
 						replayTest(1);
 					})
-		
+
 					//仅质检 点击提交到后台
-					function replayTest(learnFlag){
-						var qId='',sId='',effectiveRules = [],tmpUrl='';//相似问题的问题id和答案的solutionId
-						var tmpStatus=$('.nav-pills li.active').attr('status');
-						if(tmpStatus==1 || tmpStatus==3){
+					function replayTest(learnFlag) {
+						var qId = '', sId = '', effectiveRules = [], tmpUrl = '';//相似问题的问题id和答案的solutionId
+						var tmpStatus = $('.nav-pills li.active').attr('status');
+						if (tmpStatus == 1 || tmpStatus == 3) {
 							//当前的答案模式是相似问题答案回答或者是已有答案回答
-							$('.tab-content .singleAnsCos').each(function() {
+							$('.tab-content .singleAnsCos').each(function () {
 								if ($(this).prop('checked')) {
 									qId = $(this).parents('tr').attr('id');
 									sId = $(this).parents('tr').attr('solutionId');
 								}
 							});
-							
-							tmpUrl='&id='+qId+'&solutionId='+sId;
+
+							tmpUrl = '&id=' + qId + '&solutionId=' + sId;
 							//相似和已有答案的区分
-							if(tmpStatus==3){
-								if(!qId && !sId){
-									var tmpData={"message":"请选择问题","status":1}
+							if (tmpStatus == 3) {
+								if (!qId && !sId) {
+									var tmpData = { "message": "请选择问题", "status": 1 }
 									yunNoty(tmpData);
 									return;
 								}
-								tmpUrl=tmpUrl+'&groupId='+$('#nav-pills-tab-1 input[name=groupId]').val();
-							}else if(tmpStatus==1){
-								if(!qId && !sId){
-									var tmpData={"message":"请选择答案","status":1}
+								tmpUrl = tmpUrl + '&groupId=' + $('#nav-pills-tab-1 input[name=groupId]').val();
+							} else if (tmpStatus == 1) {
+								if (!qId && !sId) {
+									var tmpData = { "message": "请选择答案", "status": 1 }
 									yunNoty(tmpData);
 									return;
 								}
-								tmpUrl=tmpUrl+'&groupId='+$('#nav-pills-tab-2 input[name=groupId]').val();
+								tmpUrl = tmpUrl + '&groupId=' + $('#nav-pills-tab-2 input[name=groupId]').val();
 							}
-						}else if(tmpStatus==2){
+						} else if (tmpStatus == 2) {
 							//编辑答案回答
-							
+
 							var effectiveRule1 = {
-								'type' : 1,
-								'roleIds' : ""
+								'type': 1,
+								'roleIds': ""
 							};
-							$('#warpRules a.btn-primary').each(function() {
-								effectiveRule1.roleIds += $(this).attr('fid')+",";
+							$('#warpRules a.btn-primary').each(function () {
+								effectiveRule1.roleIds += $(this).attr('fid') + ",";
 							});
-							if(effectiveRule1.roleIds === "") {
+							if (effectiveRule1.roleIds === "") {
 								effectiveRule1.roleIds = "-1";
 							} else {
-								effectiveRule1.roleIds = effectiveRule1.roleIds.substring(0,effectiveRule1.roleIds.length-1);
+								effectiveRule1.roleIds = effectiveRule1.roleIds.substring(0, effectiveRule1.roleIds.length - 1);
 							}
 							var effectiveRule2 = {
-								'type' : 2,
-								'roleIds' : ""
+								'type': 2,
+								'roleIds': ""
 							};
-							if($('#QuestionClassModel input[name=hasCheckedId]').val()) {
+							if ($('#QuestionClassModel input[name=hasCheckedId]').val()) {
 								effectiveRule2.roleIds = $('#QuestionClassModel input[name=hasCheckedId]').val().split('~').join(',');
 							}
-							if(effectiveRule2.roleIds === "") {
+							if (effectiveRule2.roleIds === "") {
 								effectiveRule2.roleIds = "-1";
 							}
 							effectiveRules.push(effectiveRule1);
 							effectiveRules.push(effectiveRule2);
 							effectiveRules = JSON.stringify(effectiveRules);
-							if($('#nav-pills-tab-3 input[name=groupId]').val()==0){
-								var tmpData={"message":"请选择分类","status":1}
+							if ($('#nav-pills-tab-3 input[name=groupId]').val() == 0) {
+								var tmpData = { "message": "请选择分类", "status": 1 }
 								yunNoty(tmpData);
 								return;
 							}
-							tmpUrl='&groupId='+$('#nav-pills-tab-3 input[name=groupId]').val()+'&effectiveRules='+effectiveRules+'&answer='+$('#nav-pills-tab-3 #insert').val()
-							
+							tmpUrl = '&groupId=' + $('#nav-pills-tab-3 input[name=groupId]').val() + '&effectiveRules=' + effectiveRules + '&answer=' + $('#nav-pills-tab-3 #insert').val()
+
 						}
 						$.ajax({
 							type: 'post',
 							datatype: 'json',
 							cache: false,
 							url: encodeURI('../../QualityCheck/checkLogItemByAnswer'),
-							data: $("#qualityForm").serialize()+'&learnFlag='+learnFlag+'&status='+tmpStatus+tmpUrl,
-							success: function(data) {
+							data: $("#qualityForm").serialize() + '&learnFlag=' + learnFlag + '&status=' + tmpStatus + tmpUrl,
+							success: function (data) {
 								if (data.status == 0) {
 									yunNoty(data);
 									$('.sendCheck .cancel').trigger('click');
 									$('#qualityForm input').val('');
-									if(tmpStatus==3){
+									if (tmpStatus == 3) {
 										$('#nav-pills-tab-1 input[name=groupId]').val('0');
 										$('#nav-pills-tab-1 input[name=question]').val('0');
 										$('#nav-pills-tab-1 .ztreeName1').html('全部分类');
-									}else if(tmpStatus==1){
+									} else if (tmpStatus == 1) {
 										$('#nav-pills-tab-2 input[name=groupId]').val('0');
 										$('#nav-pills-tab-2 input[class=form-control]').val('');
 										$('#nav-pills-tab-2 .ztreeName2').html('全部分类');
-									}else if(tmpStatus==2){
+									} else if (tmpStatus == 2) {
 										$('#nav-pills-tab-3 input').val('');
 										$('#nav-pills-tab-3 textarea').val('');
 										$('#nav-pills-tab-3 .ztreeName3').html('全部分类');
 									}
-									if($('#page-container .panel-body>nav-pills li').eq(0).hasClass('.active')){
+									if ($('#page-container .panel-body>nav-pills li').eq(0).hasClass('.active')) {
 										listCheckLogItem();
-									}else{
+									} else {
 										listCheckLoginSummary();
 									}
 									chatRecords();
@@ -2270,12 +2371,261 @@
 								}
 							}
 						});
-					}		
-					
-					
+					}
+
+					$(".form_datetime").datetimepicker({
+					language: "zh-CN",
+					format: "yyyy-mm-dd hh:ii",
+					autoclose: true,
+					todayBtn: true,
+					minuteStep: 10,
+					initialDate: new Date(),
+					zIndex: 1500
+				});
+			
+				/*
+					taskid=740,黄世鹏
+					开发：将时间选项改为通用的时间插件
+				*/ 
+				function selectGen_new() {
+
+					//全局变量 获得当前时间
+					var myDate = new Date()
+					var myDateM = myDate.getMonth() + 1//月
+					var myDateD = myDate.getDate()//日
+					var myDateHou = myDate.getHours()//时
+					var myDateMin = myDate.getMinutes() + 2//分
+
+
+					if (myDateM < 10) {//判断现在月份格式
+						myDateM = '0' + myDateM
+					}
+					if (myDateD < 10) {//判断现在日期格式
+						myDateD = '0' + myDateD
+					}
+					if (myDateHou < 10) {//判断现在小时格式
+						myDateHou = '0' + myDateHou
+					}
+					if (myDateMin < 10) {//判断现在分钟格式
+						myDateMin = '0' + myDateMin
+					}
+
+
+					function updateTime() {
+						myDate = new Date()
+						myDateM = myDate.getMonth() + 1//月
+						myDateD = myDate.getDate()//日
+						myDateHou = myDate.getHours()//时
+						myDateMin = myDate.getMinutes() + 2//分
+						if (myDateM < 10) {//判断现在月份格式
+							myDateM = '0' + myDateM
+						}
+						if (myDateD < 10) {//判断现在日期格式
+							myDateD = '0' + myDateD
+						}
+						if (myDateHou < 10) {//判断现在小时格式
+							myDateHou = '0' + myDateHou
+						}
+						if (myDateMin < 10) {//判断现在分钟格式
+							myDateMin = '0' + myDateMin
+						}
+					}
+
+
+					//页面初始化 默认一周自动填充时间
+					function apply() {//获取一周前时间
+						var newDatew = new Date()
+						newDatew.setTime(newDatew.getTime() - 7 * 24 * 60 * 60 * 1000)//此时newDatew变成了一周前的时间
+						var weekMon = newDatew.getMonth() + 1//一周前的月份
+						if (weekMon < 10) { weekMon = '0' + (newDatew.getMonth() + 1) }
+
+						var weekDay = newDatew.getDate()//一周前的日
+						if (weekDay < 10) { weekDay = '0' + newDatew.getDate() }
+
+						var week = newDatew.getFullYear() + '-' + weekMon + '-' + weekDay
+						$('#tm1').val(week + ' ' + myDateHou + ':' + myDateMin)//一周前的现在
+						$('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//今天的时间
+					}
+
+					apply()
+
+					//获得上月今天的方法
+					function lastMonthDate() {
+						var vYear = myDate.getFullYear()
+						var vMon = myDate.getMonth() + 1
+						var vDay = myDate.getDate()
+						//每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+						var daysInMonth = new Array(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+						if (vMon == 1) {
+							vYear = myDate.getFullYear() - 1
+							vMon = 12
+						} else {
+							vMon = vMon - 1
+						}
+						//若是闰年，二月最后一天是29号
+						if (vYear % 4 == 0 && vYear % 100 != 0) {
+							daysInMonth[2] = 29
+						}
+						if (daysInMonth[vMon] < vDay) {
+							vDay = daysInMonth[vMon]
+						}
+						if (vDay < 10) {
+							vDay = '0' + vDay
+						}
+						if (vMon < 10) {
+							vMon = '0' + vMon
+						}
+						var LastMonthDate = vYear + '-' + vMon + '-' + vDay
+						return LastMonthDate
+					}
+
+					//获得前三月今天的方法
+					function lastthreeMonthDate() {
+						var vYear = myDate.getFullYear()
+						var vMon = myDate.getMonth() + 1
+						var vDay = myDate.getDate()
+						//每个月的最后一天日期（为了使用月份便于查找，数组第一位设为0）
+						var daysInMonth = new Array(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+						if (vMon == 1) {
+							vYear = myDate.getFullYear() - 1
+							vMon = 10
+						} else if(vMon == 2) {
+							vYear = myDate.getFullYear() - 1
+							vMon = 11
+						} else if(vMon == 3) {
+							vYear = myDate.getFullYear() - 1
+							vMon = 12
+						} else{
+							vMon = vMon - 3
+						}
+						//若是闰年，二月最后一天是29号
+						if (vYear % 4 == 0 && vYear % 100 != 0) {
+							daysInMonth[2] = 29
+						}
+						if (daysInMonth[vMon] < vDay) {
+							vDay = daysInMonth[vMon]
+						}
+						if (vDay < 10) {
+							vDay = '0' + vDay
+						}
+						if (vMon < 10) {
+							vMon = '0' + vMon
+						}
+						var lastthreeMonthDate = vYear + '-' + vMon + '-' + vDay
+						return lastthreeMonthDate
+					}
+
+					$('#myDropdown').on('click', function () {
+						$(this).parent().addClass('open')
+					})
+					$('body').on('click', function (e) {
+						if (!$('#myDropdown').parent().find($(e.target)).length) {
+							$('#myDropdown').parent().removeClass('open')
+						}
+					})
+
+					$('.ttw0').on('click', function () { //昨天
+						updateTime();
+						$('#myDropdown').parent().removeClass('open')
+						$(this).addClass('open').siblings().removeClass('open')
+						var newDate1 = new Date()//获取当前时间
+						newDate1.setTime(newDate1.getTime() - 24 * 60 * 60 * 1000)//当前时间设置成昨天时间
+						var yestM = newDate1.getMonth() + 1 //昨天的月
+						if (yestM < 10) {
+							yestM = '0' + yestM
+						}
+						var yestD = newDate1.getDate()//昨天的日
+						if (yestD < 10) {
+							yestD = '0' + yestD
+						}
+						var yesterday = newDate1.getFullYear() + '-' + yestM + '-' + yestD
+						$('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+						$('#tm1').val(yesterday + ' ' + '00' + ':' + '00')//昨天的时间
+						$('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00')//现在的时间
+						getList();
+					})
+
+					$('.ttw1').on('click', function () { //今天
+						updateTime();
+						$('#myDropdown').parent().removeClass('open')
+						$(this).addClass('open').siblings().removeClass('open')
+						$('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+						$('#tm1').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + '00' + ':' + '00')//今天零点
+						$('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//现在时间
+						getList();
+					})
+
+					$('.ttw2').on('click', function () { //最近七天
+						updateTime();
+						$('#myDropdown').parent().removeClass('open')
+						$(this).addClass('open').siblings().removeClass('open')
+						$('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+						apply()
+						getList();
+					})
+					$('.ttw3').on('click', function () { //最近一个月
+						updateTime();
+						$('#myDropdown').parent().removeClass('open')
+						$(this).addClass('open').siblings().removeClass('open')
+						$('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+						$('#tm1').val(lastMonthDate() + ' ' + myDateHou + ':' + myDateMin)//一月前的今天
+						$('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//现在时间
+						getList();
+					})
+					$('.ttw5').on('click', function () { //最近三个月
+						updateTime();
+						$('#myDropdown').parent().removeClass('open')
+						$(this).addClass('open').siblings().removeClass('open')
+						$('.ttw').html($(this).text() + '&nbsp;&nbsp;<span class="caret"></span>')
+						$('#tm1').val(lastthreeMonthDate() + ' ' + myDateHou + ':' + myDateMin)//一月前的今天
+						$('#tm2').val(new Date().getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//现在时间
+						getList();
+					})
 				}
+				selectGen_new();
+				//判断时间大于3个月的
+				function diy_time(time1,time2){
+					time1 = Date.parse(new Date(time1));
+					time2 = Date.parse(new Date(time2));
+					return time3 = Math.abs(parseInt((time2 - time1)/1000/3600/24));
+				};
+				$('#tm1').on('changeDate', function(ev){
+				var endValue=$('#tm2').val();
+				if(endValue!=''){
+					if(diy_time($(this).val(),endValue)>90){
+						var obj={"message":"请选择3个月内的时间","status":-2}
+						$('.confirm').off('click').css('pointer-events', 'all').attr('disabled', true);
+						yunNoty(obj);
+						return;
+					}else{
+						$('.confirm').off('click').click(function(){
+							$('#myDropdown').parent().removeClass('open');
+						}).css('pointer-events', 'all').removeAttr('disabled');
+					}
+				}
+				});
+				$('#tm2').on('changeDate', function(ev){
+					var startValue=$('#tm1').val();
+					if(startValue!=''){
+						diy_time(startValue,$(this).val());
+						if(diy_time(startValue,$(this).val())>90){
+							var obj={"message":"请选择3个月内的时间","status":-2}
+							$('.confirm').off('click').css('pointer-events', 'all').attr('disabled', true);
+							yunNoty(obj);
+							return;
+						}else{
+							$('.confirm').off('click').click(function(){
+								$('#myDropdown').parent().removeClass('open');
+							}).css('pointer-events', 'all').removeAttr('disabled');
+
+						}
+					}
+				});
+				}
+				
 			});
 			
+
 		</script>
 </body>
 

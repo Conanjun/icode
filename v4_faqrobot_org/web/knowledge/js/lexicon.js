@@ -38,6 +38,7 @@ $(document).ready(function() {
 		$('#exlfileupload').fileupload({
 			url: '../../WordDocExcel/importFile?mode=2',
 			dataType: 'json',
+			pasteZone:$('#a'),
 			change: function(e, data) {
 				var flag = false;
 				data.files.forEach(function(el, i) {
@@ -230,6 +231,11 @@ $(document).ready(function() {
 	$(document).on('keyup', '#search-input', function(e){
 		if(e.keyCode == 13) {
 			$('#search').trigger('click');
+		}
+	});
+    $(document).on('keyup', 'input[name="word"]', function(e){
+		if(e.keyCode == 13) {
+			$('#createWord').trigger('click');
 		}
 	});
 

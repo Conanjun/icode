@@ -1,0 +1,1018 @@
+html {
+  padding-top: 40px;
+  font-family: 'microsoft yahei';
+}
+body {
+  background: url(../images/bg.png) no-repeat scroll center center;
+  background-size: cover;
+  background-image: none\9;
+  background-color: #EAEAEA\9;
+}
+a {
+  color: #E74F4C;
+}
+div.container {
+  margin: 0 auto;
+  width: 990px;
+  background-color: #fff;
+  padding-left: 0;
+  padding-right: 0;
+}
+div.container div.header {
+  background-color: #E74F4C;
+  height: 60px;
+  position: relative;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+}
+div.container div.header .robot_top {
+  overflow: hidden;
+  height: 60px;
+  padding: 6px 20px;
+}
+div.container div.header .robot_top ul.robot_top_icon {
+  height: 98px;
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+}
+div.container div.header .robot_top ul.robot_top_icon img {
+  border: 0 none;
+  max-width: 100%;
+  vertical-align: middle;
+}
+div.container div.header .robot_top ul.robot_top_name {
+  position: absolute;
+  left: 125px;
+  width: 200px;
+}
+div.container div.header .robot_top ul.robot_top_name h4 {
+  color: #fff;
+  font: bold 18px/30px "Microsoft YaHei";
+}
+div.container div.header .robot_top ul.robot_top_name p {
+  color: #fff;
+  font: bold 13px/16px "Microsoft YaHei";
+}
+div.container div.header .robot_top ul.robot_top_pic {
+  display:none;
+  position: absolute;
+  padding-top: 10px;
+  cursor: pointer;
+  left: 800px;
+}
+div.container div.header .robot_top ul.robot_top_cross {
+  float: left;
+  padding-left: 24px;
+}
+div.container div.header .robot_top ul.robot_top_cross h4 {
+  color: #fff;
+  font: 36px/40px "Microsoft YaHei";
+  cursor: pointer;
+}
+div.container div.content {
+  position: relative;
+  height: 735px;
+}
+div.container div.content div.contentLeft {
+  width: 640px;
+  float: left;
+}
+div.container div.content div.contentLeft div.writeRoot {
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  position: relative;
+  border-color: #DDDDDD;
+  border-image: none;
+  border-style: none solid solid;
+  border-width: 0 0 1px 0;
+  background-color: #F6F6F6;
+  width: 100%;
+  height: 540px;
+  overflow-y: hidden;
+}
+div.container div.content div.contentLeft div.writeRoot div.chatArea {
+  position: absolute;
+  width: 100%;
+}
+div.container div.content div.contentLeft div.writeArea {
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  width: auto;
+  height: 195px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel {
+  position: relative;
+  height: 40px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name {
+  height: 22px;
+  margin: 8px 5px;
+  display: inline-block;
+  position: relative;
+  width: 150px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name .Panel_item {
+  margin: 5px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name .Panel_item div {
+  display: inline-block;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name div.popFont {
+  width: 140px;
+  height: 45px;
+  position: absolute;
+  top: -72px;
+  left: 20px;
+  z-index: 1;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  padding: 5px;
+  text-align: center;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name div.popFont .popFontS {
+  margin-bottom: 5px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_name div.popFont select {
+  width: 85px;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_word {
+  float: right;
+  height: 40px;
+  display: inline-block;
+  position: relative;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_word #skill {
+  vertical-align: middle;
+  display: inline-block;
+}
+div.container div.content div.contentLeft div.writeArea div.writePanel div.Panel_word span {
+  line-height: 36px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+div.container div.content div.contentLeft div.writeArea div.writeInput {
+  position: relative;
+}
+div.container div.content div.contentLeft div.writeArea div.writeInput div.hdnTipWord {
+  position: absolute;
+  left: 12px;
+  top: 4px;
+  color: #dddddd;
+}
+div.container div.content div.contentLeft div.writeArea div.writeInput ul.inputArea {
+  background-color: #fff;
+  height: 90px;
+  overflow: hidden;
+  padding: 5px 10px;
+}
+div.container div.content div.contentLeft div.writeArea div.writeInput ul.inputArea textarea {
+  border: 0 none;
+  color: #353535;
+  font: 12px/18px "Microsoft YaHei";
+  height: 90px;
+  outline: medium none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  resize: none;
+  width: 100%;
+  word-wrap: break-word;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputClose:hover {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  background-color: #C3C3C3;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputClose {
+  background-color: #FFF;
+  border: 1px solid #C3C3C3;
+  border-radius: 3px;
+  cursor: pointer;
+  float: right;
+  padding: 6px 27px;
+  margin-top: 5px;
+  text-align: center;
+  margin-right: 10px;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputClose dd {
+  color: #333333;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputSend:hover {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  background-color: #ff656c;
+  border-color: #ff656c;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputSend {
+  background-color: #E74F4C;
+  border: 1px solid #E74F4C;
+  border-radius: 3px;
+  cursor: pointer;
+  float: right;
+  padding: 6px 27px;
+  margin-top: 5px;
+  text-align: center;
+  margin-right: 5px;
+}
+div.container div.content div.contentLeft div.writeArea dl.inputSend dd {
+  color: white;
+}
+div.container div.content div.contentRight {
+  background-color: #FFF;
+  width: 349px;
+  height: 735px;
+  float: left;
+  border-color: #DDDDDD;
+  border-image: none;
+  border-style: none solid solid;
+  border-width: 0 0 0 1px;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  overflow: hidden;
+}
+div.container div.content div.contentRight div.hotSpot div.nav {
+  height: 40px;
+  text-align: center;
+  position: relative;
+  /*div.slider::before {
+						content: "";
+						display: block;
+						position: absolute;
+						top: -8px;
+						width: 0;
+						height: 0;
+						border: 4px transparent solid;
+						left: 40px;
+						border-bottom-color: #E74F4C;
+					}*/
+}
+div.container div.content div.contentRight div.hotSpot div.nav div.navRow {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  float: left;
+  padding: 10px 0;
+  width: 87px;
+  height: 40px;
+  box-sizing: border-box;
+  border-bottom: 1px #ededed solid;
+  background-color: #EFF0F2;
+}
+div.container div.content div.contentRight div.hotSpot div.nav div.navRowOn {
+  background-color: #e1e4e8;
+}
+div.container div.content div.contentRight div.hotSpot div.nav div.slider {
+  border-color: #E74F4C;
+  border-image: none;
+  border-width: 2px;
+  border-style: none none solid none;
+  position: absolute;
+  top: 38px;
+  left: 0;
+  z-index: 1;
+  width: 87px;
+}
+div.container div.content div.contentRight div.hotSpot div.nav div.slider img {
+  position: absolute;
+  top: -4px;
+  left: 40px;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot {
+  overflow: hidden;
+  position: relative;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot #hotThreeContent {
+  position: absolute;
+  width: 100%;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.null {
+  line-height: 32px;
+  font-size: 14px;
+  margin: 5px 10px;
+  position: relative;
+  background-color: white;
+  text-align: center;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.row {
+  width: 100%;
+  height: 130px;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.row .col {
+  cursor: pointer;
+  width: 33%;
+  height: 100%;
+  float: left;
+  display: inline-block;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.row .col .pic {
+  width: 100%;
+  height: 90px;
+  padding-left: 25%;
+  padding-top: 20%;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.row .col .pic img {
+  max-width: 60px;
+}
+div.container div.content div.contentRight div.hotSpot div.robot_hot div.row .col p {
+  font-size: 14px;
+  text-align: center;
+}
+/* 小提示 */
+div.popTips {
+  width: 360px;
+  height: 220px;
+  position: absolute;
+  top: -222px;
+  right: 15px;
+  border: 1px solid #e0e0e0;
+  z-index: 1;
+  background: #fff;
+}
+@media screen and (min-width: 0) {
+  div.popTips {
+    top: -240px;
+  }
+}
+div.popTips div.popHead {
+  position: relative;
+  height: 165px;
+}
+div.popTips div.popHead div.lPic {
+  position: absolute;
+  left: 8px;
+  top: 0;
+}
+div.popTips div.popHead div.cPic {
+  position: absolute;
+  left: 10px;
+  top: 75px;
+}
+div.popTips div.popHead div.cam {
+  position: absolute;
+  left: 80px;
+  top: 15px;
+  width: 260px;
+  height: 145px;
+  overflow-x: hidden;
+}
+div.popTips div.popHead div.cam div.tipMsg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1300px;
+}
+div.popTips div.popHead div.cam div.tipMsg div.tipMsgItem {
+  width: 260px;
+  display: inline-block;
+  float: left;
+}
+div.popTips div.popHead div.cam div.tipMsg div.tipMsgItem span {
+  color: #E74F4C;
+  line-height: 30px;
+  margin: 0;
+}
+div.popTips div.popHead div.cam div.tipMsg div.tipMsgItem p {
+  line-height: 17px;
+  font-size: 12px;
+}
+div.popTips div.popTail {
+  height: 50px;
+}
+div.popTips div.popTail div.tailMiddle {
+  width: 55px;
+  margin: 10px auto;
+  z-index: 2;
+}
+div.popTips div.popTail div.tailMiddle div.imgLeft {
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+div.popTips div.popTail div.tailMiddle div.imgRight {
+  display: inline-block;
+  cursor: pointer;
+}
+div.popTips div.popClose {
+  position: absolute;
+  top: 0;
+  right: 7px;
+  font-size: 20px;
+  color: #c6c6c6;
+  cursor: pointer;
+  z-index: 2;
+}
+div.popTips::before,
+div.popTips::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -36px;
+  width: 0;
+  height: 0;
+  border: 6px transparent solid;
+}
+div.popTips::before {
+  right: 49px;
+  border-width: 24px 5px 13px 29px;
+  border-top-color: #fff;
+  z-index: 1;
+}
+div.popTips::after {
+  right: 48px;
+  border-width: 25px 5px 11px 31px;
+  border-top-color: #e0e0e0;
+  z-index: 0;
+}
+/* 意见反馈 */
+div.fadeBackContent {
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+}
+div.fadeBackContent form.feedbackForm {
+  margin-left: 40px;
+}
+div.fadeBackContent form.feedbackForm div.feedback {
+  margin: 10px 0;
+}
+div.fadeBackContent form.feedbackForm div.feedback p {
+  line-height: 30px;
+}
+div.fadeBackContent form.feedbackForm div#hid {
+  margin: 10px 0;
+}
+div.fadeBackContent form.feedbackForm div#hid p {
+  line-height: 30px;
+}
+div.fadeBackContent form.feedbackForm div.comment {
+  margin: 10px 0;
+}
+div.fadeBackContent form.feedbackForm div.comment #cont {
+  width: 320px;
+  height: 160px;
+  border: 1px solid #e0e0e0;
+  padding: 5px;
+}
+div.fadeBackContent form.feedbackForm div.send {
+  margin-top: 10px;
+}
+div.fadeBackContent form.feedbackForm div.send input {
+  width: 70px;
+  background-color: #E74F4C;
+  border: 1px solid #E74F4C;
+  color: #ffffff;
+  border-radius: 3px;
+}
+.MN_kfCtn img {
+  max-width: 460px;
+}
+/* 订单列表 */
+.order {
+  font-size: 12px;
+  position: absolute;
+  width: 100%;
+}
+.order .orderItem {
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  text-indent: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+.order .orderItem .orderNO {
+  width: 45%;
+  display: inline-block;
+}
+.order .orderItem .orderNO a {
+  color: #E74F4C;
+}
+.order .orderItem .orderStatus {
+  width: 45%;
+  display: inline-block;
+}
+.order .orderItem .triangle-open,
+.order .orderItem .triangle-close {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  border-top: 7px solid #C8C8C8;
+  border-left: 6px solid #FFF;
+  border-right: 6px solid #FFF;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.order .orderItem .triangle-close {
+  top: 15px;
+  right: 12px;
+  border-top: 6px solid #FFF;
+  border-bottom: 6px solid #FFF;
+  border-left: 7px solid #C8C8C8;
+}
+.order .orderDetail {
+  /*background-color: #EDEEF2;*/
+  border-bottom: 1px solid #e0e0e0;
+}
+.order .orderDetail .orderPhoto {
+  text-align: center;
+  padding: 5px;
+}
+.order .orderDetail .orderPhoto img {
+  max-width: 50px;
+  margin: 5px;
+  float: left;
+}
+.order .orderDetail .orderPhoto:after {
+  clear: both;
+  display: table;
+  content: " ";
+}
+.order .orderDetail .orderPrice {
+  padding: 5px;
+  text-indent: 12px;
+}
+.order .orderDetail .orderPrice .dollarColor {
+  color: #E74F4C;
+}
+.order .orderDetail .orderOpt {
+  padding: 5px;
+  text-indent: 12px;
+}
+.order .orderDetail .orderOpt button:hover {
+  background-color: #E74F4C;
+  color: #fff;
+  text-shadow: none;
+  font-family: 'microsoft yahei';
+}
+.order .orderDetail .orderOpt button {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  padding: 4px 8px;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-repeat: repeat-x;
+  color: #E74F4C;
+  border-color: #E74F4C;
+  /*background-color: #f5f5f5;*/
+  background-color: #fff;
+  text-shadow: 0 1px 0 #fff;
+  text-indent: 0px;
+}
+.order .orderDetail .orderExpress {
+  padding: 5px;
+  text-indent: 12px;
+  font-weight: bold;
+}
+/* 个人空间 */
+.moodDiv {
+  margin: 15px 0;
+  text-align: center;
+  color: #6E6E6E;
+  border-bottom: 1px #e6e6e6 solid;
+}
+.moodDiv .weather {
+  margin: 0 24px;
+  height: 40px;
+  line-height: 40px;
+}
+.moodDiv .weatherNum {
+  font-size: 30px;
+  margin: 8px 0;
+}
+.moodDiv .weatherImg {
+  display: inline-block;
+}
+.moodDiv .weatherDetail {
+  margin: 10px 0;
+}
+.moodDiv .mood {
+  margin: 8px 10px;
+  line-height: 32px;
+  text-align: left;
+}
+.moodDiv .mood .moodPic {
+  display: inline-block;
+  margin-bottom: -8px;
+  margin-left: 24px;
+  margin-right: 4px;
+}
+.moodDiv .mood #wearSug {
+  width: 264px;
+  display: inline-block;
+  vertical-align: top;
+}
+.moodDiv .mood #moodSpan {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 14px;
+  font-size: 14px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+/* 换一换推荐 */
+.goodOuter {
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  background-color: #EFF0F2;
+  margin: 10px 0;
+}
+.goodOuter .goodLeft {
+  display: inline-block;
+  width: 95px;
+  height: 90px;
+  vertical-align: top;
+}
+.goodOuter .goodLeft img {
+  width: 95px;
+  height: 90px;
+}
+.goodOuter .goodRight {
+  display: inline-block;
+  min-height: 90px;
+  vertical-align: top;
+  max-width: 340px;
+  background-color: #EFF0F2;
+}
+.goodOuter .goodRight a {
+  color: #005EA7;
+  line-height: 24px;
+  margin: 5px 2px;
+  display: block;
+}
+.goodOuter .goodRight span {
+  display: block;
+  text-indent: 20px;
+  font-weight: bold;
+}
+.goodOuter .goodRight span span {
+  color: #DC6366;
+  display: inline;
+}
+/* 换一换按钮 */
+.changeitem {
+  float: right;
+  background-color: #E74F4C;
+  color: #fff;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.starRow {
+  margin: 8px 0;
+}
+.starRow .constellation {
+  margin: 0 8px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+.starRow .constellation .constellationName {
+  margin-top: 6px;
+  font-size: 12px;
+}
+.ansStarPic {
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 16px;
+  margin-right: 16px;
+}
+.ansStarText {
+  display: inline-block;
+  max-width: 330px;
+}
+.iframeClass {
+  width: 100%;
+  height: 100%;
+}
+/*
+ * 聊天框中的表格
+ */
+table {
+  border-color: #e2e7eb;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+table > thead > tr > th {
+  color: #242a30;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e7eb !important;
+}
+table > tbody > tr > td,
+table > tbody > tr > th,
+table > tfoot > tr > td,
+table > tfoot > tr > th,
+table > thead > tr > td,
+table > thead > tr > th {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e2e7eb;
+  padding: 4px 6px;
+}
+#backdrop {
+  width: 100%;
+  height: 2000px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: #fff;
+  transition: opacity .3s linear;
+  opacity: 0;
+  z-index: 50;
+  display: none;
+}
+#orderLogin {
+  color: #fff;
+  background-color: #E64E4C;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.fixedPag {
+  position: absolute;
+  background-color: #fff;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.pagination > li {
+  display: inline;
+}
+.pagination > li > a,
+.pagination > li > span {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: #E74F4C;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+  margin-left: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  color: #DC6366;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff;
+  cursor: default;
+  background-color: #E74F4C;
+  border-color: #E74F4C;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #ddd;
+}
+.pagination-sm > li > a,
+.pagination-sm > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.pagination-sm > li:first-child > a,
+.pagination-sm > li:first-child > span {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.yun_weather {
+  max-width: 430px;
+}
+.yun_weather p {
+  color: #fff;
+}
+/****单个答案反馈****/
+.MN_reasonCtn {
+  padding: 10px 0;
+}
+.MN_reasonTitle {
+  font-weight: 700;
+}
+.MN_reasonItem {
+  color: #E74F4C;
+}
+.MN_reasonItem input {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.MN_reasonItem label {
+  cursor: pointer;
+  vertical-align: middle;
+}
+.MN_reasonContent textarea {
+  margin-top: 5px;
+  border: none;
+  resize: none;
+  outline: none;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  padding: 5px 10px;
+  height: 100px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.MN_reasonSend {
+  font-size: 12px;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: center;
+  width: 45px;
+  display: none;
+  background: #E74F4C;
+  color: #fff;
+  padding: 5px 1px;
+}
+/****单个答案反馈****/
+/**************************** BEGIN ****************************/
+/*图片放大预览*/
+.FA_previewCtn {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+}
+.FA_previewClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  line-height: 22px;
+  border-radius: 100%;
+  border: 2px solid #fff;
+  color: #fff;
+  background: #777777;
+  z-index: 1;
+  font-size: 23px;
+  text-align: center;
+  cursor: pointer;
+}
+.FA_previewClose:hover {
+  background: #2E8DED;
+}
+.FA_previewMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .3;
+  filter: alpha(opacity=30);
+}
+.FA_previewImgCtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.FA_previewImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+}
+/**************************** END ****************************/
+/*查看更多消息*/
+.MN_record {
+  text-align: center;
+}
+/* 最近订单推荐 */
+.orderWhole,
+.orderWholeClicked {
+  border: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+}
+.orderWhole .orderTop,
+.orderWholeClicked .orderTop {
+  padding-top: 10px;
+  padding-left: 10px;
+  color: #176db1;
+}
+.orderWhole .orderTop .ordertl,
+.orderWholeClicked .orderTop .ordertl {
+  display: inline-block;
+}
+.orderWhole .orderTop .ordertr,
+.orderWholeClicked .orderTop .ordertr {
+  display: inline-block;
+  margin-left: 15px;
+}
+.orderWhole .orderOuter,
+.orderWholeClicked .orderOuter {
+  box-sizing: border-box;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 10px;
+}
+.orderWhole .orderOuter .orderLeft,
+.orderWholeClicked .orderOuter .orderLeft {
+  display: inline-block;
+  width: 95px;
+  height: 90px;
+  vertical-align: top;
+}
+.orderWhole .orderOuter .orderLeft img,
+.orderWholeClicked .orderOuter .orderLeft img {
+  width: 95px;
+  height: 90px;
+}
+.orderWhole .orderOuter .orderRight,
+.orderWholeClicked .orderOuter .orderRight {
+  display: inline-block;
+  min-height: 90px;
+  vertical-align: top;
+  max-width: 340px;
+}
+.orderWhole .orderOuter .orderRight a,
+.orderWholeClicked .orderOuter .orderRight a {
+  color: #005EA7;
+  line-height: 24px;
+  margin: 5px 2px;
+  display: block;
+}
+.orderWhole .orderOuter .orderRight span,
+.orderWholeClicked .orderOuter .orderRight span {
+  display: block;
+  margin: 5px;
+}
+.orderWhole .orderOuter .orderRight span span,
+.orderWholeClicked .orderOuter .orderRight span span {
+  display: inline;
+}
+.orderWhole {
+  cursor: pointer;
+}
+.orderWholeClicked {
+  background: #EAEAEA;
+}
+.orderWholeClicked .orderTop {
+  color: #6E6E6E;
+}
+.orderBottom {
+  text-align: center;
+}
+.orderBottom a {
+  cursor: pointer;
+}

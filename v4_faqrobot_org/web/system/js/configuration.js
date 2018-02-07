@@ -881,8 +881,12 @@ function sQue(pageNo) {
                     if (data.questionList.length > 0) {
                         var html = "";
                         var existIds = [];
-                        $('#queManual').find('input[name=postQueInput]').each(function () {
-                            existIds.push($(this).attr('rel') * 1);
+                        /*
+                            taskid=763,黄世鹏
+                            修改逻辑：选择器选择的元素错误
+                         */
+                        $('#QuestionList').find('a[name=deleteIcon]').each(function () {
+                            existIds.push($(this).attr('id') * 1);
                         });
                         for (var i = 0; i < data.questionList.length; i++) {
                             //去除禁用列表中已经存在的问题
@@ -919,7 +923,7 @@ function sQue(pageNo) {
                             $('#ansRuleForm [name=EndTime]').val('');
                         });
                         $('#ansList td').click(function () {
-                            $(this).parent().find('input[name=row_sel1]').iCheck('check');
+                            $(this).parent().find('input[name=row_sel1]:enabled').iCheck('check');
                         });
                         //下面开始处理分页
                         var options = {
@@ -961,14 +965,18 @@ function fQue(pageNo) {
                     if (data.questionList.length > 0) {
                         var html = "";
                         var existIds = [];
-                        $('#queManual').find('input[name=postQueInput]').each(function () {
-                            existIds.push($(this).attr('rel') * 1);
+                        /*
+                            taskid=763,黄世鹏
+                            修改逻辑：选择器选择的元素错误
+                         */
+                        $('#QuestionList').find('a[name=deleteIcon]').each(function () {
+                            existIds.push($(this).attr('id') * 1);
                         });
                         for (var i = 0; i < data.questionList.length; i++) {
                             //禁用列表中已经存在的问题
                             if ($.inArray(data.questionList[i].Id, existIds) >= 0) {
                                 html += "<tr id=\"list-tr-" + data.questionList[i].Id + "\">";
-                                html += "<td><input type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
+                                html += "<td><input disabled='' type=\"radio\" name=\"row_sel2\" value=\"" + data.questionList[i].Id + "\" solutionId=\"" + data.questionList[i].SolutionId + "\"></td>";
                                 if (data.questionList[i].AnswerStatus == -4) {
                                     html += "<td class=\"dueTd\">" + data.questionList[i].Question + "<a class=\"btn btn-xs btn-danger b-l-5\">已过期</a></td>";
                                 } else {
@@ -999,7 +1007,7 @@ function fQue(pageNo) {
                             $('#ansRuleForm [name=EndTime]').val('');
                         });
                         $('#flowList td').click(function () {
-                            $(this).parent().find('input[name=row_sel2]').iCheck('check');
+                            $(this).parent().find('input[name=row_sel2]:enabled').iCheck('check');
                         });
                         //下面开始处理分页
                         var options = {
@@ -1039,6 +1047,15 @@ function upIcon(obj) {
         var imgUrl = $(obj).parent().find('img').attr('src');
         $('#iconModal input[name=imageUrl]').val(imgUrl);
         $('#iconModal .kuaiIcon').find('img').attr('src', imgUrl);
+        /*
+            taskid=783,黄世鹏
+			开发：新增打开方式功能
+         */
+        if($(obj).parent().find('input[name=medium]').val()==1){
+            $('input[name="mediumType"]').eq(1).iCheck('check')
+        }else{
+            $('input[name="mediumType"]').eq(0).iCheck('check')
+        }
     }
     $('#iconModal').modal('show');
     $('#iconModal .clickPar').val($(obj).attr('rel'));
@@ -1128,6 +1145,14 @@ $('#iconModal').on('hidden.bs.modal', function () {
     $('#kuaijieForm input').val('');
     $('.kuaiIcon img').attr('src', 'js/add.png');
 });
+/*
+    taskid=783,黄世鹏
+	开发：新增打开方式功能
+*/
+$('#iconModal').on('shown.bs.modal', function () {
+    $('input[name="mediumType"]').eq(0).val("0")
+    $('input[name="mediumType"]').eq(1).val("1")
+});
 
 //列出菜单项
 function kuaiList() {
@@ -1148,6 +1173,7 @@ function kuaiList() {
                             html.push('<input type="hidden" name="id" value="' + data.List[i].Id + '">');
                             html.push('<input type="hidden" name="name" value="' + data.List[i].Name + '">');
                             html.push('<input type="hidden" name="linkUrl" value="' + data.List[i].LinkUrl + '">');
+                            html.push('<input type="hidden" name="medium" value="' + data.List[i].MediumType+ '">');
                             html.push('</div>');
                         }
                         if (hasNum > 0) {
@@ -1685,7 +1711,11 @@ Mood.prototype = {
                 params: {
                     id: This.$tr.attr('id'),
                     key: $('#moodForm-edit [name=key]').val(),
-                    keyString: $('#moodForm-edit [name=String]').val(),
+                    /*
+                        taskid=645,黄世鹏
+                        修改：传参错误，将[name=String]改为[name=keyString]
+                    */
+                    keyString: $('#moodForm-edit [name=keyString]').val(),
                     valueString: This.ueEdit.getContent(),
                     configId: This.$tr.attr('configId')
                 },

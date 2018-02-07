@@ -172,6 +172,9 @@
 		.leftItem img {
 			max-width: 100%;
 		}
+        .effectiveRules{
+            margin-top: 10px;
+        }
 	</style>
 </head>
 
@@ -180,9 +183,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">修改知识</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">修改知识</h1>
@@ -255,7 +256,7 @@
 			</div>
 			<div>
 				<span>适用渠道 : </span>
-				<span>{{{ Other }}}</span>
+				<span>{{ Other }}</span>
 			</div>
 			<div>
 				<span>分类 : </span>
@@ -300,7 +301,7 @@
 					<div class="col-md-2">
 						答案
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-10" style="padding-right:0;">
 						<div>
 							<div class="ansItemCtn">
 								{{#if isTextArea}}
@@ -311,8 +312,12 @@
 							</div>
 							{{#if UserName}}
 							<div class="ansItemFrom">
-								<span>来自 : <em>{{ UserName }}</em></span>
-								<span class="dot">|</span>
+                                <span>来自 : <em>{{ UserName }}</em></span>
+                                <span class="dot">|</span>
+                                {{#if listAnswer}}
+                                    <span>{{listAnswer}}</span>
+                                    <span class="dot">|</span>
+                                {{/if}}
 								<span>浏览 <em>
 									{{#if Hits}}
 										{{ Hits }}
@@ -341,18 +346,39 @@
 							</div>
 							{{/if}}
 						</div>
-					</div>
-					{{#if isTextArea}}
-						<div class="col-md-2">
-							<button class="btn btn-primary save">保存</button>
-						</div>
-					{{/if}}
-					{{#if isDel}}
-						<div class="col-md-2">
-							<button class="btn btn-primary saveDD">删除</button>
-						</div>
-					{{/if}}
-				</div>
+                    </div>
+                </div>
+                {{#if isChannel}}
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-md-2 effectiveRules">
+                        生效渠道
+                    </div>
+                    <div class="col-md-10" id="DivRule_WayItem">
+                        <div>
+                            <input id="wayAll" type="checkbox">
+                            <label for="wayAll" style="margin: 5px;">全选</label>
+                            <a class="btn btn-white m-r-5" fid="0">网页</a>
+                            <a class="btn btn-white m-r-5" fid="1">微信</a>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                {{#if isDel}}
+                <div class="row" style="margin-top:10px;margin-bottom:10px;">
+                    <div class="col-md-12" style="text-align:right;padding-right:0;">
+                        <button class="btn btn-primary saveDD">删除</button>
+                    </div>
+                </div>
+                {{/if}}
+                {{#if isTextArea}}
+                <div class="row" style="margin-top:10px;margin-bottom:10px;">
+                    {{#if isTextArea}}
+                        <div class="col-md-12" style="text-align: right;padding-right:0;">
+                            <button class="btn btn-primary save">保存</button>
+                        </div>
+                    {{/if}}
+                </div>
+                {{/if}}
 			{{/each}}
 		</div>
     </script>
@@ -366,7 +392,7 @@
 					<span class="queTitle" style="color: #666;">{{ Question }}</span>
 					<div class="queRight">
 						<span style="float: right;">{{ AddTime }}</span>
-						<span>来自 : <em>{{ UserName }}</em></span><span class="dot">|</span>
+                        <span>来自 : <em>{{ UserName }}</em></span><span class="dot">|</span>
 						<span>分类 : <em>{{ GroupName }}</em></span><span class="dot">|</span>
 						<span>浏览 <em>{{ Hits }}</em> 次</span><span class="dot">|</span>
 						<span>{{ StatusValue }}</span><span class="dot">|</span>
@@ -391,8 +417,12 @@
 							{{#if UserName}}
 							<div class="ansItemFrom">
 								<span>来自 : <em>{{ UserName }}</em></span>
-								<span class="dot">|</span>
-								<span>浏览 <em>{{ Hits }}</em> 次</span>
+                                <span class="dot">|</span>
+                                {{#if listAnswer}}
+                                <span>{{listAnswer}}</span>
+                                <span class="dot">|</span>
+                                {{/if}}
+								<span>浏览 <em>{{ Hits }} </em> 次</span>
 								<span class="dot">|</span>
 								<span>{{ AnswerStatusValue }}</span>
 								<span class="dot">|</span>
@@ -405,7 +435,7 @@
 					</div>
 				</div>
 			{{/each}}
-			<div class="row">
+			<div class="row" style="margin-bottom:10px;">
 				<div class="col-md-offset-2">
 					<button class="btn btn-primary del">删除</button>
 				</div>

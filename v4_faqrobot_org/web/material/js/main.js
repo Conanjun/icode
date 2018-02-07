@@ -287,8 +287,15 @@
                 }
             });
             //获取服务端返回的数据
+             /*
+                taskid=534,黄世鹏
+                修改：正确的解析返回值
+             */
             uploader.on( 'uploadAccept', function( object, data ) {
-                var error = data.files[0].error,
+                var error='';
+                if(!(data.files instanceof Array)){
+            		error = JSON.parse(data.files)[0].error
+            	}
                 	msg = '上传文件成功';
                 if(error) {
                     Base.gritter(error, false);
@@ -462,8 +469,15 @@
                 $('#pickBtn').parent().append('<span style="display:none;" class="file_name">'+file.name+'</span>');
             });
             //获取服务端返回的数据
+            /*
+                taskid=534,黄世鹏
+                修改：正确的解析返回值
+             */
             uploader1.on( 'uploadAccept', function( object, data ) {
-                var error = data.files[0].error,
+                var error='';
+                if(!(data.files instanceof Array)){
+            		error = JSON.parse(data.files)[0].error
+            	}
                 	msg = '上传文件成功';
                 if(error) {
                     Base.gritter(error, false);
@@ -663,7 +677,15 @@
                                     pageNo -= 1;
                                 }
                             }
-                            initSrc();
+                            /*
+                                taskid=763,黄世鹏
+                                修改逻辑：判断是否是添加资源界面，调用不同方法
+                            */ 
+                            if($('.resource ').hasClass('active')){
+                                initSource()
+                            }else{
+                                initSrc();
+                            }
                         }
                     },
                 });
@@ -699,7 +721,15 @@
                                     pageNo -= 1;
                                 }
                             }
-                            initSrc();
+                            /*
+                                taskid=763,黄世鹏
+                                修改逻辑：判断是否是添加资源界面，调用不同方法
+                            */ 
+                            if($('.resource ').hasClass('active')){
+                                initSource()
+                            }else{
+                                initSrc();
+                            }
                         }
                     },
                 });
@@ -894,8 +924,12 @@ var setting = {
 		removeHoverDom: removeHoverDom
 	},
 	async: {
-		enable: true,
-		url: "../../classes/pageListClasses?mode=9&pageSize=1000",
+        enable: true,
+        /*
+			黄世鹏
+			修改：接口重构，pageListClasses改为listClasses，参数mode改为m
+		 */
+		url: "../../classes/listClasses?m=9&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},
@@ -1116,7 +1150,7 @@ var classsetting = {
 	},
 	async: {
 		enable: true,
-		url: "../../classes/pageListClasses?mode=9&pageSize=1000",
+		url: "../../classes/listClasses?m=9&pageSize=1000",
 		autoParam: ["id"],
 		dataFilter: ajaxDataFilter
 	},
@@ -1403,14 +1437,17 @@ function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
                             for(var i=0; i<data.result.list.length; i++) {
                                 var html ='',
                                     htmlOther = '';
-
-                                for(var j=0; j<data.result.list[i].wxappmsgDetails.length; j++) {
+                                /*
+                                    黄世鹏，
+                                    修改：后台接口重构，将返回的参数名第一个字母大写
+                                */
+                                for(var j=0; j<data.result.list[i].WxappmsgDetails.length; j++) {
                                     if(j) {//>0
-                                        htmlOther += '<div><div class="innerSrcCtn"><p class="innerTitle" title="'+ (data.result.list[i].wxappmsgDetails[j].title || '') +'">'+ Base.addDots((data.result.list[i].wxappmsgDetails[j].title || ''), 14) +'</p><img class="innerImg" src="'+ (data.result.list[i].wxappmsgDetails[j].imgUrl || '') +'"></div>';
+                                        htmlOther += '<div><div class="innerSrcCtn"><p class="innerTitle" title="'+ (data.result.list[i].WxappmsgDetails[j].Title || '') +'">'+ Base.addDots((data.result.list[i].WxappmsgDetails[j].Title || ''), 14) +'</p><img class="innerImg" src="'+ (data.result.list[i].WxappmsgDetails[j].ImgUrl || '') +'"></div>';
                                     }
                                 }
 
-                                html = '<div class="imgSrcCtn" id="'+ data.result.list[i].id +'" style="width: auto;"><div style="position: relative" class="outerSrcCtn"><div style="width:100%;height:30px;background-color:rgba(52, 52, 52, .7);position:absolute;bottom:0"><p style="color: #fff" class="outerTitle" title="'+ (data.result.list[i].wxappmsgDetails[0].title || '') +'">'+(data.result.list[i].wxappmsgDetails[0].title || '') +'</p></div><p style="text-indent: 0" class="timeStr">'+ data.result.list[i].timeStr +'</p><img class="outerImg" src="'+ (data.result.list[i].wxappmsgDetails[0].imgUrl || '') +'"></div>'+ htmlOther +'<div style="position: absolute; left: 0; bottom: 0; width: 100%; height: 40px; background: #F5F5F5;"></div><div class="srcEditCtn"><a href="imgTexts.html?id='+ data.result.list[i].id +'" data-num="0" data-name="新建图文消息"><i class="editPic glyphicon glyphicon-pencil col-md-6" title="编辑" style="cursor: pointer; width: 50%;"></i></a><i class="one-del-pic glyphicon glyphicon-trash col-md-6" title="删除" style="cursor: pointer;color: #337ab7;"></i></div></div>';
+                                html = '<div class="imgSrcCtn" id="'+ data.result.list[i].Id +'" style="width: auto;"><div style="position: relative" class="outerSrcCtn"><div style="width:100%;height:30px;background-color:rgba(52, 52, 52, .7);position:absolute;bottom:0"><p style="color: #fff" class="outerTitle" title="'+ (data.result.list[i].WxappmsgDetails[0].Title || '') +'">'+(data.result.list[i].WxappmsgDetails[0].Title || '') +'</p></div><p style="text-indent: 0" class="timeStr">'+ data.result.list[i].TimeStr +'</p><img class="outerImg" src="'+ (data.result.list[i].WxappmsgDetails[0].ImgUrl || '') +'"></div>'+ htmlOther +'<div style="position: absolute; left: 0; bottom: 0; width: 100%; height: 40px; background: #F5F5F5;"></div><div class="srcEditCtn"><a href="imgTexts.html?id='+ data.result.list[i].Id +'" data-num="0" data-name="新建图文消息"><i class="editPic glyphicon glyphicon-pencil col-md-6" title="编辑" style="cursor: pointer; width: 50%;"></i></a><i class="one-del-pic glyphicon glyphicon-trash col-md-6" title="删除" style="cursor: pointer;color: #337ab7;"></i></div></div>';
 
                                 switch(i%4) {
                                     case 0:

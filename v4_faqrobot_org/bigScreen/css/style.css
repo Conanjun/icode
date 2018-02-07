@@ -1,0 +1,42 @@
+body{
+    background: #f5f5f5;
+}
+/* 照片上传 */
+.fileinput-button{
+    margin-top:100px;
+}
+label[for="file_upload"]{
+    position:relative;
+}
+#pic,#uploadSuccess{
+    width:150px;
+    height:150px;
+    border-radius:50%
+}
+#uploadSuccess{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+/* 名称输入 */
+.inputName{
+    padding:0 15px;
+    margin-top:50px;
+}
+.inputName label[for="username"]{
+    padding:0;
+    margin-bottom:0;
+    line-height:34px;
+}
+/* 确认按钮 */
+#ctlBtnWrapper{
+    position: absolute;
+    bottom:60px;
+    width:100%;
+}
+#ctlBtnWrapper #ctlBtn{
+    width:80%;
+    background: #31756c;
+    color: #fff;
+}

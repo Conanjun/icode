@@ -142,9 +142,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">流程详细</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">流程详细</h1>
@@ -502,7 +500,75 @@
 			        </div>
 			    </div>
 			</div>
-			
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="delFlowItemConfirm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程项</h4>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" class="nowId"><!-- 删除的id -->
+							<input type="hidden" class="corSetId"><!-- 不进入回收站id -->
+							<input type="hidden" class="flowId"><!-- 标问id -->
+							<input type="hidden" class="flowItemRel">
+							<p>确定删除该流程项？</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-primary" href="javascript:;" id="delFlowItem">是</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">否</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 删除关联流程项 -->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowItemDelModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程项</h4>
+						</div>
+						<div class="modal-body">
+							<p class="flowTipWord"></p>
+							<p>&nbsp;&nbsp;该流程与其他流程存在被引用关系，删除将导致引用流程无法正常使用，您可以解除引用关系后再进行删除，<span style="color:red;">或者点击删除全部按钮将引用流程一并删除。</span></p>
+							<p>&nbsp;&nbsp;引用关系流程：</p>
+							<input type="hidden" class="nowId"><!-- 删除的id -->
+							<input type="hidden" class="corSetId"><!-- 回收站标问的id -->
+							<input type="hidden" class="flowId"><!-- 要删除的id -->
+							<div class="flowList"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowItemBtn">删除全部</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 删除关联流程 -->
+			<div class="modal fade" style="display: none;" aria-hidden="true" id="flowDelModel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+							<h4 class="modal-title">删除流程</h4>
+						</div>
+						<div class="modal-body">
+							<p class="flowTipWord"></p>
+							<p>&nbsp;&nbsp;该流程与其他流程存在被引用关系，删除将导致引用流程无法正常使用，您可以解除引用关系后再进行删除，<span style="color:red;">或者点击删除全部按钮将引用流程一并删除。</span></p>
+							<p>&nbsp;&nbsp;引用关系流程：</p>
+							<input type="hidden" class="corSetId"><!-- 回收站标问的id -->
+							<input type="hidden" class="flowId"><!-- 要删除的id -->
+							<div class="flowList"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-sm btn-primary" href="javascript:;" id="selflowAllBtn">删除全部</button>
+							<a data-dismiss="modal" class="btn btn-sm btn-white" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<a data-click="scroll-top" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" href="javascript:;"><i class="fa fa-angle-up"></i></a>
 	</div>

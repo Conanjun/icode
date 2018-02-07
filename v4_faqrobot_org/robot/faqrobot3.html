@@ -73,7 +73,7 @@
                 <div class="bodyLeft">
                     <div class="psBarC nano">
                         <div id="left_content" class="chatCtn content">
-                               
+
                         </div>
                     </div>
                     <!--输入框开始-->
@@ -86,7 +86,7 @@
                             	<div class="b-f-f-left">
                                 	<span id="clearScreen" class="clRecord" title="清空记录">清空记录</span>
                                     <span id="fadeBackIdLink" class="comment" title="满意度评价">满意度评价</span>
-									<span><a href="http://www.faqrobot.org" target="_blank" class="link_a">Powered By YunWen</a></span>
+									<span id='copyright'><a href="http://www.faqrobot.org" target="_blank" class="link_a">Powered By YunWen</a></span>
                                 </div>
                                 <div id="inputPR" class="b-f-f-right">发送</div>
                             </div>
@@ -112,7 +112,7 @@
                             <a href="#" class="kjBtn4"></a>
                         </div>
                         <div class="rightCtn3">
-                        	<div class="contact">
+                        	<div class="contact" id="webInfoId">
                             	<p class="contact1">云问科技</p>
                                 <a href="http://www.faqrobot.org/" target="_blank"><p class="contact2">www.faqrobot.org</p></a>
                                 <p class="contact3">南京市鼓楼区建宁路65号</p>
@@ -157,7 +157,8 @@
 		fadeBackId:'submit',
 		teachMetalk:'teachMetalk',
 		fadeBackIdLink:'fadeBackIdLink',
-		quickLink:'rservlist',
+    quickLink:'rservlist',
+    copyrightId:'copyright',// 版权及联系我们
 		sourceId:0
 	};
        $("#sendtxt").faqrobot(1000000,option);

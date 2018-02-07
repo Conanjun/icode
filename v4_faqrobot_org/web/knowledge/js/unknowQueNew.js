@@ -66,6 +66,7 @@ $(document).ready(function () {
 
     var This = this
     var type = 1, //素材类型
+        isInit = true,
         pageNo = 1, //当前页
         pageSize = 20, //每页数量
         orderType = 4,
@@ -79,13 +80,13 @@ $(document).ready(function () {
         sourceType = -1
     inQue = getUrlParam('q')
 
-    function initSrc (confirmBtn) {
+    function initSrc(confirmBtn) {
         if (confirmBtn) {
             if ($('#tm1').val() && $('#tm2').val()) {
                 var sValue = $('#tm1').val().split('-')
                 var eValue = $('#tm2').val().split('-')
                 $('.ttw').html('').html(sValue[1] + '月' + sValue[2].split(' ')[0] + '日' + '-' + eValue[1] + '月' + eValue[2].split(' ')[0] + '日' + '&nbsp;<span class="caret"></span>')
-            } else if(!($('#tm1').val() || $('#tm2').val())){
+            } else if (!($('#tm1').val() || $('#tm2').val())) {
                 //两个时间框均为空
             } else {
                 //单个时间框为空
@@ -119,6 +120,14 @@ $(document).ready(function () {
         }
         $('#tb01').tableAjaxLoader2(8)
         var isHttp = new RegExp('http')
+        //选择分类时，需要初始化分页，即从第一页开始
+        if (isInit) {
+            pageNo = 1;
+        } else {
+            pageNo = sessionStorage.getItem('unknow_pageNo') || 1;
+        }
+        groupId = sessionStorage.getItem('unknow_groupId') || 0;
+        
         Base.request({
             type: 'get',
             url: 'LearnQue/newList',
@@ -134,13 +143,11 @@ $(document).ready(function () {
                 startT: $('[name=startT]').val(),
                 endT: $('[name=endT]').val(),
                 source: sourceType,
-                // defineType: defineType
             },
             callback: function (data) {
                 if (data.status) {
                     Base.gritter(data.message, false)
                 } else {
-
                     if (data.sourceList) {
                         if (data.sourceList[0]) {
                             if (selectSourceFlag) {
@@ -177,15 +184,10 @@ $(document).ready(function () {
                         },
                         callback: {
                             onCheck: function (event, treeId, treeNode) {
-                                //console.log(event);
-                                //console.log(treeId);
-                                //console.log(treeNode);
                                 RoleName = []
                                 CombIds = []
-
                                 var treeObj3 = $.fn.zTree.getZTreeObj('ztree3')
                                 var nodes3 = treeObj3.getCheckedNodes(true)
-
                                 for (var i = 0; i < nodes3.length; i++) {
                                     RoleName.push(nodes3[i].name)
                                     CombIds.push(nodes3[i].id)
@@ -196,7 +198,6 @@ $(document).ready(function () {
                             }
                         }
                     }
-
                     //获取来访者角色分类
                     Base.request({
                         type: 'get',
@@ -236,13 +237,19 @@ $(document).ready(function () {
                             }
                         },
                     })
-
                     var html = ''
                     var tmpInque = "";
                     var tmpInqueArr = [];
+                    var blackName = '<li class="dropdown getMoreCor" style="display:inline-block;">'+
+                                        '<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">更多操作<span class="caret"></span></a>'+
+                                        '<ul class="dropdown-menu" style="min-width: 80px !important;right: 0;left:auto;">'+
+                                            '<li class="igA clickBtn"><a href="#">加入黑名单</a></li>'+
+                                            '<li class="addMark clickBtn addreMark"><a href="#">添加备注</a></li>'+
+                                            '<li class="addMark clickBtn editreMark hide"><a href="#">编辑备注</a></li>'+
+                                        '</ul>'+
+                                    '</li>'
                     if (data.List[0]) {
                         for (var i = 0; i < data.List.length; i++) {
-
                             tmpInque = data.List[i].InQue;
                             tmpInqueArr.push(data.List[i].InQue);
                             if (data.List[i].MsgType == 1) {
@@ -264,13 +271,13 @@ $(document).ready(function () {
                                     if (new RegExp('__xgn_iyunwen_').test(tmpInque)) {
                                         tmpInque = tmpInque.split('__xgn_iyunwen_')
                                         //添加【语音】标识
-                                        tmpInque = '【语音】'+tmpInque[0];
+                                        tmpInque = '【语音】' + tmpInque[0];
 
-                                    }else{
+                                    } else {
                                         //Amend by zhaoyx at 2017/12/21 处理问题类型为语音 不含'__xgn_iyunwen_' 未显示【语音】的bug
                                         tmpInque = '【语音】' + tmpInque;
                                     }
-                                    if(tmpInque.substr(tmpInque.length-1,1) == '。'){
+                                    if (tmpInque.substr(tmpInque.length - 1, 1) == '。') {
                                         tmpInque = tmpInque.split('。')[0];
                                     }
                                 }
@@ -280,9 +287,16 @@ $(document).ready(function () {
                             html += '<td style="padding-left:0;padding-right:0"><img title="移动分类" class="timeTip move" width="15" src="images/hand-blue.png" style="width:15px;" alt="机器人" /></td>'
 
                             /*保存问题类型*/
-                            html += '<td msgType="'+data.List[i].MsgType+'">' + tmpInque + '</td>'
-
-                            html += '<td style="white-space:nowrap;">' + data.List[i].GroupName + '</td>'
+                            html += '<td msgType="' + data.List[i].MsgType + '">' + tmpInque + '</td>'
+                            if(data.List[i].GroupId == -1){//寒暄
+                                html += '<td style="white-space:nowrap;cursor:pointer" class="unknowQue"><a>寒暄分类</a></td>'
+                            }else if(data.List[i].GroupId == -2){//无意义
+                                html += '<td style="white-space:nowrap;cursor:pointer" class="unknowQue"><a>无意义分类</a></td>'
+                            }else if(data.List[i].GroupId == 0){//业务未分类
+                                html += '<td style="white-space:nowrap;cursor:pointer" class="unknowQue"><a>业务未分类</a></td>'
+                            }else{//其他
+                                html += '<td style="white-space:nowrap;cursor:pointer" class="unknowQue"><a>' + data.List[i].GroupName + '</a></td>'
+                            }
                             if (data.List[i].AddWayType == '0') {
                                 html += '<td class="tbshow"><img width="15" style="margin-left: 18px;" src="images/robot-blue.png" alt="机器人" /></td>'
                             } else if (data.List[i].AddWayType == '1') {
@@ -296,40 +310,47 @@ $(document).ready(function () {
                                 html += '<td style="white-space:nowrap;"></td>'
                             }
                             if (data.List[i].watched === false) {
-                                html += '<td style="white-space:nowrap;">' + data.List[i].DateTime + '</td><td style="white-space:nowrap;"><a index="'+i+'" class="checkChat" href="javascript:;" title="查看聊天记录" rel="' + data.List[i].ChatUserId + '" cv="' + data.List[i].ChatVersion + '"><i class="timeTip clickBtn glyphicon glyphicon-eye-open" title="查看聊天记录"></i></a><a><i class="timeTip ans clickBtn glyphicon glyphicon-pencil" title="回答" data-toggle="modal" data-target="#modal-dialog-ans"></i><i class="timeTip ig clickBtn glyphicon glyphicon-trash" title="删除"></i><i class="timeTip igSame clickBtn glyphicon glyphicon-ban-circle" title="删除相同"></i><i class="timeTip igA clickBtn glyphicon glyphicon-remove-circle" title="加入黑名单"></i></a></td></tr>'
+                                html += '<td style="white-space:nowrap;">' + data.List[i].DateTime + '</td><td><a class="isRemark" style="cursor:pointer;">'+ (data.List[i].Remark || '') +'</a></td><td style="white-space:nowrap;"><a index="' + i + '" class="checkChat" href="javascript:;" title="查看聊天记录" rel="' + data.List[i].ChatUserId + '" cv="' + data.List[i].ChatVersion + '"><i class="timeTip clickBtn glyphicon glyphicon-eye-open" title="查看聊天记录"></i></a><a><i class="timeTip ans clickBtn glyphicon glyphicon-pencil" title="回答" data-toggle="modal" data-target="#modal-dialog-ans"></i><i class="timeTip ig clickBtn glyphicon glyphicon-trash" title="删除"></i><i class="timeTip igSame clickBtn glyphicon glyphicon-ban-circle" title="删除相同"></i>'+blackName+'</a></td></tr>'
                             } else {
-                                html += '<td style="white-space:nowrap;">' + data.List[i].DateTime + '</td><td style="white-space:nowrap;"><a index="'+i+'" class="checkChat" href="javascript:;" title="查看聊天记录" rel="' + data.List[i].ChatUserId + '" cv="' + data.List[i].ChatVersion + '"><i class="timeTip clickBtn glyphicon glyphicon-eye-open" style="color:#094e8a" title="查看聊天记录"></i></a><a><i class="timeTip ans clickBtn glyphicon glyphicon-pencil" title="回答" data-toggle="modal" data-target="#modal-dialog-ans"></i><i class="timeTip ig clickBtn glyphicon glyphicon-trash" title="删除"></i><i class="timeTip igSame clickBtn glyphicon glyphicon-ban-circle" title="删除相同"></i><i class="timeTip igA clickBtn glyphicon glyphicon-remove-circle" title="加入黑名单"></i></a></td></tr>'
+                                html += '<td style="white-space:nowrap;">' + data.List[i].DateTime + '</td><td><a class="isRemark" style="cursor:pointer;">'+ (data.List[i].Remark || '') +'</a></td><td style="white-space:nowrap;"><a index="' + i + '" class="checkChat" href="javascript:;" title="查看聊天记录" rel="' + data.List[i].ChatUserId + '" cv="' + data.List[i].ChatVersion + '"><i class="timeTip clickBtn glyphicon glyphicon-eye-open" style="color:#094e8a" title="查看聊天记录"></i></a><a><i class="timeTip ans clickBtn glyphicon glyphicon-pencil" title="回答" data-toggle="modal" data-target="#modal-dialog-ans"></i><i class="timeTip ig clickBtn glyphicon glyphicon-trash" title="删除"></i><i class="timeTip igSame clickBtn glyphicon glyphicon-ban-circle" title="删除相同"></i>'+blackName+'</a></td></tr>'
                             }
 
                             //绑定lookChat方法点击事件
-                            $('#tb01').undelegate('.checkChat','click').delegate('.checkChat','click',function(){
+                            $('#tb01').undelegate('.checkChat', 'click').delegate('.checkChat', 'click', function () {
                                 lookChat(this, tmpInqueArr[$(this).attr('index')]);
                             });
                         }
-
-
-
-
-
                         var options = {
                             data: [data, 'List', 'total'],
-                            currentPage: data.currentPage,
+                            currentPage: (data.currentPage > data.totlePages ? data.totlePages : data.currentPage),
                             totalPages: data.totlePages ? data.totlePages : 1,
                             alignment: 'right',
                             onPageClicked: function (event, originalEvent, type, page) {
                                 pageNo = page
+                                sessionStorage.setItem('unknow_pageNo', pageNo);
+                                isInit = false;
                                 initSrc()
                             }
                         }
                         $('#itemContainer').bootstrapPaginator(options)
                     } else {
-                        html += '<tr><td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>'
+                        html += '<tr><td colspan="8" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td></tr>'
                         $('#itemContainer').html('')
                     }
                     $('.tbody1').empty().append(html)
                     $('.timeTip').tooltip()
                     icheckInit()
-
+                    $('.getMoreCor').on('click',function(){
+                        var This = this;
+                        setTimeout(function(){
+                            if($(This).hasClass('open')){
+                                if($(This).parents('tr').find('td').eq(7).find('a').html()){
+                                    $(This).find('.editreMark').removeClass('hide');
+                                    $(This).find('.addreMark').addClass('hide');
+                                }
+                            }
+                        },10)
+                    })
                     if ($('a[href="t1"]').parent().hasClass('active')) {
                         $('.tbshow').removeClass('tbhide')
                     } else {
@@ -339,20 +360,18 @@ $(document).ready(function () {
             },
         })
     }
-
-
-//一键清空
+    
+    
+    //一键清空
     $('#ok').on('click', function () {
         $('#makeSure').hide()
         $.ajax({
             type: 'post',
-            data: {'defineType': "", 'type': 1},
+            data: { 'defineType': "", 'type': 1 },
             url: '../../LearnQue/delAll',
             success: function (data) {
                 if (data.status == 0) {
-                    $('.tbody1').empty()
-                    $('.tbody1').html('<td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>')
-                    // $('#itemContainer').empty();
+                    $('.tbody1').empty().html('<td colspan="7" style="text-align:center;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;当前纪录为空！</td>')
                     initSrc()
                     yunNoty(data)
                 } else {
@@ -362,140 +381,315 @@ $(document).ready(function () {
             }
         })
     })
-    //断点
-    var setting1 = {
-        data: {
-            simpleData: {
+    /*
+    * 页面分类树，记录每次点击的节点，用于页面刷新后保持点击的节点
+    */
+    function resee1() {
+        var setting1 = {
+            data: {
+                simpleData: {
+                    enable: true,
+                },
+            },
+            view: { //不显示图标
+                showIcon: false
+            },
+            async: {
                 enable: true,
-            },
-        },
-        view: { //不显示图标
-            showIcon: false
-        },
-        callback: {
-            onClick: function (event, treeId, treeNode) {
-                groupId = treeNode.id - 1
-                pageNo=1;
-                initSrc()
-            },
-        }
-    }
-    var setting2 = {
-        data: {
-            simpleData: {
-                enable: true,
-            },
-        },
-        view: { //不显示图标
-            showIcon: false
-        },
-        check: {
-            //enable: true,
-        },
-        callback: {
-            onClick: function (event, treeId, treeNode) {
-                $('.closeAll2').trigger('click')
-                groupId = treeNode.id - 1
-                pageNo2 = 1
-                /*
-                 * taskId = 429 智能学习未知问题编辑答案回答时，多次变价仅回答并学习按钮不置灰
-                 *  判断是否是已有答案回答，如果是则执行ansQue
-                 */
-                if($('.nav-pills li.active a[href="#navpill6661"]').text() == '已有答案回答'){
-                    ansQue();
-                }
-                $('#ztree2').fadeOut()
-                $('.selectQue').html(treeNode.name)
-            }
-        }
-    }
-
-    //获取问题分类
-    function resee () {
-        Base.request({
-            url: 'classes/listClasses',
-            params: {
-                m: 0,
-            },
-            callback: function (data) {
-                if (data.status) {
-                    Base.gritter(data.message, false)
-                } else {
-                    var html = ''
-                    if (data.list[0]) {
-                        $.ajax('../../LearnQue/getListCount', {
-                            type: 'get',
-                            datatype: 'json',
-                            cache: false, //不从缓存中去数据
-                            success: function (data6) {
-                                /*TaskId = 416 回答弹框中的分类树，不用显示【XXX个问题】
-                                 *原因：回答问题弹框中分类树与未知问题页面中的分类树共用同一个数组formatData
-                                 *修改：声明两个数组，存放不同的内容
-                                */
-                                var formatData1 = [],
-                                    formatData2 = [],
-                                    len = data.list.length,
-                                    countg = 0
-                                for (var key in data.list) {
-                                    var dk = data.list[key]
-                                    formatData1[key] = {}
-                                    formatData2[key] = {}
-                                    formatData1[key]['name'] = dk['Name']
-                                    formatData2[key]['name'] = dk['Name']
-                                    if (data6.list[dk['Id']]) {
-                                        formatData1[key]['name'] = formatData1[key]['name'] + '【' + data6.list[dk['Id']] + '个问题】'
-                                        formatData2[key]['name'] = formatData2[key]['name']
-                                        countg += data6.list[dk['Id']]
-                                    }
-                                    formatData1[key]['pId'] = dk['ParentId'] + 1
-                                    formatData2[key]['pId'] = dk['ParentId'] + 1
-                                    formatData1[key]['id'] = dk['Id'] + 1
-                                    formatData2[key]['id'] = dk['Id'] + 1
-                                }
-                                formatData1[len] = {}
-                                formatData2[len] = {}
-                                formatData1[len]['name'] = '全部分类' + '【' + countg + '个问题】'
-                                formatData2[len]['name'] = '全部分类'
-                                formatData1[len]['pId'] = 0
-                                formatData2[len]['pId'] = 0
-                                formatData1[len]['id'] = 1
-                                formatData2[len]['id'] = 1
-                                formatData1[len]['open'] = true
-                                formatData2[len]['open'] = true
-
-                                $.fn.zTree.init($('#ztree1'), setting1, formatData1)
-                                $.fn.zTree.init($('#ztree2'), setting2, formatData2)
-                            },
-                            error: function () {
-                                var formatData = [],
-                                    len = data.list.length
-
-                                for (var key in data.list) {
-                                    var dk = data.list[key]
-                                    formatData[key] = {}
-                                    formatData[key]['name'] = dk['Name']
-                                    formatData[key]['pId'] = dk['ParentId'] + 1
-                                    formatData[key]['id'] = dk['Id'] + 1
-                                }
-
-                                formatData[len] = {}
-                                formatData[len]['name'] = '全部分类'
-                                formatData[len]['pId'] = 0
-                                formatData[len]['id'] = 1
-                                formatData[len]['open'] = true
-
-                                $.fn.zTree.init($('#ztree1'), setting1, formatData)
-                                $.fn.zTree.init($('#ztree2'), setting2, formatData)
-                                treeObj = $.fn.zTree.getZTreeObj('ztree1')
+                url: '../../classes/listClasses?m=' + 0,
+                dataFilter: function (treeId, parentNode, data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        var html = ''
+                        if (data.list[0]) {
+                            var formatData1 = [];
+                            var len = data.list.length;
+                        
+                            for (var key in data.list) {
+                                var dk = data.list[key]
+                                formatData1[key] = {}
+                                formatData1[key]['name'] = dk['Name']
+                                formatData1[key]['pId'] = dk['ParentId'] + 1
+                                formatData1[key]['id'] = dk['Id'] + 1
                             }
-                        })
+                          
+                            formatData1[len] = {}
+                            formatData1[len]['name'] = '全部分类'
+                            formatData1[len]['pId'] = 0
+                            formatData1[len]['id'] = 1  
+                            formatData1[len]['open'] = true
+                            /*
+                            * taskId = 716 未知问题分类增加‘业务未知分类’和‘寒暄未知分类’两个节点
+                            */
+                            formatData1[len+1] = {}
+                            formatData1[len+1]['name'] = '寒暄分类（系统分类）'
+                            formatData1[len+1]['pId'] = 1
+                            formatData1[len+1]['id'] = -10//原本为0，但ztree节点id不能为0，此处定义为-10，做映射
+                            formatData1[len+1]['open'] = true
+                            formatData1[len+2] = {}
+                            formatData1[len+2]['name'] = '无意义分类（系统分类）'
+                            formatData1[len+2]['pId'] = 1
+                            formatData1[len+2]['id'] = -1
+                            formatData1[len+2]['open'] = false
+                            formatData1[len+3] = {}
+                            formatData1[len+3]['name'] = '业务未分类（系统分类）'
+                            formatData1[len+3]['pId'] = 1
+                            formatData1[len+3]['id'] = -2
+                            formatData1[len+3]['open'] = false
+                            return formatData1;
+
+                        }
+                    }
+                    /*
+                    $.ajax('../../LearnQue/getListCount', {
+                        type: 'get',
+                        datatype: 'json',
+                        cache: false, //不从缓存中去数据
+                        success: function (data6) {
+                            if (data.status) {
+                                Base.gritter(data.message, false)
+                            } else {
+                                var html = ''
+                                if (data.list[0]) {
+                                    var formatData1 = [];
+                                    var len = data.list.length;
+                                    var countg = 0
+                                
+                                    for (var key in data.list) {
+                                        var dk = data.list[key]
+                                        formatData1[key] = {}
+                                        formatData1[key]['name'] = dk['Name']
+                                        if (data6.list[dk['Id']]) {
+                                            formatData1[key]['name'] = formatData1[key]['name'] + '【' + data6.list[dk['Id']] + '个问题】'
+                                            countg += data6.list[dk['Id']]
+                                        }
+                                        formatData1[key]['pId'] = dk['ParentId'] + 1
+                                        formatData1[key]['id'] = dk['Id'] + 1
+                                    }
+                                  
+                                    formatData1[len] = {}
+                                    formatData1[len]['name'] = '全部分类' + '【' + countg + '个问题】'
+                                    formatData1[len]['pId'] = 0
+                                    formatData1[len]['id'] = 1  
+                                    formatData1[len]['open'] = true
+                                    formatData1[len+1] = {}
+                                    formatData1[len+1]['name'] = '业务未知分类（系统分类）'
+                                    formatData1[len+1]['pId'] = 1
+                                    formatData1[len+1]['id'] = -10//原本为0，但ztree节点id不能为0，此处定义为-10，做映射
+                                    formatData1[len+1]['open'] = true
+                                    formatData1[len+2] = {}
+                                    formatData1[len+2]['name'] = '寒暄未知分类（系统分类）'
+                                    formatData1[len+2]['pId'] = 1
+                                    formatData1[len+2]['id'] = -1
+                                    formatData1[len+2]['open'] = false
+                                    $.fn.zTree.init($('#ztree1'), setting1, formatData1);//获取数据后重新初始化一次分类树
+
+                                }
+                            }
+                        },
+                    })
+                    */
+                }
+            },
+            callback: {
+                onClick: function (event, treeId, treeNode) {
+                    if(treeNode.id == '-10'){
+                        groupId = -1;
+                    }else{
+                        groupId = treeNode.id - 1
+                    }
+                    sessionStorage.setItem('unknow_groupId', (groupId || 0));
+                    pageNo = 1;
+                    isInit = true;
+                    initSrc()
+                },
+                onAsyncSuccess: function (event, treeId, treeNode) {
+                    var zTree = $.fn.zTree.getZTreeObj("ztree1");
+                    if (sessionStorage.getItem('unknow_groupId')) {
+                        isInit = false;
+                        if(parseInt(sessionStorage.getItem('unknow_groupId')) == -1){
+                            var Node = zTree.getNodeByParam('id', -10, null);
+                        }else{
+                            var Node = zTree.getNodeByParam('id', (parseInt(sessionStorage.getItem('unknow_groupId')) + 1), null);
+                        }
+                        zTree.selectNode(Node);
+                    }
+                }
+            }
+        };
+        $.fn.zTree.init($('#ztree1'), setting1, []);
+
+    }
+    resee1();
+
+    //回答问题模态框中问题分类树
+    function resee2() {
+        var setting2 = {
+            data: {
+                simpleData: {
+                    enable: true,
+                },
+            },
+            view: { //不显示图标
+                showIcon: false
+            },
+            check: {
+                //enable: true,
+            },
+            async: {
+                enable: true,
+                url: '../../classes/listClasses?m=' + 0,
+                dataFilter: function (treeId, parentNode, data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        var html = ''
+                        if (data.list[0]) {
+                            /*TaskId = 416 回答弹框中的分类树，不用显示【XXX个问题】
+                            *原因：回答问题弹框中分类树与未知问题页面中的分类树共用同一个数组formatData
+                            *修改：声明两个数组，存放不同的内容
+                            */
+                            var formatData2 = [],
+                                len = data.list.length,
+                                countg = 0
+                            for (var key in data.list) {
+                                var dk = data.list[key]
+                                formatData2[key] = {}
+                                formatData2[key]['name'] = dk['Name']
+                                formatData2[key]['pId'] = dk['ParentId'] + 1
+                                formatData2[key]['id'] = dk['Id'] + 1
+                            }
+                            formatData2[len] = {}
+                            formatData2[len]['name'] = '全部分类'
+                            formatData2[len]['pId'] = 0
+                            formatData2[len]['id'] = 1
+                            formatData2[len]['open'] = true
+                            return formatData2;
+                        }
                     }
                 }
             },
-        })
-    }
+            callback: {
+                onClick: function (event, treeId, treeNode) {
+                    $('.closeAll2').trigger('click')
+                    groupId = treeNode.id - 1
+                    pageNo2 = 1
+                    /*
+                     * taskId = 429 智能学习未知问题编辑答案回答时，多次变价仅回答并学习按钮不置灰
+                     *  判断是否是已有答案回答，如果是则执行ansQue
+                     */
+                    if ($('.nav-pills li.active a[href="#navpill6661"]').text() == '已有答案回答') {
+                        ansQue();
+                    }
+                    $('#ztree2').fadeOut()
+                    $('.selectQue').html(treeNode.name)
+                }
+            }
+        }
+        $.fn.zTree.init($('#ztree2'), setting2, [])
 
-    //$(function() {
+    }
+    resee2()
+
+    /*
+    * taskId = 683 页面分类树，通过点击表格中分类，弹出分类树弹框进行选择
+    * 新增：分类树ztree4，通过点击表格中分类弹出模态框，进行选择分类
+    */
+    function resee4(){
+        var unknowClass = "";
+        var nodeId = 0;
+        var _td = "";//保留点击表格中分类的this
+        //分类树初始化
+        var setting4 = {
+            data: {
+                simpleData: {
+                    enable: true,
+                },
+            },
+            view: { //不显示图标
+                showIcon: false
+            },
+            async: {
+                enable: true,
+                url: '../../classes/listClasses?m=' + 0,
+                dataFilter: function (treeId, parentNode, data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        var html = ''
+                        if (data.list[0]) {
+                            var formatData4 = [];
+                            var len = data.list.length;
+                            for (var key in data.list) {
+                                var dk = data.list[key]
+                                formatData4[key] = {}
+                                formatData4[key]['name'] = dk['Name']
+                                formatData4[key]['pId'] = dk['ParentId'] + 1
+                                formatData4[key]['id'] = dk['Id'] + 1
+                            }
+                            formatData4[len] = {}
+                            formatData4[len]['name'] = '全部分类'
+                            formatData4[len]['pId'] = 0
+                            formatData4[len]['id'] = 1
+                            formatData4[len]['open'] = true
+                            return formatData4;
+                        }
+                    }
+                }
+            },
+            callback: {
+                onClick: function (event, treeId, treeNode) {
+                    unknowClass = treeNode.name;
+                    nodeId = treeNode.id;
+                    $(_td).parent('tr').attr('groupId', nodeId - 1);
+                },
+                onAsyncSuccess: function (event, treeId, treeNode) {
+                    var zTree = $.fn.zTree.getZTreeObj("ztree4");
+                    //保留当前选择的节点
+                    var Node = zTree.getNodeByParam('id', parseInt($(_td).parent('tr').attr('groupId'))+1, null);
+                    zTree.selectNode(Node);
+                }
+            }
+        };
+        
+
+        //表格中分类点击事件注册，弹出分类模态框
+        $('.tbody1').undelegate('unknowQue', 'click').delegate('.unknowQue', 'click', function(){
+            $.fn.zTree.init($('#ztree4'), setting4, []);
+            $('#queClassModel').modal('show');
+            $('#ztree4').slimScroll({
+                height: '300px',
+            })
+            _td = this;//保留this
+        })
+
+        //分类模态框确实事件注册，修改页面分类，并将数据传入后台
+        $('#selClassBtn').unbind('click').bind('click', function(){
+            $(_td).find('a').html(unknowClass);
+            $('#queClassModel').modal('hide');
+            groupId = nodeId - 1;
+            Base.request({
+                type: 'post',
+                cache: false,
+                url: 'LearnQue/ensureGroup',
+                params: {
+                    groupId: groupId,
+                    id: $(_td).parent('tr').attr('id'),
+                    addType: 1
+                },
+                callback: function (data) {
+                    if (data.status) {
+                        Base.gritter(data.message, false)
+                    } else {
+                        Base.gritter(data.message, true)
+                        resee1();
+                    }
+                },
+            })
+        });
+    }
+    resee4()
 
     /* 判断是单点还是云上，云上没有未知问题标签列表 */
     var isDandian = false,
@@ -545,7 +739,8 @@ $(document).ready(function () {
                                     Base.gritter(msg, false)
                                 } else {
                                     $('#dandianModal').modal('hide')
-                                    initSrc()
+                                    initSrc();
+                                    resee1();
                                     Base.gritter(data.message, true)
                                 }
                             }
@@ -562,16 +757,14 @@ $(document).ready(function () {
     } else {
         $('.dandain').hide()
     }
-    /**/
-    //})
 
     // 判断类型 array number string date function regexp object boolean null undefined
-    function isType (obj, type) {
+    function isType(obj, type) {
         return Object.prototype.toString.call(obj).toLowerCase() === '[object ' + type + ']'
     }
 
     //全部忽略事件
-    $('body').on('click', '.ig, .igSame, .igA, .mult-ig, .mult-igA', function () {
+    $('body').on('click', '.ig, .igSame, .igA, .addMark, .isRemark, .mult-editClassify, .mult-ig, .mult-igA', function () {
         delPage = 1
 
         if ($(this).is('.ig')) { //忽略
@@ -580,7 +773,7 @@ $(document).ready(function () {
 
             ignoreWhich = 'doIgnoreQues' // #1
             window.$obj = $tr
-            $(this).adcCreator(function(){
+            $(this).adcCreator(function () {
                 if (isDandian) {
                     $('#dandianModal').modal('show')
                 } else {
@@ -601,7 +794,8 @@ $(document).ready(function () {
                                         pageNo -= 1
                                     }
                                 }
-                                initSrc()
+                                initSrc();
+                                resee1();
                             }
                         },
                     })
@@ -615,7 +809,7 @@ $(document).ready(function () {
 
             ignoreWhich = 'doIgnoreSameQues' // #1
             window.$obj = $tr
-            $(this).adcCreator(function(){
+            $(this).adcCreator(function () {
                 if (isDandian) {
                     $('#dandianModal').modal('show')
                 } else {
@@ -636,18 +830,19 @@ $(document).ready(function () {
                                         pageNo -= 1
                                     }
                                 }
-                                initSrc()
+                                initSrc();
+                                resee1();
                             }
                         },
                     })
                 }
-            },{},{title:'删除相同问题？',content:'确定删除选定项目的相同问题？'})
+            }, {}, { title: '删除相同问题？', content: '确定删除选定项目的相同问题？' })
 
         }
-        if ($(this).is('.igA')) { //永久忽略
+        if ($(this).is('.igA')) { //加入黑名单
             var $tr = $(this).parents('tr'),
                 ids = $tr.attr('Id');
-            $(this).adcCreator(function(){
+            $(this).adcCreator(function () {
                 Base.request({
                     type: 'get',
                     cache: false,
@@ -670,11 +865,87 @@ $(document).ready(function () {
                                 }
                             }
                             initSrc()
+                            resee1();
                         }
                     },
                 })
 
-            },{},{title:'加入黑名单？',content:'是否确定将该项目加入黑名单？'})
+            }, {}, { title: '加入黑名单？', content: '是否确定将该项目加入黑名单？' })
+        }
+        /*
+            taskId = 704 未知问题批量修改问题分类
+        */
+        if ($(this).is('.addMark')){//添加备注
+            $('#editReMarkModel').modal('show');
+            $('#editReMarkModel textarea[name="remark"]').addWordCount(200)
+            var $id = $(this).parents('tr').attr('Id');
+            $('#editReMarkModel [name="id"]').val($id); 
+            $('#editReMarkModel textarea').val($(this).parents('tr').find('td').eq(7).find('a').html());
+        }
+        if ($(this).is('.isRemark') && $(this).html()){//添加备注
+            $('#editReMarkModel').modal('show');
+            $('#editReMarkModel textarea[name="remark"]').addWordCount(200)
+            var $id = $(this).parents('tr').attr('Id');
+            $('#editReMarkModel [name="id"]').val($id);
+            $('#editReMarkModel textarea').val($(this).html());
+        }
+        if ($(this).is('.mult-editClassify')){//批量修改问题分类
+            //分类树初始化
+            var setting5 = {
+                data: {
+                    simpleData: {
+                        enable: true,
+                    },
+                },
+                view: { //不显示图标
+                    showIcon: false
+                },
+                async: {
+                    enable: true,
+                    url: '../../classes/listClasses?m=' + 0,
+                    dataFilter: function (treeId, parentNode, data) {
+                        if (data.status) {
+                            Base.gritter(data.message, false)
+                        } else {
+                            var html = ''
+                            if (data.list[0]) {
+                                var formatData4 = [];
+                                var len = data.list.length;
+                                for (var key in data.list) {
+                                    var dk = data.list[key]
+                                    formatData4[key] = {}
+                                    formatData4[key]['name'] = dk['Name']
+                                    formatData4[key]['pId'] = dk['ParentId'] + 1
+                                    formatData4[key]['id'] = dk['Id'] + 1
+                                }
+                                formatData4[len] = {}
+                                formatData4[len]['name'] = '全部分类'
+                                formatData4[len]['pId'] = 0
+                                formatData4[len]['id'] = 1
+                                formatData4[len]['open'] = true
+                                return formatData4;
+                            }
+                        }
+                    }
+                },
+                callback: {
+                    onClick: function (event, treeId, treeNode) {
+                        nodeName = treeNode.name;
+                        nodeId = treeNode.id - 1;
+                        $('#editQueClassModel input[name="treeName"]').val(nodeName);
+                        $('#editQueClassModel input[name="treeId"]').val(nodeId);
+                    },
+                    onAsyncSuccess: function (event, treeId, treeNode) {
+                        var zTree = $.fn.zTree.getZTreeObj("ztree5");
+                    }
+                }
+            };
+            $.fn.zTree.init($('#ztree5'), setting5, []);
+            $('#editQueClassModel').modal('show');
+            $('#ztree5').slimScroll({
+                height: '300px',
+            })
+            
         }
         if ($(this).is('.mult-ig')) { //批量删除
             var ids = []
@@ -690,7 +961,7 @@ $(document).ready(function () {
 
             ignoreWhich = 'doIgnoreQues' // #1
             window.$obj = ids.toString()
-            $(this).adcCreator(function(){
+            $(this).adcCreator(function () {
                 if (isDandian) {
                     $('#dandianModal').modal('show')
                 } else {
@@ -715,12 +986,13 @@ $(document).ready(function () {
                                         pageNo -= 1
                                     }
                                 }
-                                initSrc()
+                                initSrc();
+                                resee1();
                             }
                         },
                     })
                 }
-            },{},{title:'批量删除？',content:'是否删除所有已选项？'})
+            }, {}, { title: '批量删除？', content: '是否删除所有已选项？' })
 
         }
         if ($(this).is('.mult-igA')) { //批量加入黑名单
@@ -734,7 +1006,7 @@ $(document).ready(function () {
                     ids.push(id)
                 }
             })
-            $(this).adcCreator(function(){
+            $(this).adcCreator(function () {
                 Base.request({
                     type: 'get',
                     cache: false,
@@ -756,13 +1028,81 @@ $(document).ready(function () {
                                     pageNo -= 1
                                 }
                             }
-                            initSrc()
+                            initSrc();
+                            resee1();
                         }
                     },
                 })
-            },{},{title:'批量加入黑名单？',content:'是否确定将所选项永久加入黑名单？'})
+            }, {}, { title: '批量加入黑名单？', content: '是否确定将所选项永久加入黑名单？' })
         }
     })
+
+    /*
+        taskId=704 未知问题批量修改问题分类
+        点击确定时进行修改
+        ids:修改的问题id
+        groupId:选择的问题分类
+        addType:1
+    */
+    $('#editQueClassBtn').on('click',function(){
+        var ids = []
+        $('.singleCos').each(function () {
+            var $tr = $(this).parents('tr'),
+                id = $tr.attr('Id')
+            if ($(this).is(':checked')) {
+                ids.push(id)
+            }
+        })
+        Base.request({
+            type: 'get',
+            cache: false,
+            url: 'LearnQue/ensureGroupPL',
+            params: {
+                ids: ids.toString(),
+                groupId:$('#editQueClassModel input[name="treeId"]').val(),
+                addType:1
+            },
+            callback: function (data) {
+                if (data.status) {
+                    var msg = data.message
+                    if (msg == '参数不能为空') {
+                        msg = '勾选要忽略的问题'
+                    }
+                    Base.gritter(msg, false)
+                } else {
+                    Base.gritter(data.message, true)
+                    $('#editQueClassModel').modal('hide');
+                    if ($('.ig').length == ids.length) {
+                        if (pageNo >= 2) {
+                            pageNo -= 1
+                        }
+                    }
+                    initSrc();
+                    resee1();
+                }
+            },
+        })
+    })
+    //点击确定修改备注
+    $('#editReMarkBtn').on('click',function(){
+        $.ajax({
+            type: 'get',
+            cache: false,
+            url: '../../LearnQue/updateRemark',
+            data: $('#editReMarkModel form').serialize(),
+            success: function (data) {
+                if (data.status) {
+                    yunNoty(data)
+                } else {
+                    yunNoty(data);
+                    $('#editReMarkModel').modal('hide');
+                    initSrc();
+                    resee1();
+                }
+            },
+        })
+    })
+
     //ENTER
     $(document).on('keyup', function (e) {
         var $activeEl = $(document.activeElement)
@@ -816,8 +1156,8 @@ $(document).ready(function () {
         treeObj = null
 
     var timeOut
-        interval = 1000 / 60
-        timeNum = 0;
+    interval = 1000 / 60
+    timeNum = 0;
     $(document).on('mouseup', '.move', function () {
         if ($move) {
             $move.remove()
@@ -829,7 +1169,7 @@ $(document).ready(function () {
     $(document).on('mousedown', '.move', function (e) {
         var $tr = $(this).parents('tr'),
             moveTxt = $tr.find('td:eq(1)').text()
-         
+
         isMove = true
         if ($move) {
             $move.remove()
@@ -846,7 +1186,7 @@ $(document).ready(function () {
             id: $tr.attr('id'),
             class: 'movel666'
         }).appendTo('body')
-    }) 
+    })
     //取消移动
     $(document).on({
         dragleave: function (e) { //拖离
@@ -879,8 +1219,7 @@ $(document).ready(function () {
                             $('#' + node.tId + '_check').trigger('click')
                         },
                     })
-                    //window.location.reload();
-                    resee()
+                    resee1();
                 }
             }
             isMove = false
@@ -895,27 +1234,27 @@ $(document).ready(function () {
         dragover: function (e) { //拖来拖去
             e.preventDefault();
             if (isMove) {
-                if(getScrollTop() > 0){
+                if (getScrollTop() > 0) {
                     var hei = e.originalEvent.clientY - getScrollTop()
-                    if(getScollH(hei)==1){
+                    if (getScollH(hei) == 1) {
                         startUpTime();
-                    }else if(getScollH(hei)==2){
+                    } else if (getScollH(hei) == 2) {
                         startDownTime()
-                    }else{
+                    } else {
                         clearTime()
                     }
-                    
-                }else{
+
+                } else {
                     var h = e.originalEvent.clientY - 195
-                    if(getScollH(h)==1){
+                    if (getScollH(h) == 1) {
                         startUpTime()
-                    }else if(getScollH(h)==2){
+                    } else if (getScollH(h) == 2) {
                         startDownTime()
-                    }else{
+                    } else {
                         clearTime()
                     }
                 }
-              
+
                 $move.css({
                     'left': e.originalEvent.clientX + 10,
                     'top': e.originalEvent.clientY - 30,
@@ -927,59 +1266,59 @@ $(document).ready(function () {
 
 
     function clearTime() {
-        if(timeOut){
+        if (timeOut) {
             clearInterval(timeOut);
             timeOut = null;
         }
     }
 
 
-    function startUpTime(){
-        
-        if(!timeOut){
-            timeOut = setInterval(function(){
+    function startUpTime() {
+
+        if (!timeOut) {
+            timeOut = setInterval(function () {
                 timeNum += 5;
-                if(timeNum < 0 ){ timeNum = 0; return };
-                $('#scoll').slimScroll({ scrollTo: timeNum});
-            },interval)
+                if (timeNum < 0) { timeNum = 0; return };
+                $('#scoll').slimScroll({ scrollTo: timeNum });
+            }, interval)
         }
     }
 
-    function startDownTime(){
-        if(!timeOut){
-            timeOut = setInterval(function(){
+    function startDownTime() {
+        if (!timeOut) {
+            timeOut = setInterval(function () {
                 timeNum -= 5;
-                if(timeNum < 0 ){ timeNum = 0; return };
-                $('#scoll').slimScroll({ scrollTo: timeNum});
-            },interval)
+                if (timeNum < 0) { timeNum = 0; return };
+                $('#scoll').slimScroll({ scrollTo: timeNum });
+            }, interval)
         }
     }
 
 
 
-    function getScrollTop() {  
-      var scrollPos;  
-      if (window.pageYOffset) {  
-      scrollPos = window.pageYOffset; }  
-      else if (document.compatMode && document.compatMode != 'BackCompat')  
-      { scrollPos = document.documentElement.scrollTop; }  
-      else if (document.body) { scrollPos = document.body.scrollTop; }   
-      return scrollPos;   
-    }  
+    function getScrollTop() {
+        var scrollPos;
+        if (window.pageYOffset) {
+            scrollPos = window.pageYOffset;
+        }
+        else if (document.compatMode && document.compatMode != 'BackCompat') { scrollPos = document.documentElement.scrollTop; }
+        else if (document.body) { scrollPos = document.body.scrollTop; }
+        return scrollPos;
+    }
 
 
     function getScollH(scollpageY) {
-      var ztree1H = $("#scoll").height();
-      var half = Number(ztree1H/2).toFixed(1);
-      if(scollpageY - half > 20){
-        return 1;
-      }else if(scollpageY - half < -20){
-        return 2;
-      }else if(scollpageY - half > 10 || scollpageY - half < -10){
-          return 0
-      }
+        var ztree1H = $("#scoll").height();
+        var half = Number(ztree1H / 2).toFixed(1);
+        if (scollpageY - half > 20) {
+            return 1;
+        } else if (scollpageY - half < -20) {
+            return 2;
+        } else if (scollpageY - half > 10 || scollpageY - half < -10) {
+            return 0
+        }
 
-      
+
     }
 
 
@@ -1042,14 +1381,14 @@ $(document).ready(function () {
     var myDateM = myDate.getMonth() + 1//月
     var myDateD = myDate.getDate()//日
     var myDateHou = myDate.getHours()//时
-    var myDateMin = myDate.getMinutes()+2//分
+    var myDateMin = myDate.getMinutes() + 2//分
 
-    function updateTime(){
+    function updateTime() {
         myDate = new Date();
-        myDateM = myDate.getMonth()+1;//月
+        myDateM = myDate.getMonth() + 1;//月
         myDateD = myDate.getDate();//日
         myDateHou = myDate.getHours();//时
-        myDateMin = myDate.getMinutes()+2;//分
+        myDateMin = myDate.getMinutes() + 2;//分
     }
 
     if (myDateM < 10) {//判断现在月份格式
@@ -1066,25 +1405,25 @@ $(document).ready(function () {
     }
 
     //页面初始化 默认一周自动填充时间
-    function apply () {//获取一周前时间
+    function apply() {//获取一周前时间
         var newDatew = new Date()
         newDatew.setTime(new Date() - 7 * 24 * 60 * 60 * 1000)//此时newDatew变成了一周前的时间
         var weekMon = newDatew.getMonth() + 1//一周前的月份
-        if (weekMon < 10) {weekMon = '0' + (newDatew.getMonth() + 1)}
+        if (weekMon < 10) { weekMon = '0' + (newDatew.getMonth() + 1) }
 
         var weekDay = newDatew.getDate()//一周前的日
-        if (weekDay < 10) {weekDay = '0' + newDatew.getDate()}
+        if (weekDay < 10) { weekDay = '0' + newDatew.getDate() }
 
         var week = newDatew.getFullYear() + '-' + weekMon + '-' + weekDay
         $('#tm1').val(week + ' ' + myDateHou + ':' + myDateMin)//一周前的现在
         $('#tm2').val(myDate.getFullYear() + '-' + myDateM + '-' + myDateD + ' ' + myDateHou + ':' + myDateMin)//今天的时间
-        initSrc()    
+        initSrc()
     }
 
     apply()
 
     //获得上月今天的方法
-    function lastMonthDate () {
+    function lastMonthDate() {
         var vYear = myDate.getFullYear()
         var vMon = myDate.getMonth() + 1
         var vDay = myDate.getDate()
@@ -1231,7 +1570,8 @@ $(document).ready(function () {
     })
     //导出exl2
     $('.outExl2').on('click', function () {
-        location.href = '../../report/LearnQuestion/showChart?excelFlag=1' + '&startT=' + ($('[name=startT]').val() || '') + '&endT=' + ($('[name=endT]').val() || '')
+        var time = new Date().getTime();
+        location.href = '../../report/LearnQuestion/showChart?excelFlag=1' + '&startT=' + ($('[name=startT]').val() || '') + '&endT=' + ($('[name=endT]').val() || '')+'&sourceId='+sourceType+'&type=1'+'&noCache='+time
     })
 
     var pageNo2 = 1, //当前页
@@ -1250,7 +1590,7 @@ $(document).ready(function () {
     $('.fromCtn').add('.textareaCtn').hide()
 
     //回答
-    function ansQue () {
+    function ansQue() {
         Base.request({
             //url: 'question/listAns' + queryStr + answer + $('.search-input-addSrc2').val(),
             url: 'question/getQueList' + queryStr + answer + $('.search-input-addSrc2').val(),
@@ -1299,6 +1639,7 @@ $(document).ready(function () {
                             alignment: 'right',
                             onPageClicked: function (event, originalEvent, type, page) {
                                 pageNo2 = page
+
                                 ansQue()
                             }
                         }
@@ -1359,7 +1700,7 @@ $(document).ready(function () {
     })
 
     /*============判断农信配置是否启用=============*/
-    function nxQiYong (flag) {
+    function nxQiYong(flag) {
         if (sessionStorage.getItem('qAndACloseValue') == 1) {
             $('.ansAndLearn').css({
                 'pointer-events': 'all'
@@ -1410,7 +1751,7 @@ $(document).ready(function () {
     }
 
     //问题
-    function queQue () {
+    function queQue() {
         Base.request({
             url: 'question/listQue',
             params: {
@@ -1460,11 +1801,17 @@ $(document).ready(function () {
 
         var $tr = $(this).parents('tr'),
             answer1 = $tr.find('td:eq(2)').text(),
-            msgType=$tr.find('td:eq(2)').attr('msgType');
-            ids = $tr.attr('id');
+            msgType = $tr.find('td:eq(2)').attr('msgType');
+        ids = $tr.attr('id');
         //去除【语音】标识
-        if(msgType==2){
-            answer1=answer1.split('【语音】')[1];
+        /*
+           taskid=531,黄世鹏
+           修改：每次学习未知问题，还需要重新选择分类
+        */
+        groupName = $tr.find('td:eq(3)').text();
+        _groupId = $tr.attr('groupId');
+        if (msgType == 2) {
+            answer1 = answer1.split('【语音】')[1];
         }
         $('input[name=ansQueInput662]').val(answer1)
         answer = ''
@@ -1564,8 +1911,7 @@ $(document).ready(function () {
                 })
             }
         }
-        resee()
-//    window.location.reload();
+        resee2()
     })
 
     $('#modal-dialog-ans').on('hidden.bs.modal', function (e) {
@@ -1576,15 +1922,11 @@ $(document).ready(function () {
         status = 0
         level = 1
         ids = 0
-        //$(".justAns,.ansAndLearn,.sureBtn ").attr('disabled');
-        //$(".justAns,.ansAndLearn,.sureBtn ").css('pointer-events', 'all').attr('disabled', true);
         richtextUE.setContent('')
-        //$('.ans-textarea').val('');
         $('.search-input-addSrc2').val('')
         $('a[href=#navpill6661]').trigger('click')
         $('a[href=#navpill6661]').parent().addClass('active').siblings().removeClass('active')
         richtextUE.setContent('')
-        //$('.ans-textarea').val('');
 
         //重置生效渠道
         $('.changeChannel').each(function () {
@@ -1599,13 +1941,13 @@ $(document).ready(function () {
         $('.singleCos').each(function () {
             var $tr = $(this).parents('tr'),
                 id = $tr.attr('Id'),
-            //去除【语音】标识
-                msgType=$tr.find('td:eq(2)').attr('msgType');
+                //去除【语音】标识
+                msgType = $tr.find('td:eq(2)').attr('msgType');
             if ($(this).is(':checked')) {
                 ids.push(id);
-                var pushAns=$tr.find('td:eq(2)').text();
-                if(msgType==2){
-                    pushAns=pushAns.split('【语音】')[1];
+                var pushAns = $tr.find('td:eq(2)').text();
+                if (msgType == 2) {
+                    pushAns = pushAns.split('【语音】')[1];
                 }
                 answer1.push(pushAns);
             }
@@ -1654,8 +1996,6 @@ $(document).ready(function () {
     var dsf_Id = 0      //第三方知识系统id
     var dsf_type = 0
 
-    //$(".justAns,.ansAndLearn,.sureBtn").css('pointer-events', 'all').attr('disabled', true);
-
     //切换列表
     $('a[href=#navpill6661]').on('click', function () {
         groupId = 0;
@@ -1694,8 +2034,17 @@ $(document).ready(function () {
         $('.sureBtn').hide()
         $('.justAns').show()
         $('.ansAndLearn').show()
-        groupId = 0;
-        $('#modal-dialog-ans .selectQue').text('全部分类');
+        /*
+             taskid=531,黄世鹏
+            修改：每次学习未知问题，还需要重新选择分类
+         */
+        if (groupName == '未知分类' || groupName == '寒暄分类' || groupName == '无意义分类' || groupName == '业务未分类' || !groupName) {
+            $('#modal-dialog-ans .selectQue').text('全部分类');
+            groupId = 0;
+        } else {
+            groupId = _groupId;
+            $('#modal-dialog-ans .selectQue').text(groupName);
+        }
         UE.getEditor('ans-textarea').getContent('');
         //对编辑答案回答下 回答和仅回答按钮的操作  加选择改变事件监听
         $('.justAns,.ansAndLearn').css({
@@ -1708,7 +2057,11 @@ $(document).ready(function () {
             answer = UE.getEditor('ans-textarea').getContent()
             nxQiYong(answer.length > 0 && aalen2.length >= 2)
         })
-        UE.getEditor('ans-textarea').on('keyup', function (e) {
+        /*
+         * taskId = 646 智能学习，未知问题选择编辑答案回答优化
+         * 将ueditor的keyup事件改成selectionchange事件
+         * */
+        UE.getEditor('ans-textarea').on('selectionchange', function (e) {
             answer = UE.getEditor('ans-textarea').getContent()
             var aalen4 = $('input[name=ansQueInput662]').val()
             nxQiYong(aalen4.length >= 2 && answer.length > 0)
@@ -1737,22 +2090,15 @@ $(document).ready(function () {
         dsf_knowledge_init(pageNo3)
     })
 
-    // $(".showCtn").on('hidden.bs.modal', function () {
-    //   console.log(1111)
-    //   richtextUE.setContent('');
-    // })
-
-
     //第三方知识系统回答配置项
-    if(sessionStorage.getItem('thirdKnowledgeSystem')==0){
-        $("#thirdKnowledgeConf").css("display","none")
-    }else if((sessionStorage.getItem('thirdKnowledgeSystem')==1)){
-        $("#thirdKnowledgeConf").css("display","inline-block")
-    }   
-
+    if (sessionStorage.getItem('thirdKnowledgeSystem') == 0) {
+        $("#thirdKnowledgeConf").css("display", "none")
+    } else if ((sessionStorage.getItem('thirdKnowledgeSystem') == 1)) {
+        $("#thirdKnowledgeConf").css("display", "inline-block")
+    }
 
     /*==========查询第三方知识系统信息==========*/
-    function dsf_knowledge_init (pageNo) {
+    function dsf_knowledge_init(pageNo) {
         //接口
         $.ajax({
             url: '../../ThirdMiddleCompany/list',
@@ -1811,7 +2157,7 @@ $(document).ready(function () {
     }
 
     /*==========第三方知识系统回答确认按钮==========*/
-    function dsf_sureBtn_click () {
+    function dsf_sureBtn_click() {
         $('.sureBtn').on('click', function (e) {
             var src = e.target || window.event.srcElement
             $.each($('.dsf_sys'), function (i, item) {
@@ -1873,7 +2219,7 @@ $(document).ready(function () {
 
     // 显隐分类
     $('body').on('click', function (e) {
-        if ($(e.target).is('.selectQue') || $(e.target).hasClass('switch') && $(e.target).parents('#ztree2').length>0) {
+        if ($(e.target).is('.selectQue') || $(e.target).hasClass('switch') && $(e.target).parents('#ztree2').length > 0) {
             $('#ztree2').fadeIn()
             $('#ztree2 li:first').slimScroll({
                 height: '300px',
@@ -1944,6 +2290,6 @@ $(document).ready(function () {
             $(this).addClass('btn-primary')
         }
     })
-    resee()
+
 
 })

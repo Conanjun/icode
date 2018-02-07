@@ -683,10 +683,14 @@ hr {
     text-indent: 20px;
     cursor: pointer;
 }
+/*
+*taskid=677
+*英文换行
+*删除 word-break: break-all;
+*/
 .MN_answer, .MN_ask  {
     position: relative;
     padding: 5px 20px;
-    word-break: break-all;
     word-wrap: break-word;
 }
 .MN_answer img, .MN_ask img  {
@@ -1359,7 +1363,6 @@ hr {
 .MN_answer, .MN_ask  {
     position: relative;
     padding: 5px 20px;
-    word-break: break-all;
     word-wrap: break-word;
 }
 .MN_answer img, .MN_ask img  {

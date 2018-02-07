@@ -50,6 +50,19 @@ var handleChangeHTML = function () {
         $('#sidebarLeftInner a[data-num]').click(function () {
             $('#sidebarLeftInner a[data-num]').removeClass('active')
             $(this).addClass('active')
+            /*
+            * 打开“智能学习”和“未知问题”页面初始化sessionStorage中的groupId值
+            * 由于这两页面需要通过sessionStorge中的groupId来记录用户操作，所以页面进入时需要初始化
+            */
+            if($(this).attr('href').indexOf("intelLearnList")>-1){
+                sessionStorage.setItem('intel_groupId',0);
+                sessionStorage.setItem('intel_pageNo',1);
+            }
+            if($(this).attr('href').indexOf("unknowQueNew")>-1){
+                sessionStorage.setItem('unknow_groupId',0);
+                sessionStorage.setItem('unknow_pageNo',1);
+            }
+            
         })
         if ($(self).data('changeside') == 0) {
             //首页默认打开首页并隐藏二级菜单
@@ -201,6 +214,10 @@ var handleSidebarMinify = function () {
             $('.navbar-brand').css('width', '174px').css('padding', '10px').css('margin-right', '10px')
             $('.navbar-logo').css('margin-left', '0px')
             $('[data-toggle=tooltip]').tooltip('destroy')
+            /**
+             * 判断是否展示logo
+             */
+            changeShowLogo()
         } else {
             $(n).addClass(t)
             $('#dedentg').attr('src', 'web/common/images/fa-indent.png')
@@ -208,11 +225,21 @@ var handleSidebarMinify = function () {
             $('.navbar-brand').css('width', '58px').css('padding', '10px 5px').css('margin-right', '0px')
             $('.navbar-logo').css('margin-left', '5px')
             $('[data-toggle=tooltip]').tooltip()
+            changeShowLogo()
         }
         handleContentNav()
         $(window).trigger('resize')
     })
 }
+
+function changeShowLogo() {
+  var isShowLogoValue = sessionStorage.getItem('showLogoValue');
+  if(isShowLogoValue && isShowLogoValue==0){
+    $('.navbar-brand').empty();
+  }
+}
+
+
 var handlePageContentView = function () {
     'use strict'
     $.when($('#page-loader').addClass('hide')).done(function () {
@@ -224,7 +251,7 @@ $(function () {
     //页面初始化时，左侧一级菜单收起
     $('#page-container').addClass('page-sidebar-minified')
     $('#dedentg').attr('src', 'web/common/images/fa-indent.png')
-    $('.navbar-brand').html('<img src="web/common/images/logo.jpg" class="navbar-logo">')
+    // $('.navbar-brand').html('<img src="web/common/images/logo.jpg" class="navbar-logo">')
     $('.navbar-brand').css('width', '58px').css('padding', '10px 5px').css('margin-right', '0px')
     $('.navbar-logo').css('margin-left', '5px')
     $('[data-toggle=tooltip]').tooltip()
@@ -350,12 +377,15 @@ $(function () {
                                         var NewUrl = data.loginUser.SystemMenus[i].ModuleMenus[j].PageMenus[k].NewUrl
                                         if (NewUrl && !(NewUrl.indexOf('#') + 1)) {
                                             //data-parent存这个锚点属于第几个模块
-                                            __html += '<li><a href="' + NewUrl + '" data-parent="' + i + '" data-me="' + j + k + '" data-num="0" data-reload="ja">' + data.loginUser.SystemMenus[i].ModuleMenus[j].PageMenus[k].Name + '</a></li>'
+                                            /*
+                                            * taskId = 747 动态配置页面标题和面包屑 by 司徒棋巽
+                                            */
+                                            __html += '<li><a href="' + NewUrl + '" data-parent="' + i + '" data-me="' + j + k + '" data-num="0" data-reload="ja" data-firstLevel="' + data.loginUser.SystemMenus[i].Name + '" data-secondLevel="' + data.loginUser.SystemMenus[i].ModuleMenus[j].PageMenus[k].Name + '">' + data.loginUser.SystemMenus[i].ModuleMenus[j].PageMenus[k].Name + '</a></li>'
                                         }
                                     }
                                     window.htmlSAVE[i] += '<h5 class="m-t-20 m-l-10">' + data.loginUser.SystemMenus[i].ModuleMenus[j].Name + '</h5><ul class="nav nav-pills nav-stacked nav-inbox">' + __html + '</ul>'
                                 }
-                                html += '<li class="has-sub"><a href="javascript:;" data-changeSide="' + i + '" data-toggle="tooltip" data-placement="right" title="' + data.loginUser.SystemMenus[i].Name + '" > <i class="fa ' + faArr[i] + '" ></i> <span>' + data.loginUser.SystemMenus[i].Name + '</span></a></li>'
+                                html += '<li class="has-sub"><a href="javascript:;" data-changeSide="' + i + '" data-toggle="tooltip" data-placement="right" title="' + data.loginUser.SystemMenus[i].Name + '" > <i class="fa ' + faArr[(data.loginUser.SystemMenus[i].Id-1)] + '" ></i> <span>' + data.loginUser.SystemMenus[i].Name + '</span></a></li>'
                             }
                         }
                         $('.allLi').append(html)
@@ -385,7 +415,10 @@ $(function () {
                     $('#robotLink').attr('href', (data.webConfig.ChatUrl || 'robot/chat2.html') + '?sysNum=' + data.webConfig.SysNum)
                     cosTrade = data.webConfig.Trade
                 }
-            } else {
+            }else if(data.status == -101){
+                 // 美的退出登陆配置跳转地址
+                  window.location.href = 'login.html';
+            }else {
                 if (data.message == '请重新登陆！') {
                     location = 'login.html'
                 }
@@ -418,6 +451,21 @@ $(function () {
             }
             if(data.chatUserDeleteShow!=null){
                 sessionStorage.setItem("chatUserDeleteShow",data.chatUserDeleteShow);
+            }
+            /*
+              taskId=490 黄世鹏
+				      原因：聊天记录导出
+             */
+            if(data.chatLogExportShow!=null){
+                sessionStorage.setItem("chatLogExportShow",data.chatLogExportShow);
+            }
+            /**
+             * taskid=634
+             * 添加是否显示login
+             */
+            if(data.showLogoValue!=null){
+              sessionStorage.setItem("showLogoValue",data.showLogoValue);
+              changeShowLogo();
             }
         }
     })
@@ -559,61 +607,48 @@ $(function () {
         })
         //检查code
         $.ajax({
-            url:encodeURI('tipHelp/add'),
+            url:encodeURI('tipHelp/check'),
             data:{
                 code: 'index',
-                webId: -1,
             },
             success:function(data){
-                if (data.status) {//!=0 旧
-
-                } else {//=0 新
-                    $.ajax({
-                        url:encodeURI('tipHelp/check'),
-                        data:{
-                            code: 'index',
-                            webId: -1,
-                        },
-                        success:function(data){
-                            if (data.status) { //旧
-                                if (cosTrade) {
-                                    $.ajax({
-                                        url: 'Trade/needUpdate',
-                                        data: {
-                                            trade: cosTrade
-                                        },
-                                        success: function (data) {
-                                            if (data.status) {
-                                                Base.gritter(data.message, false)
-                                            } else {
-                                                if (data.needUpdate) { // 1-需要
-                                                    $('#tradeKnowledge').modal('show')
-                                                } else { // 0-不需要
-                                                    $('.import-trade').addClass('hide')
-                                                }
-                                            }
-                                        },
-                                    })
+                if (data.status) { //旧
+                    if (cosTrade) {
+                        $.ajax({
+                            url: 'Trade/needUpdate',
+                            data: {
+                                trade: cosTrade
+                            },
+                            success: function (data) {
+                                if (data.status) {
+                                    Base.gritter(data.message, false)
                                 } else {
-                                    $('.import-trade').removeClass('hide')
+                                    if (data.needUpdate) { // 1-需要
+                                        $('#tradeKnowledge').modal('show')
+                                    } else { // 0-不需要
+                                        $('.import-trade').addClass('hide')
+                                    }
                                 }
-                            } else { //新
-                                $.ajax({
-                                    url: 'Configuration/listAllItem',
-                                    success: function (data) {
-                                        if (data.status) {
-                                            Base.gritter(data.message, false)
-                                        } else {
-                                            $('#tradeKnowledge').modal('show')
-                                        }
-                                    },
-                                })
-                            }
-                            if (window.location.host == 'v3.faqrobot.org') {
-                                $('.import-trade').addClass('hide')
-                            }
-                        }
-                    })
+                            },
+                        })
+                    } else {
+                        // $('.import-trade').removeClass('hide')
+                    }
+                } else { //新
+                    // 行业知识功能为完善，暂时注释
+                    // $.ajax({
+                    //     url: 'Configuration/listAllItem',
+                    //     success: function (data) {
+                    //         if (data.status) {
+                    //             Base.gritter(data.message, false)
+                    //         } else {
+                    //             $('#tradeKnowledge').modal('show')
+                    //         }
+                    //     },
+                    // })
+                }
+                if (window.location.host == 'v3.faqrobot.org') {
+                    $('.import-trade').addClass('hide')
                 }
             }
         })
@@ -752,6 +787,11 @@ $(function () {
                     if (data.status === 0) {
                         yunNoty(data, function () {
                             window.location.href = (localStorage.getItem('Subdomain')||"") + "/login.html";
+                        })
+                    }else if(data.status === 101){
+                        // 美的退出登陆配置跳转地址
+                        yunNoty(data, function () {
+                          window.location.href = data.url;
                         })
                     }
                 }

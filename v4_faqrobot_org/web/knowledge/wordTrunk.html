@@ -50,9 +50,7 @@
 	<div id="page-container" class="fade in">
 		<div id="content" class="content">
 			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">首页</a></li>
-				<li><a href="javascript:;">知识库管理</a></li>
-				<li class="active">主干词</li>
+				
 			</ol>
 			<div class="row">
 				<h1 class="page-header">主干词</h1>
@@ -72,7 +70,10 @@
 								</span><span class="btn btn-primary m-r-4 m-b-5 fileUpLoadingSign" style="display:none;">
 									<i class="glyphicon glyphicon-upload"></i>
 									<span>上传中</span>
-								</span><a class="btn btn-primary m-r-4 m-b-5" target="_blank" href="javascript:;" onclick="location.href='../../BrunchWords/exportBrunchWords?groupId='+$('.branchSearch input[name=groupId]').val()">
+								
+								<!-- taskid=479,提单人：王少华；火狐浏览器主干词导出Excel新建页面不关闭；提交人：顾荣 -->
+								<!-- </span><a class="btn btn-primary m-r-4 m-b-5" target="_blank" href="javascript:;" onclick="location.href='../../BrunchWords/exportBrunchWords?groupId='+$('.branchSearch input[name=groupId]').val()"> -->
+								</span><a class="btn btn-primary m-r-4 m-b-5" target="_blank" href="javascript:;" onclick="$(this).attr('href','../../BrunchWords/exportBrunchWords?groupId='+$('.branchSearch input[name=groupId]').val())">
 									<i class="glyphicon glyphicon-download"></i>
 									<span>导出Excel</span>
 								</a>

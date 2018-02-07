@@ -77,9 +77,7 @@
     <div id="content" class="content">
       <!-- begin breadcrumb -->
       <ol class="breadcrumb pull-right">
-        <li><a href="javascript:;">首页</a></li>
-        <li><a href="javascript:;">知识库管理</a></li>
-        <li>同义词</li>
+        
       </ol>
       <!-- end breadcrumb -->
 
@@ -251,20 +249,20 @@
               mode: mode,
             },
             callback: function(data) {
-                if(data.messageError){
-                    Base.gritter(data.messageError, false);
-                  }
-                if(data.messageSuccess){
-                  Base.gritter(data.messageSuccess, true);
-                  $('#modal-dialog').modal('hide');
-                  initSrc();
-                }
+                // taskid=623    同义词添加修改返回信息错误   2018/1/10
+                // 原因：返回参数改变；
+                // 修改：变更返回参数
                 if(data.status===1){
                   Base.gritter(data.message, false);
-                }else if(data.status===0){
-                  Base.gritter(data.message, true);
-                  $('#modal-dialog').modal('hide');
-                  initSrc();
+                }else{
+                  if(data.messageError){
+                    Base.gritter(data.messageError, false);
+                  };
+                  if(data.messageSuccess){
+                    Base.gritter(data.messageSuccess, true);
+                    $('#modal-dialog').modal('hide');
+                    initSrc();
+                  }
                 }
                 clickNum = true;
               },

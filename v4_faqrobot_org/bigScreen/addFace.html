@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>人脸录入</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/jquery.fileupload.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- 照片上传 -->
+    <div class="fileinput-button text-center">
+        <label for="file_upload">
+            <!--显示图片-->
+            <img id="pic" src="./img/picUpload.png">
+            <img id="uploadSuccess" src="./img/uploadSuccess.png" class="hide" alt="">
+        </label>
+        <!--规定能够通过文件上传进行提交的文件类型。-->
+        <input type="file" id="file_upload" accept="image/*" hidden>
+    </div>
+    <!-- 名称输入 -->
+    <div class="form-horizontal inputName">
+        <div class="form-group">
+            <label for="username" class="col-xs-3 text-right">称呼：</label>
+            <div class="col-xs-7">
+                <input type="text" id="username" class="form-control">
+            </div>
+        </div>
+    </div>
+    <!-- 确认按钮 -->
+    <div id="ctlBtnWrapper" class="text-center">
+        <button id="ctlBtn" class="btn btn-default">确认上传</button>
+    </div>
+    <script src="./js/jquery-1.11.3.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            //程序入口
+            iyunwenFace.init();
+        })
+
+        var iyunwenFace = {
+            username:'',
+            file:'',
+            base64:'',
+            accessToken:'',
+            faceToken:'',
+            isPic:false,//是否是照片
+            //初始化
+            init: function(){
+                this.picUpload_event();
+                this.confirmUpload_event();
+            },
+            //注册上传事件
+            picUpload_event: function () {
+                var This = this;
+                $("#file_upload").unbind('change').bind('change',function(){
+                    This.picUpload()
+                });
+            },
+            //图片上传方法
+            picUpload: function () {
+                var This = this;
+                This.file = $("#file_upload")[0].files[0];
+                $("#file_upload").val("");
+                if (!/image\/\w+/.test(This.file.type)) {
+                    alert("请确保文件为图像类型");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(This.file);
+                reader.onload = function (e) {
+                    var img = $("#pic");
+                    var curImg = new Image();
+                    curImg.src = this.result;
+                    curImg.onload = function () {
+                        var expectWidth = this.naturalWidth;
+                        var expectHeight = this.naturalHeight;
+                        expectHeight = 900 * this.naturalHeight / this.naturalWidth;
+
+                        var canvas = document.createElement("canvas");
+                        var ctx = canvas.getContext("2d");
+                        canvas.width = 900;
+                        canvas.height = expectHeight;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height); // canvas清屏
+                        ctx.drawImage(this, 0, 0, 900, expectHeight);
+                        ctx.save();
+                        This.base64 = canvas.toDataURL("image/jpeg", 0.9);
+                        img[0].src = This.base64;
+
+                        This.isPic = true;
+
+                        // $.ajax({
+                        //     type: 'post',
+                        //     datatype: 'json',
+                        //     cache: false,
+                        //     url: encodeURI('/Material/uploadBase64'),
+                        //     data: {
+                        //         base64Code: This.base64.split('data:image/jpeg;base64,')[1]
+                        //     },
+                        //     success: function (data) {
+                        //         var jso = JSON.parse(data.files);
+                        //         //记录下文件的位置
+                        //         $('#imgh').val(jso[0].url);
+                        //         //图片已上传
+                        //         result.upImg = true;
+                        //         $("#upImg").removeClass('error-border');
+                        //         $("#upImg .error-tip").hide();
+                        //         $('#pic').siblings().show();
+                        //     }
+                        // });
+                    }
+                }
+            },
+            //确认上传
+            confirmUpload_event: function(){
+                var This = this;
+                $('#ctlBtn').unbind('click').bind('click',function(){
+                    This.username = $('#username').val();
+                    if(This.username&&This.isPic){
+                        This.faceDetect();
+                    }else{
+                        alert("信息未录入完整！");
+                    }
+                    
+                });
+            },
+            //人脸检测接口
+            faceDetect: function(){
+                $('#ctlBtn').html('上传中...');
+                var This = this;
+                var form = new FormData();
+                form.append('api_key','1naz2_ToALPHeG8VybxEu_ww2t53u7iO');
+                form.append('api_secret','QjH3NJoM8kXfmXcn654psdH6_1WxVRju');
+                form.append('image_file',This.file);
+
+                $.ajax({
+                    url:'https://api-cn.faceplusplus.com/facepp/v3/detect',
+                    type:'post',
+                    cache:false,
+                    data:form,
+                    dataType:'json',
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        This.faceToken = data.faces[0].face_token;
+                        This.addFaceSet();
+                    }
+                })
+            },
+            //将face-Token添加到FaceSet
+            addFaceSet: function(){
+                var This = this;
+                $.ajax({
+                    url:'https://api-cn.faceplusplus.com/facepp/v3/faceset/addface',
+                    type:'post',
+                    cache:false,
+                    data:{
+                        api_key:'1naz2_ToALPHeG8VybxEu_ww2t53u7iO',
+                        api_secret:'QjH3NJoM8kXfmXcn654psdH6_1WxVRju',
+                        outer_id:'tongyong',
+                        face_tokens:This.faceToken
+                    },
+                    dataType:'json',
+                    success:function(data){
+                        This.getToken();
+                    }
+                })
+            },
+            //获取token接口
+            getToken: function(){
+                var This = this;
+                $.ajax({
+                    url:'http://v4.faqrobot.net/token/getToken',
+                    type:'post',
+                    cache:false,
+                    data:{
+                        appId:'yYpPVnoDpvibxwQYHM',
+                        secret:'wrbpCSrvgl390F56AC93'
+                    },
+                    dataType:'json',
+                    success:function(data){
+                        if(data.status == 0){
+                            This.accessToken = data.access_token;
+                            This.uploadInfo();
+                        }else{
+                            alert(data.message);
+                        }
+                        
+                    }
+                })
+            },
+            //上传信息接口
+            uploadInfo: function(){
+                var This = this;
+                This.username = $('#username').val();
+                var form = new FormData();
+                form.append('imageFile',This.file);
+                form.append('realName',This.username);
+                form.append('sex',"");
+                form.append('idNum',"");
+                form.append('position',"");
+                form.append('token',This.faceToken);
+                form.append('access_token',This.accessToken);
+                
+                $.ajax({
+                    url:'http://v4.faqrobot.net/ChatFacePic/upChatFacePic',
+                    type:'post',
+                    cache:false,
+                    data:form,
+                    processData: false,
+                    contentType: false,
+                    dataType:'json',
+                    success:function(data){
+                        if(data.status == 0){
+                            $('#uploadSuccess').removeClass('hide');
+                            $('#ctlBtn').html('上传成功');
+                            setTimeout(function(){
+                                $('#uploadSuccess').addClass('hide');
+                                $('#pic').attr('src','./img/picUpload.png');
+                                $('#username').val("");
+                                $('#ctlBtn').html('确认上传');
+                            },5000);
+                        }else{
+                            alert(data.message);
+                        }
+                        
+                    }
+                })
+            }
+
+        }
+    
+    </script>
+</body>
+
+</html>

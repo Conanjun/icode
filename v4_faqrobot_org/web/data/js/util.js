@@ -267,6 +267,8 @@ function queryAll (pageNo, confirmBtn) {
     var saveunt = $('#untrue .selectpicker').val()
     //排序loginSummary.html
     var orderLS = $('#saveOrderType').val()
+    //可选择（全部，主动转人工，被动转人工）,用于转人工次数统计报表
+    var turnPeopleType=$('#ZRG .selectpicker').val()
 
     /*Amend by zhaoyuxing At 20171213
     *taskId：332 无限极定制，增加子公司筛选条件loginSummary_wxj.html
@@ -373,7 +375,25 @@ function queryAll (pageNo, confirmBtn) {
     if(customerType){
         dataJSON.customerType =1;
     }
-
+    /**
+     * taskid=659 金立转人工次数统计 顾荣 2018/1/16
+     * 修改：添加转人工筛选字段,如果为转人工报表页面，没传页数，则默认传1/10
+     */
+    if(turnPeopleType>0){
+        dataJSON.turnPeopleType =turnPeopleType;
+    }
+    if($('#saveURL').val() == '../../TurnPeopleLog/list'&&!pageNo){
+        dataJSON.pageNo = 1
+        dataJSON.pageSize = 10
+    }
+    /*
+    * taskId = 507 访问问题明细统计 切换时间和渠道的时候折线图不消失
+    * 判断当前是访问问题明细页面时，让其折线图隐藏
+    */
+    if($('#saveURL').val() == '../../report/DetailQuestion/doShow'){
+        $("#queMain").css('display','none');
+        $('.closeBtn').css('display','none');
+    }
     //ajax请求
     if (queryAll_Flag) {
         queryAll_Flag = false
@@ -609,6 +629,13 @@ function exportExcel_new () {
     var customerType=$('#evalZR').val();
     if (customerType) {
         url += '&customerType=1';
+    }
+    /*taskId:659  转人工次数统计下载报表添加转人工筛选字段 顾荣 2018/1/16
+     *修改：添加转人工筛选字段
+     * */
+    var turnPeopleType=$("#ZRG .selectpicker").val()
+    if(turnPeopleType>0){
+        url += '&turnPeopleType='+turnPeopleType;   
     }
 
     location.href = url

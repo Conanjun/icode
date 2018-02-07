@@ -51,9 +51,7 @@
 <div id="page-container" class="fade in">
     <div id="content" class="content">
         <ol class="breadcrumb pull-right">
-            <li><a href="javascript:;">首页</a></li>
-            <li><a href="javascript:;">数据分析</a></li>
-            <li class="active">转人工次数统计</li>
+          
         </ol>
         <div class="row">
             <h1 class="page-header">
@@ -112,6 +110,15 @@
                                 <option value="1">微信</option>
                             </select>
                         </div>
+                        <!-- taskid=659  金立转人工次数统计 顾荣 2018/1/16
+                        修改：添加转人工筛选字段 -->
+                        <div id="ZRG" style="display:inline-block;vertical-align: top;" class="f-s-14 m-r-4">
+                            <select class="selectpicker">
+                                <option value="0">全部类型</option>
+                                <option value="1">主动转</option>
+                                <option value="2">被动转</option>
+                            </select>
+                        </div>
                         <div class="form-group f-s-14 m-r-4" style="display:inline-block;vertical-align: top;">
                             <label class="control-label pagination-right">访客名称：</label>
                             <input type="text" class="form-control" name="clientName" onkeypress="searchKey(event)">
@@ -137,6 +144,7 @@
                         <tr>
                             <th>客服名称</th>
                             <th>访客名称</th>
+                            <th>转人工类型</th>
                             <th width="120">来源</th>
                             <th width="150">聊天记录</th>
                         </tr>
@@ -437,7 +445,7 @@
                     }
                 },
                 axisLabel: {
-                    rotate: 15,
+                    rotate: 45,
                     textStyle: {
                         color: '#339933',
                         fontSize: 12
@@ -495,15 +503,23 @@
         var value = json.IntervalDays
         if (Dlen == 0) {
             table += '<tr >'
-            table += '<td colspan=4 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
+            table += '<td colspan=5 style=\'text-align:center\'><i class=\'glyphicon glyphicon-warning-sign\'></i>暂无数据</td>'
             table += '</tr>'
             $('#visitDataTable').html(table)
+            $("#pageList").html("")
             return
         }
         for (var t = 0; t < Dlen; t++) {
             table += '<tr>'
             table += '<td>' + json.list[t].Customer + '</td>'
             table += '<td>' + json.list[t].ClientName + '</td>'
+            var TurnPeopleType="未知"
+            if(json.list[t].TurnPeopleType==1){
+                TurnPeopleType="主动转"
+            }else if(json.list[t].TurnPeopleType==2){
+                TurnPeopleType="被动转"
+            }
+            table += '<td>' +TurnPeopleType + '</td>'
             table += '<td>' + getSourceName(json.list[t].SourceId) + '</td>'
             //if(json.list[t].LogItems===0 && json.list[t].StayTime===0){
             //	table +="<td><a href=\"javascript:void(0);\" style='color:#999' title=\"查看聊天记录\" rel=\""+json.list[t].ChatUserId+"\" cv=\""+json.list[t].ChatVersion+"\" onclick=\"lookChat(this);return false;\">查看聊天记录</a></td>";
@@ -519,6 +535,7 @@
         $('#visitDataTable').html(table)
         //下面开始处理分页
         var options = {
+            data: [json, 'list', 'total'],
             currentPage: json.currentPage,
             totalPages: json.totlePages,
             onPageClicked: function (event, originalEvent, type, page) {
@@ -552,10 +569,18 @@
         $('body').on('change', '#TT', function () {
             queryAll(1)
         })
+        
+        //  taskid=659 金立转人工次数统计 顾荣 2018/1/16
+        //  修改：添加转人工筛选字段
+         
+         $('#ZRG').on('change', '.selectpicker', function () {
+            queryAll(1)
+        })
+
 
         $('.selectpicker').selectpicker({
             style: 'btn-primary',
-            width: '120px',
+            width: '100px',
         })
         var myChart1 = echarts.init(document.getElementById('main'), 'macarons')
         myChart1.showLoading()
