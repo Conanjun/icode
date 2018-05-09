@@ -7,11 +7,13 @@ body{
 }
 label[for="file_upload"]{
     position:relative;
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    overflow:hidden;
 }
 #pic,#uploadSuccess{
     width:150px;
-    height:150px;
-    border-radius:50%
 }
 #uploadSuccess{
     position: absolute;
@@ -40,3 +42,6 @@ label[for="file_upload"]{
     background: #31756c;
     color: #fff;
 }
+.img-container img {
+    max-width: 100%;
+  }

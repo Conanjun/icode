@@ -1109,58 +1109,65 @@ _add="addClass";_remove="removeClass";_callback="trigger";_label="label";_cursor
            * 说明：输入中文小于2个字，不出发匹配
           */
           /**
-           * 说明：2/5 自如要求去除taskId=408功能 顾注释一下代码 Amend By zhaoyuxing
+           * 说明：2/5 自如要求去除taskId=408功能 故注释一下代码 Amend By zhaoyuxing
+           *           */
+           /**
+           * 说明：3/21 自如新渠道sourceId=14时，无输入引导功能 Amend By zhaoyuxing
            *           */
           // var reg = /^[\u4e00-\u9fa5]{1}$/;
           // if (!reg.test(This.$el.val())){
-            MN_Base.request({
-              prefix: This.options.prefix,//接口路径前缀(不能写根路径)
-              url: This.options.url,
-              params: {
-                q: This.$el.val()
-              },
-              dataType: This.options.jsonp ? 'jsonp' : 'json',//默认json
-              callback: function (data) {
-                if (data.status) {//1
-                  layer.msg(data.message, {
-                    shift: 0,
-                    area: This.getSuitSize()
-                  })
-                } else {//0
-                  var html = ''
-                  if (data.list) {
-                    if (data.list[0]) {
-                      var len = This.options.itemNum ? (This.options.itemNum > data.list.length ? data.list.length : This.options.itemNum) : data.list.length;
-                      for (var i = 0; i < len; i++) {
-                          //用于存放修改之后的引导语句
-                          var signRed = "";
-                          //遍历返回的应到问题内容，与输入框中对应的文字全部标红
-                          for(var j = 0; j < data.list[i].question.length; j++){
-                              //用于临时存放修改之后的单个文字
-                              var tempStr = "";
-                              if(This.$el.val().indexOf(data.list[i].question[j])>-1){
-                                  tempStr = '<span class="AU_replaceTip">' + data.list[i].question[j] + '</span>'
-                              }else{
-                                  tempStr = data.list[i].question[j];
-                              }
-                              signRed += tempStr;
-                          }
-                          html += '<div class="AU_innerCtn"><div class="AU_txt">' + (i + 1) + '. ' + signRed + '</div></div>'
-  
+            // if(This.options.sourceId==14){
+
+            // }else{
+              MN_Base.request({
+                prefix: This.options.prefix,//接口路径前缀(不能写根路径)
+                url: This.options.url,
+                params: {
+                  q: This.$el.val()
+                },
+                dataType: This.options.jsonp ? 'jsonp' : 'json',//默认json
+                callback: function (data) {
+                  if (data.status) {//1
+                    layer.msg(data.message, {
+                      shift: 0,
+                      area: This.getSuitSize()
+                    })
+                  } else {//0
+                    var html = ''
+                    if (data.list) {
+                      if (data.list[0]) {
+                        var len = This.options.itemNum ? (This.options.itemNum > data.list.length ? data.list.length : This.options.itemNum) : data.list.length;
+                        for (var i = 0; i < len; i++) {
+                            //用于存放修改之后的引导语句
+                            var signRed = "";
+                            //遍历返回的应到问题内容，与输入框中对应的文字全部标红
+                            for(var j = 0; j < data.list[i].question.length; j++){
+                                //用于临时存放修改之后的单个文字
+                                var tempStr = "";
+                                if(This.$el.val().indexOf(data.list[i].question[j])>-1){
+                                    tempStr = '<span class="AU_replaceTip">' + data.list[i].question[j] + '</span>'
+                                }else{
+                                    tempStr = data.list[i].question[j];
+                                }
+                                signRed += tempStr;
+                            }
+                            html += '<div class="AU_innerCtn"><div class="AU_txt">' + (i + 1) + '. ' + signRed + '</div></div>'
+    
+                        }
+                        This.obj.curIndex = 0.5//恢复0
+                        This.obj.maxIndex = len - 1//最大index
+                        This.$obj.$AU_outerCtn.empty().append(html).show()
+                        $('.AU_innerCtn').eq(Math.floor(This.obj.curIndex)).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+                      } else {
+                        This.$obj.$AU_outerCtn.empty().hide()
                       }
-                      This.obj.curIndex = 0.5//恢复0
-                      This.obj.maxIndex = len - 1//最大index
-                      This.$obj.$AU_outerCtn.empty().append(html).show()
-                      $('.AU_innerCtn').eq(Math.floor(This.obj.curIndex)).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
-                    } else {
-                      This.$obj.$AU_outerCtn.empty().hide()
+                    }else {
+                        This.$obj.$AU_outerCtn.empty().hide()
                     }
-                  }else {
-                      This.$obj.$AU_outerCtn.empty().hide()
                   }
                 }
-              }
-            })
+              })
+          // }
           // }
           clearInterval(This.obj.timer)
         }
@@ -2027,25 +2034,36 @@ function uploadFile (options) {
       *原因：聊天页面不显示头像
       *修改：删除聊天头像标签 img.MN_kfImg 
       */
+       /*TaskId:  836 自如页面定制
+      *原因：聊天页面显示头像，机器人聊天状态和客服聊天状态头像不同
+      *修改：增加一个结构组合，为人工客服聊天组合
+      */
       kfHtml: [
 
-        '<div class="MN_answer_welcome MN_answer"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%helloWord%</div></div>',//欢迎语组合
+        '<div class="MN_answer_welcome MN_answer"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="skin/h5chat_ZR/images/robotPic.png"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%helloWord%</div></div>',//欢迎语组合
         // '<div class="MN_helpful hide"><span class="MN_reasonSend">提交</span><span class="MN_yes">满意</span><span class="MN_no">不满意</span></div>',//是否满意组合
         ' <div class="line"><b></b><span>反馈答案是否有帮助</span><b></b></div><div class="MN_helpful"><span class="MN_reasonSend">提交</span><span class="MN_yes"><i class="fa fa-thumbs-o-up"></i>&nbsp;满意</span><span class="MN_no"><i class="fa fa-thumbs-o-down"></i>&nbsp;不满意</span></div>',//是否满意组合
-        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%commentHtml%%relateListHtml%</div></div>'//回答组合
+        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="skin/h5chat_ZR/images/robotPic.png"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%commentHtml%%relateListHtml%</div></div>',//回答组合 机器人
+        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="skin/h5chat_ZR/images/kfpic.png"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%commentHtml%%relateListHtml%</div></div>'//回答组合 人工客服
       ],//客服结构(所有的属性和%xxx%都必须存在)
 
       /*TaskId:  408 自如页面定制
       *原因：聊天页面不显示头像
       *修改：删除聊天头像标签 img.MN_khImg
       */
-      // khHtml: '<div class="MN_ask"><div class="MN_khtime">%formatDate%</div><div class="MN_khName">我</div><div class="MN_khCtn"><img class="MN_khImg" src="%khPic%"><i class="MN_khTriangle1 MN_triangle"></i><i class="MN_khTriangle2 MN_triangle"></i>%askWord%</div></div>',//客户结构
-      khHtml: '<div class="MN_ask"><div class="MN_khtime">%formatDate%</div><div class="MN_khName">我</div><div class="MN_khCtn"><i class="MN_khTriangle1 MN_triangle"></i><i class="MN_khTriangle2 MN_triangle"></i>%askWord%</div></div>',//客户结构
-      /*TaskId:  708 自如页面优化 评价框超出范围可滚动
-        *说明：使用iframe嵌入输入框
+      /*TaskId:  836 自如页面定制
+      *原因：聊天页面显示头像
+      *修改：增加聊天头像标签标签img.MN_khImg 头像路径从s=p 接口 authUser
       */
-      // staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close">&times;</span></p><div class="helpfull-contanier"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><div><iframe src="skin/h5chat_ZR/helpcontent.html"></iframe></div><div class="helpfull-commit" id="helpComBtn"><span>提交反馈</span></div></div></div></div>',
-       staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close" id="helpCtnClose">&times;</span></p><div class="helpfull-contanier"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><div><textarea id="helpContent" class="help-content" placeholder="您对木木有任何的意见和建议都欢迎反馈给产品经理改进哦（选填，您的留言最多可输入200字)" maxlength="200"></textarea></div><div class="helpfull-commit" id="helpComBtn"><span>提交反馈</span></div></div></div></div>',
+      khHtml: '<div class="MN_ask"><div class="MN_khtime">%formatDate%</div><div class="MN_khName">我</div><div class="MN_khCtn"><img class="MN_khImg" src="%khPic%"><i class="MN_khTriangle1 MN_triangle"></i><i class="MN_khTriangle2 MN_triangle"></i>%askWord%</div></div>',//客户结构
+      /* 418 自如页面定制 满意度评价模板结构 s=>fadeback*/
+      /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+      * 说明：修改满意度评价样式，增加显示等级文案以及原因
+      */
+      staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close">&times;</span></p><div class="helpfull-contanier"><input type="hidden" id="helpLevel" value="-1"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><p class="staWord">非常不满意，各方面都差</p><input type="hidden" id="staReason"><div class="staReasonList"></div><div><textarea id="helpContent" class="help-content"  placeholder="其他想说的。您对小如的服务有任何意见建议都欢迎反馈给产品经理改进哦（您的留言最多可输入200字，选填）" maxlength="200"></textarea></div><div class="helpfull-commit helpfull-commit-disable"><span id="helpComBtn">提交反馈</span></div></div></div></div>',
+      staWordList:['非常不满意，各方面都差','不满意，比较差','一般，仍然努力','比较满意，仍可改善','非常满意，服务五星'],//点击等级显示的文案
+      staReasonList:[['问题根本没解决','机器人答非所问','服务态度差','人工客服不专业','对自如政策不满意','对管家服务不满意'],['问题已经解决了','服务态度好','有责任心','积极暖心']],//显示的原因
+      evaluationType:0,//用于存储评价的类型
       formatDate: '%hour%:%minute%:%second% %year%-%month%-%date%',//配置时间格式(默认10:42:52 2016-06-24)
       topQueId: 'topQueId',//热门、常见问题Id
       newQueId: 'newQueId',//新增问题Id
@@ -2084,6 +2102,7 @@ function uploadFile (options) {
       poweredCtnId: 'poweredCtnId',//技术支持Id
       thirdUrl: '',//未登录第三方账户，跳转至此链接
       sourceId: 0,//客户来源
+      changeVip: true , // taskid = 391 首次进入转人工
       ajaxType: 'get',//请求类型
       jsonp: false,//是否跨域
       prefix: '../',//地址前缀(可能是绝对路径)
@@ -2122,8 +2141,8 @@ function uploadFile (options) {
         open: true,//是否启用功能
         /*taskId:418 用于添加评价框后，事件的绑定*/
         doSta:function(){
+          // var This=this;
           //添加评价框时，自动获取焦点
-          // $("#helpContent").focus();
           $('#helpContent').off('touchstart').on('touchstart',function(e){
             $(this).focus();
           })
@@ -2137,52 +2156,120 @@ function uploadFile (options) {
           //绑定关闭窗口
           $('.helpfull-close').off('click').on('click',function(){
               $(this).parents('.MN_answer').remove();
-              sessionStorage.setItem('isClose',1);
-              //如果未评价，则isShow清零
-            if(sessionStorage.getItem('isShow')!='已评价'){
-              sessionStorage.setItem('isShow',0); 
-            }
+              if(defaults.evaluationType==0){
+                sessionStorage.setItem('isClose',1);
+                //如果未评价，则isShow清零
+                if(sessionStorage.getItem('isShow')!='已评价'){
+                  sessionStorage.setItem('isShow',0); 
+                }
+              }
           })
           //星级评价 点击 操作样式
-          $('.helpGrade').on('click',function(){
-              var _this=$(this);
-              var count=_this.attr('data-grade');
-              var level='';//评价等级 4非常不满意 0不满意  2一般  1满意 3非常满意
-              // 将等级存入#helpLevel元素中
-              if(count==1){
-                  level=4;
-              }else if(count==2){
-                  level=0;
-              }else if(count==3){
-                  level=2;
-              }else if(count==4){
-                  level=1;
+           /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+          * 说明：点击五星评价时，重新加载并文案以及原因，清空原先已选择的原因，提交按钮至灰
+          * 功能：不满意的原因绑定点击事件，并将原因存入input中
+         */
+          //默认显示6条问题的原因
+          var reasonHtmlDefault='';
+                
+          for(var i=0;i<defaults.staReasonList[0].length;i++){
+              reasonHtmlDefault+='<div class="staReasonItem" isselected=false>'+defaults.staReasonList[0][i]+'</div>';
+          }
+          $('.staReasonList').html(reasonHtmlDefault);
+
+          $('.helpGrade').off('click').on('click',function(){
+            var _this=$(this);
+            var count=_this.attr('data-grade');
+            var level='';//评价等级 4非常不满意 0不满意  2一般  1满意 3非常满意
+            var _staWord=$('.staWord');//存储评价文案内容
+            // 将等级存入#helpLevel元素中
+            if(count==1){
+                level=4;
+            }else if(count==2){
+                level=0;
+            }else if(count==3){
+                level=2;
+            }else if(count==4){
+                level=1;
+            }else{
+                level=3;
+            }
+            $('#helpLevel').val(level);
+          
+            for(var i=0;i<count;i++){
+                $('.helpGrade').eq(i).css('color','#FFA000')
+                    .children().removeClass('fa-star-o')
+                    .addClass('fa-star')
+            }
+            
+            //处理重新选择：下一个星是否已选，若已选择，则删除之后所有已选择样式
+            var reChoose=_this.next().children().hasClass('fa-star');
+            if(reChoose){
+              for(var j=count;j<5;j++){
+                    $('.helpGrade').eq(j).css('color','#9F9F9F')
+                    .children().removeClass('fa-star')
+                    .addClass('fa-star-o')
+              }
+            }
+
+            //显示等级文案
+            _staWord.html(defaults.staWordList[count-1]);
+            _staWord.show();
+
+            //显示问题的原因
+            var reasonHtml='';
+            var reasonType='';//用于存储原因显示的类型：0 1-4星的原因 1 5星的原因
+            if(count==5){
+                reasonType=1 
+            }else{
+                reasonType=0 
+            }
+            for(var i=0;i<defaults.staReasonList[reasonType].length;i++){
+                reasonHtml+='<div class="staReasonItem" isselected=false>'+defaults.staReasonList[reasonType][i]+'</div>';
+            }
+            $('.staReasonList').html(reasonHtml);
+            //切换评价等级时，清空已经存储的评价原因
+            $('#staReason').val('');
+            $('#helpComBtn').parent().addClass('helpfull-commit-disable');
+          })
+          /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+            * 说明：修改满意度评价样式，增加显示等级文案以及原因，可选择多个原因
+            * 功能：不满意的原因绑定点击事件，并将原因存入input中，并使得按钮可用
+          */
+          var _reasonInput= $('#staReason');
+          var _reasonInput= $('#staReason');
+          $('.staReasonList').off('click').on('click','.staReasonItem',function(){
+              $(this).toggleClass('staReasonItem-selected');
+              var noselect=eval($(this).attr('isselected'));//获取当前标签选中的状态
+              $(this).attr('isselected',!noselect);
+  
+              var reason='';//存储s=faceBack sub的值,每次添加评价框时，清空内容
+              //获得所有被选中的选项的原因
+              $('.staReasonItem[isselected=true]').each(function(){
+                  reason+=$(this).html()+',';
+              });
+  
+              _reasonInput.val(reason.substring(0,reason.length-1));
+              if(_reasonInput.val()&&$('#helpLevel').val()!=-1){
+                  $('#helpComBtn').parent().removeClass('helpfull-commit-disable');
               }else{
-                  level=3;
-              }
-              $('#helpLevel').val(level);
-              for(var i=0;i<count;i++){
-                  $('.helpGrade').eq(i).css('color','#FFA000')
-                      .children().removeClass('fa-star-o')
-                      .addClass('fa-star')
-              }
-              //处理重新选择：下一个星是否已选，若已选择，则删除之后所有已选择样式
-              var reChoose=_this.next().children().hasClass('fa-star');
-              if(reChoose){
-                 for(var j=count;j<5;j++){
-                      $('.helpGrade').eq(j).css('color','#9F9F9F')
-                      .children().removeClass('fa-star')
-                      .addClass('fa-star-o')
-                 }
+                  $('#helpComBtn').parent().addClass('helpfull-commit-disable');
               }
           })
+
           
         },
         yesCallback: function ($obj, msg) {//满意的回调
           $obj.text(msg || '感谢您的评价！')
         },
-        noCallback: function ($obj, msg) {//不满意的回调
-          if (window.uselessReasonItems) {
+        noCallback: function ($obj, msg,data,self) {//不满意的回调
+          /**
+           * taskid=781
+           * 添加转人工条件，判断robotAnswer长度大于1则不显示不满意回答
+           * 界面提示robotAnswer[1]的对话
+           */
+          var newAnswer = data.robotAnswer || [];
+          if (window.uselessReasonItems && newAnswer.length < 2) {
             if (window.uselessReasonItems[0]) {
               $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide()
 
@@ -2196,11 +2283,24 @@ function uploadFile (options) {
               }
               $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>' + html + '<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>')
             } else {
-              $obj.text(msg || '感谢您的评价！')
+              $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+              if(newAnswer.length > 1){
+                sedMsg()
+              }
             }
           } else {
-            $obj.text(msg || '感谢您的评价！')
+            $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+            if(newAnswer.length > 1){
+              sedMsg()
+            }
           }
+
+          function sedMsg() {
+            data.robotAnswer.splice(0,1);
+            self.$obj.$chatCtnId.append(self.robotHtml(data));
+            self.scrollbar.scrollTo('bottom', true);
+          }
+
         }
       },
       configModule: {//配置模块
@@ -2522,8 +2622,7 @@ function uploadFile (options) {
         }
       }
     },
-    //存储是否闪退，闪退则不显示“查看更多历史记录”
-    isFlashOut:false,
+    khPic:'',
     //初始化基本信息->s=p->logo/欢迎语/快捷服务/热门问题/用户信息
     initBaseInfo: function () {
       var This = this
@@ -2536,6 +2635,15 @@ function uploadFile (options) {
           productNo: This.options.productId
         },
         callback: function (data) {
+          //taskId=836 获取机器人状态更改头像 以及获取客户头像
+          This.getFaqState(data);
+          if(data.authUser){
+            if(data.authUser.bak){
+              This.options.khPic=data.authUser.bak;
+              This.khPic=data.authUser.bak;
+            }
+          }
+
           if (window.location.search.match(/lan=[a-zA-Z]{2}/) == 'lan=en') {
             This.options.isEn = true
           } else {
@@ -2544,14 +2652,15 @@ function uploadFile (options) {
           This.timerGo = true//控制定时请求
           This.options.initCallback(data)
           $('#' + This.options.inputCtnId).removeAttr('readonly')
-          // This.setLogo(data)//设置logo->客服图标/客户图标
+           This.setLogo(data)//设置logo->客服图标/客户图标
+        
           if(data.talkMessageList&&data.talkMessageList[0]){//taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
             This.flashOutDeal(data);
-            This.isFlashOut=true;
           }else{
-            This.sayHello(data)//欢迎语
-            This.welcomeguideQue(data)
-            This.isFlashOut=false;
+            // if(This.options.sourceId!==14){
+              This.sayHello(data)//欢迎语
+              This.welcomeguideQue(data)
+            // }
           }
           //This.sayHello(data)//欢迎语
           This.quickService(data)//快捷服务
@@ -2578,6 +2687,10 @@ function uploadFile (options) {
             This.historyRecord()// 历史记录
             //This.recordEvent()// 历史记录  taskId=406 增加评价功能后，绑定在查看历史记录的事件被覆盖，改为 在historyRecord()中调用
           }
+          //自如测试h5页面vip转人工直通 add by 赵宇星
+          // if(This.options.sourceId==14){
+          //   This.vipDirect();
+          // }
           if (data.webConfig.robotNameDetail) {
             //机器人说明默认会有一个ID 配置
             //为了防止开发此功能之前已部署的客户没有这项功能
@@ -2597,6 +2710,8 @@ function uploadFile (options) {
       var html = '',
       recordData = ''
       This.scrollbar.options.autoBottom = true// 自动滚动到底部
+      //taskId=780 获取机器人状态更改头像
+      This.faqState=0;
       for (var i = 0; i<data.talkMessageList.length; i++) {
           // var _data = JSON.parse('{"robotAnswer":[{"ansCon":"' + (data.talkMessageList[i].ansMsg || '').replace(/"/g, '\'').replace(/\n+/g, '').replace(/[\r\n]/g, '') + '", "time": "' + data.talkMessageList[i].ansTime + '"}]}')
 
@@ -2612,6 +2727,9 @@ function uploadFile (options) {
           var _data=new Object();
           _data.robotAnswer=robotAnswer;
 
+          //taskId=880 查看聊天记录区分人工/机器人会话
+          This.hlFaqState(data.talkMessageList[i]);
+
           recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
       }
       recordData=recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5');
@@ -2619,7 +2737,12 @@ function uploadFile (options) {
       //自如发送表情时，不显示对话框的背景颜色,在调用完replaceFace，并将元素添加到页面时，调用
       This.sendFaceBack();
       // $('#' + This.options.chatCtnId).append('<div class="flashOutDeal">以上为历史记录</div>')
-      This.scrollbar.scrollTo('bottom', true);
+      var timeDowm=setTimeout(function(){
+        This.scrollbar.update();
+        This.scrollbar.scrollTo('bottom', true);
+        This.options.autoBottom=true;
+        clearTimeout(timeDowm);
+      },200);
     },
     //不满意原因
     unsatisfy: function (data) {
@@ -2675,6 +2798,9 @@ function uploadFile (options) {
         callback: function (data) {
             if (data.status) {
             } else {
+                //taskId=780 获取机器人状态更改头像
+                This.faqState=0;
+                // This.getFaqState(data);
                 if (data.list) {
                     if (data.list[0]) {
                         var html = '',
@@ -2701,6 +2827,9 @@ function uploadFile (options) {
 
                           var _data=new Object();
                           _data.robotAnswer=robotAnswer;
+
+                          //taskId=880 查看聊天记录区分人工/机器人会话 Add by zhaoyuxing
+                          This.hlFaqState(data.list[i]);
 
                           recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
                         }
@@ -2754,7 +2883,7 @@ function uploadFile (options) {
         $webInfoId = this.$obj.$webInfoId = $('#' + this.options.webInfoId)
 
       this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic,//客服图标
-        this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
+      this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
       $logoId.attr({'src': data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
       $webNameId.text(data.webConfig.webName || this.options.webName)
       $webInfoId.text(MN_Base.addDots($.trim(MN_Base.getPlainText(data.webConfig.info || this.options.webInfo)), 20))
@@ -2787,6 +2916,41 @@ function uploadFile (options) {
     sayHello: function (data) {
       this.$obj.$chatCtnId.empty().append(this.robotHtml(data))
     },
+    /*taskId=605 自如测试页面定制vip通道 add by 赵宇星
+    *说明：通过接口判断是否为h5页面 获取url中有vip字段且vip=1 调用s=aq接口，发送question=转人工
+    */
+    vipDirect:function(){
+      var This=this;
+      var name,value;//存储url中的查询讯字符串、值
+      var str=location.search; //取得url查询字符串
+        str=str.substr(1); //取得所有参数   stringvar.substr(start [, length ]
+      
+      var arr=str.split("&"); //各个参数放到数组里
+      var urlCode=[];
+      for(var i=0;i < arr.length;i++){ 
+      var num=arr[i].indexOf("="); 
+          if(num>0){ 
+          name=arr[i].substring(0,num);
+          value=arr[i].substr(num+1);
+          urlCode[name]=value;
+          } 
+      }
+      var vip=urlCode.vip;
+     //判断是否为h5页面
+      if(This.options.interface=="servlet/appChat"){
+        if(vip=='1'){
+          This.request({
+            params: {
+              s: 'aq',
+              question: '转人工'
+            },
+            callback: function (data) {
+              This.askQueBack(data)// 获取发送的回调
+            }
+          })
+        }
+      }
+    },
      //欢迎语获取用户名 返回查询字符串的对象数组
      getUserName:function(){
       var name,value; 
@@ -2817,7 +2981,15 @@ function uploadFile (options) {
         relateListHtml = '',
         commentHtml = '',
         aId = data.robotAnswer && data.robotAnswer[index] ? data.robotAnswer[index].aId : 0,//
-        cluid = data.robotAnswer && data.robotAnswer[index] ? data.robotAnswer[index].cluid : 0//查询问题上下文
+        cluid = data.robotAnswer && data.robotAnswer[index] ? data.robotAnswer[index].cluid : 0,//查询问题上下文
+        faqpic=2;//taskId=836  用于区分机器人/客服头像 2——机器人结构  3——人工客服结构
+        //taskId=836  用于区分机器人/客服头像 2——机器人结构  3——人工客服结构
+        if(this.faqState==1){
+          faqpic=3
+        }else{
+          faqpic=2
+        }
+
       if (hotQue) {
         var topAskHtml = ''
         if (data.guideQuestions && data.guideQuestions.length > 0) {
@@ -2833,7 +3005,8 @@ function uploadFile (options) {
             topAskHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + data.guideQuestions[i].solutionId + '" title="' + (data.guideQuestions[i].question || '') + '">' + (data.guideQuestions[i].question || '') + '</span></div>'
           }
           topAskHtml += '</div>'
-          html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(topAskHtml)).replace(/%formatDate%/g, this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
+
+          html = this.options.kfHtml[faqpic].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(topAskHtml)).replace(/%formatDate%/g, this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
 
         }
         return html
@@ -2962,7 +3135,7 @@ function uploadFile (options) {
             ansCon += '<video src="' + data.robotAnswer[index].ansCon + '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
           }
           //%%
-          html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
+          html = this.options.kfHtml[faqpic].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
           // 图片放大功能
           for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg,.faceImg').length;k++){
             if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
@@ -2989,7 +3162,7 @@ function uploadFile (options) {
     * taskId=406 
     */
     customHtml: function (word, time,msgType) {
-      var html = ''
+      var html = '',This=this;
       if(msgType=='image'){
         //图片答案
         word = '<figure><div class="' + word + '"><a href="' + word + '" data-size="1920x1800"><img src="' + word + '" class="imgBox"></a></div></figure>';
@@ -3003,8 +3176,17 @@ function uploadFile (options) {
         word = '<p>若无法播放，请点击<a href="' +word + '" target="_blank">下载</a></p><br/>'
         word += '<video src="' + word+ '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
       }
-      html = this.options.khHtml.replace(/%khPic%/g, this.robot.khPic).replace(/%askWord%/g, word).replace(/%formatDate%/g, time ? this.getFormatDate(time) : this.getFormatDate())
-      return html
+      /**taskId=836 自如s=p接口中获取客户头像 Amend by 赵宇星
+       * 说明：this.robot.khPic会自动拼接'../',地址为网络绝对路径，则去除'../'
+       * */ 
+      if(This.khPic){
+        html = this.options.khHtml.replace(/%khPic%/g, this.robot.khPic.split('../')[1]).replace(/%askWord%/g, word).replace(/%formatDate%/g, time ? this.getFormatDate(time) : this.getFormatDate())
+        return html
+      }else{
+        html = this.options.khHtml.replace(/%khPic%/g, this.robot.khPic).replace(/%askWord%/g, word).replace(/%formatDate%/g, time ? this.getFormatDate(time) : this.getFormatDate())
+        return html
+      }
+      
     },
     //快捷服务
     quickService: function (data) {
@@ -3200,8 +3382,8 @@ function uploadFile (options) {
         btnName=data.robotAnswer[0].thirdUrl.urlTitle||'点击查看更多';
         if(url!=undefined&&url!=null&&url!=''){
           //url对照 添加按钮为题
+           //跳转'我的合同'  该按钮由后台添加 前端更改名称和class
           if(url=='http://ZRQuestionDetailLinkToUrlTypeContract.ziroom.com'){
-            //跳转'我的合同'  该按钮由后台添加 前端更改名称和class
             if($('.MN_kfCtn:last .J_toHtList').length){
               $('.MN_kfCtn:last .J_toHtList').addClass('f0');
             }else if($('.MN_kfCtn:last .order-contanier').length){
@@ -3210,44 +3392,55 @@ function uploadFile (options) {
               return;
             }
             else{
-              // btnName='我的合同';
               btnClass='J_toHtList f0';
             }
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaningOrderList.ziroom.com'){
-            // btnName='我的保洁';
+          }
+          // 我的保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaningOrderList.ziroom.com'){
             btnClass='J_toHtList f1';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeFortnight.ziroom.com'){
-            btnName='自如客保洁';//更改按钮名称：将预约双周保洁 改为 自如客保洁
+          }
+          //更改按钮名称：将预约双周保洁 改为 自如客保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeFortnight.ziroom.com'){
             btnClass='J_toHtList f2';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaning.ziroom.com'){
-            // btnName='预约日常保洁';
+          }
+          // 预约日常保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeDailycleaning.ziroom.com'){
             btnClass='J_toHtList  f3';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeXiaoSha.ziroom.com'){
-            // btnName='预约消杀保洁';
+          }
+          // 预约消杀保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeXiaoSha.ziroom.com'){
             btnClass='J_toHtList f4';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeShendu.ziroom.com'){
-            // btnName='预约深度保洁';
+          }
+         //预约深度保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeShendu.ziroom.com'){
             btnClass='J_toHtList f5';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeKaihuang.ziroom.com'){
-            // btnName='预约开荒保洁';
+          }
+         //预约开荒保洁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeKaihuang.ziroom.com'){
             btnClass='J_toHtList f6';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemoving.ziroom.com'){
-            // btnName='预约搬家';
+          }
+          //预约搬家
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemoving.ziroom.com'){
             btnClass='J_toHtList f7';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemovingOrderList.ziroom.com'){
-            // btnName='我的搬家';
+          }
+         // 我的搬家
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousemovingOrderList.ziroom.com'){
             btnClass='J_toHtList f8';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepair.ziroom.com'){
-            // btnName='在线报修';
+          }
+         //在线报修
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepair.ziroom.com'){
             btnClass='J_toHtList f9';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepairOrderList.ziroom.com'){
-            // btnName='我的报修';
+          }
+          // 我的报修
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeRepairOrderList.ziroom.com'){
             btnClass='J_toHtList f10';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeKuanDai.ziroom.com'){
-            // btnName='宽带报修';
+          }
+          // 宽带报修
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeKuanDai.ziroom.com'){
             btnClass='J_toHtList f11';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousekeeper.ziroom.com'){
-            //跳转'我的管家'  该按钮由后台添加 前端添加class
+          }
+         //跳转'我的管家'  该按钮由后台添加 前端添加class
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeHousekeeper.ziroom.com'){
             if($('.MN_kfCtn:last .J_toHtList').length){
               $('.MN_kfCtn:last .J_toHtList').addClass('f12');
             }else if($('.MN_kfCtn:last .order-contanier').length){
@@ -3259,15 +3452,45 @@ function uploadFile (options) {
               // btnName='我的管家';
               btnClass='J_toHtList f12';
             }
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeIintelligentlock.ziroom.com'){
-            // btnName='智能门锁';
+          }
+          // 智能门锁
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeIintelligentlock.ziroom.com'){
             btnClass='J_toHtList f13';
-          }else if(url=='http://ZRQuestionDetailLinkToUrlTypeSuggestions.ziroom.com'){
-            // btnName='投诉反馈';
+          }
+          //投诉反馈
+          else if(url=='http://ZRQuestionDetailLinkToUrlTypeSuggestions.ziroom.com'){
             btnClass='J_toHtList f14';
           }
+          // 我的钱包
+          else if(url=='http://zrquestiondetaillinktourltypewallet.ziroom.com'){
+            btnClass='J_toHtList f15';
+          }
+          // 自如信用
+          else if(url=='http://zrquestiondetaillinktourltypecredit.ziroom.com'){
+            btnClass='J_toHtList f16';
+          }
+         // 资质信息
+          else if(url=='http://zrquestiondetaillinktourltypequalification.ziroom.com'){
+            btnClass='J_toHtList f17';
+          }
+          // 学历信息
+          else if(url=='http://zrquestiondetaillinktourltypecontractxueli.ziroom.com'){
+            btnClass='J_toHtList f18';
+          }
+          // 自如合租/整租'
+          else if(url=='http://zrquestiondetaillinktourltypeschedule.ziroom.com'){
+            btnClass='J_toHtList f19';
+          }
+          // App-找房页面
+          else if(url=='http://zrquestiondetaillinktourltypesearch.ziroom.com'){
+            btnClass='J_toHtList f20';
+          }
+           //在线委托
+          else if(url=='http://zrquestiondetaillinktourltypeconsignation.ziroom.com'){
+            btnClass='J_toHtList f21';
+          }
            //获取最后一个问题，添加按钮
-           if($('.MN_kfCtn:last .J_toHtList').length){
+          if($('.MN_kfCtn:last .J_toHtList').length){
               
           }else if( $('.MN_kfCtn:last .line').length){
             $('.MN_kfCtn:last .line').before('<div class="orderMore goMore"><a class="'+btnClass +'">'+btnName+'</a></div>');
@@ -3313,12 +3536,23 @@ function uploadFile (options) {
             This.options.getCallback(This.getCurrectWords(This.robotHtml(data)), data)//获取到答案后的回调
             This.recommendQue(data)//推荐问题
           } else {
+           
             This.request({
               params: {
                 s: 'aq',
                 question: This.replaceFace(question, true)
               },
               callback: function (data) {
+                //taskId=836 获取机器人状态更改头像
+                This.getFaqState(data);
+
+                /*taskid = 391 自如vip渠道修改转人工逻辑**/ 
+                if(This.options.sourceId==14 && This.options.changeVip){
+                  This.vipDirect();
+                  This.options.changeVip = false;
+                  return ;
+                }
+                
                 This.askQueBack(data)// 获取发送的回调
                  //taskId=408 自如定制 thirdUrl字段有值，则添加按钮，跳转原生页面
                  This.goMore(data);
@@ -3339,6 +3573,13 @@ function uploadFile (options) {
     askQueBack: function (data) {
       var This = this,
         hasCtn = false// 是否有内容
+     /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+      * 说明：获取当前聊天的状态，修改记录状态的变量
+      */
+      if(data.nowState!=3&&data.nowState!=5){
+        defaults.evaluationType=0;//记录评价类型为机器人会话满意度
+        sessionStorage.setItem('evaluationType',defaults.evaluationType);
+      }
       if (data.robotAnswer) {
         if (data.robotAnswer && data.robotAnswer.length > 0) {
           for (var i = 0; i < data.robotAnswer.length; i++) {
@@ -3352,7 +3593,12 @@ function uploadFile (options) {
             }
             if (data.robotAnswer[i].relateLessList) {
               if (data.robotAnswer[i].relateLessList[0]) {
-                hasCtn = true
+                //taskId=880 人工接管时，不显示关联问题 Amend by zhaoyuxing
+                if(data.nowState==3||data.nowState==5){
+                  hasCtn = false
+                }else{
+                  hasCtn = true
+                }
               }
             }
             if (data.robotAnswer[i].relateList) {
@@ -3549,6 +3795,9 @@ function uploadFile (options) {
             question: $This.html()
           },
           callback: function (data) {
+            //taskId=780 获取机器人状态更改头像
+            This.getFaqState(data);
+
             This.askQueBack(data)
             //taskId=408 自如定制 thirdUrl字段有值，则添加按钮，跳转原生页面
             This.goMore(data);
@@ -3600,7 +3849,7 @@ function uploadFile (options) {
               if (s == 'addufc') {
                 This.options.helpfulModule.yesCallback($helpful, data.message)
               } else {
-                This.options.helpfulModule.noCallback($helpful, data.message)
+                This.options.helpfulModule.noCallback($helpful, data.message,data,This)
               }
             } else {
               $This.parents('.MN_helpful').text(data.message || '感谢您的评价！')
@@ -3630,6 +3879,29 @@ function uploadFile (options) {
       })
 
     },
+    /*taskId=836 根据机器人状态跟换机器人聊天的头像（仅区分机器人会话和人工会话） Add by zhaoyuxing*/
+    faqState:-1,  //控制头像的标记
+    //获取机器人状态，控制更换机器人头像  0 机器人   1人工
+    getFaqState:function(data){
+      var This=this;
+      //如果没有nowState不改变机器人状态
+      if(data.nowState){
+        if(data.nowState==3||data.nowState==5){//此时为人工客服
+          This.faqState=1;
+        }else{
+          This.faqState=0;
+        }
+      }
+    },
+    //taskId=880 历史聊天记录区分人工/机器人头像 Add by zhaoyuxing
+    hlFaqState:function(item){
+      var This=this;
+      if(item.chatType==3){
+        This.faqState=1;
+      }else{
+        This.faqState=0;
+      }
+    },
     //上传文件->s=uf
     //taskId：408 文件上传时，将本地图库中上传与相机拍照上传功能分开，通过triggerId的值判断添加的标签类型
    
@@ -3653,7 +3925,8 @@ function uploadFile (options) {
             'top': '-10px'
           }).appendTo($('#' + triggerId).parents('.editCtn_com'))
         }else{
-          var $file = $('<input type="file" class="FA_file" accept="image/*">').css({
+          //与自如安卓app对接，用于区分拍照和文件上传文件，拍照包含accept="image/*" 相册不包含 Amend By zhaoyuxing
+          var $file = $('<input type="file" class="FA_file">').css({
             'padding': 100,
             'opacity': 0,
             'height': '100%',
@@ -4185,80 +4458,103 @@ function uploadFile (options) {
                        //给评价框提交按钮绑定事件
                         $('#helpComBtn').off('click').on('click',function(e){
                             var level = 1,evalContent='';
+                            var staReason=$('#staReason').val();//用于存储满意度评价的原因
                             // var unstais = '';
                             //获取选项 记录评价等级 存入字段level
                             level=$('#helpLevel').val();
                             // evalContent=sessionStorage.getItem('evalContent');
                             if(level==-1){//如果没有选择评价，不发送请求;
                               This.showMsg('请您选择服务等级'); 
-                            }else if(sessionStorage.getItem('isShow')!='已评价'){
+                            }else if(!staReason){//如果没有选择原因，不发送请求;
+                              if(level==5){
+                                This.showMsg('请您选择一项满意的原因'); 
+                              }else{
+                                This.showMsg('请您选择一项不满意原因'); 
+                              }
+                            } else if(defaults.evaluationType==1||sessionStorage.getItem('isShow')!='已评价'){
+                            // } else {
                             //记录不满意的理由 删除无此项
                             //发送请求
                               This.request({
                                 params: {
                                     s: 'fadeback',
-                                    sourceId: 0,
+                                    sourceId: This.options.sourceId,
                                     content: $('#helpContent').val(),
                                     // content: evalContent,
                                     level: level,
+                                    sub:staReason,//评价原因
+                                    evaluationType:defaults.evaluationType//会话满意度评价类型 0机器人会话 1人工客服
                                     // sub: unstais//不满意原因
                                 },
                                 callback: function (data) {
+                                    //taskId=780 获取机器人状态更改头像
+                                    This.getFaqState(data);
+
                                     if (data.status) {
                                         This.showMsg(data.message);
                                         sessionStorage.setItem('isShow',0);
+                                        sessionStorage.setItem('isShowP',0);//人工会话，满意度评价框是否显示
                                     } else {
-                                    This.options.commentCallback(data);
-                                    if (MN_Base.isPC()) {
-                                        //询问框
-                                        if (This.options.isEn) {
-                                        var tmpMsg = '';
-                                        if (data.message == '感谢您的支持，你已经做过评价了.') {
-                                            tmpMsg = 'Thank you for your support. You have already made an appraisal.'
-                                        } else if (data.message == '感谢您的评价.') {
-                                            tmpMsg = 'Thank you for your comments.'
-                                        } else {
-                                            tmpMsg = data.message
+                                      This.options.commentCallback(data);
+                                      if (MN_Base.isPC()) {
+                                          //询问框
+                                          if (This.options.isEn) {
+                                          var tmpMsg = '';
+                                          if (data.message == '感谢您的支持，你已经做过评价了.') {
+                                              tmpMsg = 'Thank you for your support. You have already made an appraisal.'
+                                          } else if (data.message == '感谢您的评价.') {
+                                              tmpMsg = 'Thank you for your comments.'
+                                          } else {
+                                              tmpMsg = data.message
+                                          }
+                                          layer.msg(tmpMsg + 'Do you have any other questions? ', {
+                                              time: 20000, //20s后自动关闭
+                                              btn: ['continue', 'close'],
+                                              area: This.getSuitSize(),
+                                              cancel: function () {// 关闭当前页面
+                                              This.closeWebPage()
+                                              }
+                                          })
+                                          } else {
+                                          layer.msg(data.message + '您是否还有其他问题？', {
+                                              time: 20000, //20s后自动关闭
+                                              btn: ['继续问答', '关闭'],
+                                              area: This.getSuitSize(),
+                                              cancel: function () {// 关闭当前页面
+                                              This.closeWebPage()
+                                              }
+                                          })
+                                          }
+                                          if(defaults.evaluationType==0){
+                                            sessionStorage.setItem('isShow', '已评价');
+                                            // $('#helpComBtn').html('您已评价，感谢您的支持');
+                                          }else if(defaults.evaluationType==1){
+                                            sessionStorage.setItem('isShowP', '已评价');
+                                          }
+                                            /*已评价后不可修改等级已经文本内容*/
+                                            $('#helpContent').attr('readonly','readonly');
+                                            $('.helpGrade').off('click');
+                                            $('.staReasonList').off('click');
+                                            $('#helpComBtn').off('click');
+
+                                      } else {
+                                        if(defaults.evaluationType==0){
+                                          //对机器人评价时，记录已评价状态
+                                          sessionStorage.setItem('isShow','已评价');
+                                        }else if(defaults.evaluationType==1){
+                                          sessionStorage.setItem('isShowP', '已评价');
                                         }
-                                        layer.msg(tmpMsg + 'Do you have any other questions? ', {
-                                            time: 20000, //20s后自动关闭
-                                            btn: ['continue', 'close'],
-                                            area: This.getSuitSize(),
-                                            cancel: function () {// 关闭当前页面
-                                            This.closeWebPage()
-                                            }
-                                        })
-                                        } else {
-                                        layer.msg(data.message + '您是否还有其他问题？', {
-                                            time: 20000, //20s后自动关闭
-                                            btn: ['继续问答', '关闭'],
-                                            area: This.getSuitSize(),
-                                            cancel: function () {// 关闭当前页面
-                                            This.closeWebPage()
-                                            }
-                                        })
-                                        }
-                                        sessionStorage.setItem('isShow', '已评价');
-                                        $('#helpComBtn').html('您已评价，感谢您的支持');
-                                        /*已评价后不可修改等级已经文本内容*/
+                                        // $('#helpComBtn').html('您已评价，感谢您的支持');
+                                        /*已评价后不可修改等级、文本内容*/
                                         $('#helpContent').attr('readonly','readonly');
                                         $('.helpGrade').off('click');
-                                        // $('#dialogFeedModal').removeClass('show');
-                                        // $('#dialogFeedModal').addClass('fade');
-                                        alert('已评价');
-
-                                    } else {
-                                      //已经评价 并将按钮隐藏
-                                        sessionStorage.setItem('isShow','已评价');
-                                        $('#helpComBtn').html('您已评价，感谢您的支持');
-                                          /*已评价后不可修改等级已经文本内容*/
-                                          $('#helpContent').attr('readonly','readonly');
-                                          $('.helpGrade').off('click');
-                                          setTimeout(function(){
-                                            $('.helpCtn').parents('.MN_answer').remove()
-                                          },2000)
-                                      This.showMsg(data.message);
-                                    }
+                                        $('.staReasonList').off('click');
+                                        $('#helpComBtn').off('click');
+                                        setTimeout(function(){
+                                          $('.helpCtn').parents('.MN_answer').remove()
+                                        },2000)
+                                        This.showMsg(data.message);
+                                      }
                                     }
                                 }
                               })
@@ -4281,6 +4577,8 @@ function uploadFile (options) {
                                         isOnly = true
                                         This.tspan = 2000//请求间隔
                                         resetTimer()
+                                        //taskId=780 获取机器人状态更改头像
+                                        This.getFaqState(data);
                                     }
                                 })
                             }
@@ -4290,19 +4588,51 @@ function uploadFile (options) {
                                 params: {
                                     s: 'kl'
                                 },
+                                /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+                                * 说明：kl接口 msgType=command 且serviceType=evaluation 时推送评价，且记录当前评价类型为对人工客服评价
+                                *     更改defaults.evaluationType的值 
+                                */
                                 callback: function (data) {
+                                  //taskId=780 获取机器人状态更改头像
+                                  This.getFaqState(data);
+                                  if(data.robotAnswer){
+                                    if(data.robotAnswer[0].msgType=="command"&&data.robotAnswer[0].serviceType=="evaluation"){
+                                      //客服触发满意度评价时，确保当前页面仅有一个评价框，清除页面上其他的评价框
+                                      if($('.helpCtn').length){
+                                        for(var i=0;i<$('.helpCtn').length;i++){
+                                          $('.helpCtn').eq(i).parents('.MN_answer').remove();
+                                        }
+                                      }
+                                      defaults.evaluationType=1;//记录评价类型为人工会话满意度
+                                      sessionStorage.setItem('evaluationType',defaults.evaluationType);//记录状态，app.js中可读此值
+                                      $('#chatCtn').append(defaults.staHtml);
+                                      This.defaults.helpfulModule.doSta();
+                                    }
+                                  }
+
+                                      //自如发送表情时，不显示对话框的背景颜色，在调用完replaceFace，并将元素添加到页面时，调用
+                                    This.sendFaceBack();
+
+
+                                  //检测是否退出转人工，如果已退出转人工，则需要改变s=faceBack接口的evaluationType值改为0
+                                    if((data.nowState!=3&&data.nowState!=5)){
+                                      defaults.evaluationType=0;//记录评价类型为机器人会话满意度
+                                      sessionStorage.setItem('evaluationType',defaults.evaluationType);
+                                    }
+
+                                    //机器人聊天状态下，推送会话满意度评价的逻辑
                                     if (data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==0) {
                                         // $('#stapin').val('');
-                                    }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==1){
+                                    }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==1&&defaults.evaluationType==0){
                                       // (!sessionStorage.getItem('isShow')) && (!sessionStorage.getItem('isDefalut')) && (!sessionStorage.getItem('noStatis')
-                                        if ((sessionStorage.getItem('isShow')=='0'||sessionStorage.getItem('isShow')==null) &&!parseInt((sessionStorage.getItem('isClose')))) {
+                                        if ((sessionStorage.getItem('isShow')==0||sessionStorage.getItem('isShow')==null) &&!parseInt((sessionStorage.getItem('isClose')))) {
                                             $('#chatCtn').append(defaults.staHtml);
                                             This.defaults.helpfulModule.doSta();
                                             sessionStorage.setItem('isShow',1);
                                             sessionStorage.setItem('isClose',0);
                                         }
-                                    }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==2){
-                                        if ((sessionStorage.getItem('isShow')=='0'||sessionStorage.getItem('isShow')==null) && !parseInt((sessionStorage.getItem('isClose')))) {
+                                    }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==2&&defaults.evaluationType==0){
+                                        if ((sessionStorage.getItem('isShow')==0||sessionStorage.getItem('isShow')==null) && !parseInt((sessionStorage.getItem('isClose')))) {
                                             $('#chatCtn').append(defaults.staHtml);
                                             This.defaults.helpfulModule.doSta();
                                             sessionStorage.setItem('isShow',1);
@@ -4311,7 +4641,13 @@ function uploadFile (options) {
                                     }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==3){
                                         // $('#stapin').val('');
                                     }
+
+
                                     if (data.nowState == 3 || data.nowState == 5) {// 人工聊天
+
+                                        defaults.evaluationType=1;//记录评价类型为人工会话满意度
+                                        sessionStorage.setItem('evaluationType',defaults.evaluationType);//记录状态，是的app.js中可读此值
+
                                         isArti = true
                                         if (This.options.intelTitleChange) {// 是否修改标题
                                             if (This.options.artiTitleChange) {// 人工时是否修改标题
@@ -4334,11 +4670,16 @@ function uploadFile (options) {
                                         }
                                         This.kuaijie()
                                     }
+                                    
 
+                                    /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+                                    * 说明：kl接口 msgType=command 且serviceType=evaluation 时推送评价，不显示此时的ansCon
+                                    */
                                     if (data.robotAnswer) {
                                         if (data.robotAnswer[0]) {
-
-                                            if(data.robotAnswer[0].ansCon=="" && data.robotAnswer.length > 1){
+                                            if(data.robotAnswer[0].msgType=="command"&&data.robotAnswer[0].serviceType=="evaluation"){
+                                              return;
+                                            }else if(data.robotAnswer[0].ansCon=="" && data.robotAnswer.length > 1){
                                                 for (var i = 1, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
@@ -4352,9 +4693,12 @@ function uploadFile (options) {
                                                     This.recommendQue(data, i)//推荐问题
                                                 }
                                             }
+                                            This.scrollbar.update()
+                                            This.scrollbar.scrollTo('bottom');
                                         }
                                     }
-
+                                    /*app从后台进入页面时，显示客服消息，并使页面滚动到最底部*/
+                                    // This.scrollbar.scrollTo('bottom', true);
                                     clearInterval(timer)
                                     if (data.status == -1) {// 接口返回状态错误时，重新上线
                                         console.log('status为-1');
@@ -4591,11 +4935,18 @@ function uploadFile (options) {
     },
     //下线请求->s=offline
     offline: function () {
+      var This = this;
       this.request({
         params: {
           s: 'offline'
         }
       })
+    },
+    /*taskId=879  自如定制push消息需求 提供清除定时器的方法，在下线请求前app.js中调用 Add by zhaoyuxing
+    *说明：在调用下线请求前，必须清空定时器，防止下线后调用其他接口
+     */
+    clearInterTimer:function(){
+      clearInterval(timer);
     },
     //剩余字数统计
     remainWord: function ($input, $tip, $word) {
@@ -4642,6 +4993,11 @@ function uploadFile (options) {
       $clearBtnId.on('click.FA', function () {
         This.$obj.$chatCtnId.find('.MN_answer_welcome').siblings().remove()
       })
+    },
+     //清除所有记录
+     clearAllRecord: function () {
+      var This = this
+      This.$obj.$chatCtnId.children().remove()
     },
     //请求->所有的请求都需要经过(特殊的除外)
     request: function (options) {

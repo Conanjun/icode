@@ -349,7 +349,11 @@ var ZIROOMApp = {
                             currentItemCallback(data.parameter.url);
                         }
                     }
-
+                    // 后台通知
+                    if( data.function == "http://zrquestiondetaillinktourltypedidenterbackground.ziroom.com"){
+                        // alert("APP进入后台");
+                        ZIROOMAppBackStage();
+                    }
                 });
             });
         }
@@ -426,6 +430,11 @@ var ZIROOMApp = {
                             if(data.parameter.message == "success"){
                                 currentItemCallback(data.parameter.url);
                             }
+                        }
+                        // 后台通知
+                        if(data.function == "http://zrquestiondetaillinktourltypedidenterbackground.ziroom.com"){
+                            // alert("APP进入后台");
+                            ZIROOMAppBackStage();
                         }
                     });
                 });
@@ -844,6 +853,86 @@ var ZIROOMApp = {
                         "parameter":params
                     }
                 break;
+                //机器人会话/人工会话
+                case "http://ZRQuestionDetailLinkToUrlTypeTurnLabor.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://ZRQuestionDetailLinkToUrlTypeTurnLabor.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //1、自如App-【我的】-【钱包】
+                case "http://zrquestiondetaillinktourltypewallet.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypewallet.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //1、自如App -【我的】-【自如信用】
+                case "http://zrquestiondetaillinktourltypecredit.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypecredit.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //2、自如 APP-【个人设置】-【资质信息】
+                case "http://zrquestiondetaillinktourltypequalification.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypequalification.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //3、自如 APP-【个人设置】-【学历信息】
+                case "http://zrquestiondetaillinktourltypecontractxueli.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypecontractxueli.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //1、自如App-【我的】-【订单】-【自如合租/整租】
+                case "http://zrquestiondetaillinktourltypeschedule.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypeschedule.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //自如App-找房页面
+                case "http://zrquestiondetaillinktourltypesearch.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypesearch.ziroom.com",
+                        "parameter":params
+                    }
+                break;
+                //自如APP- 【合租／整租】-【房屋委托】-【在线委托】
+                case "http://zrquestiondetaillinktourltypeconsignation.ziroom.com":
+                    data.android = "5.5.1";
+                    data.ios = "5.4.9";
+                    data.params.new = {
+                        "type":"",
+                        "function":"http://zrquestiondetaillinktourltypeconsignation.ziroom.com",
+                        "parameter":params
+                    }
+                break;
 
             }
         }
@@ -864,3 +953,4 @@ var paramsArrDemo = [
         oldCallback:"upload"//自定义旧版本交互方法名 为空时－默认提示更新
     }
 ];
+// function ZIROOMAppBackStage (){//自如app进入后台}

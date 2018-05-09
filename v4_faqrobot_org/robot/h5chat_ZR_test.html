@@ -32,10 +32,8 @@
         }
 
     </style>
-     <!--taskId=447 自如提供 点击显示更多，跳转自如 -->
     <script src="http://static8.ziroom.com/fecommon/library/jquery/jquery-1.8.3.min.js"></script>
     <script src="http://static8.ziroom.com/topic/outsideApp/toCallApp.js?v=1.0"></script>
-    <!-- <script type="text/javascript" src="skin/h5chat_ZR/js/toCallApp.js"></script> -->
     <script src="skin/h5chat_ZR/js/minichat.js?time=1513"></script>
     <script src="skin/h5chat_ZR/js/app.js?dev=2"></script>
     <script src="skin/h5chat_ZR/js/photoswipe.js"></script>
@@ -220,7 +218,29 @@
     </div>
 </body>
 <script>
-var tmpsourceId=3;
+/*自如测试页，要求如果是vip则的sourceId=14 Amend by zhaoyuxing*/
+function encodeUrl(){
+      var name,value;//存储url中的查询讯字符串、值
+      var str=location.search; //取得url查询字符串
+        str=str.substr(1); //取得所有参数   stringvar.substr(start [, length ]
+      
+      var arr=str.split("&"); //各个参数放到数组里
+      var urlCode=[];
+      for(var i=0;i < arr.length;i++){ 
+      var num=arr[i].indexOf("="); 
+          if(num>0){ 
+          name=arr[i].substring(0,num);
+          value=arr[i].substr(num+1);
+          urlCode[name]=value;
+          } 
+      }
+      return urlCode.vip;
+}  
+if(encodeUrl()==1){
+    var tmpsourceId=14;
+}else{
+    var tmpsourceId=3;
+}  
 var initPhotoSwipeFromDOM = function(gallerySelector) {
         // 解析来自DOM元素幻灯片数据（URL，标题，大小...）
         var parseThumbnailElements = function(el) {

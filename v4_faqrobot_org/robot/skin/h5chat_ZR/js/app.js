@@ -260,33 +260,33 @@
             open: true,//是否启用功能
             faceObj: Face,//表情插件实例
         },
-        helpfulModule: {//答案满意度模块
-            open: true,//是否启用功能
-            yesCallback: function($obj, msg) {//满意的回调
-                $obj.text(msg || '感谢您的评价！');
-            },
-            noCallback: function($obj, msg) {//不满意的回调
-                if(window.uselessReasonItems) {
-                    if(window.uselessReasonItems[0]) {
-                        $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
+        // helpfulModule: {//答案满意度模块
+        //     open: true,//是否启用功能
+        //     yesCallback: function($obj, msg) {//满意的回调
+        //         $obj.text(msg || '感谢您的评价！');
+        //     },
+        //     noCallback: function($obj, msg) {//不满意的回调
+        //         if(window.uselessReasonItems) {
+        //             if(window.uselessReasonItems[0]) {
+        //                 $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
 
-                        var html = '';
-                        for(var i=0; i<window.uselessReasonItems.length; i++) {
-                            var checked = '';
-                            if(!i) {
-                                checked = 'checked';
-                            }
-                            html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
-                        }
-                        $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
-                    }else {
-                        $obj.text(msg || '感谢您的评价！');
-                    }
-                }else {
-                    $obj.text(msg || '感谢您的评价！');
-                }
-            }
-        },
+        //                 var html = '';
+        //                 for(var i=0; i<window.uselessReasonItems.length; i++) {
+        //                     var checked = '';
+        //                     if(!i) {
+        //                         checked = 'checked';
+        //                     }
+        //                     html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
+        //                 }
+        //                 $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
+        //             }else {
+        //                 $obj.text(msg || '感谢您的评价！');
+        //             }
+        //         }else {
+        //             $obj.text(msg || '感谢您的评价！');
+        //         }
+        //     }
+        // },
         initCallback: function(data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
         },
@@ -341,12 +341,12 @@
     */
     var faqrobotModule={
          /* 418 自如页面定制 满意度评价模板结构 s=>fadeback*/
-        /*TaskId:  708 自如页面优化 提高拍照和相册的点击灵敏度
-        *说明：配合 扩大input type=file的覆盖范围
-        */
-        //   staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close">&times;</span></p><div class="helpfull-contanier"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><div class="iframe-con"><iframe src="skin/h5chat_ZR/helpcontent.html"></iframe></div><div class="helpfull-commit" id="helpComBtn"><span>提交反馈</span></div></div></div></div>',
-
-           staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close">&times;</span></p><div class="helpfull-contanier"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><div><textarea id="helpContent" class="help-content"  placeholder="您对木木有任何的意见和建议都欢迎反馈给产品经理改进哦（您的留言最多可输入200字，选填）" maxlength="200"></textarea></div><div class="helpfull-commit" id="helpComBtn"><span>提交反馈</span></div></div></div></div>',
+         /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+          * 说明：修改满意度评价样式，增加显示等级文案以及原因
+         */
+        staHtml:'<div class="MN_answer"><div class="MN_fkCtn"><div class="helpCtn"><p class="help-title">请您对本次服务做出评价：<span class="helpfull-close">&times;</span></p><div class="helpfull-contanier"><input type="hidden" id="helpLevel" value="-1"><span class="helpGrade" data-grade="1"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="2"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="3"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="4"><i class="fa fa-star-o"></i></span><span class="helpGrade" data-grade="5"><i class="fa fa-star-o"></i></span></div><p class="staWord">非常不满意，各方面都差</p><input type="hidden" id="staReason"><div class="staReasonList"></div><div><textarea id="helpContent" class="help-content"  placeholder="其他想说的。您对小如的服务有任何意见建议都欢迎反馈给产品经理改进哦（您的留言最多可输入200字，选填）" maxlength="200"></textarea></div><div class="helpfull-commit helpfull-commit-disable"><span id="helpComBtn">提交反馈</span></div></div></div></div>',
+        staWordList:['非常不满意，各方面都差','不满意，比较差','一般，仍然努力','比较满意，仍可改善','非常满意，服务五星'],//点击等级显示的文案
+        staReasonList:[['问题根本没解决','机器人答非所问','服务态度差','人工客服不专业','对自如政策不满意','对管家服务不满意'],['问题已经解决了','服务态度好','有责任心','积极暖心']],//显示的原因
       //信息提示
       showMsg: function (message, callback) {
         if (message == '缺少参数!') {
@@ -368,6 +368,7 @@
       },
       /*用于添加评价框后，事件的绑定*/
       doSta:function(){
+        var This=this;
         //绑定关闭窗口
         $('.helpfull-close').off('click').on('click',function(){
             $(this).parents('.MN_answer').remove();
@@ -377,10 +378,24 @@
             }
         })
         //星级评价 点击 操作样式
+        /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+          * 说明：点击五星评价时，重新加载并文案以及原因，清空原先已选择的原因，提交按钮至灰
+          * 功能：不满意的原因绑定点击事件，并将原因存入input中
+         */
+
+        //默认显示6条问题的原因
+        var reasonHtmlDefault='';
+       
+        for(var i=0;i<This.staReasonList[0].length;i++){
+            reasonHtmlDefault+='<div class="staReasonItem" isselected=false>'+This.staReasonList[0][i]+'</div>';
+        }
+        $('.staReasonList').html(reasonHtmlDefault);
+
         $('.helpGrade').on('click',function(){
             var _this=$(this);
             var count=_this.attr('data-grade');
             var level='';//评价等级 4非常不满意 0不满意  2一般  1满意 3非常满意
+            var _staWord=$('.staWord');//存储评价文案内容
             // 将等级存入#helpLevel元素中
             if(count==1){
                 level=4;
@@ -394,11 +409,13 @@
                 level=3;
             }
             $('#helpLevel').val(level);
+           
             for(var i=0;i<count;i++){
                 $('.helpGrade').eq(i).css('color','#FFA000')
                     .children().removeClass('fa-star-o')
                     .addClass('fa-star')
             }
+            
             //处理重新选择：下一个星是否已选，若已选择，则删除之后所有已选择样式
             var reChoose=_this.next().children().hasClass('fa-star');
             if(reChoose){
@@ -407,6 +424,49 @@
                     .children().removeClass('fa-star')
                     .addClass('fa-star-o')
                }
+            }
+             //显示等级文案
+             _staWord.html(This.staWordList[count-1]);
+             _staWord.show();
+ 
+            //显示问题的原因
+             var reasonHtml='';
+             var reasonType='';//用于存储原因显示的类型：0 1-4星的原因 1 5星的原因
+             if(count==5){
+                 reasonType=1 
+             }else{
+                 reasonType=0 
+             }
+             for(var i=0;i<This.staReasonList[reasonType].length;i++){
+                 reasonHtml+='<div class="staReasonItem" isselected=false>'+This.staReasonList[reasonType][i]+'</div>';
+             }
+             $('.staReasonList').html(reasonHtml);
+             //切换评价等级时，清空已经存储的评价原因,按钮至灰
+             $('#staReason').val('');
+             $('#helpComBtn').parent().addClass('helpfull-commit-disable');
+        })
+        /**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+          * 说明：修改满意度评价样式，增加显示等级文案以及原因
+          * 功能：不满意的原因绑定点击事件，并将原因存入input中,并使得按钮可用
+         */
+      
+        var _reasonInput= $('#staReason');
+        $('.staReasonList').off('click').on('click','.staReasonItem',function(){
+            $(this).toggleClass('staReasonItem-selected');
+            var noselect=eval($(this).attr('isselected'));//获取当前标签选中的状态
+            $(this).attr('isselected',!noselect);
+
+            var reason='';//存储s=faceBack sub的值,每次添加评价框时，清空内容
+            //获得所有被选中的选项的原因
+            $('.staReasonItem[isselected=true]').each(function(){
+                reason+=$(this).html()+',';
+            });
+
+            _reasonInput.val(reason.substring(0,reason.length-1));
+            if(_reasonInput.val()&&$('#helpLevel').val()!=-1){
+                $('#helpComBtn').parent().removeClass('helpfull-commit-disable');
+            }else{
+                $('#helpComBtn').parent().addClass('helpfull-commit-disable');
             }
         })
 
@@ -424,12 +484,20 @@
     }
       //taskId: 418 自如页面定制 满意度评价 点击满意度评价按钮s=fadeback，推送评价框
     $('.feedbackCtn').on('click.FA',function(){
-            //用于存储评价框是否已推送 防止重复推送
-            if(sessionStorage.getItem('isShow')=='已评价'){
+            //机器人聊天状态下 用于存储评价框是否已推送 防止重复推送
+            if(sessionStorage.getItem('isShow')=='已评价'&&sessionStorage.getItem('evaluationType')==0){
                 faqrobotModule.showMsg('您好，您已评价过，感谢您对我们工作的支持！');
-            }else if(sessionStorage.getItem('isShow')==1){//已显示评价框 不作操作
+            }else if(sessionStorage.getItem('isShow')==1&&sessionStorage.getItem('evaluationType')==0){//已显示评价框 不作操作
                 return;
+            }else if(sessionStorage.getItem('isShowP')=='已评价'&&sessionStorage.getItem('evaluationType')==1){// 人工已主动评价
+                faqrobotModule.showMsg('您好，您已评价过，感谢您对我们工作的支持！');
             }else{
+                //客服触发满意度评价时，确保当前页面仅有一个评价框，清除页面上其他的评价框
+                if($('.helpCtn').length){
+                    for(var i=0;i<$('.helpCtn').length;i++){
+                        $('.helpCtn').eq(i).parents('.MN_answer').remove();
+                    }
+                }
                 $('#chatCtn').append(faqrobotModule.staHtml);
                 //自动滚动到底部
                 var j = 0;
@@ -441,12 +509,37 @@
                     }
                     j++;
                 }, 100);
-                // $("#helpContent").focus(); 
-                sessionStorage.setItem('isShow',1);
-                sessionStorage.setItem('isClose',0);
+                 //在机器人状态时，已显示评价框，则不再显示评价框
+                if(sessionStorage.getItem('evaluationType')==0){
+                    sessionStorage.setItem('isShow',1);
+                    sessionStorage.setItem('isClose',0);
+                }    
+
                 faqrobotModule.doSta();
             }
-    })
-   
+    })  
+
+    /*taskId=879 自如定制push消息需求  Add by zhaoyuxing
+    *说明：1、提供一个全局的方法（下线），与自如app交互；当app进入后台是，自动调用该方法
+    *    2、在调用下线请求前，必须清空定时器，防止下线后调用其他接口
+    *    3、提供一个全局的方法（上线），与自如app交互；当从app进入页面时，自动调用该方法
+     */
+    window.ZIROOMAppBackStage=function (){
+        FAQ.clearInterTimer();
+        FAQ.offline();
+    }
+
+    window.ZIROOMAppComeActive=function(){
+        //清空页面
+        FAQ.clearAllRecord();
+        FAQ.recordIndex=0;
+        FAQ.initBaseInfo();
+        FAQ.timeRequest();
+        var timerDown = setInterval(function() {
+            FAQ.scrollbar.scrollTo('bottom', true);
+                $('body').scrollTop(1000000);
+                clearInterval(timerDown);
+        }, 100);
+    }
 });
 
