@@ -44,4 +44,8 @@ label[for="file_upload"]{
 }
 .img-container img {
     max-width: 100%;
-  }
+}
+
+.modal-dialog{
+    margin:20px;
+}

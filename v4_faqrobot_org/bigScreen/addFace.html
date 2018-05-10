@@ -20,13 +20,14 @@
             <!--显示图片-->
             <img id="pic" src="./img/picUpload.png">
             <img id="uploadSuccess" src="./img/picUploadSuccess.png" class="hide" alt="">
+            <!--规定能够通过文件上传进行提交的文件类型。-->
+            <input type="file" id="file_upload" accept="image/*" hidden>
+
         </label>
-        <!--规定能够通过文件上传进行提交的文件类型。-->
-        <input type="file" id="file_upload" accept="image/*" hidden>
     </div>
     <!-- 名称输入 -->
     <div class="form-horizontal inputName">
-        <div class="form-group">
+        <div class="form-group" style="margin-left:0px;margin-right:0px;">
             <label for="username" class="col-xs-3 text-right">称呼：</label>
             <div class="col-xs-7">
                 <input type="text" id="username" class="form-control">
@@ -42,13 +43,13 @@
     <div class="modal fade" id="cutImageModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <!-- <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h5 class="modal-title" id="modalLabel">图片裁剪</h5>
 
-                </div>
+                </div> -->
                 <div class="modal-body">
                     <div class="img-container">
                         <img id="cutImage">
@@ -128,27 +129,25 @@
                 var form = new FormData();
                 form.append('api_key', '1naz2_ToALPHeG8VybxEu_ww2t53u7iO');
                 form.append('api_secret', 'QjH3NJoM8kXfmXcn654psdH6_1WxVRju');
-                canvas.toBlob(function (blob) {
-                    form.append('image_file', blob);
-                    $.ajax({
-                        url: 'https://api-cn.faceplusplus.com/facepp/v3/detect',
-                        type: 'post',
-                        cache: false,
-                        data: form,
-                        dataType: 'json',
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            if (data.faces[0]) {
-                                This.faceToken = data.faces[0].face_token;
-                                This.addFaceSet();
-                            } else {
-                                $('#ctlBtn').html('确认上传');
-                                alert("未能识别，请重新上传！");
-                            }
-
+                form.append('image_file', convertBase64UrlToBlob(canvas.toDataURL('image/jpeg')))
+                $.ajax({
+                    url: 'https://api-cn.faceplusplus.com/facepp/v3/detect',
+                    type: 'post',
+                    cache: false,
+                    data: form,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.faces[0]) {
+                            This.faceToken = data.faces[0].face_token;
+                            This.addFaceSet();
+                        } else {
+                            $('#ctlBtn').html('确认上传');
+                            alert("未能识别，请重新上传！");
                         }
-                    })
+
+                    }
                 })
             },
             //将face-Token添加到FaceSet
@@ -198,40 +197,38 @@
                 var This = this;
                 This.username = $('#username').val();
                 var form = new FormData();
-                canvas.toBlob(function (blob) {
-                    // 上传图片的文件名需要加上文件类型 
-                    var imageFile = new File([blob],This.file.name);
-                    form.append('imageFile', imageFile);
-                    form.append('realName', This.username);
-                    form.append('sex', "");
-                    form.append('idNum', "");
-                    form.append('position', "");
-                    form.append('token', This.faceToken);
-                    form.append('access_token', This.accessToken);
-                    $.ajax({
-                        url: 'http://v4.faqrobot.net/ChatFacePic/upChatFacePic',
-                        type: 'post',
-                        cache: false,
-                        data: form,
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        success: function (data) {
-                            if (data.status == 0) {
-                                $('#uploadSuccess').removeClass('hide');
-                                $('#ctlBtn').html('上传成功');
-                                setTimeout(function () {
-                                    $('#uploadSuccess').addClass('hide');
-                                    $('#pic').attr('src', './img/picUpload.png');
-                                    $('#username').val("");
-                                    $('#ctlBtn').html('确认上传');
-                                }, 5000);
-                            } else {
-                                alert(data.message);
-                            }
-
+                // 上传图片的文件名需要加上文件类型 
+                var imageFile = new File([canvas.toDataURL()], This.file.name);
+                form.append('imageFile', imageFile);
+                form.append('realName', This.username);
+                form.append('sex', "");
+                form.append('idNum', "");
+                form.append('position', "");
+                form.append('token', This.faceToken);
+                form.append('access_token', This.accessToken);
+                $.ajax({
+                    url: 'http://v4.faqrobot.net/ChatFacePic/upChatFacePic',
+                    type: 'post',
+                    cache: false,
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 0) {
+                            $('#uploadSuccess').removeClass('hide');
+                            $('#ctlBtn').html('上传成功');
+                            setTimeout(function () {
+                                $('#uploadSuccess').addClass('hide');
+                                $('#pic').attr('src', './img/picUpload.png');
+                                $('#username').val("");
+                                $('#ctlBtn').html('确认上传');
+                            }, 5000);
+                        } else {
+                            alert(data.message);
                         }
-                    })
+
+                    }
                 })
             }
 
@@ -242,7 +239,7 @@
         var cutImage = document.getElementById('cutImage');
         var $cutImageModal = $('#cutImageModal');
         var avatar = $('#pic');
-        var cropper,canvas;
+        var cropper, canvas;
 
         var done = function (url) {
             $cutImage.attr('src', url);
@@ -274,6 +271,25 @@
             }
         });
         /********处理图像裁剪********/
+
+        /**  
+       * 将以base64的图片url数据转换为Blob  
+       * @param urlData  
+       *   用url方式表示的base64图片数据  
+       */
+        function convertBase64UrlToBlob(urlData) {
+
+            var bytes = window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte  
+
+            //处理异常,将ascii码小于0的转换为大于0  
+            var ab = new ArrayBuffer(bytes.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < bytes.length; i++) {
+                ia[i] = bytes.charCodeAt(i);
+            }
+
+            return new Blob([ab], { type: 'image/png' });
+        }
     </script>
 </body>
 
