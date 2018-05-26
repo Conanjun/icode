@@ -1,0 +1,1026 @@
+@charset "utf-8";
+body, html {
+    width: 100%;
+    height: 100%;
+}
+/*机器人头像位置*/
+.MN_kfImg {
+    left: -55px;
+}
+.MN_khImg {
+    right: -55px;
+}
+/*TaskId:  408 自如页面定制
+*原因：对话框样式修改
+*修改：padding 
+*/
+.MN_answer, .MN_ask {
+    padding: 5px 30px 5px 30px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+    width: 30px;
+    height: 30px;
+}
+.MN_kfCtn, .MN_khCtn {
+    margin: 10px 0 0;
+}
+.MN_kfCtn{
+    margin-left: 35px;
+}
+.MN_khCtn {
+    margin-right:35px;
+}
+
+.view {
+    /* width: 1rem; */
+    width: 100%;
+    height: 98.5%;
+    /* height: 100%; */
+    margin: 0 auto;
+    position: relative;
+}
+.back {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    /* background: #D6D6D6; */
+}
+.back p {
+    color: #eee;
+}
+.back .logo {
+    max-width: 1rem;
+    max-height: 80px;
+}
+
+/*TaskId:  408 自如页面定制
+*修改：聊天页面背景色
+*/
+.front {
+    height: 100%;
+    position: relative;
+    background:#F9F9F9;
+}
+.front .chatScroll {
+    position: relative;
+    overflow: hidden;
+
+}
+.lunbo{
+    height: 0.05rem;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    background: #d05d58;
+    width: 100%;
+    z-index: 1;
+}
+.sound{
+    display: inline-block;
+    line-height: 0.05rem;
+    margin-left: 0.04rem;
+    float: left;
+}
+.sound img{
+    width: 0.05rem;
+    height: 0.04rem;
+}
+.relative{
+    position: relative;
+}
+.closeAdv{
+    display: inline-block;
+    width: 0.04rem;
+    height: 0.04rem;
+    line-height: 0.04rem;
+    margin-right: 6px;
+    float: right;
+}
+.closeAdv img{
+    width: 0.04rem;
+    height: 0.04rem;
+}
+ul li {
+    width: 100%;
+    height: 0.05rem;
+    line-height: 0.05rem;
+    font-size: 0.04rem;
+    color: #fff;
+    text-align: left;
+    padding-left: 0.12rem;
+}
+
+/*TaskId:  408 自如页面定制
+*修改：修改背景色
+*/
+.front .chatScroll .chatCtn {
+    padding: 0.04rem 0 10px 0;
+    position: absolute;
+    top: 0;
+    left: 0;    
+    background: #F9F9F9;
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+/*头部样式定义*/
+    /*TaskId:  408 自如页面定制
+    *原因：头部样式定制
+    *修改：删除头部文字样式
+    */
+.header-container{
+    height: 0.1rem;
+    line-height: 0.1rem;
+    overflow-y:visible; 
+
+}
+.front .header{
+    height:0.1rem;
+    line-height: 0.1rem;
+    text-align: center;
+    background: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    position: relative;
+}
+.front .header .backQuit{
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    font-size: 29px;
+    width: 40px;
+}
+.header-container>.header>.logo{
+    text-align: center;
+}
+.front .header .link{
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    font-size: 25px;
+    color: #fff;
+}
+/*头部样式定义结束*/
+
+/* .front .header img{
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+} */
+
+ /* .front .header .headName{
+    color: #666;
+    display: inline-block;
+    width: 70%;
+    overflow: hidden;/*超出部分隐藏*/
+    /*white-space: nowrap;/*不换行*/
+    /*text-overflow:ellipsis;/*超出部分文字以...显示*/
+/* }   */
+
+.editCtn {
+    background: #fff;
+    position:fixed;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    z-index:100;
+}
+
+/*TaskId:  408 自如页面定制
+*原因：聊天输入框样式更改
+*/
+.editCtn .editShow {
+    position: relative;
+    height: 0.136rem;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+}
+.editCtn .editShow:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/*TaskId:  408 自如页面定制
+*原因：表情 输入框 展开功能按钮在同一行显示
+*修改：改为绝对定位
+*/
+.editCtn .editShow .cosSome {
+    display: inline-block;
+    box-sizing: border-box;
+    /* float: left; */
+    position: absolute;
+    left: 40px;
+    top:0.003rem;
+    text-align: center;
+    vertical-align: middle;
+}
+.editCtn .editShow .cosStyle {
+    width: 15%;
+    margin-top: 0.02rem;
+}
+.editCtn .editShow .cosStyle .goVideo {
+    display: none;
+    width: 0.075rem;
+    height: 0.075rem;
+    background: url(../images/voice@2x.png) no-repeat center;
+    background-size: contain;
+
+}
+.editCtn .editShow .cosStyle .goinput {
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/keyboard@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput {
+    width: 85%;
+    margin-top: 0.021rem;
+    
+}
+.editCtn .editShow .cosInput .textareaCtn {
+    margin-left: 0.02rem;
+    height:auto;
+    overflow: hidden;
+}
+ /*TaskId:  408 自如页面定制
+    *原因：修改聊天输入框的样式
+    *修改：输入框的背景、外框形状
+*/
+.editCtn .editShow .cosInput .textareaCtn .textarea {
+    width: 90%;
+    height: 0.09rem;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    padding:0.02rem 0;
+    overflow: hidden;
+    border: none;
+    overflow-y:auto; 
+    /* text-indent:15px; */
+    /* border-radius: 0.4rem; */
+    /* background: #f5f5f5; */
+    float: left;
+}
+.editCtn .editShow .cosInput .textareaCtn .textarea::placeholder{
+    color:#DDDDDD;
+}
+/*点击发送*/
+.editCtn .editShow .cosBtn .sendMsg{
+    float: right;
+    width:100%;
+    height: 0.09rem;
+    line-height: 0.09rem;
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 5px;
+    margin:0.01rem 0.02rem 0 0;
+    font-size:0.03rem;
+}
+.editCtn .editShow .cosInput .textareaCtn .faceBtn {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/expression@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput .textareaCtn .faceBtn_focus {
+    background: url(../images/expression_click@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editShow .cosInput .inputBtn {
+    display: none;
+    width: 100%;
+    height: 0.093rem;
+    line-height: 0.083rem;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+}
+.editCtn .editShow .cosBtn {
+    width: 15%;
+    margin-top: 0.012rem;
+}
+/* .editCtn .editShow .cosBtn .addbtn {
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    background: url(../images/add@2x.png) no-repeat center;
+    background-size: contain;
+} */
+
+/*TaskId:  408 自如页面定制
+*修改：发送按钮样式
+*/
+.editCtn .editShow .cosInput .sendBtnNew {
+    width: 0.09rem;
+    height: 0.09rem;
+    line-height: 0.09rem;
+    /* background: #FFA40B; */
+    color: #FFA40B;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: center;
+    border-radius:5px;
+    font-size: 14px;
+    display: none;
+}
+
+/*TaskId:  408 自如页面定制
+*说明：设置工具栏的高度，以及功能图标样式
+*/
+.editCtn .editHide {
+    display: none;
+    position: relative;
+    height: 0.4rem;
+    padding: 0 0.05rem;
+    box-sizing: border-box;
+    background-color: #F9F9F9;
+}
+/*TaskId:  708 自如页面优化 提高拍照和相册的点击灵敏度
+*说明：配合 扩大input type=file的覆盖范围
+*/
+.editCtn .editHide .editCtn_com {
+    float: left;
+    text-align: center;
+    width: 20%;
+    height: 100%;
+    color: #999999;
+    position: relative;
+    overflow: hidden;
+}
+
+.editCtn .editHide .takePhotoCtn{
+    display: none;
+}
+
+.editCtn .editHide .editCtn_com .btn-outer{
+    width: 0.1rem;
+    height: 0.1rem;
+    line-height: 0.11rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.02rem;
+    /* border: 1px solid #9B9B9B; */
+    /* border-radius: 50%; */
+    display: inline-block;
+}
+.editCtn .editHide .editCtn_com span {
+    display: inline-block;
+    width: 0.09rem;
+    height: 0.09rem;
+    /* margin: 0.16rem 0 0.05rem 0; */
+    font-size:20px;
+}
+.editCtn .editHide .editCtn_com p {
+    white-space: nowrap;
+    font-size: 12px;
+    color: #000;
+}
+/*TaskId:  408 自如页面定制 说明：设置工具栏的高度，以及功能图标样式定义结束*/
+
+
+/*点击之前图标颜色*/
+.editCtn .editHide .editCtn_com .sendPic {
+    background: url(../images/icon/sendPic.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .takePhoto {
+    background: url(../images/camera@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .commonQue {
+    background: url('../images/icon/promble.png') no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .feedback {
+    background: url(../images/messageBack.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .leaveMsg {
+    background: url(../images/icon/message.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendVoice {
+    background: url(../images/voice1@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+
+.editCtn .editHide .editCtn_com .sendCamera {
+    background: url(../images/camera@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendFile {
+    background: url(../images/file@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendFace {
+    background: url(../images/face@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+
+/*TaskId:  408 自如页面定制
+*说明:设置发送表情图标
+*/
+.sendFaceBtn{
+    position: absolute;
+    left: 12px;
+    top: 0.03rem;
+    display: inline-block;
+    width: 25px;
+    height:25px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 25px;
+    color:#9E9E9E;
+}
+/* 自如发送表情不显示对话框 */
+.face-Ctn{
+    background: transparent !important;
+    border: 1px solid transparent !important;
+}
+.face-Ctn .MN_khTriangle1,.face-Ctn .MN_khTriangle2{
+    border-left-color:transparent !important;
+}
+
+/*TaskId:  408 自如页面定制
+*说明:设置显示更多操作工具栏图标
+*/
+.addbtn{
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 35px;
+    height:35px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 39px;
+    color:#9E9E9E;
+    /* display: none; */
+}
+/*点击之后图标颜色变蓝*/
+.editCtn .editHide .editCtn_com .sendPicClick {
+    background: url(../images/sendPicClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .takePhotoClick {
+    background: url(../images/cameraClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .commonQueClick {
+    background: url(../images/prombleClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .feedbackClick {
+    background: url(../images/messagebackClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .leaveMsgClick {
+    background: url(../images/messageClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendVoiceClick {
+    background: url(../images/voice1Click@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendCameraClick {
+    background: url(../images/cameraClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendFileClick {
+    background: url(../images/fileClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendFaceClick {
+    background: url(../images/faceClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+
+.layui-layer-ico {
+    background: url(../images/icon.png) no-repeat;
+}
+.commonQueLayer {
+    display: none;
+}
+.MN_queList, .MN_noQueList {
+    padding: 0.024rem 0.032rem;
+}
+.MN_noQueList {
+    text-align: center;
+}
+.feedbackLayer {
+    display: none;
+    padding: 0.024rem 0 0.048rem 0;
+}
+.MN_marginCtnRadio {
+    margin-left: 0.032rem;
+    margin-top: 0.032rem;
+}
+.noSatiCtn {
+    padding: 0 0.032rem;
+}
+.noSatiCtn label {
+    padding: 0 0.032rem;
+}
+.leaveMsgLayer {
+    /* display: none; */
+    padding: 0.024rem 0 0.048rem 0;
+}
+.leaveMsgLayer div{
+    position: relative;    
+}
+.leaveMsgLayer img{
+    width:0.04rem;
+    position: absolute;
+    left: 8px;
+    top: 22px;
+    font-size: 26px;
+    color: #888C95;
+}
+.leaveMsgLayer input {
+    width: 100%;
+    height: 0.107rem;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border: 1px solid #e6e6e6;
+    margin: 0.024rem 0;
+    padding: 0 0.08rem;
+    background: #F6F6F6;
+}
+.leaveMsgLayer textarea, .feedbackLayer textarea {
+    margin: 0.024rem 0;
+    border: none;
+    border: 1px solid #e6e6e6;
+    padding: 0.02rem 0.032rem;
+    height: 0.213rem;
+    box-sizing: border-box;
+    background: #F6F6F6;
+}
+.MN_commentBtn {
+    width: 0.8rem;
+    height: 0.085rem;
+    line-height: 0.085rem;
+    margin: 0.024rem auto;
+}
+.layui-layer-title {
+    padding: 0 80px 0 0.032rem;
+    background: #fff;
+}
+.layui-layer-setwin {
+    top: 0px;
+    right: 0.032rem;
+    padding: 12px 0px 12px 12px;
+}
+.layui-layer-page .layui-layer-content {
+    background: #f8f8f8;
+}
+
+.SC_frontCtn {
+    width: 4px;
+}
+
+.upFile {
+    display: none;
+}
+/*body中时间设置*/
+.MN_kftime,.MN_khtime{
+    background: none;
+    color: #666;
+    margin:0 auto;
+}
+/*聊天背景*/
+/*TaskId:  408 自如页面定制
+*原因：对话框样式修改
+*/
+.MN_kfCtn, .MN_khCtn{
+    border-radius: 5px;
+    border:1px solid #D9D9DB;
+}
+
+/*聊天头像*/
+/*TaskId:  408 自如页面定制
+*原因：聊天头像不显示
+*修改：隐藏聊天头像
+*/
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg{
+    top:0;
+}
+/*TaskId:  408 自如页面定制
+*原因：对话框样式定制
+*修改：定位值
+*/
+.MN_kfTriangle2,.MN_kfTriangle1{
+    top:10px;
+    left:-8px;
+}
+.MN_kfTriangle1{
+    left:-9px;
+}
+.MN_khTriangle1,.MN_khTriangle2{
+    top:10px;
+    right:-8px;
+}
+.MN_khTriangle1{
+    right:-9px;
+}
+
+.MN_kfCtn audio,.MN_kfCtn video{
+    max-width:100%;
+}
+/*TaskId:  408 自如页面定制
+*说明：增加满意度评价对话框样式
+*/
+.MN_fkCtn{
+    padding: 10px;
+    border-radius: 5px;
+    border:1px solid #D9D9DB;
+    background: #fff;
+    max-width: 95%
+}
+.help-title{
+    height: 20px;
+    line-height: 20px;
+}
+.helpfull-contanier{
+    padding: 0.02rem 0.01rem;
+}
+.helpfull-close{
+    float: right;
+    font-size: 20px;
+    display: inline-block;
+    width:23px;
+}
+.helpGrade{
+    font-size: 26px;
+    display: inline-block;
+    width: 17%;
+    color: #9F9F9F;
+}
+/* 自如优化，超出部分显示滚动条 */
+.help-content{
+    width: 100%;
+    height: 80px;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+.help-content::placeholder{
+    font-size:12px;
+    color:#E0E0E0;
+}
+.help-content::-moz-placeholder{
+    font-size:12px;
+    color:#E0E0E0;
+}
+.header-container::-webkit-input-placeholder{
+    font-size:12px;
+    color:#E0E0E0;
+}
+.helpfull-commit{
+    text-align: center;
+    margin-top:6px;
+}
+.helpfull-commit span{
+    display: inline-block;
+    background: #FFA000;
+    color:#fff;
+    width: 44%;
+    height:25px;
+    line-height:25px;
+    border-radius: 5px; 
+}
+.helpfull-commit-disable span{
+    background: #CCCCCC;
+}
+/**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+* 说明：修改满意度评价样式，增加显示等级文案以及原因
+*/
+.staWord {
+    text-align: center;
+    color: #FFB53D;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: none;
+}
+.staReasonList{
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+.staReasonList .staReasonItem{
+    float: left;
+    display: inline-block;
+    width: 45%;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #CCCCCC;
+    color: #9E9E9E;
+    border-radius: 5px;
+    font-size: 12px;
+
+}
+.staReasonList .staReasonItem-selected{
+    background: #FFA000;
+    color:#fff;
+    border-color: transparent;
+}
+/*TaskId:  708 自如页面优化 评价框超出范围可滚动
+*说明：使用iframe嵌入输入框，设置iframe的样式
+*/
+/* .helpCtn iframe{
+    width: 100%;
+    height: 106px;
+    outline: none;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+} */
+ input,textarea {
+    -webkit-user-select: auto!important;
+    -khtml-user-select: auto!important;
+    -moz-user-select: auto!important;
+    -ms-user-select: auto!important;
+    -o-user-select: auto!important;
+    user-select: auto!important;
+}
+/* 增加满意度评价对话框样式结束 */
+
+
+/* TaskId:  408 自如页面定制
+*说明：订单显示样式  含图片
+* */
+.order-contanier{
+    border: 2px solid #F2F2F3;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom:10px;
+    color: #ADADAD;
+}
+.order-title{
+    border-bottom: 1px solid #F2F2F3;
+    padding-bottom: 5px;
+}
+.order-state{
+    color: #FFB53D;
+    float:right;
+}
+/* 显示更多按钮 */
+.orderMore{
+    text-align: center;
+}
+.orderMore .J_toHtList{
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #FFB53D;
+    color:#FFB53D;
+    border-radius: 5px;
+    padding: 0px 15px;
+}
+.goMore{
+    margin-top:20px;
+}
+/* 订单详情样式 */
+.order-detail-contanier{
+   margin-top: 5px;
+   min-height:75px;
+   position: relative;/*配合日期以及图片的定位*/
+}
+.order-detail p{
+    color: #ADADAD;
+}
+.address{
+    font-size:14px;
+}
+.order-tips{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size:12px;
+}
+.order-date{
+    font-size:12px;
+    position: absolute;
+    bottom: 5px; /*相对于.order-detail-contanier定位*/
+}
+/*管家信息*/
+.ste-detail-contanier{
+    border-top: 1px solid #F2F2F3;
+    padding-top: 5px;
+}
+.ste-detail-contanier p{
+    color: #ADADAD;
+    margin-bottom: 3px;
+}
+/* 订单样式2 不含图片 */
+.order-detail-contanier2{
+    margin-top: 5px;
+}
+.order-detail-contanier2 p{
+    color: #ADADAD;
+}
+
+/* TaskId:  408 自如页面定制 订单显示样式 定义结束*/
+
+/*TaskId:  408 自如页面定制 报修对话框样式 */
+/* 立即报修按钮 */
+.fixCtn .fixBtnCtn{
+    height:30px;
+    text-align: center;
+    margin-top: 10px;
+}
+.fixCtn .fix-btn{
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #FFB53D;
+    color:#FFB53D;
+    border-radius: 5px;
+    padding: 0px 15px;
+}
+/* 分割线样式 */
+.line{
+    height: 1px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+.line span{
+    position: relative;
+    top: -11px;
+    background: #fff;
+    padding: 0 10px;
+    color: #ddd;
+    font-size: 10px;
+}
+
+/*TaskId:  408 自如页面定制 报修对话框样式结束 */
+
+/*taskId:406 自如页面定制 app闪退显示聊天记录*/
+.flashOutDeal{
+    color: #9E9E9E;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* 自如增加弹出框样式 */
+.S_upModel * {margin: 0;padding: 0;}
+.S_upModel li {list-style: none}
+.S_upModel a {-webkit-touch-callout: none;text-decoration: none;outline: 0;cursor: pointer;}
+.S_upModel{width: 100%;height: 100%;background: rgba(0,0,0,0.8);position: fixed; top: 0;left: 0;z-index: 999;}
+.S_upModel_main{width: 80%;background: #fff;border-radius: 8px;position: absolute;top: 40%;left: 50%;margin-left: -40%;margin-top: 8px;text-align: center;font-size: 14px;color: #444;}
+.S_upModel_main p{line-height: 40px;padding: 15px;}
+.S_upModel_main .S_upModel_btn{height: 0}
+.S_upModel_main .S_upModel_btn li{width: 50%;height: 44px;float: left;}
+.S_upModel_main .S_upModel_btn li:first-child{border-right: 1px solid #eee;box-sizing: border-box;}
+.S_upModel_main .S_upModel_btn li:first-child a{color: #999;}
+.S_upModel_main a{display: block;border-top: 1px solid #eee;color: #ffa000;line-height: 44px;text-align: center;}
+
+
+.sendFace{
+    background: url(../images/icon/face.png) no-repeat center;
+    display: block;
+    height: 25px;
+    background-size: cover;
+}
+
+/* taskid=402 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 */
+/* 样式开始 */
+#leaveMsgForm .form-group{
+    padding:0 7px;
+    position:relative;
+}
+#leaveMsgForm .form-group>img{
+    color:gray;
+    /* font-size: 0.06rem; */
+    width:0.06rem;
+    position: absolute;
+    left: 0.04rem;
+    top: 0.02rem;
+}
+#leaveMsgForm .form-group>input{
+    border:1px solid lightgray; 
+    padding-left:0.1rem; 
+    height:0.107rem;
+}
+#leaveMsgCtn{
+    border:1px solid lightgray;
+    border-radius:4px;
+    height:0.5rem;
+}
+#successMessage{
+    z-index:19891020
+}
+#successMessage .modal-dialog{
+    margin-top:40%;
+}
+#successMessage .modal-body>div{
+    text-align: center;
+    margin:0.02rem 0;
+}
+#successMessage .modal-footer{
+    text-align:center;
+    color:#2090b4  
+}
+#filebtn{
+    position:relative;
+    padding:0rem;
+    border:1px solid lightgray;
+}
+#filebtn>.webuploader-pick{
+    padding: 0.02rem 0.04rem;
+}
+#filebtn input{
+    opacity: 0;
+}
+#imgsDiv{
+    margin:0 auto;
+}
+.imgdivs>img{
+    width:0.25rem;
+    height:0.25rem;
+    border-radius:5%;
+}
+.imgdivs{
+    margin:0 0.034rem;
+    display:inline-block;
+    text-align: center;
+}
+/**
+* taskId=494;顾荣 2017.12.27
+* 原因：在ios浏览器上弹出软键盘留言板布局会乱
+* 修改：删除原本的layer弹出框
+*/ 
+#leaveMsgBox{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:white;
+    z-index:1000;
+    display:none;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch; 
+}
+#leaveMsgHeader{
+    padding:0 0.03rem;
+    color:gray;
+}
+#leaveMsgBox hr{
+    margin:0 0 0.04rem;
+}
+.btnClass{
+    color: #3DA5FE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

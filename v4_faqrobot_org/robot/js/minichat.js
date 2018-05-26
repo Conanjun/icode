@@ -99,13 +99,6 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
     init: function () {
     },
     //请求->所有的请求都需要经过(特殊的除外)
-    /*Base.request({
-                url: '...',
-                params: {
-                },
-                callback: function(data) {
-                },
-            });*/
     request: function (options) {
       var This = this,
         params = {//必须参数
@@ -153,9 +146,6 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       return JSON.parse('{' + obj + '}')
     },
     //判断手机还是pc->true是pc 参数bool为true时，返回具体型号
-    /*if(Base.isPC()) {
-                return;
-            }*/
     isPC: function (bool) {
       var userAgentInfo = navigator.userAgent
       var Agents = ['android', 'iphone',
@@ -248,7 +238,10 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       })
     },
     //获取格式化时间
-    getFormatDate: function () {
+    /**名称相同，更改该方法名称 Amend by zhaoyuxing
+     * 说明：原方法名：getFormatDate
+    */
+    getFormatDateStyle: function () {
       var today = new Date(),
         year = today.getFullYear(),
         month = this.addZero(today.getMonth() + 1),
@@ -275,18 +268,6 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       return hour + minute + second
     },
     //格式化毫秒数->7203毫秒化为00分07秒20(原203，最后一位省略)毫秒
-    /*//设置倒计时
-            var t = 900000,//15分钟
-                timer = setInterval(function() {
-                $('.time').text(Base.formatMillisecond(t));
-                if(t <= 0) {
-                    Base.layerMsg('中奖用户已揭晓，确认并跳转查看', function() {
-                        this.location.href = '';
-                    });
-                    clearInterval(timer);
-                }
-                t -= 25;
-            }, 25);*/
     formatMillisecond: function (num) {
       var millisecond = num % 1000,
         second = this.addZero(parseInt(num / 1000 % 60)) + ':',
@@ -403,9 +384,6 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       }
       pic.src = img.src //这句放在onload后面(兼容ie8)
     },
-    /*
-            * This.imageLoad('<img src="http://a.jpg"><img src="https://b.png"><a href="http://c.gif"></a>')
-            */
     // 匹配html中所有图片资源，加载完毕执行
     imageLoad: function (str, callback) {
       var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/g),
@@ -822,14 +800,19 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       }
     },
     //滚动至 ['top'] ['bottom'] [int]
-    scrollTo: function (pos, bool) {
+    scrollTo: function (pos, bool,isMinus) {
       if (pos == 'top') {
         this.curPos = 0
       }
       if (pos == 'bottom') {
         this.curPos = -this.maxScroll
       }
-      if (/\d+/.test(pos)) {
+
+      /**
+       * taskid=834
+       * 答案折叠,可传入负数，滚动
+       */
+      if (/\d+/.test(pos) && !isMinus) {
         this.curPos = -pos
       }
 
@@ -1029,14 +1012,7 @@ isGOffline = false;
     //绑定事件
     event: function () {
       var This = this
-
-      /*This.eventType = 'click';
-            	if(!MN_Base.isPC()) {// hack ios 点击document不失去焦点
-            	    This.eventType = 'touchend';
-            	}*/
-
       This.obj.curIndex = 0//当前选中的div
-
       //文本改变(兼容ie9删除文本)
       This.$el.on('input.AU, propertychange.AU, keyup.AU', function (e) {
         /**
@@ -1120,7 +1096,6 @@ isGOffline = false;
     //外框事件
     outerCtnEvent: function () {
       var This = this
-
       This.obj.timerIndex = 0
       clearInterval(This.obj.timer)
       This.obj.timer = setInterval(function () {
@@ -1172,6 +1147,65 @@ isGOffline = false;
                 }else {
                     This.$obj.$AU_outerCtn.empty().hide()
                 }
+                // taskid=974 国泰基金文档检索 提交人：顾荣
+                // 添加：当s=ig输入引导接口中返回文档检索结果时展示在右侧边栏
+                if (data.fullTextSearch&&data.fullTextSearch==1){//如果文档检索开启
+                    
+                    if(This.options.igfullTextSearch){
+                        This.options.igfullTextSearch();
+                    }
+                  var checkDocument='<p class="MN_titleSearch">文档检索</p>';                 
+                  if(data.document&&data.document.length>0){  //如果返回文档检索则将它展示在右侧
+
+
+                      for(var k=0;k<data.document.length;k++){
+                        /**
+                         * taskid=987
+                         * 国泰基金文档检索pdf预览docx下载
+                         */
+                        if(data.document[k].pdfUrl){
+                          var btnTmp = '';
+                          btnTmp = '<button tipUrl=\"'+ data.document[k].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
+                          checkDocument += '<a class="hoverTip" href="#" style="cursor: pointer;position: relative;display: block;"  title="' + data.document[k].title + '"><div class="MN_docSearchCtn"><span class="MN_docSearch">' 
+                           /*
+                            taskid=331,黄世鹏
+                            优化：国泰文档检索名全部展示
+                          */ 
+                          if(window.location.pathname.indexOf('GuoTai')!=-1){
+                            checkDocument += data.document[k].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div> </a>'  
+                          }else{
+                            checkDocument += MN_Base.addDots(data.document[k].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div> </a>'  
+                          }
+                        }else{
+                          checkDocument += '<a href="' + ( data.document[k].url) + '" target="_blank" title="' + data.document[k].title + '"><div class="MN_docSearchCtn"><span class="MN_docSearch">'
+                          if(window.location.pathname.indexOf('GuoTai')!=-1){
+                            checkDocument += data.document[k].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div></a>'
+                          }else{
+                            checkDocument += MN_Base.addDots(data.document[k].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div></a>'
+                          }
+                        }
+                      }
+        
+                      $('body').off('mouseover','.hoverTip').on('mouseover','.hoverTip',function() {
+                        $(this).children('.tipisHide').removeClass('hide');
+                      })
+        
+                      $('body').off('mouseout','.hoverTip').on('mouseout','.hoverTip',function() {
+                        $(this).children('.tipisHide').addClass('hide');
+                      })
+        
+                      $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
+                        window.open($(this).attr('tipUrl'))
+                      })
+             
+
+        
+
+                  }else{
+                    checkDocument += '<p class="MN_noSearch">无结果</p>'
+                  }
+                    $("#artiSearch").html(checkDocument);                  
+                }
               }
             }
           })
@@ -1182,7 +1216,6 @@ isGOffline = false;
     //获取当前选中的div
     getCurIndex: function () {
       var This = this
-
       $('.AU_innerCtn').each(function (key, val) {
         if ($(val).is('.AU_innerCtn_focus')) {
           This.obj.curIndex = key
@@ -1219,6 +1252,7 @@ isGOffline = false;
       open: true,//默认开启功能
       src: 'src/yun/',//表情路径
       rowNum: 5,//每行最多显示数量，此属性不适用于常用语
+      lineNum: 4,// 多少列
       btnAttr: ['0px', '5px', '20px', '20px'],//[left bottom width height] 触发按钮相对targetEl的位置和宽高  要写单位
       ctnAttr: ['0px', '30px', '40px', '40px'],//[left bottom width height] 表情框相对targetEl位置和里面的表情格子宽高  要写单位
       triggerEl: null,//触发按钮(不存在则自己生成，不要由a包裹)
@@ -1450,7 +1484,44 @@ isGOffline = false;
           ['[献吻]', '/:kiss'],
           ['[左太极]', '/:<&'],
           ['[右太极]', '/:&>']
-        ]
+        ],
+        '上汽表情': [
+            ['[憨笑]', '/::)'],
+            ['[惊讶]', '/::B2'],
+            ['[俏皮]', '/:>_<)'],
+            ['[愤怒]', '/:)'],
+            ['[痛苦]', '/::-|'],
+            ['[害羞]', '/:>0<'],
+            ['[难受]', '/::>_-'],
+            ['[哭]', '/::())'],
+            ['[无语]', '/::$$'],
+            ['[闭嘴]', '/:|-)'],
+            ['[惊讶]', '/::B'],
+            ['[撇嘴]', '/:8-)'],
+            ['[微笑]', '/::smil'],
+            ['[眨眼笑]', '/:>)(<'],
+            ['[酷]', '/:,ku'],
+            ['[天使]', '/:&^%'],
+            ['[眯眼笑]', '/::<'],
+            ['[咧嘴笑]', '/:(o)'],
+            ['[尴尬]', '/:*7*'],
+            ['[生日头]', '/:patter'],
+            ['[瞌睡]', '/:huhu'],
+            ['[坏笑]', '/:@$&'],
+            ['[困]', '/:)^&'],
+            ['[爱心]', '/:$A'],
+            ['[心碎]', '/::sui'],
+            ['[晚安]', '/:an'],
+            ['[星星]', '/::X'],
+            ['[太阳]', '/::O'],
+            ['[彩虹]', '/::m'],
+            ['[色]', '/::se'],
+            ['[爱你]', '/:love'],
+            ['[亲亲]', '/:B'],
+            ['[鲜花]', '/:hua'],
+            ['[枯萎]', '/:wei'],
+            ['[点赞]', '/:zan'],
+        ],
       }
       this.obj.faceType = []
       if (this.options.src.indexOf('wang') + 1) {//旺旺表情
@@ -1472,6 +1543,11 @@ isGOffline = false;
         this.obj.faceType[0] = '微信表情'
         this.obj.faceType[1] = 'png'
         this.obj.faceType[2] = 'gif'
+      }
+      if (this.options.src.indexOf('sq') + 1) {//微信表情
+        this.obj.faceType[0] = '上汽表情'
+        this.obj.faceType[1] = 'png'
+        this.obj.faceType[2] = 'png'
       }
       this.obj.maxNum_y = Math.ceil(this.obj.face[this.obj.faceType[0]].length / this.options.rowNum)//云问表情最大行数
 
@@ -1506,17 +1582,13 @@ isGOffline = false;
     baseEl: function () {
       var This = this,
         isRem = false
-
       //rem
       if (This.options.ctnAttr.join(',').indexOf('rem') != -1) {//rem
         isRem = true
-
         for (var i = 0; i < This.options.ctnAttr.length; i++) {
           This.options.ctnAttr[i] = parseInt(parseFloat(This.options.ctnAttr[i]) * This.prop.baseRem)
-
         }
       }
-
       //触发按钮(可配置)
       if (this.options.triggerEl) {
         this.$obj.$FA_triBtn = this.options.triggerEl
@@ -1525,23 +1597,19 @@ isGOffline = false;
           width: this.options.btnAttr[2],
           height: this.options.btnAttr[3]
         }).appendTo(this.options.targetEl)
-
         //触发按钮定位
         this.$obj.$FA_triBtn.css({
           left: this.options.btnAttr[0],
           bottom: this.options.btnAttr[1]
         })
       }
-
       //背景框
       this.$obj.$FA_backCtn = $('<div class="FA_backCtn"></div>').hide().css({}).appendTo(this.options.targetEl)
-
       //滚动框
       this.$obj.$FA_ScrollCtn = $('<div class="FA_ScrollCtn"></div>').css({
         width: parseFloat(this.options.ctnAttr[2]) * this.options.rowNum,
-        height: parseFloat(this.options.ctnAttr[3]) * 4
+        height: parseFloat(this.options.ctnAttr[3]) * this.options.lineNum
       }).appendTo(this.$obj.$FA_backCtn)
-
       //rem
       if (isRem) {//rem
         //背景框padding
@@ -1549,20 +1617,15 @@ isGOffline = false;
           padding: (This.prop.baseRem - This.$obj.$FA_ScrollCtn.outerWidth()) / 2
         })
       }
-
       //表情框
       this.$obj.$FA_faceCtn = $('<div class="FA_faceCtn"></div>').appendTo(this.$obj.$FA_ScrollCtn)
-
       //广告框
       this.$obj.$FA_advCtn = $('<div></div>').addClass(this.options.advClass).insertBefore(this.$obj.$FA_ScrollCtn)
-
       //关闭广告框
       this.$obj.$FA_closeAdvCtn = $('<div class="FA_closeAdvCtn" title="不再显示">×</div>').appendTo(this.$obj.$FA_advCtn)
-
       if (this.options.hideAdv) {//隐藏广告
         this.$obj.$FA_advCtn.hide()
       }
-
       this.obj.moodIndex = 0
       for (var key in this.obj.face) {
         this.obj.moodIndex++
@@ -1573,46 +1636,37 @@ isGOffline = false;
             var srcHtml = '',
               title = '',
               mark = ''
-
             if (i < mood.length) {
               srcHtml = '<img FA-src="' + this.options.src + i + '.' + this.obj.faceType[1] + '">'
               title = mood[i][0]
               mark = mood[i][1]
             }
-
             html += '<div class="FA_moodCtn" title="' + title + '" mark="' + title + '" group="' + key + '"><div class="FA_srcCtn" style="width: ' + parseInt(this.options.ctnAttr[2]) + 'px; height: ' + parseInt(this.options.ctnAttr[3]) + 'px">' + srcHtml + '</div></div>'
           }
           this.$obj.$FA_faceCtn.append(html)
         }
       }
-
       //背景框定位
       this.$obj.$FA_backCtn.css({
         left: this.options.ctnAttr[0],
         bottom: this.options.ctnAttr[1]
       })
-
       //提示表情滚动框
       this.$obj.$FA_tipScrollCtn = $('<div class="FA_tipScrollCtn"></div>').css({
         width: this.options.ctnAttr[2] + 50,
         height: this.options.ctnAttr[3] * 4
       }).appendTo('body')
-
       var $allMood = $('.FA_moodCtn[group=云问表情]').clone()
-
       $allMood.each(function () {
         var mark = $(this).attr('mark')
-
         $(this).find('.FA_srcCtn').css({
           textIndent: 5,
           textAlign: 'left',
           width: This.options.ctnAttr[2] + 50
         }).find('img').after('<span>' + mark + '</span>')
       })
-
       //提示表情框
       this.$obj.$FA_tipMoodCtn = $('<div class="FA_tipMoodCtn"></div>').append($allMood).appendTo(this.$obj.$FA_tipScrollCtn)
-
       //计算文字框
       this.$obj.$FA_countLenCtn = $('<div class="FA_countLenCtn"></div>').css({
         width: this.prop.width,
@@ -1624,19 +1678,15 @@ isGOffline = false;
         opacity: 0,
         zIndex: -999
       }).hide().appendTo('body')
-
       //计算文字标识符
       this.$obj.$FA_markPos = $('<span class="FA_markPos"></span>').css({}).appendTo(this.$obj.$FA_countLenCtn)
-
     },
     //绑定事件
     event: function () {
       var This = this
-
       //调用滚动插件(表情框)
       This.obj.scrollbar = This.$obj.$FA_ScrollCtn.scrollbar({})
       This.$obj.$FA_tipScrollCtn.hide()//调用滚动插件后才能隐藏
-
       //选择表情
       This.options.targetEl.on('click.FA', '.FA_moodCtn', function () {
         var val = This.$el.val(),
@@ -1664,7 +1714,11 @@ isGOffline = false;
 
       //显隐
       $(document).on('click.FA', function (e) {
-        if (e.target == This.$obj.$FA_triBtn[0]) {
+        /**
+         * taskid=784
+         * h5chat底部表情等，增加选中范围和描述文字，并变蓝色
+         */
+        if (e.target == This.$obj.$FA_triBtn[0] || $(e.target).is('.faceBtn') || e.target.innerHTML == '表情') {
           $('[FA-src]').each(function () {//避免首次加载表情文件
             $(this).attr('src', $(this).attr('FA-src')).removeAttr('FA-src')
           })
@@ -1818,9 +1872,6 @@ function autoUpload (url, $trigger, $ctn, startcall, callback, type, typecall) {
         ($ctn || $('body')).append($upFileCtn)
 
       }
-
-
-
       //取消上传
       $upFileAbort.on('click', function () {
         xhr.abort()
@@ -1927,6 +1978,13 @@ function uploadFile (options) {
 
   var plugName = 'faqrobot',
     defaults = {
+      flagPage:true,//判断是否只进入一次点击分页方法
+      pageArray:[],
+      setInputTop:true,//默认开启ios11键盘遮挡问题
+      /*定义变量 目的：无限极发送消息设置字体功能的开关 Add by zhaoyuxing
+      *说明：默认为0 ,在infinitus.html中设置为1 时开启
+      */
+      useSetFont:0, 
       isEn: false,//是否是英文版界面，页面提示信息都要换成英文
       interface: 'servlet/AQ',//网页端和H5页面调用的接口不同。分别为AQ和AppChat
       sysNum: 1000000,//客户唯一标识
@@ -1950,8 +2008,9 @@ function uploadFile (options) {
       kfHtml: [
 
         '<div class="MN_answer_welcome MN_answer"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="%kfPic%"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%helloWord%</div></div>',//欢迎语组合
-        '<div class="MN_helpful"><span class="MN_reasonSend">提交</span><span class="MN_yes">满意</span><span class="MN_no">不满意</span></div>',//是否满意组合
-        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="%kfPic%"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%relateListHtml%%commentHtml%</div></div>'//回答组合
+        '<div class="MN_helpful" style="margin-top: 8px;padding-top: 8px;border-top: 1px solid #e1e1e1;"><span class="MN_reasonSend">提交</span><span class="MN_yes"><i class="fa fa-thumbs-o-up"></i>赞</span><span class="MN_no"><i class="fa fa-thumbs-o-down"></i>踩</span></div>',//是否满意组合
+        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="%kfPic%"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%relateListHtml%%commentHtml%</div></div>',//回答组合
+        '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><div class="MN_kftime">%formatDate%</div><div class="MN_kfName">%robotName%</div><div class="MN_kfCtn"><img class="MN_kfImg" src="%kfPic%"><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i>%ansCon%%gusListHtml%%relateListHtml% <div style="margin-top:5px"><div style="float:right">%commentHtml%</div> <div class="foldBtn pull-left"><span class="foldBtn-icon"><i class="fa fa-angle-down"></i></span><span class="fold-txt">查看更多</span></div></div> </div></div>'//折叠回答组合
       ],//客服结构(所有的属性和%xxx%都必须存在)
       khHtml: '<div class="MN_ask"><div class="MN_khtime">%formatDate%</div><div class="MN_khName">我</div><div class="MN_khCtn"><img class="MN_khImg" src="%khPic%"><i class="MN_khTriangle1 MN_triangle"></i><i class="MN_khTriangle2 MN_triangle"></i>%askWord%</div></div>',//客户结构
       formatDate: '%hour%:%minute%:%second% %year%-%month%-%date%',//配置时间格式(默认10:42:52 2016-06-24)
@@ -1962,6 +2021,7 @@ function uploadFile (options) {
       thirdUrlCallBack: function (data, index) {
       },//推荐链接的回调
       quickServId: 'quickServId',//快捷服务Id
+      recommendConsult:'recommendConsult',//推荐资讯
       recommendLinkId: 'recommendLinkId',//推荐咨询Id
       maxQueNum: 100,//最多展示问题条数
       maxQueLen: 100,//最多展示问题字数
@@ -2002,7 +2062,7 @@ function uploadFile (options) {
       entranceWords: ['wd', 'q'],// 各搜索引擎的关键字段 百度-wd，360、360极速、chrome-q
       isClickImg:true,
       leaveQue: {// 未知问题已回复
-        open: false//是否启用功能
+        open: true//是否启用功能
 
       },
       autoSkip: {//手机不能访问pc页面
@@ -2030,12 +2090,20 @@ function uploadFile (options) {
       },
       helpfulModule: {//答案满意度模块
         open: true,//是否启用功能
-        yesCallback: function ($obj, msg) {//满意的回调
+        yesCallback: function ($obj, msg,self) {//满意的回调
+          self.scrollbar.options.autoBottom = false;
           $obj.text(msg || '感谢您的评价！')
         },
-        noCallback: function ($obj, msg) {//不满意的回调
-          if (window.uselessReasonItems) {
+        noCallback: function ($obj, msg,data,self) {//不满意的回调
+          /**
+           * taskid=781
+           * 添加转人工条件，判断robotAnswer长度大于1则不显示不满意回答
+           * 界面提示robotAnswer[1]的对话
+           */
+          var newAnswer = data.robotAnswer || [];
+          if (window.uselessReasonItems && newAnswer.length < 2) {
             if (window.uselessReasonItems[0]) {
+              self.scrollbar.options.autoBottom = false;
               $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide()
 
               var html = ''
@@ -2048,11 +2116,26 @@ function uploadFile (options) {
               }
               $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>' + html + '<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>')
             } else {
-              $obj.text(msg || '感谢您的评价！')
+              self.scrollbar.options.autoBottom = false;
+              $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+              if(newAnswer.length > 1){
+                sedMsg()
+              }
             }
           } else {
-            $obj.text(msg || '感谢您的评价！')
+            self.scrollbar.options.autoBottom = false;
+            $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+            if(newAnswer.length > 1){
+              sedMsg()
+            }
           }
+
+          function sedMsg() {
+            data.robotAnswer.splice(0,1);
+            self.$obj.$chatCtnId.append(self.robotHtml(data));
+            self.scrollbar.scrollTo('bottom', true);
+          }
+
         }
       },
       configModule: {//配置模块
@@ -2076,7 +2159,25 @@ function uploadFile (options) {
       sendCallback: function (question) {},//点击发送按钮的回调
       getCallback: function (answer, data) {},//获取到答案后的回调 answer-文本答案 data-全部数据
       commentCallback: function () {},//评论后的回调
-      leaveMsgCallback: function () {}//留言后的回调
+      leaveMsgCallback: function () {},//留言后的回调
+      showMyWords:function(msg,time){},   //配置展示自己说话内容的html片段
+      showRobotWords:false,               //配置展示机器人回答内容的html片段 
+      topQueCallBack:function(){},//加载完热门问题后的回调 add by zhaoyuxing
+      recommendLinkCallBack:function(data){},//加载完推荐资讯后的回调 add by zhaoyuxing
+        /***
+       * taskid = 367 身份认证强制跳转登录界面 amend by zhaoyuxing
+       * 说明：s=p接口中获取页面跳转地址，进行页面跳转，并将原页面地址作为参数backUrl用于返回机器人页面
+       * */ 
+      tologinUrl: function(data){
+        if(data.loginUrl){
+          var backUrl = encodeURIComponent(window.location.href);
+          if(data.loginUrl.indexOf('?')>0){
+            window.location.href = data.loginUrl + "&backurl=" + backUrl;
+          }else{
+            window.location.href = data.loginUrl + "?backurl=" + backUrl;
+          }
+        }
+      },
     }
 
   window.Faqrobot = Faqrobot
@@ -2093,19 +2194,58 @@ function uploadFile (options) {
     var u = navigator.userAgent, app = navigator.appVersion;
     this.isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
     this.init();
+    /**task=823 planetdata 定制 更改满意度评价结构
+     * 说明：结构在.html中定义全局，覆盖默认结构
+     * */ 
+    if(window.location.pathname=='/robot/chat2_plantdata.html'){
+      this.options.kfHtml=plantData.kfHtml;
+    }
   }
 
   Faqrobot.prototype = {
+    /*定义变量 目的：猪八戒智能推荐排序开关 Add by zhaoyuxing
+      *说明：默认为0 ,在猪八戒html中中设置为1 时开启
+      */
+    relateListStart:0,
+    /**add by zhaoyuxing 全局变量，保存欢迎语 用于闪退时清空聊天记录，显示欢迎语 * */
+    robotHelloWord:'',
     init: function () {
-        this.setInputTop();//移动端键盘遮挡输入框问题        
+      // layer.open({
+      //   type:1,
+      //   shade:false,
+      //   title:false,
+      //   content:$('.messageIe'),
+      //   cancel:function(){
+
+      //   }
+      // })
+
+      // layer.msg('该浏览器ie体验不好！',{
+      //   time:0,
+      //   yes:function(index) {
+      //     layer.close(index)
+      //   }
+      // })
+        //默认开启设置setInputTop方法,如果不需要则在app.js设置变量setInputTop为false
+        if((!this.options.setInputTop) && (this.options.sourceId == 3)){
+          
+        }else{
+          this.setInputTop();//移动端键盘遮挡输入框问题
+        }
         this.getHrefInfo()//获取网址->网址有jid或sysNum，则相应配置参数失效
         this.initOffline()//关闭、刷新网页前请求下线->s=offline
         if (!this.options.jsonp) {//不跨域
-            this.initBaseInfo()//初始化基本信息->s=p->logo
+          /**
+           * taskid=933 钉钉渠道身份认证 提交人：顾荣 2018/3/23
+           * 修改：将this.initBaseInfo()注释，修改为this.DDinit()方法
+           */
+            this.DDinit();
+            // this.initBaseInfo()//初始化基本信息->s=p->logo
         }
         this.initInput()//输入框准备->剩余字数/提示语
         this.needPerson()//转人工->s=needperson
         this.askFlwQue()//回答引导问题->s=aq
+        this.askDistributionQue()
         this.askGuideQue()//回答引导问题->s=aq
         if (this.options.upFileModule.open) {
             this.upFile()//上传文件->s=uf
@@ -2123,20 +2263,76 @@ function uploadFile (options) {
         if (this.options.weatherModule.open) {
             this.weather()//天气模块
         }
-        //this.statisPin();
-        // this.muiItem();
         if(MN_Base.isPC()){
             this.preview()
         }
-        /* if(!MN_Base.isPC()) {// 手机端可以复制
-                        this.longTap();
-                    }*/
         //调整功能宽度(防止某些功能隐藏)
         this.kuaijie()
-
         // taskId=402 修改人：顾荣  任务：留言功能 2017.12.20
         //留言功能
         this.messageBoard();
+        //亚联点击时传参数任务单号
+        this.getTaskNum();
+       
+        /**
+         * ie8下提示不兼容提示
+         */
+        if(MN_Base.ieVersion() <= 8&&!this.options.Noie8Tip){
+          setTimeout(function(){
+            // alert('我们检测到你的浏览器正在使用8.0版本以下IE内核，建议您使用更新的版本，我们目前不支持IE8及以下版本的浏览器！')
+            layer.msg('我们检测到你的浏览器正在使用8.0版本以下IE内核，建议您使用更新的版本，我们目前不兼容IE8及以下版本的浏览器！',{
+              offset:[20],
+              closeBtn:1,
+              shadeClose:true
+            });
+          }, 0);
+        }
+
+
+
+        // if(MN_Base.ieVersion)
+
+    },
+
+    /**设置发送文字的字体大小（无限极定制）
+     * 说明：1、在askQue()中调用
+     *      2、在需要发送的文字外，加上span标签，并加上font-size实现改变更改字体大小功能
+     * */
+    sendMsg: function(s_msg){
+        var This = this;
+        $("#"+This.options.inputCtnId).val('');
+        // $('.ac_results').hide();
+        // if(s_msg.length==1 && s_msg>0 && typeof nu[s_msg-1]!="undefined" ){
+        //     s_msg =nu[s_msg-1];nu=[];
+        // }
+        var fontsizeTemp=$("#fz").val().replace('px','')*1;
+		    s_msg='<span style="font-size:'+fontsizeTemp+'px">'+s_msg+'</span>';
+        $("#"+This.options.wordremain).html(100);
+        $("#"+This.options.inputCtnId).focus();
+        return s_msg;
+    },
+    //查看历史记录(无限极)
+    searchHistory: function(){
+        this.getHrefInfo();
+        var s_q_url = '../servlet/AQ?s=history&sysNum=' + this.options.sysNum + '&nocache=' + new Date().getTime();
+        $.getJSON(s_q_url, function (data) {
+            if (data.status == 0) {
+                if (data.list && data.list.length > 0) {
+                    var temp = [];
+                    for (var i = 0; i < data.list.length; i++) {
+                        temp.push('<div class="r-c-ctn r-c-custom"><span class="name me">我：</span><i class="time me">' + data.list[i].dateTime
+                        + '</i><div class="say-word">' + data.list[i].question + '</div></div>');
+                        temp.push('<div class="r-c-ctn r-c-serv"><span class="name">机器人：</span><i class="time">' + data.list[i].ansTime + '</i><div class="say-word">' + data.list[i].reply + '</div></div>');
+
+                    }
+                    $('#robotHistory').html(temp.join(''));
+                } else {
+                    $('#robotHistory').html('<p style="text-align:center;">当前记录为空</p>');
+                }
+            } else {
+                showErrorDiv(data.message);
+            }
+        });
     },
     // 设置输入框top值的高度：解决键盘遮挡输入框bug
     setInputTop: function () {
@@ -2147,7 +2343,7 @@ function uploadFile (options) {
             var version2 = ver[1].split('_')[1];
         }
         if(this.isiOS){
-            if(version1 == '11' && version2 > 0){
+            if(version1 == '11' && version2 > 0 && version2 <3){
                 var phoneWidth = $(window).width();
                 var phoneHeight = $(window).height();
                 if(phoneWidth == 375){
@@ -2155,7 +2351,7 @@ function uploadFile (options) {
                         if(window.location.host=='jdyw.faqrobot.cn'){//判断是不是ppmoney
                         var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-480)+'px !important}';
                         }else{
-                        var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-400)+'px !important}';
+                        var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-480)+'px !important}';
                         }
                     }else{
                         if(window.location.host=='jdyw.faqrobot.cn'){
@@ -2168,7 +2364,7 @@ function uploadFile (options) {
                     if(window.location.host=='jdyw.faqrobot.cn'){
                     var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-430)+'px !important}';
                     }else{
-                    var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-385)+'px !important}';
+                    var chatStyle = '.front .chatHeight{height:'+parseInt($(document).height()-425)+'px !important}';
                     }
                 }
                 $('head').append('<style>'+chatStyle+'</style>');
@@ -2380,8 +2576,117 @@ function uploadFile (options) {
         }
       }
     },
+    /**
+     * taskid=933 国泰基金钉钉身份认证对接 提交人：顾荣  2018/3/22
+     * 添加：判断是否请求钉钉身份信息
+     * 
+    */
+    //添加开始*******************************************************************************************
+    DDinit : function(){
+      var THIS_=this
+      var reg = new RegExp('corpid=(\d*[a-zA-Z]*[^?|^#|^&]*)');
+      var corpid = location.href.match(reg);//获取corpid
+      if (corpid) {
+          corpid = corpid[1];
+      }else if(this.options.corpid){
+          corpid=this.options.corpid
+      }else{
+          corpid = "ding9f5ac5896ef870df35c2f4657eb6378f"//默认企业ID
+      }
+      if(typeof DingTalkPC!="undefined"){//如果引入了pc钉钉的js
+        if(MN_Base.isPC()&&DingTalkPC.ua.isInDingTalk){//如果是pc端并且在钉钉客户端内
+          THIS_.options.sourceId=11 //将渠道改为钉钉
+          DingTalkPC.runtime.permission.requestAuthCode({
+            corpId: corpid, //企业ID
+            onSuccess: function(result) {
+              if(result.code){
+                $.ajax({//将获取的code发送给后台
+                    type: 'post',
+                    datatype: 'json',
+                    cache: false,
+                    url: '../userInfo/getInfo',
+                    data:{
+                        code:result.code
+                    },
+                    success: function(data) {
+                        if(data.status==0){
+                            var DDjson={ }//钉钉身份认证信息 
+                            DDjson.userid=data.userInfo.userid;//用户id
+                            DDjson.name=data.userInfo.name;//用户姓名
+                            DDjson.isAdmin=data.userInfo.isAdmin;
+                            var department=[];//部门
+                            for(var i=0;i<data.userInfo.department.length;i++){
+                                department.push(data.userInfo.department[i])
+                            }
+                            DDjson.department=department.join(",")
+                            DDjson.active=data.userInfo.active;
+                            THIS_.initBaseInfo(DDjson);
+                        }
+                    }
+                })
+              }else{
+                THIS_.initBaseInfo()
+              }
+
+            },
+            onFail : function(err) {
+              THIS_.initBaseInfo()
+            }
+          }) 
+        }else{
+          THIS_.initBaseInfo()
+        }
+      }else if(typeof dd!="undefined"){//如果引入了移动端钉钉的js
+        if(!MN_Base.isPC()&&dd.version){//如果是移动端并且在钉钉客户端内
+          THIS_.options.sourceId=11 //将渠道改为钉钉
+          dd.ready(function(){
+            dd.runtime.permission.requestAuthCode({
+                corpId: corpid, //企业ID
+                onSuccess: function(result) {
+                  if(result.code){
+                    $.ajax({//将获取的code发送给后台
+                        type: 'post',
+                        datatype: 'json',
+                        cache: false,
+                        url: '../userInfo/getInfo',
+                        data:{
+                            code:result.code
+                        },
+                        success: function(data) {
+                          if(data.status==0){
+                            var DDjson={ }//钉钉身份认证信息 
+                            DDjson.userid=data.userInfo.userid;//用户id
+                            DDjson.name=data.userInfo.name;//用户姓名
+                            DDjson.isAdmin=data.userInfo.isAdmin;
+                            var department=[];//部门
+                            for(var i=0;i<data.userInfo.department.length;i++){
+                                department.push(data.userInfo.department[i])
+                            }
+                            DDjson.department=department.join(",")
+                            DDjson.active=data.userInfo.active;
+                            THIS_.initBaseInfo(DDjson);
+                          }
+                        }
+                    })
+                  }else{
+                    THIS_.initBaseInfo()
+                  }
+                },
+                onFail : function(err) {
+                  THIS_.initBaseInfo()
+                }
+            })      
+          })
+        }else{
+          THIS_.initBaseInfo()
+        }
+      }else{
+        this.initBaseInfo()
+      }
+    },
+    //添加结束*******************************************************************************************
     //初始化基本信息->s=p->logo/欢迎语/快捷服务/热门问题/用户信息
-    initBaseInfo: function () {
+    initBaseInfo: function (datajson) {
       var This = this
       $('#' + This.options.inputCtnId).attr('readonly', 'readonly')
       /**
@@ -2391,8 +2696,38 @@ function uploadFile (options) {
         s: 'p',
         jid: This.options.jid,
         sourceId: This.options.sourceId,//0->网页 1->微信 3->h5
-        productNo: This.options.productId 
+        productNo: This.options.productId
       };
+
+      /**
+       * 上汽定制,需传入token
+       */
+      if(This.options.token){
+        paramsData.token = This.options.token;
+      }
+
+      /*
+        taskid=962,黄世鹏
+        开发：智酷身份认证
+      */ 
+      if(window.sessionStorage.getItem('loginIdent') || window.sessionStorage.getItem('webId')){
+        paramsData.loginIdent=window.sessionStorage.getItem('loginIdent')
+		    paramsData.webId=window.sessionStorage.getItem('webId')
+      }
+      /**
+       * taskid=933 国泰基金钉钉身份认证对接 提交人：顾荣  2018/3/22
+       * 添加：判断是否请求钉钉身份信息
+       * 
+      */
+      //添加开始*******************************************************************************************
+      if(datajson){//如果有钉钉省份认证信息
+        paramsData.dd_userid=datajson.userid;//用户id;
+        paramsData.dd_name=datajson.name;//用户姓名;
+        paramsData.dd_isAdmin=datajson.isAdmin;
+        paramsData.dd_adpartment=datajson.department;
+        paramsData.dd_active=datajson.active;
+      }
+      //添加结束*******************************************************************************************
       if((!!window.ActiveXObject || "ActiveXObject" in window)&&This.options.operationSystemName){//判断是否需要发送window系统用户名
         try{
           var WshShell =new ActiveXObject("WScript.Shell");  
@@ -2414,7 +2749,11 @@ function uploadFile (options) {
         callback: function (data) {
           // TaskId=388, 任务单逻辑描述:如果认证未成功，弹出提示后不调取任何接口.
           if(data.status == -1){
+            This.options.tologinUrl(data)//taskid = 367 身份认证跳转
             This.showMsg(data.message);
+            if(data.loginUrl.indexOf('chat_zhiku')!=-1){
+              window.location.href=data.loginUrl
+            }
             return;
           }
           if (window.location.search.match(/lan=[a-zA-Z]{2}/) == 'lan=en') {
@@ -2426,12 +2765,14 @@ function uploadFile (options) {
           This.options.initCallback(data)
           $('#' + This.options.inputCtnId).removeAttr('readonly')
           This.setLogo(data)//设置logo->客服图标/客户图标
+          //s=p接口时，保存欢迎语
+          This.robotHelloWord=data.helloWord;
         /**
         * 如果下线后再初始化不推送欢迎语和闪退恢复记录
         * taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
         */
         if(!This.isOffline){
-            if(data.talkMessageList&&data.talkMessageList[0]&&!MN_Base.isPC()){
+            if(data.talkMessageList&&data.talkMessageList[0]){
                 This.flashOutDeal(data);
             }else{
                 This.sayHello(data)//欢迎语
@@ -2449,6 +2790,7 @@ function uploadFile (options) {
           This.poweredBy(data)//技术支持
           This.advInfo(data)//广告信息
           This.getIsLogo(data)// 是否展示copyright和联系我们
+          This.recommendConsult(data);//推荐咨询
           if (This.options.configModule.open) {
             This.configWin(data)// 配置窗口
           }
@@ -2461,7 +2803,14 @@ function uploadFile (options) {
             This.recordEvent()// 历史记录
           }
           This.vipDirect();//taskId=605 返利网h5页面vip转人工直通 add by 赵宇星
-          if (data.webConfig.robotNameDetail) {
+          // taskId=177 大小渠道 企业介绍首先取data.channelSourceConfig.chatInfo 
+          if( data.channelSourceConfig && data.channelSourceConfig.chatInfo ){
+              if ($('#' + This.options.robotInfo).length > 0) {
+                $('#' + This.options.robotInfo).html(data.channelSourceConfig.chatInfo)
+              } else {
+                $('.headLeft .intro').html(data.channelSourceConfig.chatInfo)
+              }
+          }else if (data.webConfig.robotNameDetail) {
             //机器人说明默认会有一个ID 配置
             //为了防止开发此功能之前已部署的客户没有这项功能
             //此处设置成有配置项优先设置配置项的内容，没有就写固定的
@@ -2479,11 +2828,14 @@ function uploadFile (options) {
         robotName:'',
 		flashOutDeal:function(data){
             var This=this;
-            This.robotName = data.webConfig.robotName;
             var html = '',
                 recordData = ''
                 This.scrollbar.options.autoBottom = true// 自动滚动到底部
             This.robotName=data.webConfig.robotName;//获取机器人名称，存入全局变量robotName
+            // taskid=177 大小渠道 修改人：顾荣 2018.4.27
+            if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字
+              This.robotName=data.channelSourceConfig.robotName||This.robotName
+            }
 				for (var i = 0; i<data.talkMessageList.length; i++) {
 					var obj={
 					  ansCon:(data.talkMessageList[i].reply || '').replace(/[\r\n]/g, ''),
@@ -2495,7 +2847,17 @@ function uploadFile (options) {
 		  
 					var _data=new Object();
 					_data.robotAnswer=robotAnswer;
-		  
+          if(data.talkMessageList[i].question){
+            if(data.talkMessageList[i].question.match('&quot;')){//双引号
+              data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&quot;/g,'"');
+            }
+            if(data.talkMessageList[i].question.match('&lt;')){//<
+              data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&lt;/g,'<');
+            }
+            if(data.talkMessageList[i].question.match('&gt;')){//>
+              data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&gt;/g,'>');
+            }
+          }
 					recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
 				}
 				if(!MN_Base.isPC()){
@@ -2506,6 +2868,7 @@ function uploadFile (options) {
                 if(!MN_Base.isPC()){
                     This.bodybindgClick();
                 }
+        This.scrollbar.update();
 				This.scrollbar.scrollTo('bottom', true);
 			},
     //不满意原因
@@ -2534,12 +2897,16 @@ function uploadFile (options) {
     leaveQue: function (data) {
       if (data.leaveQue) {
         if (data.leaveQue[0]) {
-          $('.MN_answer_welcome .MN_kfCtn').append('<div class="MN_leaveQueCtn"><div class="MN_leaveQueTop"><span>这里有您的留言，</span><span class="MN_lookLeaveQue">点击查看</span></div><div class="MN_leaveQueBottom"></div></div>')
+          /**
+           * taskid=902
+           * 留言推送和自如闪退功能的需求相冲突，前端优化推送只在最后一个会话显示
+           */
+          var len = $('.MN_answer .MN_kfCtn').length ==0? 0 : $('.MN_answer .MN_kfCtn').length -1;
+          $('.MN_answer .MN_kfCtn').eq(len).append('<div class="MN_leaveQueCtn"><div class="MN_leaveQueTop"><span>这里有您的留言，</span><span class="MN_lookLeaveQue">点击查看</span></div><div class="MN_leaveQueBottom"></div></div>')
 
           var html = ''
           for (var i = 0; i < data.leaveQue.length; i++) {
           // taskid=403 顾荣 任务:留言面板 保存留言 推送序号拼接由后台返回
-            // html += '<div class="MN_leaveQueItem"><div class="MN_leaveQueItemQue">问题' + (data.leaveQue.length == 1 ? '' : i + 1) + '：' + data.leaveQue[i].question + '</div><div class="MN_leaveQueItemAns">答案：' + data.leaveQue[i].answer + '</div></div>'
             html += '<div class="MN_leaveQueItem"><div class="MN_leaveQueItemQue">' +data.leaveQue [i].question + '</div><div class="MN_leaveQueItemAns">答案：' + data.leaveQue[i].answer + '</div></div>'
           }
           $('.MN_leaveQueBottom').append(html).hide()
@@ -2572,10 +2939,31 @@ function uploadFile (options) {
             } else {
                 if (data.list) {
                     if (data.list[0]) {
-                        var html = '',
-                        recordData = ''
-                        This.scrollbar.options.autoBottom = false// 防止自动滚动到底部
-                        $('.MN_record').remove()// 防抖动
+                      var html = '',
+                      recordData = ''
+                      This.scrollbar.options.autoBottom = false// 防止自动滚动到底部
+                      $('.MN_record').remove()// 防抖动
+                      if(This.options.useSetFont == 1){//判断无限极
+                        $('#'+ This.options.chatCtnId).prepend('<div class="MN_record">查看更多消息</div>');
+                        for(var i=data.list.length-1; i>=0; i--) {
+                          var _data = JSON.parse('{"robotAnswer":[{"ansCon":"'+ (data.list[i].reply || '').replace(/"/g, '\'').replace(/\n+/g, '') +'", "time": "'+ data.list[i].dateTime +'"}]}');
+                            if(data.list[i].question){
+                              var tmpQue=data.list[i].question;
+                              recordData += This.customHtml(This.replaceFace(tmpQue), data.list[i].dateTime);
+                              if(tmpQue.indexOf('__xgn_iyunwen_')>=0){
+                                tmpQue=tmpQue.split('__xgn_iyunwen_');
+                                if(tmpQue){
+                                  if(tmpQue[0] && tmpQue[0]!=''){
+                                    var obj={"robotAnswer":[{"ansCon":"<p>小极听到你说了以下内容：</p><p>"+tmpQue[0]+"</p>"}]};
+                                    recordData +=This.robotHtml(obj);
+                                  }
+                                }
+                              }
+                          }
+                          recordData += ((data.list[i].reply || '')?This.robotHtml(_data):'');
+                        }
+                        $('.MN_record').data('recordData', recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1'+ '\"' +'$3'+ '\"' +'$5'));// 防止字符串里含有带引号的链接
+                      }else{
                         if (This.options.isEn) {
                             $('#' + This.options.chatCtnId).prepend('<div class="MN_record">View more</div>')
                         } else {
@@ -2598,7 +2986,17 @@ function uploadFile (options) {
     
                               var _data=new Object();
                               _data.robotAnswer=robotAnswer;
-    
+                              if(data.list[i].question){
+                                if(data.list[i].question.match('&quot;')){//双引号
+                                  data.list[i].question = data.list[i].question.replace(/&quot;/g,'"');
+                                }
+                                if(data.list[i].question.match('&lt;')){//<
+                                  data.list[i].question = data.list[i].question.replace(/&lt;/g,'<');
+                                }
+                                if(data.list[i].question.match('&gt;')){//>
+                                  data.list[i].question = data.list[i].question.replace(/&gt;/g,'>');
+                                }
+                              }  
                               recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
                         }
                         if(!MN_Base.isPC()){
@@ -2608,6 +3006,7 @@ function uploadFile (options) {
                             recordData = This.iosBindEvent(recordData);
                         }
                         $('.MN_record').data('recordData', recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5'))// 防止字符串里含有带引号的链接
+                      }
                     } else {
                         This.scrollbar.options.autoBottom = false// 防止自动滚动到底部
                         $('.MN_record').remove()// 防抖动
@@ -2627,6 +3026,10 @@ function uploadFile (options) {
         This.historyRecord()
         var oldH = This.$obj.$chatCtnId.outerHeight()
         This.$obj.$chatCtnId.prepend($(this).data('recordData'))
+        //taskId=823 plantdata定制 查看历史聊天记录时同一会话发出者减少会话间距
+        if(window.location.pathname=='/robot/chat2_plantdata.html'){
+          plantData.hlAdjustMargin()
+        }
         if(!MN_Base.isPC()){
             /**
              * 历史记录添加点击时间，拦截iso端附件提示
@@ -2660,12 +3063,36 @@ function uploadFile (options) {
         $webNameId = this.$obj.$webNameId = $('#' + this.options.webNameId),
         $webInfoId = this.$obj.$webInfoId = $('#' + this.options.webInfoId)
 
-      this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic,//客服图标
-        this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
-      $logoId.attr({'src': data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
-      $webNameId.text(data.webConfig.webName || this.options.webName)
+        this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic;//客服图标
+        if(this.options.isSQ){
+          if(data.authUser){
+            alert(data.authUser.photoUrl)
+          }
+            this.robot.khPic = data.authUser ? data.authUser.photoUrl : this.options.prefix + this.options.khPic//客户图标
+        }else{
+            this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
+        }
+        /***taskId=177 大小渠道
+         * 说明： 机器人logo首先取channelSourceConfig.chatLogo
+         *        企业名称首先取data.channelSourceConfig.chatTitle 
+         * */
+        if( data.channelSourceConfig && data.channelSourceConfig.inputFieldWord){
+          $('#' + this.options.inputCtnId).attr({'placeholder': data.channelSourceConfig.inputFieldWord});//设置输入框的input
+        }
+        if(data.channelSourceConfig){
+          $logoId.attr({'src': data.channelSourceConfig.chatLogo || data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
+          $webNameId.text( data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName)
+          $('#sqTitle').text(data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName)
+          
+          this.intelTitle = data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName// 智能标题
+        }else{
+          $logoId.attr({'src':data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
+          $webNameId.text( data.webConfig.webName || this.options.webName)
+          this.intelTitle = data.webConfig.webName || this.options.webName// 智能标题
+          $('#sqTitle').text(data.webConfig.webName || this.options.webName)
+          
+        }
       $webInfoId.text(MN_Base.addDots($.trim(MN_Base.getPlainText(data.webConfig.info || this.options.webInfo)), 20))
-      this.intelTitle = data.webConfig.webName || this.options.webName// 智能标题
       this.artiTitle = this.options.artiTitle// 人工标题
 
       if (this.options.intelTitleChange) {// 是否修改标题
@@ -2697,7 +3124,15 @@ function uploadFile (options) {
     //欢迎语
     sayHello: function (data) {
       this.robotName= data.webConfig.robotName;
-      this.$obj.$chatCtnId.empty().append(this.robotHtml(data))
+      // taskid=177 大小渠道 修改人：顾荣 2018.4.27
+      if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字,则使用该名字
+        this.robotName=data.channelSourceConfig.robotName||this.robotName
+      }
+      if(this.options.isEmptySayHello){
+        this.$obj.$chatCtnId.append(this.robotHtml(data))
+      }else{
+        this.$obj.$chatCtnId.empty().append(this.robotHtml(data))
+      }
     },
     scrollbarUpdate: function () {
       this.scrollbar.scrollTo('bottom')
@@ -2763,10 +3198,10 @@ function uploadFile (options) {
               if (this.options.isEn) {
                 topAskHtml += '<div>【I guess you want to ask 】</div>'
               } else {
-                topAskHtml += '<div>【我猜您想问】</div>'
+                  topAskHtml += '<div>【我猜您想问】</div>'
               }
             }
-            topAskHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + data.guideQuestions[i].solutionId + '" title="' + (data.guideQuestions[i].question || '') + '">' + (data.guideQuestions[i].question || '') + '</span></div>'
+              topAskHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + data.guideQuestions[i].solutionId + '" title="' + (data.guideQuestions[i].question || '') + '">' + (data.guideQuestions[i].question || '') + '</span></div>'
           }
           topAskHtml += '</div>'
           html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(topAskHtml)).replace(/%formatDate%/g, this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
@@ -2786,7 +3221,10 @@ function uploadFile (options) {
       
       if (data.webConfig) {//欢迎语结构
         this.robot.robotName = data.webConfig.robotName//机器人名字（客服名字）
-
+        // taskid=177 大小渠道 修改人：顾荣 2018.4.27
+        if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字
+          this.robot.robotName=data.channelSourceConfig.robotName||this.robot.robotName
+        }
         /**
          * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
          * 原因：客服名字需要区分是机器人还是人工；
@@ -2829,8 +3267,17 @@ function uploadFile (options) {
 
                 has_ydWords = true
               }
-              for (var i = 0; i < gusList.length; i++) {
-                gusListHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + gusList[i].solutionId + '" title="' + (gusList[i].seedQuestion || gusList[i]).question + '">' + (gusList[i].seedQuestion || gusList[i]).question + '</span></div>'
+             /******************
+               * taskid = 337 智能接待组分页展示功能
+               * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+               * ***********************/
+              if(data.serviceType == 'guideconfig'){//答案为接待组
+                var ansConList = gusList;
+                gusListHtml = This.distriPageList(gusList,ansConList)
+              }else{
+                for (var i = 0; i < gusList.length; i++) {
+                  gusListHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + gusList[i].solutionId + '" title="' + (gusList[i].seedQuestion || gusList[i]).question + '">' + (gusList[i].seedQuestion || gusList[i]).question + '</span></div>'
+                }
               }
             }
           }
@@ -2851,7 +3298,16 @@ function uploadFile (options) {
                 }
 
               }
-              gusListHtml = ydWords + '<p>' + gusListHtml + '</p>' + '<p>' + (gusWords.afterWords || '') + '</p>'
+              /******************
+               * taskid = 337 智能接待组分页展示功能
+               * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+               * 分页时不需要展示gusWords.afterWords
+               * ***********************/
+              if(data.serviceType == 'guideconfig'){
+                gusListHtml = ydWords + '<p>' + gusListHtml + '</p>'
+              }else{
+                gusListHtml = ydWords + '<p>' + gusListHtml + '</p>' + '<p>' + (gusWords.afterWords || '') + '</p>'
+              }
             }
           }
 
@@ -2860,9 +3316,15 @@ function uploadFile (options) {
             if (data.robotAnswer[index].relateList[0]) {
               this.robot.guide = true
               var relateList = data.robotAnswer[index].relateList,
-                ydWords = '',
-                relateListStartSelectIndex = data.robotAnswer[index].relateListStartSelectIndex
-
+                ydWords = '';
+                //猪八戒页面 智能推荐排序
+                if(This.relateListStart==1){
+                  var relateListStartSelectIndex =1;
+                }else{
+                  var relateListStartSelectIndex = data.robotAnswer[index].relateListStartSelectIndex
+                 
+                }
+                
               if (!has_ydWords) {
                 if (this.options.isEn) {
                   ydWords = '<p>' + (gusWords.ydWords || 'Would you like to ask the following questions?') + '</p>'
@@ -2904,8 +3366,10 @@ function uploadFile (options) {
             //图片答案
             if(!MN_Base.isPC()){
                 ansCon = '<figure><div class="' + ansCon + '"><a href="' + ansCon + '" data-size="1920x1800"><img src="' + ansCon + '" class="imgBox"></a></div></figure>'                
+            }else{
+                ansCon = '<img src="' + ansCon + '" class="imgBox">'
             }
-            ansCon = '<img src="' + ansCon + '" class="imgBox">'
+            
           } else if (data.robotAnswer[index].msgType == 'video') {
             //视频答案
 
@@ -2916,7 +3380,46 @@ function uploadFile (options) {
             ansCon = this.iosBindEvent(ansCon);
           }
           //%%
-             html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
+
+          /**
+           * taskid=834
+           * 答案折叠,添加回答模版，动态添加折叠显隐事件
+           */
+            if(ansCon.indexOf('longAnsTmp')<=0){
+              html = this.options.kfHtml[2].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid)
+            }else{
+              // 答案过长折叠
+              html = this.options.kfHtml[3].replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%ansCon%/g, this.replaceFace(ansCon)).replace(/%formatDate%/g, data.robotAnswer[index].time ? this.getFormatDate(data.robotAnswer[index].time) : this.getFormatDate()).replace(/%gusListHtml%/g, gusListHtml).replace(/%relateListHtml%/g, relateListHtml).replace(/%commentHtml%/g, commentHtml).replace(/%aId%/g, aId).replace(/%cluid%/g, cluid);
+
+              var self = this;
+              $('.foldBtn').unbind('click').bind('click',function(event) {
+                var Then = this;
+                var top = $(This.$obj.$chatCtnId).position().top;
+                var text = $(this).children('.fold-txt');
+                var icon = $(this).children('.foldBtn-icon').children('i')
+                if(text.html() == '查看更多'){
+                  $(this).parent().siblings('.longAnsTmp').children('.longAns-hide').css('display','block');
+                  icon.removeClass('fa-angle-down');
+                  icon.addClass('fa-angle-up');
+                  text.html('收起')
+                }else{
+                  $(this).parent().siblings('.longAnsTmp').children('.longAns-hide').css('display','none');
+                  icon.removeClass('fa-angle-up');
+                  icon.addClass('fa-angle-down');
+                  text.html('查看更多')
+                }
+
+                This.scrollbar.options.autoBottom = false;
+                setTimeout(function() {
+                  // 设置第三个参数为true，可传入负数滚动
+                  This.scrollbar.scrollTo(top,true,true)
+                  This.scrollbar.options.autoBottom = true;
+                },100)
+              })
+              
+            }
+
+
             if(!MN_Base.isPC()){
                 for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
                     if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
@@ -2954,6 +3457,85 @@ function uploadFile (options) {
 
       return html
     },
+    /******************
+     * taskid = 337 智能接待组分页展示功能
+     * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+     * ***********************/
+    distriPageList:function(gusList,ansConList){
+        var i = 0,
+            // pageArray = [],//存储数据
+            liCount = ansConList.length,//数据总条数
+            PageSize  = 8,//每页显示条数
+            PageCount  = Math.ceil(liCount/PageSize),//总页数
+            currentPage = 1,//设置当前页
+            isShow = 'none',//判断是否显示上下页
+            replyNum = '0',//判断元素距离底部的距离
+            pagingList = '';//渲染数据到页面
+            if(liCount <= PageSize){
+              isShow = 'none';
+              replyNum = '0';
+            }else{
+              isShow = 'block';
+              replyNum = '32px';
+            }
+            this.options.pageArray = [];
+            for(var i = 0;i < ansConList.length;i++){
+              this.options.pageArray.push('<li class="MN_pageLi"><span>'+(i+1)+'</span>.&nbsp;<a class="pageQueList">'+ansConList[i].question+'</a></li>');
+            }
+            for(i = 0;i < PageSize;i++){
+              if(this.options.pageArray[i]){
+                pagingList += this.options.pageArray[i]
+              }
+            }
+            if(this.options.flagPage){
+              this.pageData(PageCount,PageSize)
+            }
+            gusList = '<div class="distributionAns"><div class="distributionTitle">请选择您需要转接的客服技能组</div><ul class="pagingList">'+pagingList+'</ul><div class="replyNumber" style="margin-bottom:'+replyNum+'">点击问题获取答案</div><div class="pageNum" style="display:'+isShow+'"><div class="prev" page="'+currentPage+'">上一页</div><div class="next" page="'+currentPage+'">下一页</div></div></div>'
+            return gusList;
+      },
+      /***********************************
+       * taskid = 337 智能接待组分页展示功能
+       * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+       * 点击上一页、下一页来渲染数据
+       * *********************************/
+      pageData: function(PageCount,PageSize){
+        this.options.flagPage = false;
+        var This = this;
+        PageCount  = Math.ceil(This.options.pageArray.length/PageSize),//总页数
+        //上一页
+        $('body').on('click','.prev',function(){
+          var prevThis = this;
+          if($(prevThis).attr('page') > 1){
+            var page = Number($(prevThis).attr('page'))-1;
+            $(prevThis).attr('page',page);
+            $(prevThis).next().attr('page',page)
+          }else{
+            $(prevThis).attr('page',PageCount)
+            $(prevThis).next().attr('page',PageCount)
+          }
+          showPage($(prevThis).attr('page'),prevThis);
+        })
+        //下一页
+        $('#chatCtn').on('click','.next',function(){
+          var nextThis = this;
+          if($(nextThis).attr('page') < PageCount){
+            var page = Number($(nextThis).attr('page'))+1;
+            $(nextThis).attr('page',page);
+            $(nextThis).prev().attr('page',page);
+          }else{
+            $(nextThis).attr('page',1)
+            $(nextThis).prev().attr('page',1)
+          }
+          showPage($(nextThis).attr('page'),nextThis);
+        })
+        
+        function showPage(whichPage,Tthis){
+          $(Tthis).parents('.distributionAns').find('.pagingList').html('');
+          for(i = (whichPage-1)*PageSize; i < PageSize*whichPage ; i++){
+            $(Tthis).parents('.distributionAns').find('.pagingList').append(This.options.pageArray[i]);
+          }
+        }
+      },
     // IOS端绑定事件
     iosBindEvent: function(ansCon) {
         var newansCon = '';
@@ -2972,13 +3554,18 @@ function uploadFile (options) {
         var This = this;
         if(this.isiOS){
             $('body').undelegate('imgClick','click').delegate('.imgClick','click', function (e) {
-            e.preventDefault();
-            This.showMsg('该文件类型需要在PC端下载!');
+              e.preventDefault();
+              This.showMsg('该文件类型需要在PC端下载!');
             });
         }
     },
     //客户结构
     customHtml: function (word, time,msgType) {
+        // 编译问题中的“<”和“>”
+        if (word.indexOf('<script>')>-1) {
+            word = word.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+        
       var html = ''
         //taskId=475 查看聊天记录，聊天记录图片不显示bug
         if(msgType=='image'){
@@ -3010,7 +3597,15 @@ function uploadFile (options) {
       //快捷服务结构
       if (quickLink && quickLink[0]) {
         for (var i = 0; i < quickLink.length; i++) {
-          str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" target="_blank"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+          /**
+           * taskid=802 快捷服务区分本窗口新窗口打开 顾荣 2018/2/8
+           * 修改：mediumType为null,undifiend,0新窗口打开，为1本窗口打开
+           */
+          if(quickLink[i].mediumType==1){
+            str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+          }else{
+            str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" target="_blank"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+          }
         }
         $quickServId.empty().append(str)
       } else {
@@ -3044,6 +3639,7 @@ function uploadFile (options) {
           }
         }
         $recommendLinkId.empty().append(str)
+        this.options.recommendLinkCallBack(data);//
       }
     },
     //问题结构->热门、常见/新增/推荐
@@ -3085,7 +3681,8 @@ function uploadFile (options) {
         topAsk = data.topAsk
 
       this.queHtml(topAsk) && $topQueId.empty().append(this.queHtml(topAsk))
-    },
+      this.options.topQueCallBack();
+      },
     //新增问题
     newQue: function (data) {
       if (!this._options.newQueId) {//不配置直接返回
@@ -3135,14 +3732,20 @@ function uploadFile (options) {
       }
       var $userInfoId = this.$obj.$userInfoId = $('#' + this.options.userInfoId),//用户信息Id
         str = ''
+        //taskId =177  企业名称首先取data.channelSourceConfig.chatTitle 
       var info = data.webConfig.info || (data.company ? data.company.info : ''),//简介
-        webName = data.webConfig.webName || (data.company ? data.company.webName : ''),//名称
+        webName =  data.webConfig.webName || (data.company ? data.company.webName : ''),//名称
         serviceQq = data.webConfig.serviceQq || (data.company ? data.company.qq : ''),//QQ
         serviceTel = data.webConfig.serviceTel || (data.company ? data.company.tel : ''),//电话
         webSite = data.webConfig.webSite || (data.company ? data.company.webSite : ''),//网址
         address = (data.company ? data.company.address : ''),//地址
         notice = (data.company ? data.company.notice : ''),//通知
         openTime = (data.company ? data.company.openTime : '')//工作时间
+        
+        if(data.channelSourceConfig){
+          webName = data.channelSourceConfig.chatTitle;
+        }
+
       if (info) {
         str += '<div class="MN_info MN_userInfo"><span>简介：' + info + '</span></div>'
       }
@@ -3181,17 +3784,51 @@ function uploadFile (options) {
       })
     },
     //发送问题->s=aq
-    askQue: function (queParam) {
+    askQue: function (queParam,type,show) {//无限极发送图片和语音需要调用其他的接口
+      if(!type)type='';
       var This = this,
+        interFace='aq',
+        extraParams = {},
         question = queParam || This.robot._html || This.$obj.$inputCtnId.val().replace(/\n+/g, '')//// 当 This.robot._html不为空时 或者 从Url中传入问题时 ，走模拟问题
-
+        if(type=='image'){
+					interFace='image';
+					extraParams['path']=$(question)[0]['src'];
+				}
+				if(type=='voice'){
+					//alert('语音问题:'+$(question)[1]['src']+'，'+$(question)[0]['alt']);
+					interFace='voice';
+					extraParams['Recognition']=$(question)[0]['alt'];
+					extraParams['path']=$(question)[1]['src'];
+					extraParams['Format']=$(question)[1]['src'].substring($(question)[1]['src'].lastIndexOf(".")+1);
+				}
       This.scrollbar.options.autoBottom = true// 恢复自动滚动到底部
       if (question) {//问题不为空
         This.options.sendCallback(question)//点击发送按钮的回调
         if (question.indexOf('%我要发文件%') + 1) {//发文件
           This.$obj.$chatCtnId.append(This.customHtml('<div class="FA_' + question.match(/ran\d+/) + ' FA_upFileCtn">loading...</div>'))//添加我的话
         } else {//问问题
-          This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(filterXSS(question)))))//添加我的话
+          //无限极识别语音以及设置字体
+            if(This.options.useSetFont==1){
+              if(!MN_Base.isPC()){//无限极app处理
+                  if(question.indexOf('audio')<0){
+                    This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(filterXSS(question)))));//添加我的话
+                  }else{
+                    This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(question))));//添加我的话
+                    question=$(question)[0]['alt'];
+                  }
+                  if(show){return;}
+              }else{//无限极网页处理 设置字号
+                  if(!queParam){
+                    var sendQue=This.replaceFace(This.sendMsg(This.xssWhiteList(question)));
+                  }else{
+                    var sendQue=This.replaceFace(This.xssWhiteList(question));
+                  }
+                  This.$obj.$chatCtnId.append(This.customHtml(sendQue));//添加我的话
+              }
+             }else{
+              This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(question))));//添加我的话
+            }
+          //This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(filterXSS(question)))))//添加我的话
           var $MN_ask = $('.MN_ask:last'),
             $MN_guideQues = $MN_ask.prevAll('.MN_answer').find('.MN_guideQue'),
             $lastGuide = $MN_guideQues.eq(-1)
@@ -3205,8 +3842,8 @@ function uploadFile (options) {
               This.robot.guide = false// 退出引导
             }
           }
-          if (This.robot.html || queParam) {// 当 This.robot.html 不为空时，走模拟答案
-            data = JSON.parse('{"robotAnswer":[{"ansCon":"' + (This.robot.html).replace(/"/g, '\'').replace(/\s/g, '') + '"}]}')
+          if (This.robot.html) {// 当 This.robot.html 不为空时，走模拟答案
+            data = JSON.parse('{"robotAnswer":[{"ansCon":"' + This.robot.html.replace(/"/g, '\'').replace(/\s/g, '') + '"}]}')
             This.$obj.$chatCtnId.append(This.robotHtml(data))//添加机器人的话
             This.options.getCallback(This.getCurrectWords(This.robotHtml(data)), data)//获取到答案后的回调
             This.recommendQue(data)//推荐问题
@@ -3215,68 +3852,90 @@ function uploadFile (options) {
              * 如果下线,先调取s=p初始化，再调取s=aq和s=kl恢复正常回话
              */
             //判断是否是ppmoney,如果是则改成发送表情时发送二位数组第一位
-            var newQuestion = '';
-            if(!MN_Base.isPC()){
-                if(window.location.host!='jdyw.faqrobot.cn'){
-                    newQuestion = This.replaceFace(question, true)
-                }else{
-                    newQuestion = question
-                }
-            }else{
-                newQuestion = This.replaceFace(question, true)
-            }
-            var promiseArr = [];
-            if(This.isOffline){
-              promiseArr.push(This.initBaseInfo());
-            }
-            Promise.all(promiseArr)
-            .then(function (data) {
-              if(This.isOffline){ 
-                This.timeRequest();
-                This.isOffline=false;
-                isGOffline = false;
+            if(This.options.useSetFont == 1){
+              var imgUrl = question.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/g);
+              if(imgUrl) {
+                extraParams['media_type'] = 'image';
+                extraParams['media'] = imgUrl[0];
               }
               This.request({
-                params: {
-                  s: 'aq',
-                  question: newQuestion
-                },
-                callback: function (data) {
-                  This.askQueBack(data)// 获取发送的回调
+                params: $.extend({
+                    s: interFace,
+                    question: question,
+                }, extraParams),
+                callback: function(data) {
+                  sessionStorage.setItem('isAQ','已交互');
+                  if(data.tspan=='2000'){
+                    This.request({
+                      params: {
+                              s: 'p',
+                              jid: This.options.jid,
+                        sourceId: This.options.sourceId,//0->网页 1->微信 3->h5
+                      },
+                      callback: function(data) {
+                        $('.MN_ask:last').remove();
+                        if(type=='voice'){
+                          This.askQue(queParam);
+                          var obj={"robotAnswer":[{"ansCon":"<p>小极听到你说了以下内容：</p><p>"+question+"</p>"}]};
+                          This.$obj.$chatCtnId.append(This.robotHtml(obj));
+                        }else{
+                          This.askQue(question);
+                        }
+                        This.timeRequest();
+                        return;
+                      }
+                    });
+                  }else{
+                    if(type=='voice'){
+                      var obj={"robotAnswer":[{"ansCon":"<p>小极听到你说了以下内容：</p><p>"+question+"</p>"}]};
+                      This.$obj.$chatCtnId.append(This.robotHtml(obj));
+                    }
+                    This.askQueBack(data);// 获取发送的回调
+                  }
                 }
+              });
+            }else{
+              var newQuestion = '';
+              if(!MN_Base.isPC()){
+                  if(window.location.host!='jdyw.faqrobot.cn'){
+                      newQuestion = This.replaceFace(question, true)
+                  }else{
+                      newQuestion = question
+                  }
+              }else{
+                  newQuestion = This.replaceFace(question, true)
+              }
+              var promiseArr = [];
+              if(This.isOffline){
+                promiseArr.push(This.initBaseInfo());
+              }
+              Promise.all(promiseArr)
+              .then(function (data) {
+                if(This.isOffline){ 
+                  This.timeRequest();
+                  This.isOffline=false;
+                  isGOffline = false;
+                }
+                This.request({
+                  params: {
+                    s: 'aq',
+                    question: newQuestion
+                  },
+                  callback: function (data) {
+                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                      plantData.adjustMargin()
+                    }
+                    This.askQueBack(data)// 获取发送的回调
+                  }
+                })
               })
-            })
-
-            // if(This.isOffline){
-            //   Promise.all([This.initBaseInfo()])
-            //   .then(function (data) {
-            //     This.timeRequest();
-            //     This.request({
-            //       params: {
-            //         s: 'aq',
-            //         question: This.replaceFace(question, true)
-            //       },
-            //       callback: function (data) {
-            //         This.askQueBack(data)// 获取发送的回调
-            //       }
-            //     })
-            //   })
-            // }else{
-            //   This.request({
-            //     params: {
-            //       s: 'aq',
-            //       question: This.replaceFace(question, true)
-            //     },
-            //     callback: function (data) {
-            //       This.askQueBack(data)// 获取发送的回调
-            //     }
-            //   })
-            // }
+            }
           }
         }
         This.robot.html = This.robot._html = ''
         This.$obj.$inputCtnId.val('')//清空输入框
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
       }
     },
     // 语义表情转字符表情
@@ -3295,12 +3954,20 @@ function uploadFile (options) {
             }
             if (data.robotAnswer[i].gusList) {
               if (data.robotAnswer[i].gusList[0]) {
-                hasCtn = true
+                if(data.nowState == 3||data.nowState==5){
+                  hasCtn = false
+                }else{
+                  hasCtn = true
+                }
               }
             }
             if (data.robotAnswer[i].relateLessList) {
               if (data.robotAnswer[i].relateLessList[0]) {
-                hasCtn = true
+                if(data.nowState == 3 || data.nowState == 5){
+                  hasCtn = false
+                }else{
+                  hasCtn = true
+                }
               }
             }
             if (data.robotAnswer[i].relateList) {
@@ -3336,6 +4003,7 @@ function uploadFile (options) {
               This.scrollbar.update()
               This.scrollbarUpdate()
             })
+            $('#'+This.options.chatCtnId).scrollTop($('#'+This.options.chatCtnId)[0].scrollHeight)
           }
         }
       }
@@ -3355,9 +4023,51 @@ function uploadFile (options) {
         html += '<p class="MN_titleSearch">站内搜索</p>'
         if (data.document) {
           if (data.document[0]) {
-            for (var i = 0; i < data.document.length; i++) {
-              html += '<a href="' + data.document[i].url + '" target="_blank" title="' + data.document[i].title + '"><div class="MN_innerSearchCtn"><span class="MN_innerSearch">' + MN_Base.addDots(data.document[i].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div></a>'
-            }
+              for (var i = 0; i < data.document.length; i++) {
+                /**
+                 * taskid=987
+                 * 国泰基金文档检索pdf预览docx下载
+                 */
+                if(data.document[i].pdfUrl){
+                    var btnTmp = '';
+                    btnTmp = '<button tipUrl=\"'+ data.document[i].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
+                    html += '<a class="hoverTip" href="#" style="cursor: pointer;position: relative;display: block;" title="' + data.document[i].title + '"><div class="MN_innerSearchCtn"><span class="MN_innerSearch">' 
+                    /*
+                      taskid=331,黄世鹏
+                      优化：国泰文档检索名全部展示
+                    */ 
+                    if(window.location.pathname.indexOf('GuoTai')!=-1){
+                      html +=data.document[i].title+ '</span><span class="MN_classifySearch">' +MN_Base.addDots(data.document[i].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div> </a>'
+                    }else{
+                      html +=MN_Base.addDots(data.document[i].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div> </a>'
+                    }
+                  }else{
+                    html += '<a href="' + (data.document[i].url) + '" target="_blank" title="' + data.document[i].title + '"><div class="MN_innerSearchCtn"><span class="MN_innerSearch">' 
+                    if(window.location.pathname.indexOf('GuoTai')!=-1){
+                      html += data.document[i].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div></a>'
+                    }else{
+                      html += MN_Base.addDots(data.document[i].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div></a>'
+                    }
+                    
+                  }
+                }
+
+              $('body').off('mouseover','.hoverTip').on('mouseover','.hoverTip',function() {
+                $(this).children('.tipisHide').removeClass('hide');
+              })
+
+              $('body').off('mouseout','.hoverTip').on('mouseout','.hoverTip',function() {
+                $(this).children('.tipisHide').addClass('hide');
+              })
+
+              $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
+                window.open($(this).attr('tipUrl'))
+              })
+
+              // for (var i = 0; i < data.document.length; i++) {
+              //   
+              // }
+       
           } else {
             html += '<p class="MN_noSearch">无结果</p>'
           }
@@ -3490,17 +4200,6 @@ function uploadFile (options) {
         var $This = $(this).find('.MN_guideQue')
 
         This.$obj.$chatCtnId.append(This.customHtml($This.html()))//添加我的话
-        // This.request({
-        //   params: {
-        //     s: 'aq',
-        //     sId: $This.attr('sId'),
-        //     question: $This.html()
-        //   },
-        //   callback: function (data) {
-        //     This.askQueBack(data)
-        //   }
-        // })
-
           /**
            * 如果下线,先调取s=p初始化，再调取s=aq和s=kl恢复正常回话
            */
@@ -3515,20 +4214,81 @@ function uploadFile (options) {
               This.isOffline=false;
               isGOffline = false;
             }
+            /*
+              taskid=191,黄世鹏
+              修改：有特殊字符时会编译，将html方法改为text方法
+            */ 
             This.request({
               params: {
                 s: 'aq',
                 sId: $This.attr('sId'),
-                question: $This.html()
+                question: $This.text()
               },
               callback: function (data) {
                 This.askQueBack(data)
 
-              }
-            })
-          })
+            }
+        })
       })
+  })
+},
+//回答接待组问题->s=aq
+askDistributionQue: function () {
+  var This = this
+  $('body').on('click.FA', '.pageQueList', function () {//#.MN_guideQue的父级是必不可少的
+    This.robot.guide = false// 退出引导
+    This.scrollbar.options.autoBottom = true// 恢复自动滚动到底部
+    var $ThisPage = $(this)
+    This.$obj.$chatCtnId.append(This.customHtml($ThisPage.html()))//添加我的话
+      /**
+       * 如果下线,先调取s=p初始化，再调取s=aq和s=kl恢复正常回话
+       */
+      var promiseArr = [];
+      if(This.isOffline){
+        promiseArr.push(This.initBaseInfo());
+      }
+      Promise.all(promiseArr)
+      .then(function (data) {
+        if(This.isOffline){ 
+          This.timeRequest();
+          This.isOffline=false;
+          isGOffline = false;
+        }
+        /*
+          taskid=191,黄世鹏
+          修改：有特殊字符时会编译，将html方法改为text方法
+        */ 
+        This.request({
+          params: {
+            s: 'aq',
+            question: $ThisPage.text()
+          },
+          callback: function (data) {
+            This.askQueBack(data)
+
+          }
+        })
+      })
+  })
+},
+    //亚联任务单号查看
+    getTaskNum: function(){
+        var This = this;
+        $('body').on('click.FA', '.arrow_right', function () {
+            This.scrollbar.options.autoBottom = true// 恢复自动滚动到底部
+            var taskNum = $(this).parent().prev().find('.taskNum').text();//获取任务单号
+            This.request({
+                params: {
+                    s: 'aq',
+                    question:taskNum
+                },
+                callback: function (data) {
+                    This.askQueBack(data)
+                }
+            })
+        })
     },
+  
     //问题满意度评价->s=addulc
     queComment: function () {
       var This = this
@@ -3548,13 +4308,13 @@ function uploadFile (options) {
             cluid: $This.parents('.MN_answer').attr('cluid')
           },
           callback: function (data) {
-            window[s + 'Tip'] = data.message
+            window[s + 'Tip'] = data.robotAnswer[0].ansCon || null;
             if (This.options.helpfulModule.open) {
               var $helpful = $This.parents('.MN_helpful')
               if (s == 'addufc') {
-                This.options.helpfulModule.yesCallback($helpful, data.message)
+                This.options.helpfulModule.yesCallback($helpful, data.message,This)
               } else {
-                This.options.helpfulModule.noCallback($helpful, data.message,This)
+                This.options.helpfulModule.noCallback($helpful, data.message,data,This)
               }
             } else {
               $This.parents('.MN_helpful').text(data.message || '感谢您的评价！')
@@ -3583,8 +4343,9 @@ function uploadFile (options) {
           $formObj: $form,
           callback: function (data) {
             if (!data.status) {
+              This.scrollbar.options.autoBottom = false;
               $form.remove()
-              $This.parents('.MN_helpful').text(window.addulcTip || '感谢您的评价！')
+              $This.parents('.MN_helpful').text(window.addulcTip || '感谢您的评价！');
             }
           }
         })
@@ -3594,11 +4355,21 @@ function uploadFile (options) {
     //上传文件->s=uf
     upFile: function () {
       var This = this
+      /**
+       * taskid=784
+       * h5chat底部表情等，增加选中范围和描述文字，并变蓝色
+       */
       var $file = $('<input type="file" class="FA_file" multiple="multiple">').css({
-        'padding': 100,
-        'opacity': 0
+        'opacity': 0,
+        'width': '100%',
+        'height': '115%',
+        'top': 0,
+        'left': 0,
+        'position': 'absolute'
       }).appendTo($('#' + this.options.upFileModule.triggerId))
-
+      $('#' + this.options.upFileModule.triggerId).css({
+        'position': 'relative'
+      })
       H5_upload('../' + This.options.interface + '?s=uf', this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
@@ -3613,27 +4384,6 @@ function uploadFile (options) {
           $('.FA_' + ran).parents('.MN_ask').remove()
         } else {
           var html = ''
-        //   for (var i = 0, len = data.sendUrlMsg.length; i < len; i++) {
-        //     var tmpUrl = data.sendUrlMsg[index].url
-        //     This.request({
-        //         params: {
-        //         s: 'image',
-        //         path: tmpUrl
-        //         },
-        //         callback: function (data) {
-        //         This.askQueBack(data)// 获取发送的回调
-        //         }
-        //     })
-        //     switch (data.sendUrlMsg[index].type) {
-        //         case 0://非图片
-        //             html = '<div class="FA_upFileItem"><a href="' + tmpUrl + '" target="_blank"><img class="FA_upFileImg FA_upFileNoImg" src="' + base64 + '"><p class="FA_upFileName">' + data.sendUrlMsg[index].name + '</p></a></div>'
-        //             break
-        //         case 1://图片，不加a，防止跳转
-        //             //html += '<div class="FA_upFileItem"><img class="FA_upFileImg" src="'+ tmpUrl+'"><p class="FA_upFileName">'+ data.sendUrlMsg[i].name +'</p></div>';
-        //             html = '<img src="' + tmpUrl + '">'
-        //             break
-        //     }
-        //   }
             var tmpUrl = data.sendUrlMsg[index].url
             This.request({
                 params: {
@@ -3649,7 +4399,6 @@ function uploadFile (options) {
                     html = '<div class="FA_upFileItem"><a href="' + tmpUrl + '" target="_blank"><img class="FA_upFileImg FA_upFileNoImg" src="' + base64 + '"><p class="FA_upFileName">' + data.sendUrlMsg[index].name + '</p></a></div>'
                     break
                 case 1://图片，不加a，防止跳转
-                    //html += '<div class="FA_upFileItem"><img class="FA_upFileImg" src="'+ tmpUrl+'"><p class="FA_upFileName">'+ data.sendUrlMsg[i].name +'</p></div>';
                     if(!MN_Base.isPC()){
                         html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'                        
                     }else{
@@ -3808,18 +4557,23 @@ function uploadFile (options) {
       }
 
       //键盘事件
-      $(document).on('keyup.FA', function (e) {
+      $(document).on('keydown.FA', function (e) {
         This.remainWord($inputCtnId, $tipWordId, $remainWordId)
         var isInputCtn = $(document.activeElement).is('#' + This.options.inputCtnId)
 
         if (e.keyCode == 13 && isInputCtn) {//Enter键发送
-          This.askQue()
+          /*
+          * taskId = 847 输入框中输入内容点击enter后会换行
+          * 解决：禁用enter的默认事件
+          * */
+          e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+          This.askQue();
         }
       })
 
       //文本框改变事件
       $inputCtnId.on('input.FA, propertychange.FA', function (e) {
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
         $tipWordId.hide()
       })
       // 快捷发送欢迎语(防止键盘拉起)
@@ -3831,7 +4585,7 @@ function uploadFile (options) {
         } else {
           This.robot._html = $(this).text()
         }
-        This.askQue()
+        This.askQue();
       })
 
       //鼠标事件
@@ -3839,7 +4593,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $tipWordId.hide()
             }
           } else {
@@ -3864,12 +4618,12 @@ function uploadFile (options) {
 
       //点击发送
       $sendBtnId.on('click.FA', function () {
-        This.askQue()
-        if($inputCtnId.val() != ''){
-            setTimeout(function () {
-              $inputCtnId.focus()
-            }, 50)
-        }  
+            This.askQue();
+            if($inputCtnId.val() != ''){
+                setTimeout(function () {
+                $inputCtnId.focus()
+                }, 50)
+            }  
       })
     },
     //服务满意评价度准备->提示语
@@ -3897,7 +4651,7 @@ function uploadFile (options) {
       }
 
       $commentInputCtnId.on('input.FA, propertychange.FA', function (e) {
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
         $commentTipWordId.hide()
       })
 
@@ -3906,7 +4660,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $commentTipWordId.hide()
             }
           } else {
@@ -4051,7 +4805,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $leaveMsgTipWordId.hide()
             }
           } else {
@@ -4065,162 +4819,269 @@ function uploadFile (options) {
         $leaveMsgInputCtnId.trigger('focus')
       })
 
-      //点击发送
-    //   $leaveMsgSendBtnId.on('click.FA', function () {
-    //     This.servLeaveMsg()
-    //   })
-      if(!MN_Base.isPC()){
-        // taskid=402 顾荣 任务:留言面板 保存留言
-        var validator1=$('#leaveMsgForm').validate({
-            rules:{
-                name:{
-                    minlength:2,
-                    maxlength:10,
-                },
-                telNum:{
-                    telFlag:true
-                },
-                qq:{
-                    number:true,
-                    minlength:5,
-                    maxlength:12 
-                },
-                email:{
-                    emailFlag:true,
-                },
-                content:{
-                    required:true,
-                }
-            },
-            messages:{
-                name:{
-                    minlength:"请输入2~10个字符！",
-                    maxlength:"请输入2~10个字符！"
-                },
-                qq:{
-                    number:"请输入正确的QQ号码！",
-                    minlength:"请输入正确的QQ号码！",
-                    maxlength:"请输入正确的QQ号码！"
-                },
-                content:{
-                    required:"留言不能为空！",
-                }
-            },
-            submitHandler: msgSubmit
-        });
-        $.validator.addMethod("emailFlag",function(value,element,params){  
-        var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
-        if(emailreg.test(value.trim())||value.trim()==""){
-            return true;
-        }else{
-            return false;
-        } 
-        },"请输入正确格式的邮箱！");
-        /**
-         * taskId=494;顾荣 2017.12.27
-        * 修改：优化手机号码正则
-        */
-        $.validator.addMethod("telFlag",function(value,element,params){
-        var telNumReg=/^1[0-9]{10}$/  
-        if(telNumReg.test(value.trim())||value.trim()==""){
-            return true;
-        }else{
-            return false;
-        }
-        },"请输入正确格式的手机号码！")
+      if(!MN_Base.isPC()&&$("#successMessage").size()){//通过dom检查是否为老页面
+       
 
-        function msgSubmit(){
-            var messageName=$("#leaveMsgForm input[name=name]").val().trim()//姓名
-            var messagePhone=$("#leaveMsgForm input[name=telNum]").val().trim()//电话号码
-            var messageQQ=$("#leaveMsgForm input[name=qq]").val().trim()//QQ号码
-            var messageEmail=$("#leaveMsgForm input[name=email]").val().trim()//电子邮箱
-            var messageTxt=$("#leaveMsgForm #leaveMsgCtn").val().trim()//留言内容
-            //获取图片路径信息
-            var imgUrls=[]
-            for(var i=0;i<$(".imgdivs").size();i++){
-                if($(".imgdivs").eq(i).attr("rel")){
-                imgUrls.push($(".imgdivs").eq(i).attr("rel"));          
-                }
-            }
-            imgUrls=imgUrls.join(',')
-            // 收集来源的关键词
-            var entranceWords = ''
-            for (var i = 0; i < This.options.entranceWords.length; i++) {
-                entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
-            }
-            
-            $.ajax({
-                type:'post',
-                datatype:'json',
-                cache:false,//不从缓存中去数据,
-                url:encodeURI('../../servlet/AQ'),
-                data:{
-                    s: 'leavemsg',
-                    souceId:This.options.sourceId,
-                    sysNum:This.options.sysNum,
-                    entrance:document.referrer,
-                    entranceWords:entranceWords,
-                    name:messageName,
-                    telNum:messagePhone,
-                    qq:messageQQ,
-                    email:messageEmail,
-                    content:messageTxt,
-                    imgUrls:imgUrls  
+
+        if(This.options.isSQ){
+            // taskid=402 顾荣 任务:留言面板 保存留言
+            var validator1=$('#leaveMsgForm').validate({
+                rules:{
+                    name:{
+                        minlength:2,
+                        maxlength:10,
+                    },
+                    telNum:{
+                        telFlag:true
+                    },
+                    email:{
+                        emailFlag:true,
+                    },
+                    content:{
+                        required:true,
+                    }
                 },
-                success:function(data){
-                    if(data.status==0){
-                        $("#successMessage").css("display","block")
-                    }else{
-                        this.showMsg(data.message) 
+                messages:{
+                    name:{
+                        minlength:"请输入2~10个字符！",
+                        maxlength:"请输入2~10个字符！"
+                    },
+                    content:{
+                        required:"留言不能为空！",
+                    }
+                },
+                submitHandler: msgSubmit
+            });
+            $.validator.addMethod("emailFlag",function(value,element,params){  
+            var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
+            if(emailreg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            } 
+            },"请输入正确格式的邮箱！");
+            /**
+             * taskId=494;顾荣 2017.12.27
+            * 修改：优化手机号码正则
+            */
+            $.validator.addMethod("telFlag",function(value,element,params){
+            var telNumReg=/^1[0-9]{10}$/  
+            if(telNumReg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            }
+            },"请输入正确格式的手机号码！")
+
+            function msgSubmit(){
+                var messageName=$("#leaveMsgForm input[name=name]").val().trim()//姓名
+                var messagePhone=$("#leaveMsgForm input[name=telNum]").val().trim()//电话号码
+                var messageEmail=$("#leaveMsgForm input[name=email]").val().trim()//电子邮箱
+                var messageTxt=$("#leaveMsgForm #leaveMsgCtn").val().trim()//留言内容
+    
+                // 收集来源的关键词
+                var entranceWords = ''
+                for (var i = 0; i < This.options.entranceWords.length; i++) {
+                    entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
+                }
+                // if(This.options.isSQ){
+                //   alert('发送s=leavemsg请求')
+                // }
+                $.ajax({
+                    type:'post',
+                    datatype:'json',
+                    cache:false,//不从缓存中去数据,
+                    url:encodeURI('../servlet/appChat'),
+                    data:{
+                        s: 'leavemsg',
+                        souceId:This.options.sourceId,
+                        sysNum:This.options.sysNum,
+                        entrance:document.referrer,
+                        entranceWords:entranceWords,
+                        name:messageName,
+                        telNum:messagePhone,
+                        email:messageEmail,
+                        content:messageTxt,
+                    },
+                    success:function(data){
+                        if(data.status==0){
+                            $("#successMessage").css("display","block")
+                        }else{
+                            this.showMsg(data.message) 
+                        }
+                    }
+                })
+
+            }
+            //给留言板中的按钮绑定事件
+            $("#messageAgain").click(function(){//点击继续留言返回留言板
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("");
+                $("#successMessage").css("display","none");
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            });
+            $("#backMessage").click(function(){//点击返回聊天关闭留言板返回聊天
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("")
+                $("#successMessage").css("display","none");
+                $("#leaveMsgBox").css("display","none")
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            })
+            $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("")
+                $("#leaveMsgBox").css("display","none")
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            })
+        }else{
+            // taskid=402 顾荣 任务:留言面板 保存留言
+            var validator1=$('#leaveMsgForm').validate({
+                rules:{
+                    name:{
+                        minlength:2,
+                        maxlength:10,
+                    },
+                    telNum:{
+                        telFlag:true
+                    },
+                    qq:{
+                        number:true,
+                        minlength:5,
+                        maxlength:12 
+                    },
+                    email:{
+                        emailFlag:true,
+                    },
+                    content:{
+                        required:true,
+                    }
+                },
+                messages:{
+                    name:{
+                        minlength:"请输入2~10个字符！",
+                        maxlength:"请输入2~10个字符！"
+                    },
+                    qq:{
+                        number:"请输入正确的QQ号码！",
+                        minlength:"请输入正确的QQ号码！",
+                        maxlength:"请输入正确的QQ号码！"
+                    },
+                    content:{
+                        required:"留言不能为空！",
+                    }
+                },
+                submitHandler: msgSubmit
+            });
+            $.validator.addMethod("emailFlag",function(value,element,params){  
+            var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
+            if(emailreg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            } 
+            },"请输入正确格式的邮箱！");
+            /**
+             * taskId=494;顾荣 2017.12.27
+            * 修改：优化手机号码正则
+            */
+            $.validator.addMethod("telFlag",function(value,element,params){
+            var telNumReg=/^1[0-9]{10}$/  
+            if(telNumReg.test(value.trim())||value.trim()==""){
+                return true;
+            }else{
+                return false;
+            }
+            },"请输入正确格式的手机号码！")
+
+            function msgSubmit(){
+                var messageName=$("#leaveMsgForm input[name=name]").val().trim()//姓名
+                var messagePhone=$("#leaveMsgForm input[name=telNum]").val().trim()//电话号码
+                var messageQQ=$("#leaveMsgForm input[name=qq]").val().trim()//QQ号码
+                var messageEmail=$("#leaveMsgForm input[name=email]").val().trim()//电子邮箱
+                var messageTxt=$("#leaveMsgForm #leaveMsgCtn").val().trim()//留言内容
+                //获取图片路径信息
+                var imgUrls=[]
+                for(var i=0;i<$(".imgdivs").size();i++){
+                    if($(".imgdivs").eq(i).attr("rel")){
+                    imgUrls.push($(".imgdivs").eq(i).attr("rel"));          
                     }
                 }
-            })
+                imgUrls=imgUrls.join(',')
+                // 收集来源的关键词
+                var entranceWords = ''
+                for (var i = 0; i < This.options.entranceWords.length; i++) {
+                    entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
+                }
+                
+                $.ajax({
+                    type:'post',
+                    datatype:'json',
+                    cache:false,//不从缓存中去数据,
+                    url:encodeURI('../servlet/appChat'),
+                    data:{
+                        s: 'leavemsg',
+                        souceId:This.options.sourceId,
+                        sysNum:This.options.sysNum,
+                        entrance:document.referrer,
+                        entranceWords:entranceWords,
+                        name:messageName,
+                        telNum:messagePhone,
+                        qq:messageQQ,
+                        email:messageEmail,
+                        content:messageTxt,
+                        imgUrls:imgUrls  
+                    },
+                    success:function(data){
+                        if(data.status==0){
+                            $("#successMessage").css("display","block")
+                        }else{
+                            this.showMsg(data.message) 
+                        }
+                    }
+                })
 
+            }
+            //给留言板中的按钮绑定事件
+            $("#messageAgain").click(function(){//点击继续留言返回留言板
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("");
+                $("#successMessage").css("display","none");
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            });
+            $("#backMessage").click(function(){//点击返回聊天关闭留言板返回聊天
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("")
+                $("#successMessage").css("display","none");
+                $("#leaveMsgBox").css("display","none")
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            })
+            $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
+                $("#leaveMsgForm").find("input").val('');
+                $("#leaveMsgCtn").val("")
+                $("#leaveMsgBox").css("display","none")
+                $("#imgsDiv").html("")
+                validator1.resetForm()
+                $('.text-error').removeClass("text-error helper-font-small")
+            })
         }
-        //给留言板中的按钮绑定事件
-        $("#messageAgain").click(function(){//点击继续留言返回留言板
-            $("#leaveMsgForm").find("input").val('');
-            $("#leaveMsgCtn").val("");
-            $("#successMessage").css("display","none");
-            $("#imgsDiv").html("")
-            validator1.resetForm()
-            $('.text-error').removeClass("text-error helper-font-small")
-        });
-        $("#backMessage").click(function(){//点击返回聊天关闭留言板返回聊天
-            $("#leaveMsgForm").find("input").val('');
-            $("#leaveMsgCtn").val("")
-            $("#successMessage").css("display","none");
-            $("#leaveMsgBox").css("display","none")
-            $("#imgsDiv").html("")
-            validator1.resetForm()
-            $('.text-error').removeClass("text-error helper-font-small")
-        })
-        $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
-            $("#leaveMsgForm").find("input").val('');
-            $("#leaveMsgCtn").val("")
-            $("#leaveMsgBox").css("display","none")
-            $("#imgsDiv").html("")
-            validator1.resetForm()
-            $('.text-error').removeClass("text-error helper-font-small")
-        })
+
+
       }
     },
 
     //留言->s=leavemsg
     servLeaveMsg: function () {
-    //   var This = this
-    //   This.request({
-    //     params: {
-    //       s: 'leavemsg'
-    //     },
-    //     $formObj: $('#' + This.options.leaveMsgFormId),//被序列化的form表单
-    //     callback: function (data) {
-    //       This.showMsg(data.message)
-    //       if (!data.status) {
-    //         This.options.leaveMsgCallback()
-    //       }
-    //     }
-    //   })
+
     },
     //是否开始计时
     beginCount: function (bool) {
@@ -4235,8 +5096,6 @@ function uploadFile (options) {
     timeRequest: function () {
         var This = this,
             isArti = _isArti = false,
-            //level = 1,
-            //isShow = true,
             isOnly = true
         timer = null
         This.tspan = 2000//请求间隔
@@ -4291,9 +5150,6 @@ function uploadFile (options) {
                                 unstais += $('[name=ckb]').eq(i).val() + ',';
                             }
                             }
-                            /*if (unstais == '' && $('#stapin').val() != '') {
-                            unstais = '不满意';
-                            }*/
                             This.request({
                             params: {
                                 s: 'fadeback',
@@ -4360,10 +5216,6 @@ function uploadFile (options) {
                                     callback: function (data) {
                                         isOnly = true
                                         This.tspan = 2000//请求间隔
-                                        /**
-                                         * tspan=2000 后不调取任何接口
-                                         */
-                                        // resetTimer()
                                     }
                                 })
                             }
@@ -4434,7 +5286,6 @@ function uploadFile (options) {
                                             	}else{
                                             		This.robot.kfPic=This.options.prefix+This.options.kf_Robot_Pic;
                                             	}
-                                              // This.robot.kfPic=This.options.prefix+This.options.kf_Robot_Pic;
                                               This.robot.robotName=This.options.kf_Robot_Name
                                             }
 
@@ -4452,15 +5303,31 @@ function uploadFile (options) {
                                             if(data.robotAnswer[0].ansCon=="" && data.robotAnswer.length > 1){
                                                 for (var i = 1, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
+                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                      plantData.adjustMargin()
+                                                    }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
+                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                      plantData.adjustMargin()
+                                                    }
                                                 }
                                                 
                                             }else{
                                                 for (var i = 0, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
+                                                    //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                      plantData.adjustMargin()
+                                                    }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
+                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                      plantData.adjustMargin();
+                                                    }
                                                 }
                                             }
 
@@ -4529,10 +5396,6 @@ function uploadFile (options) {
             MN_Base.getNaturalSize(e.target, function (w, h) {
     
               var $img = $('<img class="FA_previewImg" src="' + e.target.src + '">').css({
-                /*width: w,
-	            					height: h,
-                        marginTop: -h/2,
-                        marginLeft: -w/2,*/
                 maxWidth: 'none'
               }).appendTo($('.FA_previewImgCtn'))
 
@@ -4540,8 +5403,6 @@ function uploadFile (options) {
               var getIMG = $('.FA_previewImgCtn .FA_previewImg')[0]
               var fw = $(window).width()
               var fh = $(window).height()
-              //var iw = getIMG.width
-              //var ih = getIMG.height
               var iw = e.currentTarget.naturalWidth
               var ih = e.currentTarget.naturalHeight
    
@@ -4566,32 +5427,11 @@ function uploadFile (options) {
               }
               if (getIMG.height < fh || getIMG.height == fh) {
                 var getDistance = Math.floor((fh - getIMG.height) / 2)
-                //getIMG.style.marginTop=-getDistance.toString()+"px";
                 getIMG.style.marginTop = -getIMG.height / 2 + 'px'
                 getIMG.style.marginLeft = -getIMG.width / 2 + 'px'
               }
-
               //图片预览end
-
               $('.FA_previewCtn').show()
-            
-
-              /*if(w > h && w > $(window).width()) {
-                        $img.css({
-                          width:$(window).width(),
-                          height:auto,
-                          marginLeft: 0,
-                          left: 0
-                        });
-                      }
-                      if(h > $(window).height()&&h > w) {
-                        $img.css({
-                          height:$(window).height(),
-                          marginTop: 0,
-                          top: 0
-                        });
-                      }*/
-
             },This)
           }
         })
@@ -4701,8 +5541,7 @@ function uploadFile (options) {
 
       $(window).on('unload.FA', function () {
         This.offline()
-      }) 
-      //This.offline()
+      })
     },
     //下线请求->s=offline
     offline: function () {
@@ -4769,7 +5608,20 @@ function uploadFile (options) {
         $clearBtnId = this.$obj.$clearBtnId = $('#' + this.options.clearBtnId)
 
       $clearBtnId.on('click.FA', function () {
-        This.$obj.$chatCtnId.find('.MN_answer_welcome').siblings().remove()
+        /**清空历史记录无效bug Amend By zhaoyuxing
+         *说明：闪退时，不显示欢迎语，'.MN_answer_welcome'元素不存在，清空记录失效 
+         *修改：增加判断，当闪退时清空所有内容；显示欢迎语是，清空除欢迎语外所有内容
+         */
+        if(This.$obj.$chatCtnId.find('.MN_answer_welcome').length){
+          This.$obj.$chatCtnId.find('.MN_answer_welcome').siblings().remove()
+        }else{
+         // 闪退时，先清空聊天记录并添加欢迎语
+          This.$obj.$chatCtnId.children().remove()
+          var obj={helloWord:This.robotHelloWord,
+                  webConfig:{helloWord:This.robotHelloWord,robotName:This.robotName}
+                }
+          This.$obj.$chatCtnId.append(This.robotHtml(obj))
+        }
       })
     },
     //请求->所有的请求都需要经过(特殊的除外)
@@ -4875,6 +5727,17 @@ function uploadFile (options) {
       })
       $(window).trigger('resize')
     },
+    showMsgClose: function (message, callback) {
+      if (message == '缺少参数!') {
+        message = '请您填写完整!'
+      }
+      layer.open({
+        type:1,
+        shade:false,
+        titile:false,
+      })
+      $(window).trigger('resize')
+    },
     // 获取提示框合适的大小
     getSuitSize: function () {
       return MN_Base.isPC() ? '400px' : '0.8rem'
@@ -4891,8 +5754,17 @@ function uploadFile (options) {
         second = time[6] || this.addZero(today.getSeconds())
 
       var result = this.options.formatDate.replace(/%hour%/g, hour).replace(/%minute%/g, minute).replace(/%second%/g, second).replace(/%year%/g, year).replace(/%month%/g, month).replace(/%date%/g, date)
+       /**taskId=823 plantdata定制，间隔n秒显示时间 Add By zhaoyuxing
+         * 说明：记录前一次会话发送事件与本次时间相减，获得差值；小于设置的间隔则返回空
+        * 方法在chat2_plantdata.html中定义全局变量
+        */
+        if(window.location.pathname=='/robot/chat2_plantdata.html'){
+          var restate=plantData.showTime(time,year,month,date,hour,minute,second,result);
+          return restate
+        }else{
+          return result
+        }
 
-      return result
     },
     //是否是黑夜 7/8-18/19-day 20/21-6/7-night
     isNight: function () {
@@ -4927,7 +5799,7 @@ function uploadFile (options) {
           //swf文件路径
           swf: '../web/common/js/Uploader.swf',
           //文件接收接口
-          server: '../../servlet/AQ?s=uf',
+          server: '../servlet/AQ?s=uf',
           //选择文件按钮
           pick: '#filebtn',
           resize:true,
@@ -4956,7 +5828,6 @@ function uploadFile (options) {
               return false; 
           }else{
             var picDivs='<div class="imgdivs col-xs-2" rel='+response.sendUrlMsg[0].url+'><div><img src="'+response.sendUrlMsg[0].url  +'"><div class="delRound"  onclick="$(this).parent().parent().remove()">+</div></div></div>';
-              // var picDivs='<div class="imgdivs col-xs-2" rel='+response.sendUrlMsg[0].url+'><img src="'+response.sendUrlMsg[0].url  +'" /><p><a onclick="$(this).parent().parent().remove()">删除</a></p></div>';  
             $("#picCav").append(picDivs) 
           }
 
@@ -4980,7 +5851,7 @@ function uploadFile (options) {
             //swf文件路径
             swf: '../web/common/js/Uploader.swf',
             //文件接收接口
-            server: '../../servlet/appChat?s=uf',
+            server: '../servlet/appChat?s=uf',
             //选择文件按钮
             pick: '#filebtn',
             resize:true,
@@ -5012,13 +5883,26 @@ function uploadFile (options) {
                 $("#imgsDiv").append(picDivs) 
             }
         });
-      },
+    },
+    //推荐咨询
+    recommendConsult:function(data){
+      if (!this._options.recommendConsult) {//不配置直接返回
+        return
+      }
+      var $recommendConsult = $('#'+this.options.recommendConsult)
+          chatLink=data.chatFormSugLink
+          str=''
+      if(chatLink && chatLink[0]){
+        for(var i=0;i<chatLink.length;i++){
+          if(chatLink[i].type==0){
+            str +='<div><a href="'+chatLink[i].linkurl+'" target="black"><i class="timeTip glyphicon glyphicon-minus"></i><span>'+chatLink[i].content+'</span></a></div>' 
+          }
+        }
+        $recommendConsult.empty().append(str)
+      }
+    },
   }
-
+    
 })(MN, window, document)
     /**************************** END ****************************/
-
-
-
-
 //})();
