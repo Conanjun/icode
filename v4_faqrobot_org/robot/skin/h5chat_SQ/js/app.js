@@ -47,20 +47,6 @@
     });
     var timer = null;
 
-     //408 自动滚动到底部
-    //function  goToBottom(){
-    //    var j = 0,
-    //       timerDrop=null;
-    //       timerDrop = setInterval(function() {
-    //        $('body').scrollTop(2000000);
-    //        FAQ.scrollbar.scrollTo('bottom', true);
-    //        if(j>=5) {
-    //            clearInterval(timerDrop);
-    //        }
-    //        j++;
-    //    }, 100);
-    //}
-
     //隐藏更多
     //taskId:408 显示功能显示以及隐藏 聊天窗口的高度调整
     $('.view').on('click', function(e) {//不能用body hack ios
@@ -198,9 +184,7 @@
 
     var FAQ;
 
-    // FAQInit('123123');
     function FAQInit(token) {
-        // alert('欢迎语提示之前是否清空'+isEmptySayHello)
         //faqrobot
         FAQ = new Faqrobot({
             isSQ: true, // 是否是上汽
@@ -400,7 +384,6 @@
 
     $('#location').click(function() {
         window.getLocation(function(data) {
-            // alert(JSON.stringify(data));
             $('#chatCtn').append(data)
         });
     });
@@ -410,8 +393,8 @@
     function getUrlArgument() {
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
-        alert('订单编号'+businessOrderNo);
-        alert('退款编号'+refundNo);
+        // alert('订单编号'+businessOrderNo?businessOrderNo:'');
+        // alert('退款编号'+refundNo?refundNo:'');
         if(!businessOrderNo && !refundNo ){
             return
         };
@@ -433,27 +416,22 @@
         // http://{domain}/index.php/openapi/sqcus/call
         var goodId = getUrlQuery('id');
         var method = getUrlQuery('method');
-        // alert('商品id'+goodId)
-        // alert('方法'+method)
         if(!goodId || !method){
             return 
         }
         isEmptySayHello = true;     
-        // alert('开始调用商品详情接口'+isEmptySayHello)
         $.ajax({
             type: 'post',
             url: '../getSQGoods?id='+goodId+'&method='+method,
             data:{},
             success: function(data) {
-                // renderGood(data,method)
-                // alert('商品详情调用成功')
                 renderGood(data,method);
                 goodsDataContent = data ;
                 // 获取token 初始化机器人
                 if(!hasGetToken){
                     getTokenFn();
                 }
-                alert('传入参数'+data,method)
+                // alert('传入参数'+data,method)
             }
         })
 
@@ -562,23 +540,10 @@
         var method = getUrlQuery('method');
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
-        var sysNum = getUrlQuery('sysNum');
-        var sourceId = getUrlQuery('sysourceId');
+        // 关闭页面时，机器人下线
+        alert('机器人下线')
+        FAQ.offline();
         if(!goodId && !method && !businessOrderNo && !refundNo){
-            //关闭webWiew前调用机器人下线接口
-            alert('该渠道机器人下线')
-            $.ajax({
-                url:'../servlet/appChat',
-                type:'get',
-                data:{
-                    s: 'offline',
-                    sysNum:sysNum,
-                    sourceId:sourceId
-                },
-                success:function(data){
-                    layer.msg(data.message); 
-                }
-            })
             closeWebView('default',function(data) {
                 $('#chatCtn').append(data)
             });
