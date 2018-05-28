@@ -1,4 +1,4 @@
-;$(function() {
+; $(function () {
     FastClick.attach(document.body);
 
     set_chatScroll_height();
@@ -6,41 +6,37 @@
     function set_chatScroll_height() {
         var winW = $(window).width(),
             winH = $(window).height();
-        $('html').css('fontSize', winW<750 ? winW : 750);
-        
+        $('html').css('fontSize', winW < 750 ? winW : 750);
+
         /*TaskId:  408 自如页面定制
         *原因：直接嵌入自如app 无头部样式，显示为全屏
         *修改：chatScroll的高度设置
         */
-        $('.chatScroll').height(winH-$('.editCtn').outerHeight()-40);
+        $('.chatScroll').height(winH - $('.editCtn').outerHeight() - 40);
     }
 
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         set_chatScroll_height();
     });
 
-	//调用自动补全插件 taskId=408 自如定制 点击推荐内容后，自动发送信息
+    //调用自动补全插件 taskId=408 自如定制 点击推荐内容后，自动发送信息
     $('.textarea').autocomplete({
         url: 'servlet/appChat?s=ig',//[string]
         targetEl: $('.editShow'),//参照物(用于appendTo和定位)
         posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
         itemNum: 5,//[int] 默认全部显示
-        callback: function(data) {//获取文本后的回调函数
+        callback: function (data) {//获取文本后的回调函数
             //由于发送按钮被隐藏，直接调用发送事件
             $('.sendBtnNew').trigger('click');
 
         }
     });
     //显示发送按钮
-    $('.textarea').on('input', function() {
-        if($(this).val()) {
-            // $('.sendMsg').addClass('sendBtn');
-             $('.sendBtnNew').show();
-             $('.addbtn').hide();
-            // $('.sendBtn').show().siblings().hide();
-        }else {
-            // $('.sendMsg').removeClass('sendBtn');
-            //$('.addbtn').show().siblings().hide();
+    $('.textarea').on('input', function () {
+        if ($(this).val()) {
+            $('.sendBtnNew').show();
+            $('.addbtn').hide();
+        } else {
             $('.sendBtnNew').hide();
             $('.addbtn').show();
         }
@@ -49,32 +45,32 @@
 
     //隐藏更多
     //taskId:408 显示功能显示以及隐藏 聊天窗口的高度调整
-    $('.view').on('click', function(e) {//不能用body hack ios
-        if($(e.target).is('.faceBtn') || $(e.target).is('.addbtn')) {
-             $('.editHide').show();
-        }else {
+    $('.view').on('click', function (e) {//不能用body hack ios
+        if ($(e.target).is('.faceBtn') || $(e.target).is('.addbtn')) {
+            $('.editHide').show();
+        } else {
             $('.editHide').hide();
             timerSetHeight();
         }
     });
-    
-    $('.textarea').on('blur', function() {
+
+    $('.textarea').on('blur', function () {
         timerSetHeight();
     });
-    
-    $(document).on('touchstart',function(e){
-        if(!$(e.target).is('.textarea')) {
-             $('.textarea').blur(); 
-        } 
+
+    $(document).on('touchstart', function (e) {
+        if (!$(e.target).is('.textarea')) {
+            $('.textarea').blur();
+        }
     })
 
     // 定时设置高度
     function timerSetHeight() {
         var i = 0;
         clearInterval(timer);
-        timer = setInterval(function() {
+        timer = setInterval(function () {
             set_chatScroll_height();
-            if(i>=5) {
+            if (i >= 5) {
                 clearInterval(timer);
             }
             i++;
@@ -92,71 +88,71 @@
         triggerEl: $('.faceBtn'),//触发按钮(不存在则自己生成，不要由a包裹)
         targetEl: $('.editHide'),//父级参照物(用于appendTo和定位)
         hideAdv: true,//是否隐藏广告
-        callback: function() {
+        callback: function () {
             //$('.editHide').hide();
             // $('.sendBtn').show().siblings().hide();
             $('.sendBtnNew').show();
             $('.addbtn').hide();
-            setTimeout(function(){
+            setTimeout(function () {
                 $('.textarea').focus();
             }, 50);
         },
     });
 
-    
+
 
     var layerCtn = null;//所有的弹出层
 
     //常见问题
-    $('.commonQueCtn').on('click', function() {
+    $('.commonQueCtn').on('click', function () {
         layerCtn = layer.open({
             type: 1,
             title: '常见问题',
             content: $('.commonQueLayer'),
             area: ['1rem', '100%'],
-            end: function() {
+            end: function () {
                 set_chatScroll_height();
             },
         });
     });
 
     //选择常见问题(事件委托)
-    $('body').on('click', function(e) {
-        if(e.target.className=='MN_queList') {
+    $('body').on('click', function (e) {
+        if (e.target.className == 'MN_queList') {
             layer.close(layerCtn);
         }
-        if(e.target.parentNode) {
-            if(e.target.parentNode.className=='MN_queList') {
+        if (e.target.parentNode) {
+            if (e.target.parentNode.className == 'MN_queList') {
                 layer.close(layerCtn);
             }
         }
         // 关闭各种框
-        if(e.target.className=='layui-layer-setwin') {
+        if (e.target.className == 'layui-layer-setwin') {
             $(e.target).find('.layui-layer-close').trigger('click');
         }
     });
 
     //意见反馈
-    $('.feedback').on('click', function() {
+    $('.feedback').on('click', function () {
         layerCtn = layer.open({
             type: 1,
             title: '意见反馈',
             content: $('.feedbackLayer'),
             area: ['1rem', '100%'],
-            end: function() {
+            end: function () {
                 set_chatScroll_height();
             },
         });
     });
-    $('.MN_marginCtn').eq(0).on('click', function() {
+    $('.MN_marginCtn').eq(0).on('click', function () {
         $('.noSatiCtn').hide();
     });
-    $('.MN_marginCtn').eq(1).on('click', function() {
+    $('.MN_marginCtn').eq(1).on('click', function () {
         $('.noSatiCtn').show();
     });
 
     //留言
-    $('#sendLeaveMsg').on('click', function() {
+    $('#sendLeaveMsg').on('click', function () {
         // layerCtn = layer.open({
         //     type: 1,
         //     title: '吐糟',
@@ -166,18 +162,18 @@
         //         set_chatScroll_height();
         //     },
         // });
-        $("#leaveMsgBox").css("display","block");
+        $("#leaveMsgBox").css("display", "block");
         FAQ.writeMsg()
     });
-     //taskid=402 顾荣 任务：留言面板 2017.12.20
+    //taskid=402 顾荣 任务：留言面板 2017.12.20
     // 添加a链接弹出框
-    $("body").on("click",".LeaveMsg",function(){
-         /**
-        * taskId=494;顾荣
-        * 原因：在ios浏览器上弹出软键盘留言板布局会乱
-        * 修改：删除原本的layer弹出框
-        */ 
-        $("#leaveMsgBox").css("display","block");
+    $("body").on("click", ".LeaveMsg", function () {
+        /**
+       * taskId=494;顾荣
+       * 原因：在ios浏览器上弹出软键盘留言板布局会乱
+       * 修改：删除原本的layer弹出框
+       */
+        $("#leaveMsgBox").css("display", "block");
         FAQ.writeMsg()
     })
     /*TaskId:  408 自如页面定制
@@ -197,7 +193,7 @@
             token: token,
             isEmptySayHello: isEmptySayHello,
             setInputTop: true,
-            interface:'servlet/appChat',
+            interface: 'servlet/appChat',
             //sysNum: 1000000,//客户唯一标识
             //jid: 0,//自定义客服客户图标
             //robotName: 'FaqRobot',//机器人名称
@@ -221,6 +217,8 @@
             //maxQueNum: 100,//最多展示问题条数
             //maxQueLen: 100,//最多展示问题字数
             //showMsgId: 'showMsgId',//展示信息Id
+            frontId:'front', // frontId获取页面高度用来设定input的定位
+            editCtn: 'editCtn',// 为设定输入框定位
             chatCtnId: 'chatCtn',//聊天展示Id y   --------------
             inputCtnId: 'textarea',//输入框Id y   --------
             sendBtnId: 'sendBtnNew',//发送按钮Id y   ------
@@ -228,26 +226,26 @@
             //tipWord: '请输入您要咨询的问题',//输入框提示语
             //remainWordId: 'MN_remainWordNum',
             //remainWordNum: '100',
-            
+
             //taskId:408 设置上传图片触发按钮的id值
             upFileModule: {//上传文件模块
                 open: true,//是否启用功能
                 maxNum: 0,//最大上传数量，0为不限制
                 triggerId: 'sendPic',//触发上传按钮
-                startcall: function() {//上传文件前的回调
+                startcall: function () {//上传文件前的回调
                     set_chatScroll_height();
                 },
-                callback: function() {//上传文件后的回调
+                callback: function () {//上传文件后的回调
                 },
             },
             upFileModuleCam: {//上传文件模块
                 open: true,//是否启用功能
                 maxNum: 0,//最大上传数量，0为不限制
-                triggerId:'sendCamera',//触发上传按钮
-                startcall: function() {//上传文件前的回调
+                triggerId: 'sendCamera',//触发上传按钮
+                startcall: function () {//上传文件前的回调
                     set_chatScroll_height();
                 },
-                callback: function() {//上传文件后的回调
+                callback: function () {//上传文件后的回调
                 },
             },
             commentFormId: 'feedbackForm',//评论框formId -------
@@ -265,7 +263,7 @@
             //closeBtnId: 'closeBtnId',//关闭聊天页面
             //poweredCtnId: 'poweredCtnId',//技术支持Id
             //thirdUrl: '',//未登录第三方账户，跳转至此链接
-            sourceId:tmpsourceId,//客户来源
+            sourceId: tmpsourceId,//客户来源
             //ajaxType: 'get',
             leaveQue: {// 未知问题已回复
                 open: true,//是否启用功能
@@ -276,90 +274,143 @@
                 open: true,//是否启用功能
                 faceObj: Face,//表情插件实例
             },
-            // helpfulModule: {//答案满意度模块
-            //     open: true,//是否启用功能
-            //     yesCallback: function($obj, msg) {//满意的回调
-            //         $obj.text(msg || '感谢您的评价！');
-            //     },
-            //     noCallback: function($obj, msg) {//不满意的回调
-            //         if(window.uselessReasonItems) {
-            //             if(window.uselessReasonItems[0]) {
-            //                 $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
-
-            //                 var html = '';
-            //                 for(var i=0; i<window.uselessReasonItems.length; i++) {
-            //                     var checked = '';
-            //                     if(!i) {
-            //                         checked = 'checked';
-            //                     }
-            //                     html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
-            //                 }
-            //                 $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
-            //             }else {
-            //                 $obj.text(msg || '感谢您的评价！');
-            //             }
-            //         }else {
-            //             $obj.text(msg || '感谢您的评价！');
-            //         }
-            //     }
-            // },
-            initCallback: function(data) {//初始化基本信息的回调
+            initCallback: function (data) {//初始化基本信息的回调
                 window.uselessReasonItems = data.uselessReasonItems;
             },
-            sendCallback: function() {//点击发送按钮的回调
+            sendCallback: function () {//点击发送按钮的回调
                 //$('.addbtn').show().siblings().hide();
                 $('.sendBtn').removeClass('sendBtn');
-                $('.sendMsg').css('display','block !important');
+                $('.sendMsg').css('display', 'block !important');
                 !FAQ.robot._html && $('.textarea').focus();// 防止键盘拉起
                 $('.addbtn').show();
                 $('#textarea').focus()
                 $('#sendBtnNew').hide();
             },
-            commentCallback: function() {//评论后的回调
+            commentCallback: function () {//评论后的回调
                 layer.close(layerCtn);
             },
-            leaveMsgCallback: function() {//留言后的回调
+            leaveMsgCallback: function () {//留言后的回调
                 layer.close(layerCtn);
+            },
+            // 设置输入框top值的高度：解决键盘遮挡输入框bug
+            setInputTop: function () {
+                // 判断是否为ios
+                var u = navigator.userAgent, app = navigator.appVersion;
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+                var str = navigator.userAgent.toLowerCase();
+                var ver = str.match(/cpu iphone os (.*?) like mac os/);
+                if (ver) {
+                    var version1 = ver[1].split('_')[0];
+                    var version2 = ver[1].split('_')[1];
+                }
+                if (isiOS) {
+                    if (version1 == '11' && version2 > 0 && version2 < 3) {
+                        var phoneWidth = $(window).width();
+                        var phoneHeight = $(window).height();
+                        if (phoneWidth == 375) {
+                            if (phoneHeight > 635) {
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 465) + 'px !important}';
+                            } else {
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 385) + 'px !important}';
+                            }
+                        } else if (phoneWidth == 414) {
+                             var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 400) + 'px !important}';
+                        }
+                        $('head').append('<style>' + chatStyle + '</style>');
+                        $('#' + this.inputCtnId).on('focus', function () {
+                            var inputHight = $('.editCtn' ).height()
+                            $('.chatScroll').addClass('chatHeight');
+
+                            $('.front').height(($('.chatScroll').height()+inputHight+69));
+                            var timerDowm=setTimeout(function(){
+                                FAQ.scrollbar.update()
+                                FAQ.scrollbar.scrollTo('bottom')
+                                clearTimeout(timerDowm)
+                            },200)
+;
+                        });
+                        $('.' + this.inputCtnId).on('blur', function () {
+                            $('.chatScroll').removeClass('chatHeight');
+                            $('.front').height($(document).height());
+                              var timerDowm=setTimeout(function(){
+                                FAQ.scrollbar.update()
+                                FAQ.scrollbar.scrollTo('bottom', true);
+                                clearTimeout(timerDowm)
+                            },200)
+                        });
+                    } else {
+                        var frontHeight = $('.' +this.frontId).height();
+                        var textareaHeight = $('.' + this.editCtn).height();
+                        var editCtnTop = frontHeight-textareaHeight;
+                        var self = this;
+                        $('#' + this.editCtn).on('focus', function (e) {
+                            if($(e.target).is($('#' + this.inputCtnId))){
+                                var timerDowm=setTimeout(function(){
+                                    FAQ.scrollbar.update()
+                                    FAQ.scrollbar.scrollTo('bottom')
+                                    $('document').scrollTop(1000000,200)
+                                    clearTimeout(timerDowm)
+                                },200)
+                            }
+                        });
+                    }
+                } else {
+                    var self = this;
+                    $('.' + this.editCtn).css('position', 'fixed');
+                    var timer1;
+                    $('.' + this.editCtn).on('focus', function () {
+                        timer1 = setTimeout(function () {
+                            self.scrollIntoView(false);
+                        }, 100)
+                    });
+
+                    $('.' +this.editCtn).on('blur', function () {
+                        if (timer1) {
+                            clearInterval(timer1);
+                        }
+                    });
+                }
             },
         });
     }
 
 
-    $('.sendBtn').on('click.FA', function() {
+    $('.sendBtn').on('click.FA', function () {
         $('.textarea').focus();
-        setTimeout(function(){
+        setTimeout(function () {
             $('.textarea').focus();
         }, 50);
     });
-    
+
     var timerDown = null;
     // 自动滚动到底部
-    $('.textarea').on('focus', function(e) {
+    $('.textarea').on('focus', function (e) {
         var j = 0;
         clearInterval(timerDown);
-        timerDown = setInterval(function() {
+        timerDown = setInterval(function () {
             $('body').scrollTop(1000000);
             FAQ.scrollbar.scrollTo('bottom', true);
-            if(j>=5) {
+            if (j >= 5) {
                 clearInterval(timerDown);
             }
             j++;
         }, 100);
     });
-  
-    $('.textarea').click(function() {
+
+    $('.textarea').click(function () {
         $('.textarea').focus();
     })
-        
-    
+
+
     // 人工评价
-    $('body').on('click', '.RG_commentBtn', function() {
+    $('body').on('click', '.RG_commentBtn', function () {
         window.uuid = $(this).attr('uuid');// 客服要求客户评价
         $('.feedback').trigger('click');
     });
 
 
-   
+
 
 
     /*********************************************************************************
@@ -373,23 +424,23 @@
     var goodsDataContent = '';
     var hasGetToken = false; // 是否已调用获取token的方法
 
-     SQinit();
+    SQinit();
 
 
-     function SQinit() {
+    function SQinit() {
         //  获取商品或订单详情
         getDetail();
         // 获取url参数
         getUrlArgument();
         // 获取token 初始化机器人
-        if(!hasGetToken){
+        if (!hasGetToken) {
             getTokenFn();
         }
-     }
+    }
 
 
-    $('#location').click(function() {
-        window.getLocation(function(data) {
+    $('#location').click(function () {
+        window.getLocation(function (data) {
             $('#chatCtn').append(data)
         });
     });
@@ -399,18 +450,18 @@
     function getUrlArgument() {
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
-        if(!businessOrderNo && !refundNo ){
+        if (!businessOrderNo && !refundNo) {
             return
         };
         isEmptySayHello = true;
         // alert('订单编号(businessOrderNo:)'+(businessOrderNo?businessOrderNo:''));
         // alert('退款编号(refundNo:)'+(refundNo?refundNo:''));
         renderGood({
-            businessOrderNo:businessOrderNo,
-            refundNo:refundNo
-        },'',true)
+            businessOrderNo: businessOrderNo,
+            refundNo: refundNo
+        }, '', true)
         // 获取token 初始化机器人
-        if(!hasGetToken){
+        if (!hasGetToken) {
             getTokenFn();
         }
     }
@@ -421,21 +472,21 @@
     function getDetail() {
         var goodId = getUrlQuery('id');
         var method = getUrlQuery('method');
-        if(!goodId || !method){
-            return 
+        if (!goodId || !method) {
+            return
         }
-        isEmptySayHello = true;     
+        isEmptySayHello = true;
         $.ajax({
             type: 'post',
-            url: '../getSQGoods?id='+goodId+'&method='+method,
-            data:{},
-            cache:false,
+            url: '../getSQGoods?id=' + goodId + '&method=' + method,
+            data: {},
+            cache: false,
             async: false,
-            success: function(data) {
-                renderGood(data,method);
-                goodsDataContent = data ;
+            success: function (data) {
+                renderGood(data, method);
+                goodsDataContent = data;
                 // 获取token 初始化机器人
-                if(!hasGetToken){
+                if (!hasGetToken) {
                     getTokenFn();
                 }
                 // alert('商品信息'+data);
@@ -460,91 +511,91 @@
         //     link: 'http://139.199.58.172/index.php/wap/trade-detail.html?tid=229654156456'
         // }
         // renderGood(goodsData,method)
-        
+
     }
 
 
     /**
      * 展示商品或订单详情
      */
-    function renderGood(data,method,vehicle) {
-        if(!vehicle){
+    function renderGood(data, method, vehicle) {
+        if (!vehicle) {
             data = JSON.parse(data);
         }
-        if(method == 'itemCallback'){
+        if (method == 'itemCallback') {
             $('#chatCtn').append(
-                '<div class="goodModule" style="background: #fff; padding: 8px 20px;">'+
-                    '<div style="width:15%;display:inline-block;float:left;"><img src="'+ data.img_url +'"></div>'+
-                    '<div style="display:inline-block;width:80%;padding-left:10px;">'+
-                        '<span style="width:100%;" class="pull-left">'+ data.name +'</span>'+
-                        '<span style="width:100%; margin-top:2px;color: #000;" class="pull-left">￥'+ data.price +'</span>'+
-                    '</div>'+
-                    '<span class="emitGoods" style="width:100%; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:10px;" type="button">发送详情</button></span>'+
+                '<div class="goodModule" style="background: #fff; padding: 8px 20px;">' +
+                '<div style="width:15%;display:inline-block;float:left;"><img src="' + data.img_url + '"></div>' +
+                '<div style="display:inline-block;width:80%;padding-left:10px;">' +
+                '<span style="width:100%;" class="pull-left">' + data.name + '</span>' +
+                '<span style="width:100%; margin-top:2px;color: #000;" class="pull-left">￥' + data.price + '</span>' +
+                '</div>' +
+                '<span class="emitGoods" style="width:100%; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:10px;" type="button">发送详情</button></span>' +
                 '</div>'
             )
-        }else if(method == 'tradeCallback'){
+        } else if (method == 'tradeCallback') {
             $('#chatCtn').append(
-                '<div class="goodModule" style="background: #fff; margin-top:10px;">'+
-                    '<div style="display:inline-block;width:100%;">'+
-                        '<span style="width:100%;" class="pull-left">订单号：'+ data.id +'</span>'+
-                        '<span style="width:100%;margin-top:2px;" class="pull-left">创建时间：'+ data.createtime +'</span>'+
-                        '<span style="width:100%; margin-top:2px;" class="pull-left">状态：'+ data.status +'</span>'+
-                        '<span class="emitGoods" style="width:100%;margin-left: -45px; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:5px;" type="button">发送详情</button></span>'+
-                    '</div>'+
+                '<div class="goodModule" style="background: #fff; margin-top:10px;">' +
+                '<div style="display:inline-block;width:100%;">' +
+                '<span style="width:100%;" class="pull-left">订单号：' + data.id + '</span>' +
+                '<span style="width:100%;margin-top:2px;" class="pull-left">创建时间：' + data.createtime + '</span>' +
+                '<span style="width:100%; margin-top:2px;" class="pull-left">状态：' + data.status + '</span>' +
+                '<span class="emitGoods" style="width:100%;margin-left: -45px; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:5px;" type="button">发送详情</button></span>' +
+                '</div>' +
                 '</div>'
             )
         }
 
-        if(vehicle){
+        if (vehicle) {
             var refundNo = '';
-            if(data.refundNo){
-                refundNo = '<span style="width:100%; margin-top:5px;" class="pull-left">退款编号：'+ data.refundNo +'</span>'
+            if (data.refundNo) {
+                refundNo = '<span style="width:100%; margin-top:5px;" class="pull-left">退款编号：' + data.refundNo + '</span>'
             }
             $('#chatCtn').append(
-                '<div class="goodModule" style="background: #fff; margin-top:10px;">'+
-                    '<div style="display:inline-block;width:100%;">'+
-                        '<span style="width:100%;" class="pull-left">订单编号：'+ data.businessOrderNo +'</span>'+
-                        refundNo+
-                        '<span class="emitGoods" style="width:100%;margin-left: -45px; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:10px;" type="button">发送详情</button></span>'+
-                    '</div>'+
+                '<div class="goodModule" style="background: #fff; margin-top:10px;">' +
+                '<div style="display:inline-block;width:100%;">' +
+                '<span style="width:100%;" class="pull-left">订单编号：' + data.businessOrderNo + '</span>' +
+                refundNo +
+                '<span class="emitGoods" style="width:100%;margin-left: -45px; display: inline-block;display: flex;justify-content: center;"><button class="btn btn-primary" style="margin-top:10px;" type="button">发送详情</button></span>' +
+                '</div>' +
                 '</div>'
             )
         }
     }
 
 
-    $('body').on('click','.emitGoods>button',function() {
-        var sysNum =  getUrlQuery('sysNum');
+    $('body').on('click', '.emitGoods>button', function () {
+        var sysNum = getUrlQuery('sysNum');
         var method = getUrlQuery('method') ? getUrlQuery('method') : '';
         var refundNo = getUrlQuery('refundNo') ? getUrlQuery('refundNo') : '';
-        var businessOrderNo = getUrlQuery('businessOrderNo') ? getUrlQuery('businessOrderNo'): '' ;
- 
+        var businessOrderNo = getUrlQuery('businessOrderNo') ? getUrlQuery('businessOrderNo') : '';
+
         $.ajax({
-            url:'../servlet/appChat',
-            type:'post',
-            data:{
+            url: '../servlet/appChat',
+            type: 'post',
+            data: {
                 sysNum: sysNum,
                 s: 'aq',
                 question: '发送商品详情',
                 method: method,
                 dataContent: goodsDataContent,
-                refundNo:refundNo,
-                businessOrderNo:businessOrderNo,
-                sendMessage:1
+                refundNo: refundNo,
+                businessOrderNo: businessOrderNo,
+                sendMessage: 1
             },
-            cache:false, 
-            success:function(data){
-                if(data.status == 0){
-                    layer.msg("发送成功"); 
-                }else{
-                    layer.msg("网络连接不良请稍候再试"); 
+            cache: false,
+            success: function (data) {
+                if (data.status == 0) {
+                    layer.msg("发送成功");
+                } else {
+                    layer.msg("网络连接不良请稍候再试");
                 }
             }
         })
     })
 
-    
-    $('.backQuit').click(function() {
+
+    $('.backQuit').click(function () {
         var goodId = getUrlQuery('id');
         var method = getUrlQuery('method');
         var businessOrderNo = getUrlQuery('businessOrderNo');
@@ -554,7 +605,7 @@
         FAQ.offline();
         // 离开页面跟踪方法
         leavePage();
-        closeWebView('default',function(data) {
+        closeWebView('default', function (data) {
             $('#chatCtn').append(data)
         });
         // if(!goodId && !method && !businessOrderNo && !refundNo){
@@ -571,21 +622,21 @@
      */
     function getTokenFn() {
         try {
-            hasGetToken = true ;
-            if(typeof getToken === 'function'){
+            hasGetToken = true;
+            if (typeof getToken === 'function') {
                 getToken(
-                    function(data){
+                    function (data) {
                         // alert("获得token " + data.token);
                         FAQInit(data.token);
                     }
                 );
-            }else{
+            } else {
                 // alert('无法调用获取token方法')
                 FAQInit();
             }
         } catch (error) {
-			FAQInit();
-		}
+            FAQInit();
+        }
     }
 
 
@@ -594,7 +645,7 @@
      */
     function isShowServie() {
         var source = getUrlQuery('source');
-        if(socurce === 1){
+        if (socurce === 1) {
             $('.service').removeClass('hide');
         }
     }
@@ -617,7 +668,7 @@ function getUrlQuery(variable) {
 }
 
 //离开页面跟踪
-function leavePage(){
+function leavePage() {
     tracker.sendActivityEnd({
         activity: '100413',// 页面id
         user_type: 'member'

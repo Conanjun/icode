@@ -2230,7 +2230,11 @@ function uploadFile (options) {
         if((!this.options.setInputTop) && (this.options.sourceId == 3)){
           
         }else{
-          this.setInputTop();//移动端键盘遮挡输入框问题
+          if(this.options.isSQ){
+            this.options.setInputTop();//上汽原型图与标准产品不一致：修改移动端键盘遮挡输入框问题方法
+          }else{
+            this.setInputTop();//移动端键盘遮挡输入框问题
+          }
         }
         this.getHrefInfo()//获取网址->网址有jid或sysNum，则相应配置参数失效
         this.initOffline()//关闭、刷新网页前请求下线->s=offline
