@@ -54,11 +54,18 @@
         }
     });
 
-    $('.textarea').on('blur', function () {
+    $('.textarea').on('blur', function (e) {
+        if ($(e.target).is('.sendBtnNew')) {
+            $('.sendBtnNew').trigger('click');
+        }
+        if ($(e.target).is('.addbtn')) {
+            $('.editHide').show();
+        }
+
         timerSetHeight();
     });
 
-    $(document).on('touchstart', function (e) {
+    $('.chatScroll').on('touchstart', function (e) {
         if (!$(e.target).is('.textarea')) {
             $('.textarea').blur();
         }
@@ -217,7 +224,7 @@
             //maxQueNum: 100,//最多展示问题条数
             //maxQueLen: 100,//最多展示问题字数
             //showMsgId: 'showMsgId',//展示信息Id
-            frontId:'front', // frontId获取页面高度用来设定input的定位
+            frontId: 'front', // frontId获取页面高度用来设定input的定位
             editCtn: 'editCtn',// 为设定输入框定位
             chatCtnId: 'chatCtn',//聊天展示Id y   --------------
             inputCtnId: 'textarea',//输入框Id y   --------
@@ -305,7 +312,7 @@
                     var version2 = ver[1].split('_')[1];
                 }
                 if (isiOS) {
-                    if (version1 == '11' && version2 > 0 && version2 < 3) {
+                    if (version1 == '11' && version2 >= 0 && version2 < 3) {
                         var phoneWidth = $(window).width();
                         var phoneHeight = $(window).height();
                         if (phoneWidth == 375) {
@@ -315,43 +322,43 @@
                                 var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 385) + 'px !important}';
                             }
                         } else if (phoneWidth == 414) {
-                             var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 400) + 'px !important}';
+                            var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 400) + 'px !important}';
                         }
                         $('head').append('<style>' + chatStyle + '</style>');
                         $('#' + this.inputCtnId).on('focus', function () {
-                            var inputHight = $('.editCtn' ).height()
+                            var inputHight = $('.editCtn').height()
                             $('.chatScroll').addClass('chatHeight');
 
-                            $('.front').height(($('.chatScroll').height()+inputHight+69));
-                            var timerDowm=setTimeout(function(){
+                            $('.front').height(($('.chatScroll').height() + inputHight + 69));
+                            var timerDowm = setTimeout(function () {
                                 FAQ.scrollbar.update()
                                 FAQ.scrollbar.scrollTo('bottom')
                                 clearTimeout(timerDowm)
-                            },200)
-;
+                            }, 200)
+                                ;
                         });
                         $('.' + this.inputCtnId).on('blur', function () {
                             $('.chatScroll').removeClass('chatHeight');
                             $('.front').height($(document).height());
-                              var timerDowm=setTimeout(function(){
+                            var timerDowm = setTimeout(function () {
                                 FAQ.scrollbar.update()
                                 FAQ.scrollbar.scrollTo('bottom', true);
                                 clearTimeout(timerDowm)
-                            },200)
+                            }, 200)
                         });
                     } else {
-                        var frontHeight = $('.' +this.frontId).height();
+                        var frontHeight = $('.' + this.frontId).height();
                         var textareaHeight = $('.' + this.editCtn).height();
-                        var editCtnTop = frontHeight-textareaHeight;
+                        var editCtnTop = frontHeight - textareaHeight;
                         var self = this;
                         $('#' + this.editCtn).on('focus', function (e) {
-                            if($(e.target).is($('#' + this.inputCtnId))){
-                                var timerDowm=setTimeout(function(){
+                            if ($(e.target).is($('#' + this.inputCtnId))) {
+                                var timerDowm = setTimeout(function () {
                                     FAQ.scrollbar.update()
                                     FAQ.scrollbar.scrollTo('bottom')
-                                    $('document').scrollTop(1000000,200)
+                                    $('document').scrollTop(1000000, 200)
                                     clearTimeout(timerDowm)
-                                },200)
+                                }, 200)
                             }
                         });
                     }
@@ -365,7 +372,7 @@
                         }, 100)
                     });
 
-                    $('.' +this.editCtn).on('blur', function () {
+                    $('.' + this.editCtn).on('blur', function () {
                         if (timer1) {
                             clearInterval(timer1);
                         }
@@ -472,6 +479,8 @@
     function getDetail() {
         var goodId = getUrlQuery('id');
         var method = getUrlQuery('method');
+        // alert('商品信息'+data);
+        // alert('method:'+method);  
         if (!goodId || !method) {
             return
         }
@@ -490,7 +499,8 @@
                     getTokenFn();
                 }
                 // alert('商品信息'+data);
-                // alert('method:'+method);
+                // alert('method:'+method);  
+
             }
         })
 
@@ -570,10 +580,18 @@
         var refundNo = getUrlQuery('refundNo') ? getUrlQuery('refundNo') : '';
         var businessOrderNo = getUrlQuery('businessOrderNo') ? getUrlQuery('businessOrderNo') : '';
 
-        $.ajax({
-            url: '../servlet/appChat',
-            type: 'post',
-            data: {
+        if (!goodsDataContent) {
+            var dataObj = {
+                sysNum: sysNum,
+                s: 'aq',
+                question: '发送商品详情',
+                method: method,
+                refundNo: refundNo,
+                businessOrderNo: businessOrderNo,
+                sendMessage: 1
+            }
+        } else {
+            var dataObj = {
                 sysNum: sysNum,
                 s: 'aq',
                 question: '发送商品详情',
@@ -582,7 +600,13 @@
                 refundNo: refundNo,
                 businessOrderNo: businessOrderNo,
                 sendMessage: 1
-            },
+            }
+        }
+
+        $.ajax({
+            url: '../servlet/appChat',
+            type: 'post',
+            data: dataObj,
             cache: false,
             success: function (data) {
                 if (data.status == 0) {
@@ -603,6 +627,7 @@
         // 关闭页面时，机器人下线
         // alert('机器人下线')
         FAQ.offline();
+        clearAllCookie();
         // 离开页面跟踪方法
         leavePage();
         closeWebView('default', function (data) {
@@ -675,3 +700,10 @@ function leavePage() {
     });
 }
 
+function clearAllCookie() {  
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+    if(keys) {  
+        for(var i = keys.length; i--;)  
+            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
+    }  
+}  
