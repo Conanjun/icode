@@ -61,6 +61,12 @@
     $('.textarea').on('blur', function() {
         timerSetHeight();
     });
+    
+    $(document).on('touchstart',function(e){
+        if(!$(e.target).is('.textarea')) {
+             $('.textarea').blur(); 
+        } 
+    })
 
     // 定时设置高度
     function timerSetHeight() {
@@ -190,7 +196,7 @@
             isSQ: true, // 是否是上汽
             token: token,
             isEmptySayHello: isEmptySayHello,
-            setInputTop: false,
+            setInputTop: true,
             interface:'servlet/appChat',
             //sysNum: 1000000,//客户唯一标识
             //jid: 0,//自定义客服客户图标
@@ -393,12 +399,12 @@
     function getUrlArgument() {
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
-        // alert('订单编号'+businessOrderNo?businessOrderNo:'');
-        // alert('退款编号'+refundNo?refundNo:'');
         if(!businessOrderNo && !refundNo ){
             return
         };
         isEmptySayHello = true;
+        // alert('订单编号(businessOrderNo:)'+(businessOrderNo?businessOrderNo:''));
+        // alert('退款编号(refundNo:)'+(refundNo?refundNo:''));
         renderGood({
             businessOrderNo:businessOrderNo,
             refundNo:refundNo
@@ -413,7 +419,6 @@
      * 获取商品或订单详情
      */
     function getDetail() {
-        // http://{domain}/index.php/openapi/sqcus/call
         var goodId = getUrlQuery('id');
         var method = getUrlQuery('method');
         if(!goodId || !method){
@@ -424,6 +429,8 @@
             type: 'post',
             url: '../getSQGoods?id='+goodId+'&method='+method,
             data:{},
+            cache:false,
+            async: false,
             success: function(data) {
                 renderGood(data,method);
                 goodsDataContent = data ;
@@ -431,7 +438,8 @@
                 if(!hasGetToken){
                     getTokenFn();
                 }
-                // alert('传入参数'+data,method)
+                // alert('商品信息'+data);
+                // alert('method:'+method);
             }
         })
 
@@ -524,6 +532,7 @@
                 businessOrderNo:businessOrderNo,
                 sendMessage:1
             },
+            cache:false, 
             success:function(data){
                 if(data.status == 0){
                     layer.msg("发送成功"); 
@@ -541,15 +550,20 @@
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
         // 关闭页面时，机器人下线
-        alert('机器人下线')
+        // alert('机器人下线')
         FAQ.offline();
-        if(!goodId && !method && !businessOrderNo && !refundNo){
-            closeWebView('default',function(data) {
-                $('#chatCtn').append(data)
-            });
-        }else{
-            window.history.go(-1);
-        }
+        // 离开页面跟踪方法
+        leavePage();
+        closeWebView('default',function(data) {
+            $('#chatCtn').append(data)
+        });
+        // if(!goodId && !method && !businessOrderNo && !refundNo){
+        //     closeWebView('default',function(data) {
+        //         $('#chatCtn').append(data)
+        //     });
+        // }else{
+        //     window.history.go(-1);
+        // }
     })
 
     /**
@@ -561,12 +575,12 @@
             if(typeof getToken === 'function'){
                 getToken(
                     function(data){
-                        alert("获得token " + data.token);
+                        // alert("获得token " + data.token);
                         FAQInit(data.token);
                     }
                 );
             }else{
-                alert('无法调用获取token方法')
+                // alert('无法调用获取token方法')
                 FAQInit();
             }
         } catch (error) {
@@ -600,5 +614,13 @@ function getUrlQuery(variable) {
         }
     }
     return false;
+}
+
+//离开页面跟踪
+function leavePage(){
+    tracker.sendActivityEnd({
+        activity: '100413',// 页面id
+        user_type: 'member'
+    });
 }
 
