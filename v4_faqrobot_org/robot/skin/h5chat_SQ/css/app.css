@@ -60,7 +60,7 @@ body, html {
 *修改：聊天页面背景色
 */
 .front {
-    height: 102%;
+    height: 100%;
     position: relative;
     background:#F9F9F9;
 }
