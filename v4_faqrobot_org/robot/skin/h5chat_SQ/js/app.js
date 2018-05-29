@@ -55,7 +55,6 @@
     });
 
     $('.textarea').on('blur', function (e) {
-
         if($(e.target).is('.sendBtnNew')){
             $('.sendBtnNew').trigger('click');
         }
@@ -66,10 +65,11 @@
         timerSetHeight();
     });
 
-    $(document).on('touchmove', function (e) {
-        if (!$(e.target).is('.textarea')) {
-            $('.textarea').blur();
-        }
+    // 滑动时失去焦点 但是页面不滑倒最顶端
+    var isTouchMove = false;
+    $('.chatScroll').on('touchmove', function (e) {
+        isTouchMove = true;
+        $('.textarea').blur();
     })
 
     // 定时设置高度
@@ -313,39 +313,49 @@
                     var version2 = ver[1].split('_')[1];
                 }
                 if (isiOS) {
-                    if (version1 == '11' && version2 >0 && version2 < 3) {
+                    if (version1 == '11' && version2 >=0 && version2 < 3) {
                         var phoneWidth = $(window).width();
                         var phoneHeight = $(window).height();
                         if (phoneWidth == 375) {
                             if (phoneHeight > 635) {
-                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 515) + 'px !important}';
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 490) + 'px !important}';
                             } else {
-                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 435) + 'px !important}';
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 450) + 'px !important}';
                             }
                         } else if (phoneWidth == 414) {
                             var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -450) + 'px !important}';
                         }
                         $('head').append('<style>' + chatStyle + '</style>');
+                        alert('修改页面高度3.2');
                         $('#' + this.inputCtnId).on('focus', function () {
-                            var inputHight = $('.editCtn' ).height()
+                            // var inputHight = $('.editCtn' ).height()
                             $('.chatScroll').addClass('chatHeight');
 
-                            $('.front').height(($('.chatScroll').height()+inputHight+69));
+                            $('.front').height(($('.chatScroll').height()+120));
                             var timerDowm=setTimeout(function(){
                                 FAQ.scrollbar.update()
                                 FAQ.scrollbar.scrollTo('bottom')
                                 clearTimeout(timerDowm)
-                            },200)
-                                ;
+                            },200);
                         });
-                        $('.' + this.inputCtnId).on('blur', function () {
+                        $('.' + this.inputCtnId).on('blur', function (e) {
                             $('.chatScroll').removeClass('chatHeight');
                             $('.front').height($(document).height());
-                              var timerDowm=setTimeout(function(){
-                                FAQ.scrollbar.update()
-                                FAQ.scrollbar.scrollTo('bottom', true);
-                                clearTimeout(timerDowm)
-                            },200)
+                            // var timerDowm=setTimeout(function(){
+                            //     FAQ.scrollbar.update()
+                            //     FAQ.scrollbar.scrollTo('bottom', true);
+                            //     clearTimeout(timerDowm)
+                            // },200)
+                            if(isTouchMove){
+                                isTouchMove = false;
+                                return ;
+                            }else{
+                                var timerDowm=setTimeout(function(){
+                                    FAQ.scrollbar.update()
+                                    FAQ.scrollbar.scrollTo('bottom', true);
+                                    clearTimeout(timerDowm)
+                                },200)
+                            }
                         });
                     } else {
                         var frontHeight = $('.' +this.frontId).height();
