@@ -613,6 +613,7 @@
             var dataObj={
                 sysNum: sysNum,
                 s: 'aq',
+                sourceId:getUrlQuery('sourceId'),
                 question: '发送商品详情',
                 method: method,
                 refundNo: refundNo,
@@ -623,6 +624,7 @@
             var dataObj={
                 sysNum: sysNum,
                 s: 'aq',
+                sourceId:getUrlQuery('sourceId'),
                 question: '发送商品详情',
                 method: method,
                 dataContent: goodsDataContent,
