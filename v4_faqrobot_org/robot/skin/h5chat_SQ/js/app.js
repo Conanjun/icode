@@ -242,8 +242,14 @@
                 triggerId: 'sendPic',//触发上传按钮
                 startcall: function () {//上传文件前的回调
                     set_chatScroll_height();
+                    $('.textarea').blur();
+                    $('.chatScroll').removeClass('chatHeight');
+                    $('.front').height($(document).height());
                 },
                 callback: function () {//上传文件后的回调
+                    $('.textarea').blur();
+                    $('.chatScroll').removeClass('chatHeight');
+                    $('.front').height($(document).height());
                 },
             },
             upFileModuleCam: {//上传文件模块
@@ -317,16 +323,16 @@
                         var phoneWidth = $(window).width();
                         var phoneHeight = $(window).height();
                         if (phoneWidth == 375) {
-                            if (phoneHeight > 635) {
-                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 490) + 'px !important}';
-                            } else {
+                            if (phoneHeight >= 635) {// iphone X
                                 var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 450) + 'px !important}';
+                            } else { 
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 390) + 'px !important}';
                             }
-                        } else if (phoneWidth == 414) {
-                            var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -450) + 'px !important}';
+                        } else if (phoneWidth == 414) {// iphone plus
+                            var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -470) + 'px !important}';
                         }
                         $('head').append('<style>' + chatStyle + '</style>');
-                        alert('修改页面高度3.2');
+                        // alert('修改页面高度3.3');
                         $('#' + this.inputCtnId).on('focus', function () {
                             // var inputHight = $('.editCtn' ).height()
                             $('.chatScroll').addClass('chatHeight');
@@ -341,11 +347,6 @@
                         $('.' + this.inputCtnId).on('blur', function (e) {
                             $('.chatScroll').removeClass('chatHeight');
                             $('.front').height($(document).height());
-                            // var timerDowm=setTimeout(function(){
-                            //     FAQ.scrollbar.update()
-                            //     FAQ.scrollbar.scrollTo('bottom', true);
-                            //     clearTimeout(timerDowm)
-                            // },200)
                             if(isTouchMove){
                                 isTouchMove = false;
                                 return ;
@@ -660,7 +661,7 @@
             if (typeof getToken === 'function') {
                 getToken(
                     function (data) {
-                        // alert("获得token " + data.token);
+                        // alert("获得token为： " + data.token);
                         FAQInit(data.token);
                     }
                 );

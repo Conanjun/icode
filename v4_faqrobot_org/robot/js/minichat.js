@@ -2754,6 +2754,14 @@ function uploadFile (options) {
           // TaskId=388, 任务单逻辑描述:如果认证未成功，弹出提示后不调取任何接口.
           if(data.status == -1){
             This.options.tologinUrl(data)//taskid = 367 身份认证跳转
+            if(This.options.isSQ){ //上汽 机器人s=p接口返回失败，机器人直接下线
+              This.showMsg('切换窗口操作频繁，请稍后再试！');
+              This.offline();
+              setTimeout(function(){
+                window.location.reload()
+              },3000)
+              return;
+            }
             This.showMsg(data.message);
             if(data.loginUrl.indexOf('chat_zhiku')!=-1){
               window.location.href=data.loginUrl
@@ -3069,10 +3077,14 @@ function uploadFile (options) {
 
         this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic;//客服图标
         if(this.options.isSQ){
-          if(data.authUser){
+          if(data.authUser && data.authUser.photoUrl ){
             // alert("头像地址"+data.authUser.photoUrl)
+            //this.robot.khPic = data.authUser ? data.authUser.photoUrl : this.options.prefix + this.options.khPic//客户图标
+            this.robot.khPic = data.authUser.photoUrl;
+          }else{
+            this.robot.khPic = this.options.prefix + this.options.khPic;
           }
-            this.robot.khPic = data.authUser ? data.authUser.photoUrl : this.options.prefix + this.options.khPic//客户图标
+            
         }else{
             this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
         }
@@ -4389,6 +4401,8 @@ askDistributionQue: function () {
         } else {
           var html = ''
             var tmpUrl = data.sendUrlMsg[index].url
+            // 上传图片后的回调
+            This.options.upFileModule.callback();
             This.request({
                 params: {
                 s: 'image',
