@@ -321,10 +321,13 @@ ul li {
 *修改：发送按钮样式
 */
 .editCtn .editShow .cosInput .sendBtnNew {
-    width: 0.09rem;
+    /* width: 0.09rem;
     height: 0.09rem;
-    line-height: 0.09rem;
-    /* background: #FFA40B; */
+    line-height: 0.09rem; */
+    width: 60px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: -10px;
     color: #FFA40B;
     position: absolute;
     right: 0;
