@@ -1106,7 +1106,8 @@ isGOffline = false;
             prefix: This.options.prefix,//接口路径前缀(不能写根路径)
             url: This.options.url,
             params: {
-              q: This.$el.val()
+              q: This.$el.val(),
+              sourceId: window.location.search.match(/sourceId=(\d+)/)[1]// 大小渠道切换bug 增加传参sourceId
             },
             dataType: This.options.jsonp ? 'jsonp' : 'json',//默认json
             callback: function (data) {
@@ -1486,16 +1487,16 @@ isGOffline = false;
           ['[右太极]', '/:&>']
         ],
         '上汽表情': [
-            ['[憨笑]', "[:D]"],
-            ['[惊讶]', "[:-o]"],
-            ['[俏皮]', "[:p]"],
-            ['[愤怒]', "[:@]"],
-            ['[痛苦]', "[:s]"],
-            ['[害羞]', "[:$]"],
-            ['[难受]', "[:(]"],
-            ['[哭]', "[:'(]"],
-            ['[无语]', "[:|]"],
-            ['[闭嘴]', "[:-#]"],// 10
+            ['[憨笑]', "\ud83d\ude04"],
+            ['[惊讶]', "\ud83d\ude2f"],
+            ['[俏皮]', "\ud83d\ude1c"],
+            ['[愤怒]', "\ud83d\ude21"],
+            ['[痛苦]', "\ud83d\ude16"],
+            ['[害羞]', "\ud83d\ude0a"],
+            ['[难受]', "\ud83d\ude23"],
+            ['[哭]', "\ud83d\ude2d"],
+            ['[无语]', "\ud83d\ude10"],
+            ['[闭嘴]', "\ud83d\ude36"],// 10
             ['[惊讶]', "[:-*]"],
             ['[撇嘴]', "[*-)]"],
             ['[微笑]', "[):]"],
@@ -4386,7 +4387,8 @@ askDistributionQue: function () {
       $('#' + this.options.upFileModule.triggerId).css({
         'position': 'relative'
       })
-      H5_upload('../' + This.options.interface + '?s=uf', this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
+      // 大小渠道切换bug 增加传参sourceId
+      H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ window.location.search.match(/sourceId=(\d+)/)[1], this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
         This.options.upFileModule.startcall && This.options.upFileModule.startcall()
