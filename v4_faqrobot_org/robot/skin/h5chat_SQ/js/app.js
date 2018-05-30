@@ -242,14 +242,19 @@
                 triggerId: 'sendPic',//触发上传按钮
                 startcall: function () {//上传文件前的回调
                     set_chatScroll_height();
-                    $('.textarea').blur();
-                    $('.chatScroll').removeClass('chatHeight');
-                    $('.front').height($(document).height());
+                    // $('.textarea').blur();
+                    // $('.chatScroll').removeClass('chatHeight');
+                    // $('.front').height($(document).height());
                 },
                 callback: function () {//上传文件后的回调
-                    $('.textarea').blur();
-                    $('.chatScroll').removeClass('chatHeight');
-                    $('.front').height($(document).height());
+                    // $('.textarea').blur();
+                    // $('.chatScroll').removeClass('chatHeight');
+                    // $('.front').height($(document).height());
+                    var timerDowm=setTimeout(function(){
+                        FAQ.scrollbar.update()
+                        FAQ.scrollbar.scrollTo('bottom', true);
+                        clearTimeout(timerDowm)
+                    },2000)
                 },
             },
             upFileModuleCam: {//上传文件模块
@@ -299,6 +304,7 @@
                 $('.addbtn').show();
                 $('#textarea').focus()
                 $('#sendBtnNew').hide();
+                $('.AU_outerCtn').hide();
             },
             commentCallback: function () {//评论后的回调
                 layer.close(layerCtn);
@@ -311,7 +317,6 @@
                 // 判断是否为ios
                 var u = navigator.userAgent, app = navigator.appVersion;
                 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
                 var str = navigator.userAgent.toLowerCase();
                 var ver = str.match(/cpu iphone os (.*?) like mac os/);
                 if (ver) {
@@ -319,7 +324,7 @@
                     var version2 = ver[1].split('_')[1];
                 }
                 if (isiOS) {
-                    if (version1 == '11' && version2 >=0 && version2 < 3) {
+                    if (version1 == '11' && version2 >0 && version2 < 3) {
                         var phoneWidth = $(window).width();
                         var phoneHeight = $(window).height();
                         if (phoneWidth == 375) {
@@ -375,6 +380,20 @@
                         });
                     }
                 } else {
+                    function get_android_version() {
+                        var ua = navigator.userAgent.toLowerCase();
+                        var version = null;
+                        if (ua.indexOf("android") > 0) {
+                            var reg = /android [\d._]+/gi;
+                            var v_info = ua.match(reg);
+                            version = (v_info + "").replace(/[^0-9|_.]/ig, "").replace(/_/ig, "."); //得到版本号4.2.2
+                            // version = parseInt(version.split('.')[0]);// 得到版本号第一位
+                        }
+            
+                        return version;
+                    }
+                    // var version = get_android_version() ;
+                    // alert(version);
                     var self = this;
                     $('.' + this.editCtn).css('position', 'fixed');
                     var timer1;
@@ -705,7 +724,7 @@ function getUrlQuery(variable) {
 //离开页面跟踪
 function leavePage() {
     tracker.sendActivityEnd({
-        activity: '100413',// 页面id
+        activity: '100317',// 页面id
         user_type: 'member'
     });
 }

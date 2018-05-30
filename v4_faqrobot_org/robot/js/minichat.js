@@ -4404,7 +4404,6 @@ askDistributionQue: function () {
           var html = ''
             var tmpUrl = data.sendUrlMsg[index].url
             // 上传图片后的回调
-            This.options.upFileModule.callback();
             This.request({
                 params: {
                 s: 'image',
@@ -4412,6 +4411,8 @@ askDistributionQue: function () {
                 },
                 callback: function (data) {
                 This.askQueBack(data)// 获取发送的回调
+                This.options.upFileModule.callback();
+
                 }
             })
             switch (data.sendUrlMsg[index].type) {
