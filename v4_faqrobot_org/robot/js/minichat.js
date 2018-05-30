@@ -2754,15 +2754,15 @@ function uploadFile (options) {
           // TaskId=388, 任务单逻辑描述:如果认证未成功，弹出提示后不调取任何接口.
           if(data.status == -1){
             This.options.tologinUrl(data)//taskid = 367 身份认证跳转
+            This.showMsg(data.message);
             if(This.options.isSQ){ //上汽 机器人s=p接口返回失败，机器人直接下线
-              This.showMsg('切换窗口操作频繁，请稍后再试！');
+              // This.showMsg('切换窗口操作频繁，请稍后再试！');
               This.offline();
-              setTimeout(function(){
-                window.location.reload()
-              },3000)
+              // setTimeout(function(){
+              //   window.location.replace(location.href);
+              // },5000)
               return;
             }
-            This.showMsg(data.message);
             if(data.loginUrl.indexOf('chat_zhiku')!=-1){
               window.location.href=data.loginUrl
             }
