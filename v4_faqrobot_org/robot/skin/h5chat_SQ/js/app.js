@@ -36,9 +36,14 @@
         if ($(this).val()) {
             $('.sendBtnNew').show();
             $('.addbtn').hide();
+            if(delay){
+                clearInterval(delay);
+                delay = null;
+            }
         } else {
             $('.sendBtnNew').hide();
             $('.addbtn').show();
+            $('.AU_outerCtn').hide();
         }
     });
     var timer = null;
@@ -297,14 +302,14 @@
                 window.uselessReasonItems = data.uselessReasonItems;
             },
             sendCallback: function () {//点击发送按钮的回调
-                //$('.addbtn').show().siblings().hide();
+                clearAU();
                 $('.sendBtn').removeClass('sendBtn');
                 $('.sendMsg').css('display', 'block !important');
                 !FAQ.robot._html && $('.textarea').focus();// 防止键盘拉起
                 $('.addbtn').show();
                 $('#textarea').focus()
+                $('#textarea').val('');
                 $('#sendBtnNew').hide();
-                $('.AU_outerCtn').hide();
             },
             commentCallback: function () {//评论后的回调
                 layer.close(layerCtn);
@@ -447,7 +452,17 @@
         $('.feedback').trigger('click');
     });
 
-
+    /**处理输入引导接口延时问题
+     * 点击发送按钮后，延时检测输入框是否有文字，如果没有则隐藏输入引导
+     * */ 
+    var delay = null;
+    function clearAU (){
+        delay=setInterval(function(){
+            if(!$('.textarea').val()){
+                $('.AU_outerCtn').hide();
+            }
+        },100)
+    }
 
 
 
