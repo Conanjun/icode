@@ -321,6 +321,7 @@
             setInputTop: function () {
                 // 判断是否为ios
                 var u = navigator.userAgent, app = navigator.appVersion;
+                // alert(u);
                 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
                 var str = navigator.userAgent.toLowerCase();
                 var ver = str.match(/cpu iphone os (.*?) like mac os/);

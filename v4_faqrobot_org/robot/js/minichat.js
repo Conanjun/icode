@@ -386,7 +386,7 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
     },
     // 匹配html中所有图片资源，加载完毕执行
     imageLoad: function (str, callback) {
-      var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/g),
+      var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/ig),
         imgPromiseArr = []
 
       try {// 防止ie8报错
@@ -1102,12 +1102,17 @@ isGOffline = false;
         This.obj.timerIndex++
         if (This.obj.timerIndex == This.options.keyupDelay) {
           var pattern = new RegExp(This.$el.val(), 'g')
+          if(window.location.search.match(/sourceId=(\d+)/)){
+            var sourceId = window.location.search.match(/sourceId=(\d+)/)[1]
+          }else{
+            var sourceId = ''
+          }
           MN_Base.request({
             prefix: This.options.prefix,//接口路径前缀(不能写根路径)
             url: This.options.url,
             params: {
               q: This.$el.val(),
-              sourceId: window.location.search.match(/sourceId=(\d+)/)[1]// 大小渠道切换bug 增加传参sourceId
+              sourceId: sourceId// 大小渠道切换bug 增加传参sourceId
             },
             dataType: This.options.jsonp ? 'jsonp' : 'json',//默认json
             callback: function (data) {
@@ -2179,6 +2184,9 @@ function uploadFile (options) {
           }
         }
       },
+      customerChatCallback:function(data){
+        
+      }
     }
 
   window.Faqrobot = Faqrobot
@@ -2881,8 +2889,13 @@ function uploadFile (options) {
                 if(!MN_Base.isPC()){
                     This.bodybindgClick();
                 }
-        This.scrollbar.update();
-				This.scrollbar.scrollTo('bottom', true);
+
+        MN_Base.imageLoad(recordData, function () {// 匹配html中所有图片资源，加载完毕执行
+          This.scrollbar.update()
+          This.scrollbarUpdate()
+        })
+        // This.scrollbar.update();
+				// This.scrollbar.scrollTo('bottom', true);
 			},
     //不满意原因
     unsatisfy: function (data) {
@@ -4388,7 +4401,12 @@ askDistributionQue: function () {
         'position': 'relative'
       })
       // 大小渠道切换bug 增加传参sourceId
-      H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ window.location.search.match(/sourceId=(\d+)/)[1], this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
+      if(window.location.search.match(/sourceId=(\d+)/)){
+        var sourceId = window.location.search.match(/sourceId=(\d+)/)[1]
+      }else{
+        var sourceId = ''
+      }
+      H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ sourceId, this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
         This.options.upFileModule.startcall && This.options.upFileModule.startcall()
