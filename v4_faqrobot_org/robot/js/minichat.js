@@ -386,6 +386,7 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
     },
     // 匹配html中所有图片资源，加载完毕执行
     imageLoad: function (str, callback) {
+      // 正则根据后缀名匹配图片资源，不区分大小写 Amend by zhaoyuxing
       var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/ig),
         imgPromiseArr = []
 
@@ -1026,15 +1027,30 @@ isGOffline = false;
           if (e.keyCode == 38) {//上移
             if (This.obj.curIndex == 0.5) {
               This.obj.curIndex = This.obj.maxIndex
-
             } else {
               if (This.obj.curIndex > 0) {
                 This.obj.curIndex--
               } else {
-                This.obj.curIndex = This.obj.maxIndex
+                if(This.obj.curIndex == 0){
+                  This.obj.curIndex--;
+                  This.$el.val(This.$el.attr('rel'));
+                  $('.AU_innerCtn').removeClass('AU_innerCtn_focus')
+                }else{
+                  This.obj.curIndex = This.obj.maxIndex
+                }
               }
             }
-            $('.AU_innerCtn').eq(This.obj.curIndex).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+            if(This.obj.curIndex >= 0){
+              $('.AU_innerCtn').eq(This.obj.curIndex).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+              if($('.AU_innerCtn_focus .AU_txt').text().split('. ')){
+                This.$el.val($('.AU_innerCtn_focus .AU_txt').text().split('. ')[1]);
+				var height = 0;
+                for(var i = 0;i < This.obj.curIndex;i++){
+                    height += Number($('.AU_outerCtn .AU_innerCtn').eq(i).height())
+                }
+                $('.AU_outerCtn').animate({scrollTop:height},100)
+              }
+            }
           }
           if (e.keyCode == 40) {//下移
             if (This.obj.curIndex == 0.5) {
@@ -1044,16 +1060,32 @@ isGOffline = false;
               if (This.obj.curIndex < This.obj.maxIndex) {
                 This.obj.curIndex++
               } else {
-                This.obj.curIndex = 0
+                if(This.obj.curIndex == This.obj.maxIndex){
+                  This.obj.curIndex++
+                  This.$el.val(This.$el.attr('rel'));
+                  $('.AU_innerCtn').removeClass('AU_innerCtn_focus')
+                }else{
+                  This.obj.curIndex = 0
+                }
               }
             }
-            $('.AU_innerCtn').eq(This.obj.curIndex).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+            if(This.obj.curIndex <= This.obj.maxIndex){
+              $('.AU_innerCtn').eq(This.obj.curIndex).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+              if($('.AU_innerCtn_focus .AU_txt').text().split('. ')){
+                This.$el.val($('.AU_innerCtn_focus .AU_txt').text().split('. ')[1]);
+				var height = 0;
+                for(var i = 0;i < This.obj.curIndex;i++){
+                    height += Number($('.AU_outerCtn .AU_innerCtn').eq(i).height())
+                }
+                $('.AU_outerCtn').animate({scrollTop:height},100)
+              }
+            }
           }
           if (e.keyCode == 27) {//取消
             This.$obj.$AU_outerCtn.empty().hide()
           }
           if (e.keyCode == 108 || e.keyCode == 13) {//确定
-            $('.AU_txt').eq(This.obj.curIndex).trigger('click')
+            //$('.AU_txt').eq(This.obj.curIndex).trigger('click')
             This.$obj.$AU_outerCtn.empty().hide()
           }
         } else {
@@ -1103,7 +1135,7 @@ isGOffline = false;
         if (This.obj.timerIndex == This.options.keyupDelay) {
           var pattern = new RegExp(This.$el.val(), 'g')
           if(window.location.search.match(/sourceId=(\d+)/)){
-            var sourceId = window.location.search.match(/sourceId=(\d+)/)[1]
+            var sourceId =  window.location.search.match(/sourceId=(\d+)/)[1]
           }else{
             var sourceId = ''
           }
@@ -1146,7 +1178,8 @@ isGOffline = false;
                     This.obj.curIndex = 0.5//恢复0
                     This.obj.maxIndex = len - 1//最大index
                     This.$obj.$AU_outerCtn.empty().append(html).show()
-                    $('.AU_innerCtn').eq(Math.floor(This.obj.curIndex)).addClass('AU_innerCtn_focus').siblings().removeClass('AU_innerCtn_focus')
+                    $('.AU_innerCtn').eq(Math.floor(This.obj.curIndex)).removeClass('AU_innerCtn_focus')
+                    This.$el.attr('rel',This.$el.val());
                   } else {
                     This.$obj.$AU_outerCtn.empty().hide()
                   }
@@ -1162,51 +1195,70 @@ isGOffline = false;
                     }
                   var checkDocument='<p class="MN_titleSearch">文档检索</p>';                 
                   if(data.document&&data.document.length>0){  //如果返回文档检索则将它展示在右侧
+                    for(var k=0;k<data.document.length;k++){
 
 
-                      for(var k=0;k<data.document.length;k++){
-                        /**
-                         * taskid=987
-                         * 国泰基金文档检索pdf预览docx下载
-                         */
-                        if(data.document[k].pdfUrl){
-                          var btnTmp = '';
-                          btnTmp = '<button tipUrl=\"'+ data.document[k].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
-                          checkDocument += '<a class="hoverTip" href="#" style="cursor: pointer;position: relative;display: block;"  title="' + data.document[k].title + '"><div class="MN_docSearchCtn"><span class="MN_docSearch">' 
-                           /*
-                            taskid=331,黄世鹏
-                            优化：国泰文档检索名全部展示
-                          */ 
-                          if(window.location.pathname.indexOf('GuoTai')!=-1){
-                            checkDocument += data.document[k].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div> </a>'  
-                          }else{
-                            checkDocument += MN_Base.addDots(data.document[k].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div> </a>'  
+                    /**
+                     * taskid=1441
+                     * 修改：标题取消折行，展示正文，标题与正文中命中词语高亮 顾荣 2018/7/2
+                     */ 
+                      var newTitle=data.document[k].title;
+                      if(data.document[k].highLightResultList!=null){//高亮配置项开启
+                        var highLightWord=data.document[k].matchWords//高亮的词语
+                        newTitle=newTitle.split(eval("/"+highLightWord.join('|')+"/ig"));
+                        var arr1=data.document[k].title.match(eval("/"+highLightWord.join('|')+"/ig"));
+                        if(arr1){
+                          for(var hw=0;hw<arr1.length;hw++){//循环替换标题高亮词
+                            newTitle.splice(hw*2+1,0,'<span class="highLight">'+arr1[hw]+'</span>')
                           }
-                        }else{
-                          checkDocument += '<a href="' + ( data.document[k].url) + '" target="_blank" title="' + data.document[k].title + '"><div class="MN_docSearchCtn"><span class="MN_docSearch">'
-                          if(window.location.pathname.indexOf('GuoTai')!=-1){
-                            checkDocument += data.document[k].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div></a>'
-                          }else{
-                            checkDocument += MN_Base.addDots(data.document[k].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span></div></a>'
-                          }
+                          newTitle=newTitle.join('')
+                        }
+                        var highLightarr=data.document[k].highLightResultList//匹配到的正文
+                        if(highLightarr[0]){//匹配到正文
+                          var newp=''
+                          for(var hi=0;hi<highLightarr.length;hi++){//循环正文列表
+                            var hsplit=highLightarr[hi].highLishtSentence.split(eval("/"+highLightWord.join('|')+"/ig"));
+                            var arr2=highLightarr[hi].highLishtSentence.match(eval("/"+highLightWord.join('|')+"/ig"));
+                            if(arr2){
+                              for(var hw=0;hw<arr2.length;hw++){//循环替换正文高亮词
+                                hsplit.splice(hw*2+1,0,'<span class="highLight">'+arr2[hw]+'</span>')
+                              }                              
+                            }
+                            newp+='<p>'+hsplit.join('')+'</p>';
+                          }                        
                         }
                       }
-        
-                      $('body').off('mouseover','.hoverTip').on('mouseover','.hoverTip',function() {
-                        $(this).children('.tipisHide').removeClass('hide');
-                      })
-        
-                      $('body').off('mouseout','.hoverTip').on('mouseout','.hoverTip',function() {
-                        $(this).children('.tipisHide').addClass('hide');
-                      })
-        
-                      $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
-                        window.open($(this).attr('tipUrl'))
-                      })
-             
 
-        
-
+                      /**
+                       * taskid=987
+                       * 国泰基金文档检索pdf预览docx下载
+                       */
+                      if(data.document[k].pdfUrl){
+                        var btnTmp = '';
+                        btnTmp = '<button tipUrl=\"'+ data.document[k].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
+                        checkDocument += '<div class="MN_docSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;"  title="' + data.document[k].title + '"><span class="MN_docSearch">' 
+                        checkDocument += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span><div class="tipisHide hide" style="position: absolute;bottom: 5px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div>'  
+                      }else{
+                        checkDocument += '<div class="MN_docSearchCtn"><a href="' + ( data.document[k].url) + '" target="_blank" title="' + data.document[k].title + '"><span class="MN_docSearch">'
+                        checkDocument += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span>'
+                      }
+                      if(newp){
+                        checkDocument +=newp
+                      }
+                      checkDocument +='</div>'
+                    }
+      
+                    $('body').off('mouseover','div.MN_docSearchCtn').on('mouseover','div.MN_docSearchCtn',function() {
+                      $(this).find('.tipisHide').removeClass('hide');
+                    })
+      
+                    $('body').off('mouseout','div.MN_docSearchCtn').on('mouseout','div.MN_docSearchCtn',function() {
+                      $(this).find('.tipisHide').addClass('hide');
+                    })
+      
+                    $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
+                      window.open($(this).attr('tipUrl'))
+                    })
                   }else{
                     checkDocument += '<p class="MN_noSearch">无结果</p>'
                   }
@@ -1492,41 +1544,58 @@ isGOffline = false;
           ['[右太极]', '/:&>']
         ],
         '上汽表情': [
-            ['[憨笑]', "[:D]"],
-            ['[惊讶]', "[:-o]"],
-            ['[俏皮]', "[:p]"],
-            ['[愤怒]', "[:@]"],
-            ['[痛苦]', "[:s]"],
-            ['[害羞]', "[:$]"],
-            ['[难受]', "[:(]"],
-            ['[哭]', "[:'(]"],
-            ['[无语]', "[:|]"],
-            ['[闭嘴]', "[:-#]"],// 10 
-            ['[惊讶]', "[:-*]"],
-            ['[撇嘴]', "[*-)]"],
-            ['[微笑]', "[):]"],
-            ['[眨眼笑]', "[;)]"],
-            ['[酷]', "[(H)]"],
-            ['[天使]', "[(a)]"],
-            ['[眯眼笑]', "[8o|]"],
-            ['[咧嘴笑]', "[8-|]"],
-            ['[尴尬]', "[+o(]"],
-            ['[生日头]', "[<o)]"],// 20
-            ['[瞌睡]', "[|-)]"],
-            ['[坏笑]', "[^o)]"],
-            ['[困]', "[8-)]"],
-            ['[爱心]', "[(|)]"],
-            ['[心碎]', "[(u)]"],
-            ['[晚安]', "[(S)]"],
-            ['[星星]', "[(*)]"],
-            ['[太阳]', "[(#)]"],
-            ['[彩虹]', "[(R)]"],
-            ['[色]', "[({)]"],// 30
-            ['[爱你]', "[(})]"],
-            ['[亲亲]', "[(k)]"],
-            ['[鲜花]', "[(F)]"],
-            ['[枯萎]', "[(W)]"],
-            ['[点赞]', "[(D)]"],
+          ['[憨笑]', "[:D]"],
+          ['[惊讶]', "[:-o]"],
+          ['[俏皮]', "[:p]"],
+          ['[愤怒]', "[:@]"],
+          ['[痛苦]', "[:s]"],
+          ['[害羞]', "[:$]"],
+          ['[难受]', "[:(]"],
+          ['[哭]', "[:'(]"],
+          ['[无语]', "[:|]"],
+          ['[闭嘴]', "[:-#]"],// 10 
+          ['[惊讶]', "[:-*]"],
+          ['[撇嘴]', "[*-)]"],
+          ['[微笑]', "[):]"],
+          ['[眨眼笑]', "[;)]"],
+          ['[酷]', "[(H)]"],
+          ['[天使]', "[(a)]"],
+          ['[眯眼笑]', "[8o|]"],
+          ['[咧嘴笑]', "[8-|]"],
+          ['[尴尬]', "[+o(]"],
+          ['[瞌睡]', "[|-)]"],// 20
+          ['[坏笑]', "[^o)]"],
+          ['[困]', "[8-)]"],
+          ['[爱心]', "[(|)]"],
+          ['[心碎]', "[(u)]"],
+          ['[晚安]', "[(S)]"],
+          ['[星星]', "[(*)]"],
+          ['[太阳]', "[(#)]"],
+          ['[彩虹]', "[(R)]"],
+          ['[色]', "[({)]"],
+          ['[爱你]', "[(})]"],// 30
+          ['[亲亲]', "[(k)]"],
+          ['[鲜花]', "[(F)]"],
+          ['[枯萎]', "[(W)]"],
+          ['[点赞]', "[(D)]"],
+        ],
+        '致扬表情': [
+          ['[冥想]', "[:D]"],
+          ['[动起来]', "[:-o]"],
+          ['[我来啦]', "[:p]"],
+          ['[爱你们哟]', "[:@]"],
+          ['[嗨起来]', "[:s]"],
+          ['[哈哈哈]', "[:$]"],
+          ['[起床]', "[:(]"],
+          ['[早上好]', "[:'(]"],
+          ['[哎呀]', "[:|]"],
+          ['[上班去]', "[:-#]"],// 10 
+          ['[奋斗]', "[:-*]"],
+          ['[谢谢]', "[*-)]"],
+          ['[多蒜少肉]', "[):]"],
+          ['[666]', "[;)]"],
+          ['[加油]', "[(H)]"],
+          ['[睡觉]', "[(a)]"]
         ],
       }
       this.obj.faceType = []
@@ -1554,6 +1623,11 @@ isGOffline = false;
         this.obj.faceType[0] = '上汽表情'
         this.obj.faceType[1] = 'png'
         this.obj.faceType[2] = 'png'
+      }
+      if (this.options.src.indexOf('zhiyang') + 1) {//致扬表情
+        this.obj.faceType[0] = '致扬表情'
+        this.obj.faceType[1] = 'gif'
+        this.obj.faceType[2] = 'gif'
       }
       this.obj.maxNum_y = Math.ceil(this.obj.face[this.obj.faceType[0]].length / this.options.rowNum)//云问表情最大行数
 
@@ -2061,6 +2135,7 @@ function uploadFile (options) {
       poweredCtnId: 'poweredCtnId',//技术支持Id
       thirdUrl: '',//未登录第三方账户，跳转至此链接
       sourceId: 0,//客户来源
+	  isNongXin:false,//判断是否为农信留言
       ajaxType: 'get',//请求类型
       jsonp: false,//是否跨域
       prefix: '../',//地址前缀(可能是绝对路径)
@@ -2075,6 +2150,7 @@ function uploadFile (options) {
         open: false,//是否启用功能
         chatUrl: 'h5chat'// 默认跳转的页面
       },
+	  sendFileId:'sendFile',//发送文件
       upFileModule: {//上传文件模块
         open: false,//是否启用功能
         maxNum: 1,//最大上传数量，0为不限制
@@ -2184,9 +2260,11 @@ function uploadFile (options) {
           }
         }
       },
-      customerChatCallback:function(data){
-        
-      }
+      /***
+       * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
+       * 说明：增加kl接口的回调函数，可在函数中判断当前聊天状态，回调内容可在app.js中定义
+       * */ 
+      klCallback:function(data){},
     }
 
   window.Faqrobot = Faqrobot
@@ -2239,8 +2317,8 @@ function uploadFile (options) {
         if((!this.options.setInputTop) && (this.options.sourceId == 3)){
           
         }else{
-          if(this.options.isSQ){
-            this.options.setInputTop();//上汽原型图与标准产品不一致：修改移动端键盘遮挡输入框问题方法
+          if(this.options.isSQ||this.options.isH5WKXT){
+             this.options.setInputTop();//taskid=941 上汽聊天页面定制 上汽原型图与标准产品不一致：修改移动端键盘遮挡输入框问题方法 add by zhaoyuxing
           }else{
             this.setInputTop();//移动端键盘遮挡输入框问题
           }
@@ -2261,8 +2339,9 @@ function uploadFile (options) {
         this.askDistributionQue()
         this.askGuideQue()//回答引导问题->s=aq
         if (this.options.upFileModule.open) {
-            this.upFile()//上传文件->s=uf
+            this.upFile()//上传图片->s=uf  s=image
         }
+		this.sendFile()//上传文件 ->s=uf s=image/voice/video/file
         this.queComment()//问题满意度评价->s=addulc
         this.initComment()//服务满意评价度准备->提示语
         this.initLeaveMsg()//留言准备->提示语
@@ -2286,7 +2365,18 @@ function uploadFile (options) {
         this.messageBoard();
         //亚联点击时传参数任务单号
         this.getTaskNum();
-       
+        /**
+         * taskid=1411 文档检索高亮样式添加 顾荣 2018/7/4
+         * 修改：添加CSS样式 
+         */
+        //添加文档检索高亮样式
+        this.highLight();
+        
+        if (this.options.isWKXT) {//判断是否为五矿信托
+          this.dbToTop();          
+        }
+
+
         /**
          * ie8下提示不兼容提示
          */
@@ -2300,12 +2390,48 @@ function uploadFile (options) {
             });
           }, 0);
         }
-
-
-
         // if(MN_Base.ieVersion)
 
     },
+
+    /**
+     *设置双击顶部滚到聊天最顶层 
+     */
+    dbToTop:function(){
+      var This_=this;
+      if(MN_Base.isPC()){//当在PC端时使用dblclick事件
+        $('#' + this.options.chatCtnId).on('dblclick',function(e){
+          var height=parseInt($('.SC_outer').height()/4);//获取框内顶部距离
+          var etop=e.clientY-$('.SC_outer').offset().top;//获取点击y在.SC_outer内的距离
+          var Cname=e.target.className;//点击事件目标名字
+          if(Cname!=="MN_khCtn"&&Cname!=="MN_kfCtn"&&!$(e.target).parents().is($(".MN_kfCtn,.MN_khCtn"))&&etop<height){//不在云对话框内并且在顶部（四分之一）内
+            This_.scrollbar.scrollTo('top', false);
+          }
+        })
+      }else{//当在移动端时使用touch事件
+        var touchtime = new Date().getTime();
+        $("#chatCtn").on('touchend',function(e){
+            if( new Date().getTime() - touchtime < 300 ){//两次点击间隔为300ms时视为双击
+              var height=parseInt($('.SC_outer').height()/4);//获取框内顶部距离
+              var tag=  e.originalEvent.changedTouches[0].target//点击事件目标
+              var etop = e.originalEvent.changedTouches[0].clientY-$('.SC_outer').offset().top;
+              var Cname=tag.className;//点击事件目标
+              if(Cname!=="MN_khCtn"&&Cname!=="MN_kfCtn"&&!$(tag).parents().is($(".MN_kfCtn,.MN_khCtn"))&&etop<height){//不在云对话框内并且在顶部（四分之一）内
+                This_.scrollbar.scrollTo('top', true);
+              }
+            }else{
+                touchtime = new Date().getTime();
+            }
+        })
+      }
+    },
+
+    highLight:function(){
+      var highLightStyle='span.highLight{color:red;} div.MN_docSearchCtn,div.MN_innerSearchCtn{position: relative;padding:5px 20px 25px;} div.tipisHide button{font-size:12px!important;}';
+      $('body').append('<style>'+highLightStyle+'</style>');
+    },
+
+
 
     /**设置发送文字的字体大小（无限极定制）
      * 说明：1、在askQue()中调用
@@ -2634,6 +2760,8 @@ function uploadFile (options) {
                             DDjson.department=department.join(",")
                             DDjson.active=data.userInfo.active;
                             THIS_.initBaseInfo(DDjson);
+                          }else{
+                            THIS_.initBaseInfo()
                         }
                     }
                 })
@@ -2678,6 +2806,8 @@ function uploadFile (options) {
                             DDjson.department=department.join(",")
                             DDjson.active=data.userInfo.active;
                             THIS_.initBaseInfo(DDjson);
+                          }else{
+                            THIS_.initBaseInfo()
                           }
                         }
                     })
@@ -2713,7 +2843,7 @@ function uploadFile (options) {
       };
 
       /**
-       * 上汽定制,需传入token
+       * taskid=941 上汽聊天页面定制 需传入token
        */
       if(This.options.token){
         paramsData.token = This.options.token;
@@ -2764,12 +2894,8 @@ function uploadFile (options) {
           if(data.status == -1){
             This.options.tologinUrl(data)//taskid = 367 身份认证跳转
             This.showMsg(data.message);
-            if(This.options.isSQ){ //上汽 机器人s=p接口返回失败，机器人直接下线
-              // This.showMsg('切换窗口操作频繁，请稍后再试！');
+            if(This.options.isSQ){ //taskid=941 上汽聊天页面定制 机器人s=p接口返回失败，机器人直接下线 add  by zhaoyuxing
               This.offline();
-              // setTimeout(function(){
-              //   window.location.replace(location.href);
-              // },5000)
               return;
             }
             if(data.loginUrl.indexOf('chat_zhiku')!=-1){
@@ -2782,25 +2908,35 @@ function uploadFile (options) {
           } else {
             This.options.isEn = false
           }
+          $('.loading').css('display','none')
           This.timerGo = true//控制定时请求
           This.options.initCallback(data)
           $('#' + This.options.inputCtnId).removeAttr('readonly')
           This.setLogo(data)//设置logo->客服图标/客户图标
           //s=p接口时，保存欢迎语
           This.robotHelloWord=data.helloWord;
-        /**
-        * 如果下线后再初始化不推送欢迎语和闪退恢复记录
-        * taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
-        */
-        if(!This.isOffline){
-            if(data.talkMessageList&&data.talkMessageList[0]){
+          /**
+          * 如果下线后再初始化不推送欢迎语和闪退恢复记录
+          * taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
+          */
+          if(!This.isOffline){
+              if(data.talkMessageList&&data.talkMessageList[0]){
+                /**
+                 * 为五矿信托时，显示欢迎语和猜你想问  顾荣 2018/6/22
+                 */
+                if(This.options.isWKXT){
+                  This.sayHello(data)//欢迎语
+                  This.welcomeguideQue(data)//猜你想问。
+                }
                 This.flashOutDeal(data);
-            }else{
-                This.sayHello(data)//欢迎语
-                This.welcomeguideQue(data)//猜你想问。
-            }
-        }
-    
+              }else{
+                  This.sayHello(data)//欢迎语
+                  This.welcomeguideQue(data)//猜你想问。
+              }
+          }
+          if(This.options.isH5WKXT){
+            This.options.addWaterMarker(data.authUser)            
+          }
           This.quickService(data)//快捷服务
           This.recommendLink(data)//推荐资讯
           This.unsatisfy(data)//不满意原因
@@ -2836,9 +2972,13 @@ function uploadFile (options) {
             //为了防止开发此功能之前已部署的客户没有这项功能
             //此处设置成有配置项优先设置配置项的内容，没有就写固定的
             if ($('#' + This.options.robotInfo).length > 0) {
-              $('#' + This.options.robotInfo).html(data.webConfig.robotNameDetail)
+              if(!(data.webConfig.robotNameDetail=='云问机器人' && window.location.href.indexOf('plantdata')>-1)){
+                $('#' + This.options.robotInfo).html(data.webConfig.robotNameDetail)
+              }
             } else {
-              $('.headLeft .intro').html(data.webConfig.robotNameDetail)
+              if(!(data.webConfig.robotNameDetail=='云问机器人' && window.location.href.indexOf('plantdata')>-1)){
+                $('.headLeft .intro').html(data.webConfig.robotNameDetail)
+              }
             }
           }
         }
@@ -2846,22 +2986,30 @@ function uploadFile (options) {
     },
     //当闪退时，获取机器人名称；闪退时不调用sayHello方法，无法获得机器人名称 add by 赵宇星
      //taskId=406 app闪退处理
-        robotName:'',
+        // robotName:'',
 		flashOutDeal:function(data){
             var This=this;
             var html = '',
                 recordData = ''
                 This.scrollbar.options.autoBottom = true// 自动滚动到底部
-            This.robotName=data.webConfig.robotName;//获取机器人名称，存入全局变量robotName
+            This.robot.robotName=data.webConfig.robotName;//获取机器人名称，存入全局变量robotName
             // taskid=177 大小渠道 修改人：顾荣 2018.4.27
             if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字
-              This.robotName=data.channelSourceConfig.robotName||This.robotName
+              This.robot.robotName=data.channelSourceConfig.robotName||This.robot.robotName
             }
+            if(This.options.kf_Robot_Name||This.options.kf_Robot_Name==""){            
+              This.options.kf_Robot_Name=This.robot.robotName          
+            }
+            // taskId = 1193 闪退功能优化 Amend by zhaoyuxing 闪退时显示反问引导以及智能推荐
 				for (var i = 0; i<data.talkMessageList.length; i++) {
 					var obj={
-					  ansCon:(data.talkMessageList[i].reply || '').replace(/[\r\n]/g, ''),
-					  time:data.talkMessageList[i].dateTime||'',
-					  msgType:data.talkMessageList[i].ansType||''
+					  ansCon:(data.talkMessageList[i].reply || '').replace(/[\r\n]/g, ''), // 答案
+					  time:data.talkMessageList[i].dateTime||'', // 时间
+            msgType:data.talkMessageList[i].ansType||'', // 答案类型
+            gusList:data.talkMessageList[i].gusList || '', // 反问引导列表
+            gusWords:data.talkMessageList[i].gusWords || '', // 反问引导前置语、后置语
+            relateList: data.talkMessageList[i].relateList || '', // 智能推荐问题列表
+            relateListStartSelectIndex: data.talkMessageList[i].relateListStartSelectIndex  || 1 // 智能推荐排序 开始序号
 					}
 					var robotAnswer=[];
 					robotAnswer.push(obj);
@@ -2879,7 +3027,7 @@ function uploadFile (options) {
               data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&gt;/g,'>');
             }
           }
-					recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
+					recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType,data.talkMessageList[i].name) : '') + ((data.talkMessageList[i].reply || (data.talkMessageList[i].gusList&&data.talkMessageList[i].gusList.length)) ? This.robotHtml(_data) : '')
 				}
 				if(!MN_Base.isPC()){
                     recordData = This.iosBindEvent(recordData);
@@ -2888,14 +3036,13 @@ function uploadFile (options) {
 				This.$obj.$chatCtnId.append(recordData)//添加机器人的话
                 if(!MN_Base.isPC()){
                     This.bodybindgClick();
+                }else{
+                  This.setFont()
                 }
-
-        MN_Base.imageLoad(recordData, function () {// 匹配html中所有图片资源，加载完毕执行
-          This.scrollbar.update()
-          This.scrollbarUpdate()
-        })
-        // This.scrollbar.update();
-				// This.scrollbar.scrollTo('bottom', true);
+                MN_Base.imageLoad(recordData, function () {// 匹配html中所有图片资源，加载完毕执行 add by zhaoyuxing 
+                  This.scrollbar.update()
+                  This.scrollbarUpdate()
+                })
 			},
     //不满意原因
     unsatisfy: function (data) {
@@ -3023,7 +3170,7 @@ function uploadFile (options) {
                                   data.list[i].question = data.list[i].question.replace(/&gt;/g,'>');
                                 }
                               }  
-                              recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
+                              recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType,data.list[i].name) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
                         }
                         if(!MN_Base.isPC()){
                             /**
@@ -3053,7 +3200,7 @@ function uploadFile (options) {
         var oldH = This.$obj.$chatCtnId.outerHeight()
         This.$obj.$chatCtnId.prepend($(this).data('recordData'))
         //taskId=823 plantdata定制 查看历史聊天记录时同一会话发出者减少会话间距
-        if(window.location.pathname=='/robot/chat2_plantdata.html'){
+        if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=="/robot/h5chat_plantdata.html"){
           plantData.hlAdjustMargin()
         }
         if(!MN_Base.isPC()){
@@ -3062,16 +3209,20 @@ function uploadFile (options) {
             */
             This.bodybindgClick();
             /* 查看历史记录中图片的缩放 */
-            for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
-                if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
-                    if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
+            if(!This.options.isWKXT&&!This.options.isSQ){//是否为五矿信托
+              for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
+                  if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
+                      if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
 
-                    }else{
-                        $('.MN_kfCtn img').not('.MN_kfImg').eq(k).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
-                    }
-                }
+                      }else{
+                          $('.MN_kfCtn img').not('.MN_kfImg').eq(k).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+                      }
+                  }
+              }              
             }
-        }
+        }else{
+		  This.setFont()
+		}
         var newH = This.$obj.$chatCtnId.outerHeight()
         This.scrollbar.scrollTo(newH - oldH, true)// css 方式滚动
       })
@@ -3090,15 +3241,12 @@ function uploadFile (options) {
         $webInfoId = this.$obj.$webInfoId = $('#' + this.options.webInfoId)
 
         this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic;//客服图标
-        if(this.options.isSQ){
+        if(this.options.isSQ){// taskid=941 上汽聊天页面定制 展示客户头像
           if(data.authUser && data.authUser.photoUrl ){
-            // alert("头像地址"+data.authUser.photoUrl)
-            //this.robot.khPic = data.authUser ? data.authUser.photoUrl : this.options.prefix + this.options.khPic//客户图标
             this.robot.khPic = data.authUser.photoUrl;
           }else{
             this.robot.khPic = this.options.prefix + this.options.khPic;
           }
-            
         }else{
             this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
         }
@@ -3150,13 +3298,13 @@ function uploadFile (options) {
     /**add by zhaoyuxing 全局变量，保存机器人名字
      * 说明：去除退出转人工不显示机器人名称bug，在初始化时，全局存储机器人名称
      * */
-    robotName:'',
+    // robotName:'',
     //欢迎语
     sayHello: function (data) {
-      this.robotName= data.webConfig.robotName;
+      this.robot.robotName= data.webConfig.robotName;
       // taskid=177 大小渠道 修改人：顾荣 2018.4.27
       if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字,则使用该名字
-        this.robotName=data.channelSourceConfig.robotName||this.robotName
+        this.robot.robotName=data.channelSourceConfig.robotName||this.robot.robotName
       }
       if(this.options.isEmptySayHello){
         this.$obj.$chatCtnId.append(this.robotHtml(data))
@@ -3209,9 +3357,9 @@ function uploadFile (options) {
       /**add by zhaoyuxing 全局变量，保存机器人名字
        * 说明：去除退出转人工不显示机器人名称bug
        * */
-      if(This.robotName){
-        this.robot.robotName=This.robotName;
-      }
+      // if(This.robotName){
+      //   this.robot.robotName=This.robotName;
+      // }
       var html = '',
         baseRobotHtml = '',
         gusListHtml = '',
@@ -3239,16 +3387,7 @@ function uploadFile (options) {
         }
         return html
       }
-      //机器人整体结构
-       /**处理闪退时，不显示机器人名称bug  add by 赵宇星
-        *说明：定义全局变量robotName,在flashOutDeal()中获取s=p接口中的机器人名称
-       */
-      if(This.robotName){
-        this.robot.robotName =This.robotName;
-      }
-
       //机器人整体结构 
-      
       if (data.webConfig) {//欢迎语结构
         this.robot.robotName = data.webConfig.robotName//机器人名字（客服名字）
         // taskid=177 大小渠道 修改人：顾荣 2018.4.27
@@ -3405,6 +3544,10 @@ function uploadFile (options) {
 
             ansCon = '<p>若无法播放，请点击<a href="' + data.robotAnswer[index].ansCon + '" target="_blank">下载</a></p><br/>'
             ansCon += '<video src="' + data.robotAnswer[index].ansCon + '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
+          } else if (data.robotAnswer[index].msgType == 'file') {
+            //文件答案
+            var name = data.robotAnswer[index].ansCon.split('/')[data.robotAnswer[index].ansCon.split('/').length-1]
+            ansCon = '<div class="FA_upFileCtn" style="word-wrap: break-word;word-break: break-all;"><a href="' + data.robotAnswer[index].ansCon + '" target="_blank" download><span style="border-bottom: 1px solid #019eef;">点击下载文件 &gt; ' + name + '</span></a></div>'
           }
           if(!MN_Base.isPC()){
             ansCon = this.iosBindEvent(ansCon);
@@ -3450,23 +3593,30 @@ function uploadFile (options) {
             }
 
 
+
             if(!MN_Base.isPC()){
-                for(var k=0;k < $('.MN_kfCtn img').not('.MN_kfImg').length;k++){
-                    if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src')){
-                      if($('.MN_kfCtn img').not('.MN_kfImg').eq(k).parents('.MN_kfCtn').find('figure').length>0){
-        
-                      }else{
-                        if($('.MN_kfCtn img').not('.MN_kfImg').length > 1){
-                          for(var i=0;i < $('.MN_kfCtn img').not('.MN_kfImg').length;i++){
-                            $('.MN_kfCtn img').not('.MN_kfImg').eq(i).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(i).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(i).attr('src') + '" data-size="1920x1800"></a></div></figure>');
-                          }
-                        }else{
-                          $('.MN_kfCtn img').not('.MN_kfImg').eq(k).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
+              var $img=$('.MN_kfCtn img').not('.MN_kfImg')
+              if(this.options.isWKXT||this.options.isSQ){//是否为五矿信托时，点击图文中的图片不放大查看
+                $img=$('.MN_kfCtn img').not('.MN_kfImg').not('.i-img')
+              }
+              for(var k=0;k <  $img.length;k++){
+                  if( $img.eq(k).attr('src')){
+                    if( $img.eq(k).parents('.MN_kfCtn').find('figure').length>0){
+      
+                    }else{
+                      if( $img.length > 1){
+                        for(var i=0;i <  $img.length;i++){
+                           $img.eq(i).wrap('<figure><div class="' +  $img.eq(i).attr('src') + '"><a href="' +  $img.eq(i).attr('src') + '" data-size="1920x1800"></a></div></figure>');
                         }
+                      }else{
+                         $img.eq(k).wrap('<figure><div class="' +  $img.eq(k).attr('src') + '"><a href="' +  $img.eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
                       }
                     }
-                }
-            }
+                  }
+              }
+            }else{
+			  This.setFont()
+			}
             /*
             taskId = 720 设置转人工链接后，回复问题点击转人工后点击无反应
             判断机器人给出的答案中a链接中是否包含接口s=needperson，如果匹配到则添加class为faqevent，调用s=needperson接口进行转人工操作
@@ -3590,7 +3740,7 @@ function uploadFile (options) {
         }
     },
     //客户结构
-    customHtml: function (word, time,msgType) {
+    customHtml: function (word, time,msgType,name) {
         // 编译问题中的“<”和“>”
         if (word.indexOf('<script>')>-1) {
             word = word.replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -3600,7 +3750,11 @@ function uploadFile (options) {
         //taskId=475 查看聊天记录，聊天记录图片不显示bug
         if(msgType=='image'){
         //图片答案
-        word = '<figure><div class="' + word + '"><a href="' + word + '" data-size="1920x1800"><img src="' + word + '" class="imgBox"></a></div></figure>';
+        if(MN_Base.isPC()){
+          word = '<div class="FA_upFileCtn"><img src="' + word + '"></div>';
+        }else{
+          word = '<figure><div class="' + word + '"><a href="' + word + '" data-size="1920x1800"><img src="' + word + '" class="imgBox"></a></div></figure>';
+        }
       }else if(msgType=='voice'){
           //语音答案
           word = '<p>若无法播放，请点击<a href="' + word + '" target="_blank">下载</a></p><br/>'
@@ -3610,8 +3764,19 @@ function uploadFile (options) {
         //视频答案
         word = '<p>若无法播放，请点击<a href="' +word + '" target="_blank">下载</a></p><br/>'
         word += '<video src="' + word+ '" controls="controls" style="max-width:100%;">您的浏览器不支持 video 标签。</video>'
+      }else if(msgType=='file'){
+        //文件答案
+        if(name){
+          word = '<div class="FA_upFileCtn"><a href="'+word+'" download><span style="border-bottom: 1px solid #019eef;">点击下载文件 > '+name+'</span></a></div>'
+        }else{
+          name = word.split('/')[word.split('/').length-1]
+          word = '<div class="FA_upFileCtn"><a href="'+word+'" download><span style="border-bottom: 1px solid #019eef;">点击下载文件 > '+name+'</span></a></div>'
+        }
       }
       html = this.options.khHtml.replace(/%khPic%/g, this.robot.khPic).replace(/%askWord%/g, word).replace(/%formatDate%/g, time ? this.getFormatDate(time) : this.getFormatDate())
+      if(word.indexOf('src="src/zhiyang/')>-1&&this.options.zhiyang){//如果图片为致扬表情包，则添加class变为白底
+        html=html.replace(/class=\"MN_khCtn\"/g,'class="MN_khCtn bgwhite"')
+      }
       return html
     },
     //快捷服务
@@ -3857,6 +4022,9 @@ function uploadFile (options) {
               }
              }else{
               This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(question))));//添加我的话
+			  if(MN_Base.isPC()){
+                This.setFont()
+              }
             }
           //This.$obj.$chatCtnId.append(This.customHtml(This.replaceFace(This.xssWhiteList(filterXSS(question)))))//添加我的话
           var $MN_ask = $('.MN_ask:last'),
@@ -3953,7 +4121,7 @@ function uploadFile (options) {
                   },
                   callback: function (data) {
                      //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                       plantData.adjustMargin()
                     }
                     This.askQueBack(data)// 获取发送的回调
@@ -4028,7 +4196,7 @@ function uploadFile (options) {
             setTimeout(function(){
             	This.scrollbar.update()
             	This.scrollbarUpdate()
-            },300)
+            },500)
             MN_Base.imageLoad(This.robotHtml(data, i), function () {// 匹配html中所有图片资源，加载完毕执行
               This.scrollbar.update()
               This.scrollbarUpdate()
@@ -4054,6 +4222,37 @@ function uploadFile (options) {
         if (data.document) {
           if (data.document[0]) {
               for (var i = 0; i < data.document.length; i++) {
+                
+                /**
+                 * taskid=1441
+                 * 修改：标题取消折行，展示正文，标题与正文中命中词语高亮 顾荣 2018/7/2
+                 */
+                var newTitle=data.document[i].title;
+                if(data.document[i].highLightResultList!=null){//高亮配置项开启
+                  var highLightWord=data.document[i].matchWords//
+                  newTitle=newTitle.split(eval("/"+highLightWord.join('|')+"/ig"));
+                  var arr1=data.document[i].title.match(eval("/"+highLightWord.join('|')+"/ig"));
+                  if(arr1){
+                    for(var hw=0;hw<arr1.length;hw++){//循环替换标题高亮词
+                      newTitle.splice(hw*2+1,0,'<span class="highLight">'+arr1[hw]+'</span>')
+                    }
+                    newTitle=newTitle.join('')                    
+                  }
+                  var highLightarr=data.document[i].highLightResultList//匹配到的正文
+                  if(highLightarr[0]){//匹配到正文
+                    var newp=''
+                    for(var hi=0;hi<highLightarr.length;hi++){//循环正文列表
+                      var hsplit=highLightarr[hi].highLishtSentence.split(eval("/"+highLightWord.join('|')+"/ig"));
+                      var arr2=highLightarr[hi].highLishtSentence.match(eval("/"+highLightWord.join('|')+"/ig"));
+                      if(arr2){
+                        for(var hw=0;hw<arr2.length;hw++){//循环替换正文高亮词
+                          hsplit.splice(hw*2+1,0,'<span class="highLight">'+arr2[hw]+'</span>')
+                        }                        
+                      }
+                     }
+                    newp+='<p>'+hsplit.join('')+'</p>';
+                  }
+                }
                 /**
                  * taskid=987
                  * 国泰基金文档检索pdf预览docx下载
@@ -4061,42 +4260,29 @@ function uploadFile (options) {
                 if(data.document[i].pdfUrl){
                     var btnTmp = '';
                     btnTmp = '<button tipUrl=\"'+ data.document[i].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
-                    html += '<a class="hoverTip" href="#" style="cursor: pointer;position: relative;display: block;" title="' + data.document[i].title + '"><div class="MN_innerSearchCtn"><span class="MN_innerSearch">' 
-                    /*
-                      taskid=331,黄世鹏
-                      优化：国泰文档检索名全部展示
-                    */ 
-                    if(window.location.pathname.indexOf('GuoTai')!=-1){
-                      html +=data.document[i].title+ '</span><span class="MN_classifySearch">' +MN_Base.addDots(data.document[i].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div> </a>'
-                    }else{
-                      html +=MN_Base.addDots(data.document[i].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div> <div class="tipisHide hide" style="position: absolute;bottom: -10px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div> </a>'
-                    }
+                    html += '<div class="MN_innerSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;" title="' + data.document[i].title + '"><span class="MN_innerSearch">' 
+                    html +=newTitle+ '</span></a><span class="MN_classifySearch">' +MN_Base.addDots(data.document[i].classify, 5) + '</span><div class="tipisHide hide" style="position: absolute;bottom:5px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div>'
                   }else{
-                    html += '<a href="' + (data.document[i].url) + '" target="_blank" title="' + data.document[i].title + '"><div class="MN_innerSearchCtn"><span class="MN_innerSearch">' 
-                    if(window.location.pathname.indexOf('GuoTai')!=-1){
-                      html += data.document[i].title + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div></a>'
-                    }else{
-                      html += MN_Base.addDots(data.document[i].title, 15) + '</span><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span></div></a>'
-                    }
-                    
+                    html += '<div class="MN_innerSearchCtn"><a href="' + (data.document[i].url) + '" target="_blank" title="' + data.document[i].title + '"><span class="MN_innerSearch">' 
+                    html += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span>'
                   }
+                  if(newp){
+                    html +=newp;
+                  }
+                  html +='</div>'
                 }
 
-              $('body').off('mouseover','.hoverTip').on('mouseover','.hoverTip',function() {
-                $(this).children('.tipisHide').removeClass('hide');
-              })
-
-              $('body').off('mouseout','.hoverTip').on('mouseout','.hoverTip',function() {
-                $(this).children('.tipisHide').addClass('hide');
-              })
+                $('body').off('mouseover','div.MN_innerSearchCtn').on('mouseover','div.MN_innerSearchCtn',function() {
+                  $(this).find('.tipisHide').removeClass('hide');
+                })
+  
+                $('body').off('mouseout','div.MN_innerSearchCtn').on('mouseout','div.MN_innerSearchCtn',function() {
+                  $(this).find('.tipisHide').addClass('hide');
+                })
 
               $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
                 window.open($(this).attr('tipUrl'))
               })
-
-              // for (var i = 0; i < data.document.length; i++) {
-              //   
-              // }
        
           } else {
             html += '<p class="MN_noSearch">无结果</p>'
@@ -4322,7 +4508,7 @@ askDistributionQue: function () {
     //问题满意度评价->s=addulc
     queComment: function () {
       var This = this
-
+      
       This.$obj.$chatCtnId.on('click.FA', '.MN_yes, .MN_no', function () {
         var $This = $(this),
           s = 'addufc'//满意
@@ -4349,6 +4535,9 @@ askDistributionQue: function () {
             } else {
               $This.parents('.MN_helpful').text(data.message || '感谢您的评价！')
             }
+			if(MN_Base.isPC()){
+              This.setFont()
+            }
           }
         })
       })
@@ -4364,6 +4553,10 @@ askDistributionQue: function () {
         $('.MN_reasonContent [name="content"]').val($('.MN_reasonContent [name="content"]').val().replace(/[\r\n]/g,""));//去掉回车换行
         var $This = $(this),
           $form = $This.parents('.MN_helpful').prev('.MN_reasonForm')
+          // taskid=1027 plantdata定制 .MN_reasonForm布局变化
+          if(This.options.h5plantdata){
+            $form = $This.parents('.MN_answer').find('.MN_reasonForm')
+          }
         This.request({
           params: {
             s: 'ulreason',
@@ -4400,13 +4593,12 @@ askDistributionQue: function () {
       $('#' + this.options.upFileModule.triggerId).css({
         'position': 'relative'
       })
-      // 大小渠道切换bug 增加传参sourceId
       if(window.location.search.match(/sourceId=(\d+)/)){
-        var sourceId = window.location.search.match(/sourceId=(\d+)/)[1]
+        var sourceId =  window.location.search.match(/sourceId=(\d+)/)[1]
       }else{
         var sourceId = ''
       }
-      H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ sourceId, this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
+      H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ sourceId , this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
         This.options.upFileModule.startcall && This.options.upFileModule.startcall()
@@ -4418,10 +4610,10 @@ askDistributionQue: function () {
         if (data.status) {
           This.showMsg(data.message)
           $('.FA_' + ran).parents('.MN_ask').remove()
+          $('.showFace .pic').removeClass('active')
         } else {
           var html = ''
             var tmpUrl = data.sendUrlMsg[index].url
-            // 上传图片后的回调
             This.request({
                 params: {
                 s: 'image',
@@ -4429,8 +4621,6 @@ askDistributionQue: function () {
                 },
                 callback: function (data) {
                 This.askQueBack(data)// 获取发送的回调
-                This.options.upFileModule.callback();
-
                 }
             })
             switch (data.sendUrlMsg[index].type) {
@@ -4446,11 +4636,83 @@ askDistributionQue: function () {
                     break
             }
           $('.FA_' + ran).empty().append(html)
+          $('.showFace .pic').removeClass('active')
+          if(MN_Base.isPC()){
+            This.setFont();
+          }
         }
       }, 'gif|jpeg|bmp|jpg|png', function (noSuit) {
         if (noSuit[0]) {
           This.showMsg(noSuit.length + '个文件不符合图片类型')
+          $('.showFace .pic').removeClass('active')
         }
+      })
+    },
+	//发送文件s=uf
+    sendFile: function(){
+      var This = this;
+      $('#'+This.defaults.sendFileId).on('click',function(){
+        H5_upload('../' + This.options.interface + '?s=uf', 0, $('#'+This.defaults.sendFileId), This.$obj.$chatCtnId, function (ran) {
+          $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
+          $('#' + This.options.sendBtnId).trigger('click.FA')
+          This.options.upFileModule.startcall && This.options.upFileModule.startcall()
+        }, function (data, ran,index) {
+          if (data.status) {
+            This.showMsg(data.message)
+            $('.FA_' + ran).parents('.MN_ask').remove()
+            $('.showFace .file').removeClass('active')
+          } else {
+            var html = ''
+            var sourceInface = 'image'
+            var fileName = ''
+            var tmpUrl = data.sendUrlMsg[index].url
+            switch (data.sendUrlMsg[index].type) {
+              case 1://图片，不加a，防止跳转
+                html = '<img src="' + tmpUrl + '">'
+                sourceInface = 'image'
+                break
+              case 2://音频文件
+                html = '<p>若无法播放，请点击<a href="' + tmpUrl + '" target="_blank" download>下载</a></p><br/>'
+                html += '<audio style="width:100%" src="' + tmpUrl + '" controls="controls" style="max-width:100%;">您的浏览器不支持 audio 标签。</audio>'
+                sourceInface = 'voice'
+                break
+              case 3://视频文件
+                html = '<p>若无法播放，请点击<a href="' + tmpUrl + '" target="_blank" download>下载</a></p><br/>'
+                html += '<video style="width:100%" src="' + tmpUrl + '" controls="controls">您的浏览器不支持 video 标签。</video>'
+                sourceInface = 'video'
+                break
+              case 0://其他文件
+                html = '<div class="FA_upFileItem" style="word-wrap: break-word;word-break: break-all;"><a href="' + tmpUrl + '" target="_blank" download><span style="border-bottom: 1px solid #019eef;">点击下载文件 &gt; ' + data.sendUrlMsg[index].name + '</span></a></div>'
+                sourceInface = 'file'
+                fileName = data.sendUrlMsg[index].name
+                break
+            }
+            This.request({
+              params: {
+                s: sourceInface,
+                path: tmpUrl,
+                name:fileName
+              },
+              callback: function (data) {
+                This.askQueBack(data)// 获取发送的回调
+              }
+            })
+            $('.FA_' + ran).empty().append(html)
+            $('.showFace .file').removeClass('active')
+            if(MN_Base.isPC()){
+				This.setFont();
+			}
+            setTimeout(function(){
+              This.scrollbar.update()
+              This.scrollbarUpdate()
+            },300)
+          }
+        }, '', function (noSuit) {
+          if (noSuit[0]) {
+            This.showMsg(noSuit.length + '个文件不符合类型')
+            $('.showFace .file').removeClass('active')
+          }
+        })
       })
     },
     //星座模块
@@ -4782,6 +5044,10 @@ askDistributionQue: function () {
               $commentInputCtnId.val('')
               sessionStorage.setItem('isDefalut', '主动评价过！');
             } else {
+              $commentInputCtnId.val('')
+              $('.MN_marginCtn').eq(0).find('input').prop('checked',true)
+              $('.MN_marginCtnCheckbox input').prop('checked',false)
+              $('.noSatiCtn').hide()
               layer.msg(data.message)
             }
           }
@@ -4858,13 +5124,47 @@ askDistributionQue: function () {
         $leaveMsgInputCtnId.trigger('focus')
       })
 
-      if(!MN_Base.isPC()&&$("#successMessage").size()){//通过dom检查是否为老页面
+      if((!MN_Base.isPC()&&$("#successMessage").size()) || This.options.isNongXin){//通过dom检查是否为老页面
        
 
 
-        if(This.options.isSQ){
-            // taskid=402 顾荣 任务:留言面板 保存留言
-            var validator1=$('#leaveMsgForm').validate({
+        if(This.options.isSQ||This.options.isWKXT){// taskid=941 上汽聊天页面定制 留言板
+             if(This.options.isSQ){
+              // taskid = 1675 上汽定制手机号为必填项
+              var validator1=$('#leaveMsgForm').validate({
+                rules:{
+                    name:{
+                        minlength:2,
+                        maxlength:10,
+                    },
+                    telNum:{
+                        telFlag:true,
+                        required:true
+                    },
+                    email:{
+                        emailFlag:true,
+                    },
+                    content:{
+                        required:true,
+                    }
+                },
+                messages:{
+                    name:{
+                        minlength:"请输入2~10个字符！",
+                        maxlength:"请输入2~10个字符！"
+                    },
+                    telNum:{
+                      required:'手机号不能为空！'
+                    },
+                    content:{
+                        required:"留言不能为空！",
+                    }
+                },
+                submitHandler: msgSubmit
+              });
+            }else{
+              // taskid=402 顾荣 任务:留言面板 保存留言
+              var validator1=$('#leaveMsgForm').validate({
                 rules:{
                     name:{
                         minlength:2,
@@ -4890,7 +5190,8 @@ askDistributionQue: function () {
                     }
                 },
                 submitHandler: msgSubmit
-            });
+              });
+            }
             $.validator.addMethod("emailFlag",function(value,element,params){  
             var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
             if(emailreg.test(value.trim())||value.trim()==""){
@@ -4923,9 +5224,6 @@ askDistributionQue: function () {
                 for (var i = 0; i < This.options.entranceWords.length; i++) {
                     entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
                 }
-                // if(This.options.isSQ){
-                //   alert('发送s=leavemsg请求')
-                // }
                 $.ajax({
                     type:'post',
                     datatype:'json',
@@ -4933,7 +5231,7 @@ askDistributionQue: function () {
                     url:encodeURI('../servlet/appChat'),
                     data:{
                         s: 'leavemsg',
-                        souceId:This.options.sourceId,
+                        sourceId:This.options.sourceId,
                         sysNum:This.options.sysNum,
                         entrance:document.referrer,
                         entranceWords:entranceWords,
@@ -4946,7 +5244,7 @@ askDistributionQue: function () {
                         if(data.status==0){
                             $("#successMessage").css("display","block")
                         }else{
-                            this.showMsg(data.message) 
+                            This.showMsg(data.message)  
                         }
                     }
                 })
@@ -5065,7 +5363,7 @@ askDistributionQue: function () {
                     url:encodeURI('../servlet/appChat'),
                     data:{
                         s: 'leavemsg',
-                        souceId:This.options.sourceId,
+                        sourceId:This.options.sourceId,
                         sysNum:This.options.sysNum,
                         entrance:document.referrer,
                         entranceWords:entranceWords,
@@ -5080,7 +5378,7 @@ askDistributionQue: function () {
                         if(data.status==0){
                             $("#successMessage").css("display","block")
                         }else{
-                            this.showMsg(data.message) 
+                            This.showMsg(data.message) 
                         }
                     }
                 })
@@ -5171,7 +5469,26 @@ askDistributionQue: function () {
                                 $('#dialogFeedModal').addClass('fade');
                             }
                         });
-
+						$('.pinjia').off('click').on('click',function(){
+                          $('#muiList').html('');
+                          $('#stapin').val('');
+                          $("[name=satis]").eq(0).prop('checked',true)
+                          $("[name=satis]").eq(0).parent().css('background-position','-111px -15px');
+                          $("[name=satis]").eq(1).parent().css('background-position','-96px -15px');
+                            if(sessionStorage.getItem('isShow')){
+                              layer.msg('感谢您的支持，你已经做过评价了.' + '您是否还有其他问题？', {
+                                time: 20000, //20s后自动关闭
+                                btn: ['继续问答', '关闭'],
+                                area: This.getSuitSize(),
+                                cancel: function () {// 关闭当前页面
+                                  This.closeWebPage()
+                                }
+                            })
+                            }else{
+                              $('#dialogFeedModal').removeClass('fade').addClass('show')
+                            }
+							This.setFont()
+                        })
                         $('#dialogStaBtn').unbind('click').bind('click', function () {
                             var level = 1;
                             var unstais = '';
@@ -5264,14 +5581,19 @@ askDistributionQue: function () {
                                 params: {
                                     s: 'kl'
                                 },
-                                callback: function (data) {
+                                callback: function (data) { 
+                                /***
+                                  * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
+                                  * 说明：增加kl接口的回调函数，可在函数中判断当前聊天状态，回调内容可在app.js中定义
+                                  * */
+                                 This.options.klCallback(data);
                                     if (data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==0) {
-                                        $('#stapin').val('');
+                                        //$('#stapin').val('');
                                     }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==1){
                                         if ((!sessionStorage.getItem('isShow')) && (!sessionStorage.getItem('isDefalut')) && (!sessionStorage.getItem('noStatis'))) {
                                             $('#dialogFeedModal').removeClass('fade');
                                             $('#dialogFeedModal').addClass('show');
-                                            $('#stapin').val('');
+                                            //$('#stapin').val('');
                                             $("[name=satis]").eq(0).parent().css('background-position','-111px -15px');
                                             $("[name=satis]").eq(1).parent().css('background-position','-96px -15px');
                                             $('#muiList').html('');
@@ -5280,13 +5602,13 @@ askDistributionQue: function () {
                                         if ((!sessionStorage.getItem('isShow')) && (!sessionStorage.getItem('isDefalut')) && (!sessionStorage.getItem('noStatis'))) {
                                             $('#dialogFeedModal').removeClass('fade');
                                             $('#dialogFeedModal').addClass('show');
-                                            $('#stapin').val('');
+                                            //$('#stapin').val('');
                                             $("[name=satis]").eq(0).parent().css('background-position','-111px -15px');
                                             $("[name=satis]").eq(1).parent().css('background-position','-96px -15px');
                                             $('#muiList').html('');
                                         }
                                     }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==3){
-                                        $('#stapin').val('');
+                                        //$('#stapin').val('');
                                     }
                                     if (data.nowState == 3 || data.nowState == 5) {// 人工聊天
                                         isArti = true
@@ -5309,8 +5631,17 @@ askDistributionQue: function () {
                                             }
                                         }
                                         $('.sendPicCtn').show()
+										if(MN_Base.ieVersion() > 9 || (!MN_Base.ieVersion())){
+                                          $('.corpation .pic,.corpation .file').show()
+                                        }
                                         This.kuaijie()
                                     } else {// 智能聊天
+										$('.sendPicCtn').hide()
+                    if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
+                      $('.corpation .pic,.corpation .file').show()
+                    }else{
+                      $('.corpation .pic,.corpation .file').hide()
+                    }
                                         isArti = false
                                         if (This.options.intelTitleChange) {// 是否修改标题
                                           /**
@@ -5343,13 +5674,13 @@ askDistributionQue: function () {
                                                 for (var i = 1, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
                                                      //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin()
                                                     }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
                                                      //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin()
                                                     }
                                                 }
@@ -5358,13 +5689,13 @@ askDistributionQue: function () {
                                                 for (var i = 0, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin()
                                                     }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
                                                      //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'){
+                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin();
                                                     }
                                                 }
@@ -5797,7 +6128,7 @@ askDistributionQue: function () {
          * 说明：记录前一次会话发送事件与本次时间相减，获得差值；小于设置的间隔则返回空
         * 方法在chat2_plantdata.html中定义全局变量
         */
-        if(window.location.pathname=='/robot/chat2_plantdata.html'){
+        if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
           var restate=plantData.showTime(time,year,month,date,hour,minute,second,result);
           return restate
         }else{
@@ -5940,6 +6271,31 @@ askDistributionQue: function () {
         $recommendConsult.empty().append(str)
       }
     },
+	setFont:function(){
+      var This = this,
+          fontFamliy = sessionStorage.getItem('fontFamliy'),
+          fontSize = sessionStorage.getItem('fontSize');
+      if(fontFamliy){
+        fontFamliy = sessionStorage.getItem('fontFamliy')
+      }else{
+        fontFamliy = 'Microsoft YaHei, Arial, sans-serif'
+      }
+      if(fontSize){
+        fontSize = sessionStorage.getItem('fontSize')
+      }else{
+        fontSize = '14'
+      }
+      $('#fontFamliy').val(fontFamliy)
+      $('#fontSize').val(fontSize)
+      if($('.corpation').hasClass('corpation')){
+        $('html, body, #chatCtn div, .MN_answer p, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-family',fontFamliy)
+        $('html, body, #chatCtn div, .MN_answer p,  h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-size',fontSize + 'px');
+        // setTimeout(function(){
+        //   This.scrollbar.update()
+        //   This.scrollbarUpdate()
+        // },300)
+      }
+    }
   }
     
 })(MN, window, document)

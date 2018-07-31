@@ -37,6 +37,13 @@
         .FA_upFileCtn{
             width:200px;
         }
+        /* .my-gallery figure {
+            width: 100%;
+            height: 100%;
+            max-width: 100px;
+            margin: 0;
+        } */
+
         .service {
             position: absolute;
             top: -30px;
@@ -101,26 +108,8 @@
             color: #000;
         }
 
-        .MN_khTriangle2,
-        .MN_khTriangle1 {
-            border-left: 15px solid #fff !important;
-        }
-
-        .MN_kfTriangle1,
-        .MN_kfTriangle2,
-        .MN_khTriangle1,
-        .MN_khTriangle2 {
-            display: none;
-        }
-
-        .goodModule {
+       .goodModule {
             padding: 10px 0px 10px 70px;
-        }
-
-        .MN_ask .MN_khImg {
-            height: auto;
-            min-height: 20px;
-            max-height: 60px;
         }
     </style>
     <!--上汽提供 点击显示更多，跳转自如 -->
@@ -132,6 +121,7 @@
     <script src="skin/h5chat/js/photoswipe.js"></script>
     <script src="skin/h5chat/js/photoswipe-ui-default.min.js"></script>
     <script src="./js/jquery.validate.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&services=true&ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6"></script>
     <script>
         var tracker = {
             postData: function (handle, data) {
@@ -325,7 +315,7 @@
                         <p>常见问题</p>
                     </div>
                     <!-- 相片 -->
-                    <div class="sendPicCtn editCtn_com" id="sendPic">
+                    <div class="editCtn_com" id="sendPic">
                         <div class="btn-outer">
                             <span class="sendPic"></span>
                         </div>
@@ -338,11 +328,11 @@
                         <p>吐糟</p>
                     </div>
 
-                    <div class="editCtn_com hide" id="location">
+                    <div class="editCtn_com" id="location">
                         <div class="btn-outer">
-                            <span class="leaveMsg"></span>
+                            <span class="sendLocation"></span>
                         </div>
-                        <p>测试</p>
+                        <p>发送位置</p>
                     </div>
 
                     <div class="editCtn_com hide" id="testId">
@@ -394,7 +384,7 @@
             </div>
         </div>
     </div>
-
+    <div id="allmap"></div>
     <script src="https://oss-qa-bm.saicmotort.com/oss/download/assets/jsbridge/jssdk.js"></script>
     <script>
         var tmpsourceId = 3;

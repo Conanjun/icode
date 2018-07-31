@@ -1,6 +1,15 @@
 ; $(function () {
-    FastClick.attach(document.body);
+    // 根据参数url中的参数 判断是否隐藏头部
+    /*TaskId: 1549 上汽对话框样式修改
+    *原因：修改头部高度后，同时修改聊天内容显示部分高度
+    */
+    var headHeight = 50;// 头部的高度  用于设置chatScroll的高度
+    if(getUrlQuery('noHeader')){
+        $('.header-container').hide();
+        headHeight = 5;
+    }
 
+    FastClick.attach(document.body);
     set_chatScroll_height();
     /*收缩工具栏时，调整聊天页面的高度*/
     function set_chatScroll_height() {
@@ -12,7 +21,7 @@
         *原因：直接嵌入自如app 无头部样式，显示为全屏
         *修改：chatScroll的高度设置
         */
-        $('.chatScroll').height(winH - $('.editCtn').outerHeight() - 40);
+        $('.chatScroll').height(winH - $('.editCtn').outerHeight()-headHeight);
     }
 
     $(window).on('resize', function () {
@@ -219,8 +228,8 @@
             artiTitle: '人工客服',// 人工时的标题
             titleInsteadId: 'title',// 代替标题Id
             //userInfoId: 'userInfoId',//用户信息Id
-            kfPic: 'robot/skin/h5chat/images/robot.png',  //客服图标
-            khPic: 'robot/skin/h5chat/images/user.png', //客户图标
+            kfPic: 'robot/skin/h5chat_SQ/images/robot.png',  //客服图标
+            khPic: 'robot/skin/h5chat_SQ/images/user.png', //客户图标
             formatDate: '%month%月%date%日 %hour%:%minute%:%second%',//配置时间格式(默认10:42:52 2016-06-24)
             topQueId: 'commonQueLayer',//热门、常见问题Id --------
             //newQueId: 'newQueId',//新增问题Id
@@ -321,7 +330,6 @@
             setInputTop: function () {
                 // 判断是否为ios
                 var u = navigator.userAgent, app = navigator.appVersion;
-                // alert(u);
                 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
                 var str = navigator.userAgent.toLowerCase();
                 var ver = str.match(/cpu iphone os (.*?) like mac os/);
@@ -340,14 +348,19 @@
                                 var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() - 390) + 'px !important}';
                             }
                         } else if (phoneWidth == 414) {// iphone plus
-                            var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -470) + 'px !important}';
+                             // 区分微信与safari 浏览器
+                            var ua = navigator.userAgent.toLowerCase();
+                            if(ua.indexOf('micromessenger')!=-1){
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -470) + 'px !important}';
+                            }else{
+                                var chatStyle = '.front .chatHeight{height:' + parseInt($(document).height() -450) + 'px !important}';
+                            }
+
                         }
                         $('head').append('<style>' + chatStyle + '</style>');
-                        // alert('修改页面高度3.3');
-                        $('#' + this.inputCtnId).on('focus', function () {
-                            // var inputHight = $('.editCtn' ).height()
-                            $('.chatScroll').addClass('chatHeight');
 
+                        $('#' + this.inputCtnId).on('focus', function () {
+                            $('.chatScroll').addClass('chatHeight');
                             $('.front').height(($('.chatScroll').height()+120));
                             var timerDowm=setTimeout(function(){
                                 FAQ.scrollbar.update()
@@ -416,6 +429,133 @@
                     });
                 }
             },
+            servLeaveMsg: function () {
+                var validator1=$('#leaveMsgForm').validate({
+                    rules:{
+                        name:{
+                            minlength:2,
+                            maxlength:10,
+                        },
+                        telNum:{
+                            telFlag:true,
+                            required:true
+                        },
+                        email:{
+                            emailFlag:true,
+                        },
+                        content:{
+                            required:true,
+                        }
+                    },
+                    messages:{
+                        name:{
+                            minlength:"请输入2~10个字符！",
+                            maxlength:"请输入2~10个字符！"
+                        },
+                        telNum:{
+                        required:'手机号不能为空！'
+                        },
+                        content:{
+                            required:"留言不能为空！",
+                        }
+                    },
+                    submitHandler: msgSubmit
+                });
+                $.validator.addMethod("emailFlag",function(value,element,params){  
+                    var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
+                    if(emailreg.test(value.trim())||value.trim()==""){
+                        return true;
+                    }else{
+                        return false;
+                    } 
+                },"请输入正确格式的邮箱！");
+                /**
+                 * taskId=494;顾荣 2017.12.27
+                * 修改：优化手机号码正则
+                */
+                $.validator.addMethod("telFlag",function(value,element,params){
+                    var telNumReg=/^1[0-9]{10}$/  
+                    if(telNumReg.test(value.trim())||value.trim()==""){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },"请输入正确格式的手机号码！")
+        
+                function msgSubmit(){
+                    var messageName=$("#leaveMsgForm input[name=name]").val().trim()//姓名
+                    var messagePhone=$("#leaveMsgForm input[name=telNum]").val().trim()//电话号码
+                    var messageEmail=$("#leaveMsgForm input[name=email]").val().trim()//电子邮箱
+                    var messageTxt=$("#leaveMsgForm #leaveMsgCtn").val().trim()//留言内容
+        
+                    // 收集来源的关键词
+                    var entranceWords = ''
+                    for (var i = 0; i < This.options.entranceWords.length; i++) {
+                        entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
+                    }
+                    $.ajax({
+                        type:'post',
+                        datatype:'json',
+                        cache:false,//不从缓存中去数据,
+                        url:encodeURI('../servlet/appChat'),
+                        data:{
+                            s: 'leavemsg',
+                            sourceId:This.options.sourceId,
+                            sysNum:This.options.sysNum,
+                            entrance:document.referrer,
+                            entranceWords:entranceWords,
+                            name:messageName,
+                            telNum:messagePhone,
+                            email:messageEmail,
+                            content:messageTxt,
+                        },
+                        success:function(data){
+                            if(data.status==0){
+                                $("#successMessage").css("display","block")
+                            }else{
+                                This.showMsg(data.message)  
+                            }
+                        }
+                    })
+                }
+                //给留言板中的按钮绑定事件
+                $("#messageAgain").click(function(){//点击继续留言返回留言板
+                    $("#leaveMsgForm").find("input").val('');
+                    $("#leaveMsgCtn").val("");
+                    $("#successMessage").css("display","none");
+                    $("#imgsDiv").html("")
+                    validator1.resetForm()
+                    $('.text-error').removeClass("text-error helper-font-small")
+                });
+                $("#backMessage").click(function(){//点击返回聊天关闭留言板返回聊天
+                    $("#leaveMsgForm").find("input").val('');
+                    $("#leaveMsgCtn").val("")
+                    $("#successMessage").css("display","none");
+                    $("#leaveMsgBox").css("display","none")
+                    $("#imgsDiv").html("")
+                    validator1.resetForm()
+                    $('.text-error').removeClass("text-error helper-font-small")
+                })
+                $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
+                    $("#leaveMsgForm").find("input").val('');
+                    $("#leaveMsgCtn").val("")
+                    $("#leaveMsgBox").css("display","none")
+                    $("#imgsDiv").html("")
+                    validator1.resetForm()
+                    $('.text-error').removeClass("text-error helper-font-small")
+                })
+            },
+            /**
+             * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
+             * 说明：在kl中判断当前聊天的状态，用于区分与机器人聊天/ 人工客服聊天
+             * */ 
+            klCallback:function (data) {
+               if(data.nowState === 3 || data.nowState === 5){
+                    isCustomerChat = true ; 
+               }else{
+                    isCustomerChat = false ; 
+               }
+            }
         });
     }
 
@@ -465,6 +605,11 @@
         },100)
     }
 
+    // taskid = 1023 题库满意度评价 点击满意不满意后，文字左对齐
+    $('#chatCtn').on('click','.MN_helpful',function(e){
+        $(this).css('text-align','left');
+    })
+
 
 
     /*********************************************************************************
@@ -477,6 +622,7 @@
     var isEmptySayHello = false;
     var goodsDataContent = '';
     var hasGetToken = false; // 是否已调用获取token的方法
+    var isCustomerChat = false; // 是否是客服接管
 
     SQinit();
 
@@ -491,16 +637,6 @@
             getTokenFn();
         }
     }
-
-
-    $('#location').click(function () {
-        window.getLocation(function (data) {
-            $('#chatCtn').append(data)
-        });
-    });
-
-
-
     function getUrlArgument() {
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
@@ -565,7 +701,7 @@
         //     status: "已下单等待付款",
         //     link: 'http://139.199.58.172/index.php/wap/trade-detail.html?tid=229654156456'
         // }
-        // renderGood(goodsData,method)
+        // renderGood(JSON.stringify(goodsData),method)
 
     }
 
@@ -649,20 +785,24 @@
                 sendMessage: 1
             }
         }
-
-        $.ajax({
-            url: '../servlet/appChat',
-            type: 'post',
-            data: dataObj,
-            cache: false,
-            success: function (data) {
-                if (data.status == 0) {
-                    layer.msg("发送成功");
-                } else {
-                    layer.msg("网络连接不良请稍候再试");
+        if(!isCustomerChat){
+            FAQ.showMsg("请转人工后发送");
+            return ; 
+        }else{
+            $.ajax({
+                url: '../servlet/appChat',
+                type: 'post',
+                data: dataObj,
+                cache: false,
+                success: function (data) {
+                    if (data.status == 0) {
+                        layer.msg("发送成功");
+                    } else {
+                        layer.msg("网络连接不良请稍候再试");
+                    }
                 }
-            }
-        })
+            })
+        }
     })
 
 
@@ -672,9 +812,8 @@
         var businessOrderNo = getUrlQuery('businessOrderNo');
         var refundNo = getUrlQuery('refundNo');
         // 关闭页面时，机器人下线
-        // alert('机器人下线')
         FAQ.offline();
-        clearAllCookie();
+        // clearAllCookie();
         // 离开页面跟踪方法
         leavePage();
         closeWebView('default', function (data) {
@@ -721,6 +860,44 @@
             $('.service').removeClass('hide');
         }
     }
+    // 百度地图API功能
+    var content = '',//地址
+        latitude = '',//纬度
+        longitude = '',//经度
+        pois = '';
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            latitude = r.point.lat
+            longitude = r.point.lng
+            $.ajax({
+                url: 'http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location='+r.point.lat+','+r.point.lng+'&output=json&pois=1&ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6',
+                dataType:'jsonp',
+                success: function (data) {
+                    content = data.result.formatted_address
+                    pois = JSON.stringify(data.result.pois)
+                    localStorage.setItem('pois',pois)
+                }
+            });
+        }
+        else {
+            alert('failed'+this.getStatus());
+        }
+    },{enableHighAccuracy: true})
+    $('#location').on('click',function(){
+		//window.getLocation(function (data) {
+			// $('#chatCtn').append(data)
+         //});
+        //var imgHtml = '<a href="http://api.map.baidu.com/marker?location='+latitude+','+longitude+'&title=我的位置&content='+content+'&output=html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
+        var imgHtml = '<a href="./location.html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
+        FAQ.askQue(imgHtml)
+    })
 });
 
 
@@ -754,3 +931,7 @@ function clearAllCookie() {
             document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
     }  
 }  
+
+
+
+

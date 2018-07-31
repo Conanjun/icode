@@ -9,10 +9,10 @@ a:hover, a:focus{
 }
 /*机器人头像位置*/
 .MN_kfImg {
-    left: -55px;
+    left: -60px;
 }
 .MN_khImg {
-    right: -55px;
+    right: -60px;
 }
 /*TaskId:  408 自如页面定制
 *原因：对话框样式修改
@@ -20,7 +20,12 @@ a:hover, a:focus{
 */
 .MN_answer, .MN_ask {
     max-width: 90%;
-    padding: 5px 30px 5px 30px;
+}
+.MN_answer {
+    padding: 5px 35px 5px 35px;
+}
+.MN_ask {
+    padding: 5px 5px 5px 35px;
 }
 .MN_answer .MN_kfImg, .MN_ask .MN_khImg {
     width: 30px;
@@ -132,19 +137,19 @@ ul li {
     box-sizing: border-box;
 }
 /*头部样式定义*/
-    /*TaskId:  408 自如页面定制
-    *原因：头部样式定制
-    *修改：删除头部文字样式
-    */
+
+/*TaskId: 1549 上汽对话框样式修改
+*原因：对话框样式修改
+*/
 .header-container{
-    height: 0.1rem;
-    line-height: 0.1rem;
+    height:44px;
+    line-height:44px;
     overflow-y:visible; 
 
 }
 .front .header{
-    height:0.1rem;
-    line-height: 0.1rem;
+    height:44px;
+    line-height: 44px;
     text-align: center;
     background: #fff;
     font-size: 15px;
@@ -154,12 +159,14 @@ ul li {
 .front .header .backQuit{
     position: absolute;
     left: 10px;
-    top: 0px;
+    top: -2px;
     font-size: 29px;
     width: 40px;
 }
 .header-container>.header>.logo{
     text-align: center;
+    color: #000;
+    font-size: 18px;
 }
 .front .header .link{
     position: absolute;
@@ -168,6 +175,7 @@ ul li {
     font-size: 25px;
     color: #fff;
 }
+
 /*头部样式定义结束*/
 
 /* .front .header img{
@@ -443,7 +451,11 @@ ul li {
     background-size: contain;
     overflow: hidden;
 }
-
+.editCtn .editHide .editCtn_com .sendLocation {
+    background: url(../images/map.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
 /*TaskId:  408 自如页面定制
 *说明:设置发送表情图标
 */
@@ -615,12 +627,17 @@ ul li {
     margin:0 auto;
 }
 /*聊天背景*/
-/*TaskId:  408 自如页面定制
+/*TaskId: 1549 上汽对话框样式修改
 *原因：对话框样式修改
 */
 .MN_kfCtn, .MN_khCtn{
     border-radius: 5px;
     border:1px solid #D9D9DB;
+    max-width: 90%;
+    padding:13px 10px;
+}
+.MN_kfCtn p{
+    margin:0;
 }
 
 /*聊天头像*/
@@ -1009,6 +1026,68 @@ ul li {
 .btnClass{
     color: #3DA5FE;
 }
+/* taskid = 1023 上汽页面定制优化 题库满意度评价文字靠左显示 ，按钮靠右 amend by zhaoyuxing */
+.MN_helpful{
+    overflow: hidden;
+}
+.MN_reasonSend{
+    float: right;
+}
+.MN_kfName, .MN_khName{
+    display: none;
+}
+/* 答案结构 */
+.MN_khTriangle1 {
+    border-top: 8px solid transparent;
+    border-left: 8px solid #D9D9DB;
+    border-bottom: 8px solid transparent;
+    bottom: -1px;
+}
+.MN_khTriangle2 {
+    border-top: 8px solid transparent;
+    border-left: 8px solid #fff;
+    border-bottom: 8px solid transparent;
+    /* right: -5px; */
+    bottom: -1px;
+}
+.MN_kfTriangle1 {
+    border-top: 8px solid transparent;
+    border-right: 8px solid #D9D9DB;
+    border-bottom: 8px solid transparent;
+    /* left: -10px; */
+    bottom: -1px;
+}
+.MN_kfTriangle2 {
+    border-top: 8px solid transparent;
+    border-right: 8px solid #fff;
+    border-bottom: 8px solid transparent;
+    /* left: -6px; */
+    bottom: -1px;
+}
+.MN_kfCtn, .MN_khCtn{
+    border-radius: 0px;
+}
+.MN_khTriangle1, .MN_khTriangle2{
+    top: 7px;
+    right: -8px;
+}
+.MN_kfTriangle2, .MN_kfTriangle1 {
+    top: 10px;
+    left: -8px;
+}
+.MN_khTriangle1 {
+    right: -9px;
+}
+.MN_kfTriangle1 {
+    left: -9px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg{
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+
 /* 图文样式 */
 .msg-t{
     margin: 0 14px 6px;
