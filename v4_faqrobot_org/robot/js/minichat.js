@@ -1688,7 +1688,7 @@ isGOffline = false;
       //滚动框
       this.$obj.$FA_ScrollCtn = $('<div class="FA_ScrollCtn"></div>').css({
         width: parseFloat(this.options.ctnAttr[2]) * this.options.rowNum,
-        height: parseFloat(this.options.ctnAttr[3]) * this.options.lineNum
+        height: parseFloat(this.options.ctnAttr[3]) * this.options.lineNum -30
       }).appendTo(this.$obj.$FA_backCtn)
       //rem
       if (isRem) {//rem
@@ -1778,7 +1778,7 @@ isGOffline = false;
         This.$el.val(fromVal + mark + toVal)
         MN_Base.setCaretPos(This.$el[0], cursortPos + mark.length)
         This.options.callback(This.$el.val())
-        This.$obj.$FA_backCtn.hide()
+        // This.$obj.$FA_backCtn.hide()
       })
 
       //初始化切换按钮状态
@@ -1866,6 +1866,7 @@ function H5_upload (url, maxNum, $trigger, $ctn, startcall, callback, type, type
   $trigger.on('change', function () {
     fileData = []
     try {
+      console.log($trigger[0].files)
       var len = maxNum ? (maxNum > $trigger[0].files.length ? $trigger[0].files.length : maxNum) : $trigger[0].files.length
       for (var i = 0; i < len; i++) {//IE9-不支持files
         fileData[i] = $trigger[0].files[i]
@@ -2567,6 +2568,9 @@ function uploadFile (options) {
 	},
     //计算h5下面的快捷服务
     kuaijie: function () {
+      if(this.options.preventAdjust){
+        return false;
+      }
       var showNum = 0
       for (var i = 0, len = $('.editCtn_com').length; i < len; i++) {
         if ($('.editCtn_com').eq(i).css('display') != 'none') {
@@ -4659,6 +4663,7 @@ function uploadFile (options) {
       }else{
         var sourceId = ''
       }
+      console.log($file);
       H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ sourceId , this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
@@ -5561,7 +5566,7 @@ function uploadFile (options) {
                                         }
                                         This.kuaijie()
                                     } else {// 智能聊天
-										$('.sendPicCtn').hide()
+										$('.sendPicCtn').show()
                     if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
                       $('.corpation .pic,.corpation .file').show()
                     }else{
