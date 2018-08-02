@@ -13,7 +13,7 @@ body, html {
     font-size: 0.08rem;
  }
  .action-btn .iconfont{
-    font-size: 0.07rem;
+    font-size: 0.08rem;
  }
 /*客服结构以及客户结构*/
 .MN_kfImg {
@@ -352,7 +352,7 @@ ul li {
     height: 0.2rem;
     box-sizing: border-box;
     padding: 15px;
-    margin-top: 8px;
+    margin-bottom: 8px;
 }
 .editCtn .editHide .editCtn_com .icon-ctn::before{
     content: '';
@@ -378,6 +378,7 @@ ul li {
     white-space: nowrap;
     font-size: 12px;
     margin-bottom: 5px;
+    min-height: 40px;
 }
 /*点击之前图标颜色*/
 .editCtn .editHide .editCtn_com .sendPic {
@@ -739,7 +740,9 @@ ul li {
 .FA_moodCtn{
     background: #F5F5F7; 
 }
-
+.MN_khCtn .FA_upFileCtn a{
+    color: #fff;
+}
 
 
 

@@ -196,26 +196,26 @@
     					<span class="takePhoto"></span>
     					&lt;!&ndash;<p>拍照发送</p>&ndash;&gt;
                     </div>-->
-                    <div class="sendPicCtn editCtn_com" onclick="android.goPicture();">
+                    <div class="sendPicCtn editCtn_com" id="sendPic">
                         <p class="icon-ctn">
                             <i class="iconfont icon-xiangce1"></i>
                         </p>
                         <p>相册</p>
                     </div>
 
-                    <div class="sendPicCtn editCtn_com" id="camera" onclick="android.goCamera();">
+                    <div class="sendPicCtn editCtn_com" id="camera">
                         <p class="icon-ctn">
                             <i class="iconfont icon-paishe"></i>
                         </p>
-                        <!-- <input type="file" class="FA_file file" accept="image/*" capture="camera" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;"> -->
+                        <input type="file" id="sendPhoto" class="FA_file file" accept="image/*" capture="camera" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;">
                         <p>拍摄</p>
                     </div>
 
-                    <div class="sendPicCtn editCtn_com" id="sendFileBtn" onclick="android.goDocument();">
+                    <div class="sendPicCtn editCtn_com" id="sendFileBtn">
                         <p class="icon-ctn">
                             <i class="iconfont icon-wenjian1"></i>
                         </p>
-                        <!-- <input type="file" class="FA_file file" multiple="multiple" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;"> -->
+                        <input type="file" id="sendFile" class="FA_file file" multiple="multiple" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;">
                         <p>文件</p>
                     </div>
 

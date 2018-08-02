@@ -96,6 +96,7 @@
         //tipWord: '请输入您要咨询的问题',//输入框提示语
         //remainWordId: 'MN_remainWordNum',
         //remainWordNum: '100',
+        sendFileIdExpend:'sendPhoto',//上传按钮id
         upFileModule: {//上传文件模块
             open: true,//是否启用功能
             maxNum: 0,//最大上传数量，0为不限制
@@ -132,7 +133,7 @@
             open: true,//是否启用功能
             faceObj: Face,//表情插件实例
         },
-        preventAdjust: true,
+        preventAdjust: true,// 禁止快捷服务按钮自动计算宽度
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
         },
@@ -156,7 +157,8 @@
         }
     });
 
-
+    // 绑定拍照按钮照片上传事件
+    FAQ.sendFile(FAQ.options.sendFileIdExpend);
 
     //调用自动补全插件
     // taskid= 1133 输入引导的sourceId 统一在minichat中获取 amend by zhaoyuxing
@@ -224,17 +226,26 @@
         var _target = $(e.target);
         if (_target.is('.faceBtn') || _target.is('.expendBtn')) {
             $('.editHide').show();
+            timerSetHeight()
+                .then(function (data) {
+                    FAQ.scrollbar.update()
+                    FAQ.scrollbarUpdate()
+                })
         } else if (_target.is('#chatCtn') || _target.parents().is('#chatCtn')) {
+            if($('.editHide').css('display') == "none"){// 任务栏隐藏时，点击页面无需将消息滚动到最底部
+                return false;
+            } 
             $('.editHide').hide();
             $('#sendFace').removeClass('hide');
             $('#keyboard').addClass('hide');
-    
+            timerSetHeight()
+                .then(function (data) {
+                    FAQ.scrollbar.update()
+                    FAQ.scrollbarUpdate()
+                })
+            
         }
-        timerSetHeight()
-            .then(function (data) {
-                FAQ.scrollbar.update()
-                FAQ.scrollbarUpdate()
-            })
+       
     });
 
     /******************常见问题、留言、意见反馈模态框*************************/
@@ -353,10 +364,11 @@
     var isTouchMove = false; // 滑动页面失去焦点时，无需滚动最底部
     $('.chatScroll').on('touchmove', function (e) {
         isTouchMove = true;
-        $('#sendFace').removeClass('hide');
-        $('#keyboard').addClass('hide');
         $('.textarea').blur();
         $('.editHide').hide();
+        set_chatScroll_height();
+        $('#sendFace').removeClass('hide');
+        $('#keyboard').addClass('hide');
     })
 });
 

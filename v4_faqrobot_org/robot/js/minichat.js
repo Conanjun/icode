@@ -1866,7 +1866,6 @@ function H5_upload (url, maxNum, $trigger, $ctn, startcall, callback, type, type
   $trigger.on('change', function () {
     fileData = []
     try {
-      console.log($trigger[0].files)
       var len = maxNum ? (maxNum > $trigger[0].files.length ? $trigger[0].files.length : maxNum) : $trigger[0].files.length
       for (var i = 0; i < len; i++) {//IE9-不支持files
         fileData[i] = $trigger[0].files[i]
@@ -2153,7 +2152,7 @@ function uploadFile (options) {
         open: false,//是否启用功能
         chatUrl: 'h5chat'// 默认跳转的页面
       },
-	  sendFileId:'sendFile',//发送文件
+	    sendFileId:'sendFile',//发送文件
       upFileModule: {//上传文件模块
         open: false,//是否启用功能
         maxNum: 1,//最大上传数量，0为不限制
@@ -2329,7 +2328,7 @@ function uploadFile (options) {
         if (this.options.upFileModule.open) {
             this.upFile()//上传图片->s=uf  s=image
         }
-		this.sendFile()//上传文件 ->s=uf s=image/voice/video/file
+	    	this.sendFile()//上传文件 ->s=uf s=image/voice/video/file
         this.queComment()//问题满意度评价->s=addulc
         this.initComment()//服务满意评价度准备->提示语
         this.initLeaveMsg()//留言准备->提示语
@@ -4663,7 +4662,6 @@ function uploadFile (options) {
       }else{
         var sourceId = ''
       }
-      console.log($file);
       H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ sourceId , this.options.upFileModule.maxNum, $file, this.$obj.$chatCtnId, function (ran) {
         $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
         $('#' + This.options.sendBtnId).trigger('click.FA')
@@ -4680,6 +4678,13 @@ function uploadFile (options) {
         } else {
           var html = ''
             var tmpUrl = data.sendUrlMsg[index].url
+
+            //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing 
+            MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
+              This.scrollbar.update()
+              This.scrollbarUpdate()
+            })
+
             This.request({
                 params: {
                 s: 'image',
@@ -4715,10 +4720,11 @@ function uploadFile (options) {
       })
     },
 	//发送文件s=uf
-    sendFile: function(){
+    sendFile: function(sendFileId){
       var This = this;
-      $('#'+This.defaults.sendFileId).on('click',function(){
-        H5_upload('../' + This.options.interface + '?s=uf', 0, $('#'+This.defaults.sendFileId), This.$obj.$chatCtnId, function (ran) {
+      sendFileId = sendFileId || This.defaults.sendFileId ;
+      $('#' + sendFileId ).on('click',function(){
+        H5_upload('../' + This.options.interface + '?s=uf', 0, $('#' + sendFileId), This.$obj.$chatCtnId, function (ran) {
           $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
           $('#' + This.options.sendBtnId).trigger('click.FA')
           This.options.upFileModule.startcall && This.options.upFileModule.startcall()
@@ -4733,10 +4739,18 @@ function uploadFile (options) {
             var fileName = ''
             var tmpUrl = data.sendUrlMsg[index].url
             switch (data.sendUrlMsg[index].type) {
-              case 1://图片，不加a，防止跳转
-                html = '<img src="' + tmpUrl + '">'
-                sourceInface = 'image'
-                break
+              case 1:
+                if(!MN_Base.isPC()){
+                  html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'                        
+                }else{
+                    html = '<img src="' + tmpUrl + '">' //图片，不加a，防止跳转
+                }
+                //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing 
+                MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
+                  This.scrollbar.update()
+                  This.scrollbarUpdate()
+                })
+              break
               case 2://音频文件
                 html = '<p>若无法播放，请点击<a href="' + tmpUrl + '" target="_blank" download>下载</a></p><br/>'
                 html += '<audio style="width:100%" src="' + tmpUrl + '" controls="controls" style="max-width:100%;">您的浏览器不支持 audio 标签。</audio>'
@@ -4753,6 +4767,7 @@ function uploadFile (options) {
                 fileName = data.sendUrlMsg[index].name
                 break
             }
+           
             This.request({
               params: {
                 s: sourceInface,
@@ -5641,7 +5656,6 @@ function uploadFile (options) {
 
                                     clearInterval(timer)
                                     if (data.status == -1) {// 接口返回状态错误时，重新上线
-                                        console.log('status为-1');
                                     } else if (data.tspan < 2000) {
                                         This.tspan = data.tspan * 1000
                                         resetTimer()
