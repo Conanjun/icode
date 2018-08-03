@@ -177,45 +177,28 @@
 
 
                 <!-- 隐藏菜单 -->
-
-                <!--  taskid=784;赵永平 h5页面添加标签图片按钮……描述并点击后整体变色-->
                 <div class="editHide">
-                    <!--<div class="sendVoiceCtn editCtn_com">
-						<span id="sendVoice" class="sendVoice"></span>
-						&lt;!&ndash;<p>发送语音</p>&ndash;&gt;
-					</div>
-					<div class="sendCameraCtn editCtn_com">
-						<span id="sendCamera" class="sendCamera"></span>
-					</div>-->
-
-                    <!--<div class="sendFileCtn editCtn_com">
-						<span id="sendFile" class="sendFile"></span>
-						&lt;!&ndash;<p>发送文件</p>&ndash;&gt;
-					</div>
-    				<div class="takePhotoCtn editCtn_com">
-    					<span class="takePhoto"></span>
-    					&lt;!&ndash;<p>拍照发送</p>&ndash;&gt;
-                    </div>-->
-                    <div class="sendPicCtn editCtn_com" id="sendPic">
+                    <div class="sendPicCtn editCtn_com relative" onclick="android.chooseType('picture');">
                         <p class="icon-ctn">
                             <i class="iconfont icon-xiangce1"></i>
                         </p>
+                        <input type="file" id="sendPicture" class="file-input"  multiple="multiple">
                         <p>相册</p>
                     </div>
 
-                    <div class="sendPicCtn editCtn_com" id="camera">
+                    <div class="sendPicCtn editCtn_com relative" id="camera" onclick="android.chooseType('camera');">
                         <p class="icon-ctn">
                             <i class="iconfont icon-paishe"></i>
                         </p>
-                        <input type="file" id="sendPhoto" class="FA_file file" accept="image/*" capture="camera" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;">
+                        <input type="file" id="sendPhoto" class="file-input" multiple="multiple">
                         <p>拍摄</p>
                     </div>
 
-                    <div class="sendPicCtn editCtn_com" id="sendFileBtn">
+                    <div class="sendPicCtn editCtn_com relative" id="sendFileBtn" onclick="android.chooseType('file');">
                         <p class="icon-ctn">
                             <i class="iconfont icon-wenjian1"></i>
                         </p>
-                        <input type="file" id="sendFile" class="FA_file file" multiple="multiple" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;">
+                        <input type="file" id="sendFile" class="file-input" multiple="multiple">
                         <p>文件</p>
                     </div>
 
@@ -252,6 +235,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="loading">
+            <div class="loadImg" id="spinner2"></div>
+            <div class="loadCenter">您的网络不稳定，请稍后再试</div>
         </div>
     </div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -293,6 +280,7 @@
 
 <script>
     var tmpsourceId = 3;
+    // 图片放大插件
     var initPhotoSwipeFromDOM = function (gallerySelector) {
         // 解析来自DOM元素幻灯片数据（URL，标题，大小...）
         var parseThumbnailElements = function (el) {

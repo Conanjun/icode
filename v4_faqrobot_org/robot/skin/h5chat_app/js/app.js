@@ -1,4 +1,5 @@
 ; $(function () {
+    // alert('3')
    
     FastClick.attach(document.body);
 
@@ -139,6 +140,13 @@
         preventHide: true,// 机器人聊天时 仍然显示发送文件、图片功能
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
+            console.log(data.webConfig.webName);
+            try {
+                android.setTitle(data.webConfig.webName);
+            } catch (error) {
+                
+            }
+            
         },
         sendCallback: function () {//点击发送按钮的回调
             $('.addBtn').removeClass('hide');
@@ -162,6 +170,7 @@
 
     // 绑定拍照按钮照片上传事件
     FAQ.sendFile(FAQ.options.sendFileIdExpend);
+    FAQ.sendFile('sendPicture');
 
     //调用自动补全插件
     // taskid= 1133 输入引导的sourceId 统一在minichat中获取 amend by zhaoyuxing
@@ -206,11 +215,12 @@
     // 获取焦点
     $('.textarea').on('focus', function () {
         // 工具栏收缩
-        if ($('.FA_backCtn').css('display') == 'block') {
-            $('.editHide').hide();
-        } else {
-            $('.editHide').hide();
-        }
+        // if ($('.FA_backCtn').css('display') == 'block') {
+        //     $('.editHide').hide();
+        // } else {
+        //     $('.editHide').hide();
+        // }
+        $('.editHide').hide();
         $('#sendFace').removeClass('hide');
         $('#keyboard').addClass('hide');
 
@@ -235,18 +245,16 @@
                     FAQ.scrollbarUpdate()
                 })
         } else if (_target.is('#chatCtn') || _target.parents().is('#chatCtn')) {
-            if($('.editHide').css('display') == "none"){// 任务栏隐藏时，点击页面无需将消息滚动到最底部
-                return false;
-            } 
-            $('.editHide').hide();
-            $('#sendFace').removeClass('hide');
-            $('#keyboard').addClass('hide');
-            timerSetHeight()
-                .then(function (data) {
-                    FAQ.scrollbar.update()
-                    FAQ.scrollbarUpdate()
-                })
-            
+            if($('.editHide').css('display') == "block"){// 任务栏隐藏时，点击页面无需将消息滚动到最底部
+                $('.editHide').hide();
+                $('#sendFace').removeClass('hide');
+                $('#keyboard').addClass('hide');
+                timerSetHeight()
+                    .then(function (data) {
+                        FAQ.scrollbar.update()
+                        FAQ.scrollbarUpdate()
+                    })
+                }             
         }
        
     });
@@ -338,12 +346,12 @@
 
 
     // 输入框获取焦点
-    $('.sendBtn').on('click.FA', function () {
-        $('.textarea').focus();
-        setTimeout(function () {
-            $('.textarea').focus();
-        }, 50);
-    });
+    // $('.sendBtn').on('click.FA', function () {
+    //     $('.textarea').focus();
+    //     setTimeout(function () {
+    //         $('.textarea').focus();
+    //     }, 50);
+    // });
 
     // 键盘-表情按钮切换
     $('#keyboard').on('click.FA', function () {
@@ -372,6 +380,6 @@
         set_chatScroll_height();
         $('#sendFace').removeClass('hide');
         $('#keyboard').addClass('hide');
-    })
+    })    
 });
 
