@@ -31,6 +31,7 @@
             $('.textarea').blur();
             $('.editHide').show();
         },
+        ish5chatApp:true
     });
 
   
@@ -56,6 +57,7 @@
     var FAQ = new Faqrobot({
         interface: 'servlet/appChat',
         setInputTop: false,//默认开启ios11键盘遮挡问题
+        ish5chatApp:true,
         //sysNum: 1000000,//客户唯一标识
         //jid: 0,//自定义客服客户图标
         //robotName: 'FaqRobot',//机器人名称
@@ -134,6 +136,7 @@
             faceObj: Face,//表情插件实例
         },
         preventAdjust: true,// 禁止快捷服务按钮自动计算宽度
+        preventHide: true,// 机器人聊天时 仍然显示发送文件、图片功能
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
         },

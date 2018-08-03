@@ -63,7 +63,7 @@ body, html {
 }
 .MN_kfTriangle2, .MN_kfTriangle1{
     top: 10px;
-    left: -8px;
+    left: -7px;
 }
 .MN_kfTriangle1{
     left: -9px;
@@ -74,7 +74,7 @@ body, html {
 }
 .MN_khTriangle1, .MN_khTriangle2{
     top: 12px;
-    right: -8px;
+    right: -7px;
 }
 .MN_khTriangle1{
     right: -9px;
@@ -275,13 +275,13 @@ ul li {
     -webkit-appearance: none;
     width: 100%;
     height: 0.09rem;
+    line-height: 0.065rem;
     resize: none;
     outline: none;
     box-sizing: border-box;
     overflow-y: auto;
     border: 1px solid #e0e0e2;
-    padding: 0.02rem 0.027rem;
-    /* text-indent: 10px; */
+    padding: 0.01rem 0.027rem;
     border-radius: 3px;
     background: #fff;
     float: left;

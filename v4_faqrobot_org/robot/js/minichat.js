@@ -1686,9 +1686,14 @@ isGOffline = false;
       //背景框
       this.$obj.$FA_backCtn = $('<div class="FA_backCtn"></div>').hide().css({}).appendTo(this.options.targetEl)
       //滚动框
+      if (This.options.ish5chatApp){
+        var height = parseFloat(this.options.ctnAttr[3]) * this.options.lineNum -30;
+      }else{
+        var height = parseFloat(this.options.ctnAttr[3]) * this.options.lineNum;
+      }
       this.$obj.$FA_ScrollCtn = $('<div class="FA_ScrollCtn"></div>').css({
         width: parseFloat(this.options.ctnAttr[2]) * this.options.rowNum,
-        height: parseFloat(this.options.ctnAttr[3]) * this.options.lineNum -30
+        height: height
       }).appendTo(this.$obj.$FA_backCtn)
       //rem
       if (isRem) {//rem
@@ -1778,7 +1783,9 @@ isGOffline = false;
         This.$el.val(fromVal + mark + toVal)
         MN_Base.setCaretPos(This.$el[0], cursortPos + mark.length)
         This.options.callback(This.$el.val())
-        // This.$obj.$FA_backCtn.hide()
+        if(!This.options.ish5chatApp){
+            This.$obj.$FA_backCtn.hide()
+        }
       })
 
       //初始化切换按钮状态
@@ -4745,6 +4752,7 @@ function uploadFile (options) {
                 }else{
                     html = '<img src="' + tmpUrl + '">' //图片，不加a，防止跳转
                 }
+                sourceInface = 'image'
                 //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing 
                 MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
                   This.scrollbar.update()
@@ -5581,7 +5589,12 @@ function uploadFile (options) {
                                         }
                                         This.kuaijie()
                                     } else {// 智能聊天
-										$('.sendPicCtn').show()
+                    if(This.options.preventHide){
+                      $('.sendPicCtn').show()
+                    }else{
+                      $('.sendPicCtn').hide()
+                    }                  
+										
                     if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
                       $('.corpation .pic,.corpation .file').show()
                     }else{
