@@ -5880,7 +5880,7 @@ function uploadFile (options) {
         callback: function(data) {
           self.options.nowStateNew = data.nowState;
           // 提示下线消息
-          if(data && data.robotAnswer && data.robotAnswer.length > 0 && data.robotAnswer[0].ansCon){
+          if(data && data.robotAnswer && data.robotAnswer.length > 0 && data.robotAnswer[0].ansCon && !self.options.hideOfflineWord){
             self.$obj.$chatCtnId.append(self.robotHtml(data, 0))//添加机器人的话
             setTimeout(function(){
               self.scrollbar.scrollTo('bottom', true);

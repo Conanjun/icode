@@ -1,23 +1,250 @@
 ; $(function () {
-    // alert('3')
-   
-    FastClick.attach(document.body);
 
-    function set_chatScroll_height() {
-        var winW = $(window).width(),
-            winH = $(window).height();
-        $('html').css('fontSize', winW < 750 ? winW : 750);
-        $('.chatScroll').height(winH - $('.editCtn').outerHeight());
+    /**
+     * 默认参数部分
+     * @param 用于存放需要用到的元素
+     * 
+    */
+
+    var defaults = {
+        window: $(window),
+        html: $('html'),
+        body: $('body'),
+        chatScroll: $('.chatScroll'),// 滚动外框
+        view: $('.view'),//页面显示区域，用于绑定快捷服务展开/收缩事件 不能用body hack ios
+        textarea: $('.textarea'),// 输入框元素
+        sendBtn: $('.sendBtn'),// 发送按钮
+        addBtn: $('.addBtn'),// 快捷服务展开按钮
+        sendFaceBtn: $('#sendFace'), // 表情按钮
+        keyboardBtn: $('#keyboard'),// 切换为键盘按钮
+        faceBack: $('.FA_backCtn'),// 表情框元素
+        editCtn: $('.editHide'),// 快捷服务元素
+        sendFeedBack: $('#sendFeedBack'),//快捷服务按钮
+        sendFileId: 'sendPhoto,sendPicture',//需要绑定上传文件事件的元素id
+        sendfaceIconClass: 'faceBtn',// 发送表情图标按钮class值
+        expendbtnIconClass: 'expendBtn',// 快捷服务栏图标按钮class值
+        chatCtnId: 'chatCtn' // 滚动内部元素的id
     }
 
-    $(window).on('resize', function () {
-        set_chatScroll_height();
-    });
+    function FaqrobotApp(options) {
+        this.options = $.extend({}, defaults, options);
+        // 记录当前是否处于滑动状态（作用：滑动页面失去焦点时，输入框失去焦点，但是内容无需滚动最底部）
+        this.isTouchMove = false;
+        this.init();
+    }
 
-    set_chatScroll_height();
+    FaqrobotApp.prototype = {
+        /**
+         * 页面加载时必要加载的方法
+         * 说明：set_chatScroll_height() resize()必须在实例faqrobot前调用
+         * @function
+         */
+        init: function () {
+            this.set_chatScroll_height();
+            this.resize();
+            this.switchFaceBtn();
+            this.RGComment();
+            this.hideEdit();
+        },
+        /**
+         * 在Faqrobot 类实例化以后才可执行的方法，这些方法中需要用到FAQ对象中的方法
+         * @function
+         */
+        afterInstant: function () {
+            this.bindFileup();
+            this.bindTextare();
+            this.quickServChange();
+        },
+        /**
+         * 设置屏幕尺寸方法
+         * @function
+         */
+        set_chatScroll_height: function () {
+            var winW = $(window).width(),
+                winH = $(window).height();
+            this.options.html.css('fontSize', winW < 750 ? winW : 750);
+            this.options.chatScroll.height(winH - $('.editCtn').outerHeight());
+        },
+        /**
+         * 定时设置页面高度
+         * @function
+         */
+        timerSetHeight: function () {
+            var That = this;
+            var p = new Promise(function (resolve, reject) {
+                var i = 0, timer = null;
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    That.set_chatScroll_height();
+                    if (i >= 5) {
+                        resolve();
+                        clearInterval(timer);
+                    }
+                    i++;
+                }, 100);
+            })
+            return p;
+        },
+        /**
+         * 页面input绑定文件上传功能
+         * @function
+        */
+        bindFileup: function () {
+            if (this.options.sendFileId) {
+                var sendIdList = this.options.sendFileId.split(',');
+                for (var i = 0; i < sendIdList.length; i++) {
+                    FAQ.sendFile(sendIdList[i]);
+                }
+            }
+        },
+        /**
+         * 人工评价
+         * @function
+        */
+        RGComment: function () {
+            window.uuid = $(this).attr('uuid');// 客服要求客户评价
+            this.options.sendFeedBack.trigger('click');
+        },
+        /**
+        * 屏幕大小改变时，调整页面尺寸
+        * @event
+        */
+        resize: function () {
+            var That = this;
+            this.options.window.on('resize', function () {
+                That.set_chatScroll_height();
+            })
+        },
 
-    //调用表情插件
-    var Face = $('.textarea').face({
+        /**
+         * 输入框事件
+         * @event 用于绑定输入框输入文字、获取焦点、失去焦点时的操作
+        */
+        bindTextare: function () {
+            var That = this;
+            // 输入文字
+            this.options.textarea.on('input', function () {
+                if ($(this).val().replace(/\s+/g, '')) {
+                    That.options.sendBtn.removeClass('hide');
+                    That.options.addBtn.addClass('hide');
+                } else {
+                    That.options.sendBtn.addClass('hide');
+                    That.options.addBtn.removeClass('hide');
+                }
+            })
+                // 获取焦点
+                .on('focus', function () {
+                    if (That.options.faceBack.css('display') == 'block') {
+                        That.options.editCtn.show();
+                    } else {
+                        That.options.editCtn.hide();
+                    }
+                    That.options.sendFaceBtn.removeClass('hide');
+                    That.options.keyboardBtn.addClass('hide');
+
+                    That.timerSetHeight()
+                        .then(function (data) {
+                            FAQ.scrollbar.update()
+                            FAQ.scrollbarUpdate()
+                        })
+                })
+                // 失去焦点   页面重新计算尺寸，内容滚动最底部
+                .on('blur', function () {
+                    That.timerSetHeight()
+                        .then(function (data) {
+                            if (That.isTouchMove) {
+                                That.isTouchMove = false; // 复位
+                                return false;
+                            }
+                            FAQ.scrollbar.update()
+                        })
+                })
+        },
+        /**
+         * 快捷服务展开以及收缩操作
+         * @event
+        */
+        quickServChange: function () {
+            var That = this;
+            this.options.view.on('click', function (e) {
+                var _target = $(e.target);
+                if (_target.is("." + That.options.sendfaceIconClass) || _target.is("." + That.options.expendbtnIconClass)) {
+                    That.options.editCtn.show();
+                    That.timerSetHeight()
+                        .then(function (data) {
+                            FAQ.scrollbar.update()
+                            FAQ.scrollbarUpdate()
+                        })
+                } else if (_target.is('#' + That.options.chatCtnId) || _target.parents().is('#' + That.options.chatCtnId)) {
+                    if (That.options.editCtn.css('display') == "block") {// 快捷服务显示时，点击页面隐藏
+                        That.options.editCtn.hide();
+                        That.options.sendFaceBtn.removeClass('hide');
+                        That.options.keyboardBtn.addClass('hide');
+                        That.timerSetHeight()
+                            .then(function (data) {
+                                FAQ.scrollbar.update()
+                                FAQ.scrollbarUpdate()
+                            })
+                    }
+                }
+            })
+        },
+
+        /**
+        * 键盘-表情按钮切换事件
+        * @event 点击表情时表情按钮替换为键盘按钮；点击键盘，弹出键盘，并将键盘按钮转化为表情
+       */
+        switchFaceBtn: function () {
+            var That = this;
+            That.options.sendFaceBtn.on('click.FA', function () {
+                $(this).addClass('hide');
+                That.options.keyboardBtn.removeClass('hide');
+            })
+            That.options.keyboardBtn.on('click.FA', function () {
+                $(this).addClass('hide');
+                That.options.textarea.focus();
+                That.options.sendFaceBtn.removeClass('hide');
+                That.options.editCtn.hide();
+            })
+        },
+
+        /**
+         * 页面滑动时，隐藏快捷服务功能栏
+         * @event 
+        */
+        hideEdit: function () {
+            var That = this;
+            That.options.chatScroll.on('touchmove', function (e) {
+                That.isTouchMove = true;
+                That.options.textarea.blur();
+                That.options.editCtn.hide();
+                That.set_chatScroll_height();
+                That.options.sendFaceBtn.removeClass('hide');
+                That.options.keyboardBtn.addClass('hide');
+            })
+        }
+    };
+
+    var app = new FaqrobotApp();
+
+
+
+    FastClick.attach(document.body);
+
+    app.set_chatScroll_height();
+
+    /**
+     * 表情插件 实例化
+     * @object 构造函数在 minichat.js中
+     * @function face 用于初始化表情插件
+     * @param
+     * 表情插件
+     * {
+     *      
+     * }
+     * 
+     * */
+    var Face = app.textarea.face({
         src: 'src/yun/',//表情路径
         rowNum: 7,//每行最多显示数量，此属性不适用于常用语
         ctnAttr: ['0rem', '0rem', '0.133rem', '0.122rem'],//[left bottom width height] 表情框相对targetEl位置和里面的表情格子宽高  要写单位
@@ -32,33 +259,14 @@
             $('.textarea').blur();
             $('.editHide').show();
         },
-        ish5chatApp:true
+        ish5chatApp: true
     });
 
-  
-    // 定时设置高度
-    var timer = null;
-    function timerSetHeight() {
-        var p = new Promise(function (resolve, reject) {
-            var i = 0;
-            clearInterval(timer);
-            timer = setInterval(function () {
-                set_chatScroll_height();
-                if (i >= 5) {
-                    resolve();
-                    clearInterval(timer);
-                }
-                i++;
-            }, 100);
-        })
-        return p;
-    }
-
-    //faqrobot
+    //faqrobot 实例化 
     var FAQ = new Faqrobot({
         interface: 'servlet/appChat',
         setInputTop: false,//默认开启ios11键盘遮挡问题
-        ish5chatApp:true,
+        ish5chatApp: true,
         //sysNum: 1000000,//客户唯一标识
         //jid: 0,//自定义客服客户图标
         //robotName: 'FaqRobot',//机器人名称
@@ -99,13 +307,12 @@
         //tipWord: '请输入您要咨询的问题',//输入框提示语
         //remainWordId: 'MN_remainWordNum',
         //remainWordNum: '100',
-        sendFileIdExpend:'sendPhoto',//上传按钮id
         upFileModule: {//上传文件模块
             open: true,//是否启用功能
             maxNum: 0,//最大上传数量，0为不限制
             triggerId: 'sendPic',//触发上传按钮
             startcall: function () {//上传文件前的回调
-                set_chatScroll_height();
+                app.set_chatScroll_height();
             },
             callback: function () {//上传文件后的回调
             },
@@ -140,13 +347,6 @@
         preventHide: true,// 机器人聊天时 仍然显示发送文件、图片功能
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
-            console.log(data.webConfig.webName);
-            try {
-                android.setTitle(data.webConfig.webName);
-            } catch (error) {
-                
-            }
-            
         },
         sendCallback: function () {//点击发送按钮的回调
             $('.addBtn').removeClass('hide');
@@ -168,9 +368,8 @@
         }
     });
 
-    // 绑定拍照按钮照片上传事件
-    FAQ.sendFile(FAQ.options.sendFileIdExpend);
-    FAQ.sendFile('sendPicture');
+
+    app.afterInstant();
 
     //调用自动补全插件
     // taskid= 1133 输入引导的sourceId 统一在minichat中获取 amend by zhaoyuxing
@@ -184,80 +383,7 @@
         }
     });
 
-   
 
-    /****************输入框事件*****************/
-    //输入文字 显示发送按钮
-    $('.textarea').on('input', function () {
-        if ($(this).val().replace(/\s+/g, '')) {
-            $('.sendBtn').removeClass('hide');
-            $('.addBtn').addClass('hide');
-        } else {
-            $('.sendBtn').addClass('hide');
-            $('.addBtn').removeClass('hide');
-        }
-    });
-
-    $('.textarea').on('blur', function () {
-        // $('#sendFace').removeClass('hide');
-        // $('#keyboard').addClass('hide');
-        timerSetHeight()
-            .then(function (data) {
-                if(isTouchMove){
-                    isTouchMove = false; // 复位
-                    return false;
-                }
-                FAQ.scrollbar.update()
-                // FAQ.scrollbarUpdate()
-            })
-    });
-
-    // 获取焦点
-    $('.textarea').on('focus', function () {
-        // 工具栏收缩
-        // if ($('.FA_backCtn').css('display') == 'block') {
-        //     $('.editHide').hide();
-        // } else {
-        //     $('.editHide').hide();
-        // }
-        $('.editHide').hide();
-        $('#sendFace').removeClass('hide');
-        $('#keyboard').addClass('hide');
-
-        timerSetHeight()
-            .then(function (data) {
-                FAQ.scrollbar.update()
-                FAQ.scrollbarUpdate()
-            })
-    });
-
-    /****************输入框事件*****************/
-
-
-    //隐藏更多
-    $('.view').on('click', function (e) {//不能用body hack ios
-        var _target = $(e.target);
-        if (_target.is('.faceBtn') || _target.is('.expendBtn')) {
-            $('.editHide').show();
-            timerSetHeight()
-                .then(function (data) {
-                    FAQ.scrollbar.update()
-                    FAQ.scrollbarUpdate()
-                })
-        } else if (_target.is('#chatCtn') || _target.parents().is('#chatCtn')) {
-            if($('.editHide').css('display') == "block"){// 任务栏隐藏时，点击页面无需将消息滚动到最底部
-                $('.editHide').hide();
-                $('#sendFace').removeClass('hide');
-                $('#keyboard').addClass('hide');
-                timerSetHeight()
-                    .then(function (data) {
-                        FAQ.scrollbar.update()
-                        FAQ.scrollbarUpdate()
-                    })
-                }             
-        }
-       
-    });
 
     /******************常见问题、留言、意见反馈模态框*************************/
     var layerCtn = null;//所有的弹出层
@@ -270,7 +396,7 @@
             content: $('.commonQueLayer'),
             area: ['1rem', '100%'],
             end: function () {
-                set_chatScroll_height();
+                // set_chatScroll_height();
             },
         });
     });
@@ -299,7 +425,7 @@
             content: $('.feedbackLayer'),
             area: ['1rem', '100%'],
             end: function () {
-                set_chatScroll_height();
+                // set_chatScroll_height();
             },
         });
     });
@@ -326,60 +452,7 @@
     })
 
     /******************常见问题、留言、意见反馈模态框*************************/
-
-
-
-    /**
-     * taskid=784;赵永平
-     * h5页面添加标签图片按钮……描述并点击后整体变色
-     * 添加字体样式
-     */
-    /*点击输入框下面图标背景变灰*/
-    $('body').on('click', '.editCtn_com', function (e) {
-        var that = this;
-        $(that).find('.icon-ctn').addClass('active');
-        setTimeout(function () {
-            $(that).find('.icon-ctn').removeClass('active');
-        }, 1000);
-    }
-    );
-
-
-    // 输入框获取焦点
-    // $('.sendBtn').on('click.FA', function () {
-    //     $('.textarea').focus();
-    //     setTimeout(function () {
-    //         $('.textarea').focus();
-    //     }, 50);
-    // });
-
-    // 键盘-表情按钮切换
-    $('#keyboard').on('click.FA', function () {
-        $('.textarea').focus();
-        $(this).addClass('hide');
-        $('#sendFace').removeClass('hide');
-        $('.editHide').hide();
-    })
-
-     $('#sendFace').on('click.FA',function(){
-        $(this).addClass('hide');
-        $('#keyboard').removeClass('hide');
-     })
-
-    // 人工评价
-    $('body').on('click', '.RG_commentBtn', function () {
-        window.uuid = $(this).attr('uuid');// 客服要求客户评价
-        $('#sendFeedBack').trigger('click');
-    });
-
-    var isTouchMove = false; // 滑动页面失去焦点时，无需滚动最底部
-    $('.chatScroll').on('touchmove', function (e) {
-        isTouchMove = true;
-        $('.textarea').blur();
-        $('.editHide').hide();
-        set_chatScroll_height();
-        $('#sendFace').removeClass('hide');
-        $('#keyboard').addClass('hide');
-    })    
 });
+
+
 
