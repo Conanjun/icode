@@ -44,6 +44,13 @@ body, html {
 .MN_kfCtn p{
     margin-bottom: 0px;
 }
+.MN_kfName{
+    margin-left: -19px;
+}
+.MN_khName{
+    margin-right: -41px;
+}
+    
 
 /*客服对话框显示*/
 .MN_answer{
@@ -873,7 +880,20 @@ ul li {
 }
 /** END of spinner2 */
 
-
+/*跳转原生页*/
+.MN_kfCtn .go-native{
+    margin: 10px 0;
+    text-align: center;
+}
+.MN_kfCtn .nativeBtn{
+    color: #008CEE;
+    border: 1px solid #008cee;
+    border-radius: 5px;
+    padding: 2px 10px;
+}
+.MN_kfCtn .nativeBtn:hover{
+    text-decoration: none;
+}
 
 
 

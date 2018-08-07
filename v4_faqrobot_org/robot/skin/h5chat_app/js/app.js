@@ -189,8 +189,6 @@
                             FAQ.scrollbar.update()
                             FAQ.scrollbarUpdate()
                         })
-                } else if(_target.is("." + That.options.nativeBtnClass)){// 跳转原生页面事件绑定
-                    That.goNativepage(_target);
                 }else if (_target.is('#' + That.options.chatCtnId) || _target.parents().is('#' + That.options.chatCtnId)) {
                     if (That.options.editCtn.css('display') == "block") {// 快捷服务显示时，点击页面隐藏
                         That.options.editCtn.hide();
@@ -227,18 +225,20 @@
 
         /**
          * @event 页面滑动时，隐藏快捷服务功能栏
-         * 滑动页面时，隐藏快捷服务栏，输入框失去焦点（隐藏键盘）并将表情按钮显示，键盘按钮隐藏
+         * 滑动页面时，如果任务栏处于展开状态，隐藏快捷服务栏，输入框失去焦点（隐藏键盘）并将表情按钮显示，键盘按钮隐藏；否则不做操作
          *  
         */
         hideEdit: function () {
             var That = this;
             That.options.chatScroll.on('touchmove', function (e) {
-                That.isTouchMove = true;
-                That.options.textarea.blur();
-                That.options.editCtn.hide();
-                That.set_chatScroll_height();
-                That.options.sendFaceBtn.removeClass('hide');
-                That.options.keyboardBtn.addClass('hide');
+                if(That.options.editCtn.css('display') == 'block'){
+                    That.isTouchMove = true;
+                    That.options.textarea.blur();
+                    That.options.editCtn.hide();
+                    That.timerSetHeight();
+                    That.options.sendFaceBtn.removeClass('hide');
+                    That.options.keyboardBtn.addClass('hide');
+                }
             })
         },
         /**
@@ -256,6 +256,7 @@
          * 使用场景：在app中退出当前机器人页面或app进入后台运行时，由app端调用该方法
         */
         offline: function(){
+            // alert('下线')
             FAQ.options.hideOfflineWord = true;// 用于app进入后台时，下线不显示下线提示语
             FAQ.offline(); 
         },
@@ -277,40 +278,38 @@
          * 说明：在FAQ s=aq接口获得答案后调用，即getCallback()，可根据需要重写方法
          * @param answer 答案文本
          * @param data 答案数据
-         * 答案有推荐链接时（data.robotAnswer[0].thirdUrl.url有值），给当前答案显示框内增加按钮，点击后跳转到原生页面
-         * 将data.robotAnswer[0].thirdUrl.url作为属性存在元素当中，跳转时作为参数
-         * 点击事件在this.quickServChange()中绑定
+         * 实现方法：答案有推荐链接时（data.robotAnswer[0].thirdUrl.url有值），给当前答案显示框内增加按钮，点击后跳转到原生页面
+         *          跳转通过a标签的href属性实现跳转，href格式与安卓端自行约定
          * 
         */
         addGoNativeBtn:function(answer, data){
+             /*组织app所需的数据*/
             if (data.robotAnswer[0].thirdUrl) {
                 var url = data.robotAnswer[0].thirdUrl.url;
+                var nativeUrl =  url.split('/')[3] + '://tonative/param';
                 if($('.MN_kfCtn:last .MN_helpful')){
-                    $('.MN_kfCtn:last .MN_helpful').before('<div class="go-native"><a class="nativeBtn" rel='+url+'>'+'点击跳转原生页'+'</a></div>')
+                    $('.MN_kfCtn:last .MN_helpful').before('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>')
                 }else{
-                    $('.MN_kfCtn:last').append('<div class="go-native"><a class="nativeBtn" rel='+url+'>'+'点击跳转原生页'+'</a></div>');
+                    $('.MN_kfCtn:last').append('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>');
                 }
-            }
-        },
-        /**
-         * @function 跳转到原始页面
-         * @param ele dom元素，用于获得跳转必要参数
-         * 组织跳转原生页需要传输的数据并调用安卓的方法进行跳转
-        */
-        goNativepage: function(ele){
-             /*组织app所需的数据*/
-            var param =  ele.attr('rel').split('/')[3] + '://tonative/param';
-            try {
-                android.goNative(param);
-            } catch (error) {
-               console.log(param) ;
             }
         }
     };
 
     var app = new FaqrobotApp();
 
-
+    /**
+     * @object 用于与原生app端交互，app调用js的方法
+     * 注意：与app交互的方法必须挂载到window上，并且在实例化FaqrobotApp后定义
+    */
+    window.interNative = {
+        offline: function(){
+            app.offline();
+        },
+        online: function(){
+            app.online();
+        }
+    }
 
     FastClick.attach(document.body);
 
@@ -431,6 +430,12 @@
         preventHide: true,// 机器人聊天时 仍然显示发送文件、图片功能
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
+            try {
+                // 设置安卓端头部的标题
+                android.setTitle(data.webConfig.webName || '');
+            } catch (error) {
+                
+            }
         },
         sendCallback: function () {//点击发送按钮的回调
             /**
@@ -556,6 +561,7 @@
 
     /******************常见问题、留言、意见反馈模态框*************************/
 });
+
 
 
 
