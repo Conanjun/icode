@@ -1,11 +1,17 @@
 ; $(function () {
+    /********************************************
+        * FaqrobotApp 构造函数以及原型对象*
+        主要包含三部分:
+        参数设置：定义原型对象方法中需要用到的变量
+        构造函数：创建实例对象，并通过init方法进行初始化
+        原型对象：定义对象常用的方法
+     * *****************************************/
 
-    /**
+   /**
      * 默认参数部分
-     * @param 用于存放需要用到的元素
+     * @param 用于存放需要用到的Dom元素或者元素的id、class值
      * 
     */
-
     var defaults = {
         window: $(window),
         html: $('html'),
@@ -19,25 +25,35 @@
         keyboardBtn: $('#keyboard'),// 切换为键盘按钮
         faceBack: $('.FA_backCtn'),// 表情框元素
         editCtn: $('.editHide'),// 快捷服务元素
+        editShow: $('.editShow'),// 输入框元素行
         sendFeedBack: $('#sendFeedBack'),//快捷服务按钮
         sendFileId: 'sendPhoto,sendPicture',//需要绑定上传文件事件的元素id
         sendfaceIconClass: 'faceBtn',// 发送表情图标按钮class值
         expendbtnIconClass: 'expendBtn',// 快捷服务栏图标按钮class值
-        chatCtnId: 'chatCtn' // 滚动内部元素的id
+        chatCtnId: 'chatCtn' ,// 滚动内部元素的id
+        nativeBtnClass:'nativeBtn'// 跳转原生页面按钮class
     }
 
+    /**
+     * FaqrobotApp 构造函数，用于创建实例对象，并通过init方法进行初始化
+     * @param options 类型对象 实例化FaqrobotApp时传入，其中可包含变量或方法
+     * 使用方式：建议定制部分用到的方法以及变量通过该方式传入，对象内使用通过this.options.变量/方法名
+     * 
+    */
     function FaqrobotApp(options) {
-        this.options = $.extend({}, defaults, options);
-        // 记录当前是否处于滑动状态（作用：滑动页面失去焦点时，输入框失去焦点，但是内容无需滚动最底部）
-        this.isTouchMove = false;
-        this.init();
+        this.options = $.extend({}, defaults, options);// 合并传入参数与默认参数
+        this.isTouchMove = false;// 记录当前是否处于滑动状态（作用：滑动页面失去焦点时，输入框失去焦点，但是内容无需滚动最底部）
+        this.init();// 实例化时调用的方法
     }
 
+    /**
+     * FaqrobotApp 原型对象
+     * 作用：方法的集合
+    */
     FaqrobotApp.prototype = {
         /**
-         * 页面加载时必要加载的方法
-         * 说明：set_chatScroll_height() resize()必须在实例faqrobot前调用
-         * @function
+         * @function 页面加载时必要加载的方法
+         * 说明：set_chatScroll_height() resize()必须在实例faqrobot前调用以及初始化表情插件、输入引导插件前调用，具体函数的作用见响应函数模块注释
          */
         init: function () {
             this.set_chatScroll_height();
@@ -47,8 +63,8 @@
             this.hideEdit();
         },
         /**
-         * 在Faqrobot 类实例化以后才可执行的方法，这些方法中需要用到FAQ对象中的方法
-         * @function
+         *  @function 在Faqrobot 类实例化以后才可执行的方法，这些方法中需要用到FAQ对象中的方法
+         *
          */
         afterInstant: function () {
             this.bindFileup();
@@ -56,8 +72,9 @@
             this.quickServChange();
         },
         /**
-         * 设置屏幕尺寸方法
-         * @function
+         * @function 设置屏幕尺寸方法
+         * 作用：设置页面聊天内容显示区域的尺寸，在聊天区域尺寸发生改变时调用，一般结合定时器使用提高准确性
+         * @example 展开/收缩快捷服务区域时
          */
         set_chatScroll_height: function () {
             var winW = $(window).width(),
@@ -66,8 +83,10 @@
             this.options.chatScroll.height(winH - $('.editCtn').outerHeight());
         },
         /**
-         * 定时设置页面高度
-         * @function
+         * @function 定时设置页面高度
+         * 作用：定时设置页面高度，增加屏幕尺寸计算的准确性
+         *      采用promise，可在.then方法中设置回调
+         * @example 一般用于聊天过程中（聊天区域大小变化频率较快）屏幕尺寸的展开/收缩快捷服务区域时地用，then方法中的回调为将页面滚动到底部
          */
         timerSetHeight: function () {
             var That = this;
@@ -86,8 +105,9 @@
             return p;
         },
         /**
-         * 页面input绑定文件上传功能
-         * @function
+         * @function 页面input绑定文件上传功能
+         * 说明：将页面上的指定的input框绑定文件上传事件，绑定方式通过调用FAQ对象的sendFile方法
+         * 注意：必须在FAQ实例化后调用
         */
         bindFileup: function () {
             if (this.options.sendFileId) {
@@ -98,16 +118,8 @@
             }
         },
         /**
-         * 人工评价
-         * @function
-        */
-        RGComment: function () {
-            window.uuid = $(this).attr('uuid');// 客服要求客户评价
-            this.options.sendFeedBack.trigger('click');
-        },
-        /**
-        * 屏幕大小改变时，调整页面尺寸
-        * @event
+        * @event 屏幕大小改变时，调整页面尺寸
+        * 说明：必须在实例化表情插件、输入引导、Faqrobt前调用
         */
         resize: function () {
             var That = this;
@@ -117,7 +129,7 @@
         },
 
         /**
-         * 输入框事件
+         * 输入框事件集合
          * @event 用于绑定输入框输入文字、获取焦点、失去焦点时的操作
         */
         bindTextare: function () {
@@ -161,8 +173,10 @@
                 })
         },
         /**
-         * 快捷服务展开以及收缩操作
-         * @event
+         * @event 快捷服务展开以及收缩操作
+         * 点击表情、加号按钮时，展示快捷服务区域
+         * 点击聊天区域且快捷服务展示时，隐藏快捷服务区域并将页面滚动到最底部
+         *
         */
         quickServChange: function () {
             var That = this;
@@ -175,7 +189,9 @@
                             FAQ.scrollbar.update()
                             FAQ.scrollbarUpdate()
                         })
-                } else if (_target.is('#' + That.options.chatCtnId) || _target.parents().is('#' + That.options.chatCtnId)) {
+                } else if(_target.is("." + That.options.nativeBtnClass)){// 跳转原生页面事件绑定
+                    That.goNativepage(_target);
+                }else if (_target.is('#' + That.options.chatCtnId) || _target.parents().is('#' + That.options.chatCtnId)) {
                     if (That.options.editCtn.css('display') == "block") {// 快捷服务显示时，点击页面隐藏
                         That.options.editCtn.hide();
                         That.options.sendFaceBtn.removeClass('hide');
@@ -191,8 +207,9 @@
         },
 
         /**
-        * 键盘-表情按钮切换事件
-        * @event 点击表情时表情按钮替换为键盘按钮；点击键盘，弹出键盘，并将键盘按钮转化为表情
+        * @event 键盘-表情按钮切换事件
+        *  点击表情时表情按钮替换为键盘按钮；
+        *  点击键盘，输入框获取焦点，弹出键盘，并将键盘按钮转化为表情隐藏快捷服务区域
        */
         switchFaceBtn: function () {
             var That = this;
@@ -209,8 +226,9 @@
         },
 
         /**
-         * 页面滑动时，隐藏快捷服务功能栏
-         * @event 
+         * @event 页面滑动时，隐藏快捷服务功能栏
+         * 滑动页面时，隐藏快捷服务栏，输入框失去焦点（隐藏键盘）并将表情按钮显示，键盘按钮隐藏
+         *  
         */
         hideEdit: function () {
             var That = this;
@@ -222,6 +240,71 @@
                 That.options.sendFaceBtn.removeClass('hide');
                 That.options.keyboardBtn.addClass('hide');
             })
+        },
+        /**
+         * @event 人工邀请评价
+         * 说明：人工邀请评价带有class='RG_commentBtn'按钮，点击后展示会话满意度评价评价框
+        */
+        RGComment: function () {
+            this.options.body.on('click', '.RG_commentBtn', function () {
+                window.uuid = $(this).attr('uuid');// 客服要求客户评价
+                this.options.sendFeedBack.trigger('click');
+            });
+        },
+        /**
+         * @function 调用s=offline 接口机器人下线
+         * 使用场景：在app中退出当前机器人页面或app进入后台运行时，由app端调用该方法
+        */
+        offline: function(){
+            FAQ.options.hideOfflineWord = true;// 用于app进入后台时，下线不显示下线提示语
+            FAQ.offline(); 
+        },
+         /**
+         * @function 调用s=p 接口机器人上线
+         * 使用场景：在app从后台唤醒时，由app端调用该方法是机器人上线
+         * 注意：
+         * 1、初始化前设置历史记录页码：请求历史记录时，重新初始化机器人时，如果当前页码不是0，则默认会将当前页码+1，而缺少一次记录，顾需要-1
+         * 2、将isGOffline设置为false 否则页面记录当前处于下线，输入引导无效
+        */
+        online: function(){
+            FAQ.recordIndex -= 1;// 历史记录保持退出前的聊天内容；
+            FAQ.initBaseInfo();
+            FAQ.timeRequest();
+            isGOffline = false;// 重新进入输入引导可用
+        },
+         /**
+         * @function  添加按钮跳转原生页按钮
+         * 说明：在FAQ s=aq接口获得答案后调用，即getCallback()，可根据需要重写方法
+         * @param answer 答案文本
+         * @param data 答案数据
+         * 答案有推荐链接时（data.robotAnswer[0].thirdUrl.url有值），给当前答案显示框内增加按钮，点击后跳转到原生页面
+         * 将data.robotAnswer[0].thirdUrl.url作为属性存在元素当中，跳转时作为参数
+         * 点击事件在this.quickServChange()中绑定
+         * 
+        */
+        addGoNativeBtn:function(answer, data){
+            if (data.robotAnswer[0].thirdUrl) {
+                var url = data.robotAnswer[0].thirdUrl.url;
+                if($('.MN_kfCtn:last .MN_helpful')){
+                    $('.MN_kfCtn:last .MN_helpful').before('<div class="go-native"><a class="nativeBtn" rel='+url+'>'+'点击跳转原生页'+'</a></div>')
+                }else{
+                    $('.MN_kfCtn:last').append('<div class="go-native"><a class="nativeBtn" rel='+url+'>'+'点击跳转原生页'+'</a></div>');
+                }
+            }
+        },
+        /**
+         * @function 跳转到原始页面
+         * @param ele dom元素，用于获得跳转必要参数
+         * 组织跳转原生页需要传输的数据并调用安卓的方法进行跳转
+        */
+        goNativepage: function(ele){
+             /*组织app所需的数据*/
+            var param =  ele.attr('rel').split('/')[3] + '://tonative/param';
+            try {
+                android.goNative(param);
+            } catch (error) {
+               console.log(param) ;
+            }
         }
     };
 
@@ -231,38 +314,39 @@
 
     FastClick.attach(document.body);
 
-    app.set_chatScroll_height();
 
     /**
-     * 表情插件 实例化
-     * @object 构造函数在 minichat.js中
+     * 表情插件 构造函数在 minichat.js中,封装成方法，通过调用方法进行实例化
      * @function face 用于初始化表情插件
-     * @param
-     * 表情插件
-     * {
-     *      
-     * }
-     * 
+     * 注意：必须在Faqrobot实例化前调用，FaqrobotApp实例化后调用
      * */
-    var Face = app.textarea.face({
-        src: 'src/yun/',//表情路径
-        rowNum: 7,//每行最多显示数量，此属性不适用于常用语
-        ctnAttr: ['0rem', '0rem', '0.133rem', '0.122rem'],//[left bottom width height] 表情框相对targetEl位置和里面的表情格子宽高  要写单位
-        triggerEl: $('#sendFace'),//触发按钮(不存在则自己生成，不要由a包裹)
-        targetEl: $('.editHide'),//父级参照物(用于appendTo和定位)
-        hideAdv: true,//是否隐藏广告
-        callback: function () {
-            $('#sendBtn').removeClass('hide');
-            $('.keyboardCtn').removeClass('hide');
-            $('.addBtn').addClass('hide');
-            $('#sendFace').addClass('hide');
-            $('.textarea').blur();
-            $('.editHide').show();
+    var Face = app.options.textarea.face({
+        src: 'src/yun/',// 表情路径
+        rowNum: 7,// 每行最多显示数量
+        ctnAttr: ['0rem', '0rem', '0.133rem', '0.122rem'],// [left bottom width height] 表情框相对targetEl位置和里面的表情格子宽高  要写单位
+        triggerEl:  app.options.sendFaceBtn,// 触发按钮(不存在则自己生成，不要由a包裹)
+        targetEl: app.options.editCtn,// 父级参照物(用于appendTo和定位)
+        hideAdv: true,// 是否隐藏广告
+        callback: function () { // 选择表情后的回调
+            /**
+             * 显示发送按钮、以及切换键盘按钮、键盘收起、表情选择框显示
+            */
+            app.options.sendBtn.removeClass('hide');
+            app.options.keyboardBtn.removeClass('hide');
+            app.options.addBtn.addClass('hide');
+            app.options.sendFaceBtn.addClass('hide');
+            app.options.textarea.blur();
+            app.options.editCtn.show();
         },
-        ish5chatApp: true
+        ish5chatApp: true // 自增参数，在minichat.js中使用，用于控制h5chatApp页面表情的特有显示方式
     });
 
-    //faqrobot 实例化 
+    
+    /**
+     * faqrobot 实例化 
+     * 构造函数在minichat.js中
+     * 注意：在表情插件、FaqrobotApp后实例化
+     * */
     var FAQ = new Faqrobot({
         interface: 'servlet/appChat',
         setInputTop: false,//默认开启ios11键盘遮挡问题
@@ -349,39 +433,58 @@
             window.uselessReasonItems = data.uselessReasonItems;
         },
         sendCallback: function () {//点击发送按钮的回调
-            $('.addBtn').removeClass('hide');
-            $('#sendFace').removeClass('hide');
+            /**
+             * 显示展开快捷按钮、表情按钮
+             * 隐藏键盘切换、发送按钮
+             * 键盘弹起（输入框获取焦点）
+            */
+            app.options.addBtn.removeClass('hide');
+            app.options.sendFaceBtn.removeClass('hide');
 
-            $('.keyboardCtn').addClass('hide');
-            $('#sendBtn').addClass('hide');
+            app.options.keyboardBtn.addClass('hide');
+            app.options.sendBtn.addClass('hide');
 
-            !FAQ.robot._html && $('.textarea').focus();// 防止键盘拉起
-            setTimeout(function () {
-                $('.textarea').focus();
-            }, 50);
+            !FAQ.robot._html &&  app.options.textarea.focus();// 防止键盘拉起
+
         },
         commentCallback: function () {//评论后的回调
             layer.close(layerCtn);
         },
         leaveMsgCallback: function () {//留言后的回调
             layer.close(layerCtn);
+        },
+        /**
+         * 获取到答案后的回调
+         * @param answer-文本答案
+         * @param data-接口返回数据
+        */
+        getCallback: function (answer, data) {
+            app.addGoNativeBtn(answer, data);
         }
     });
 
-
+    /**
+     * Faqrobot 类实例化以后执行的方法，具体说明见FaqrobotApp构造函数
+     * 
+    */
     app.afterInstant();
 
-    //调用自动补全插件
-    // taskid= 1133 输入引导的sourceId 统一在minichat中获取 amend by zhaoyuxing
-    $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig&sysNum=' + FAQ.options.sysNum,
-        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-        itemNum: 5,//[int] 默认全部显示
-        callback: function (data) {//获取文本后的回调函数
-            $('.sendBtn').trigger('click');
+
+   /**
+     * 输入引导 构造函数在 minichat.js中,封装成方法，通过调用方法进行实例化
+     * @function autocomplete 用于初始化输入引导插件
+     * 注意：必须在Faqrobot实例化后调用
+     * */
+    app.options.textarea.autocomplete({
+        url: 'servlet/appChat?s=ig&sysNum=' + FAQ.options.sysNum,// 输入引导接口
+        targetEl: app.options.editShow,// 参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],// 外边框的定位[left bottom]
+        itemNum: 5,// [int] 显示输入引导的数量  默认全部显示
+        callback: function (data) {// 点击输入引导文本后的回调函数
+           app.options.sendBtn.trigger('click');
         }
     });
+
 
 
 
