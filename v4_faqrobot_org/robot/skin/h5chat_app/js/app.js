@@ -286,11 +286,13 @@
              /*组织app所需的数据*/
             if (data.robotAnswer[0].thirdUrl) {
                 var url = data.robotAnswer[0].thirdUrl.url;
-                var nativeUrl =  url.split('/')[3] + '://tonative/param';
-                if($('.MN_kfCtn:last .MN_helpful')){
-                    $('.MN_kfCtn:last .MN_helpful').before('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>')
-                }else{
-                    $('.MN_kfCtn:last').append('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>');
+                if(url.indexOf('tonative')>0){
+                    var nativeUrl =  url.split('/')[3] + '://tonative/param';
+                    if($('.MN_kfCtn:last .MN_helpful')){
+                        $('.MN_kfCtn:last .MN_helpful').before('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>')
+                    }else{
+                        $('.MN_kfCtn:last').append('<div class="go-native"><a class="nativeBtn" href='+nativeUrl+' target="_blank">'+'点击跳转原生页'+'</a></div>');
+                    }
                 }
             }
         }
