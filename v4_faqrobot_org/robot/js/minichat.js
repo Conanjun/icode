@@ -4474,6 +4474,10 @@ function uploadFile (options) {
           callback: function (data) {
             This.$obj.$chatCtnId.append(This.robotHtml(data))//添加机器人的话
             This.recommendUrl(data)
+            MN_Base.imageLoad(This.robotHtml(data), function () {// 匹配html中所有图片资源，加载完毕执行
+              This.scrollbar.update()
+              This.scrollbarUpdate()
+            })
             This.scrollbar.update()
             This.scrollbarUpdate()
           }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/viewer.min.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/question.css">
+    
+    <script src="./static/js/jquery-1.9.1.min.js"></script>
+    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./static/js/viewer-jquery.min.js"></script>
+    <script src="./js/question.js"></script>
+    <title>海康在线知识库</title>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid text-center">
+          <div class="navbar-header" id="goBack">
+            <a class="navbar-brand" href="#"></a>
+          </div>
+          <span>问题详情</span>
+        </div>
+    </nav>
+    <div id="content" class="content">
+        <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+            <div class="panel-body1 panel-body">
+                <div class="panel-body">
+                    <div class="row showQuestion" id="showQuestion">
+
+                    </div>
+                    <form action="/QuestionHk/editCollect" id="collectForm" method="get">
+                        <input type="hidden" name="id">
+                        <input type="hidden" name="webId">
+                        <input type="hidden" name="originUrl">
+                        <div class="collectContanier">
+                            <input type="submit" class="collectBtn" id="collectBtn" value="收藏">
+                        </div>
+                    </form> 
+                    <div class="collectTip" id="collectTip">收藏成功</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

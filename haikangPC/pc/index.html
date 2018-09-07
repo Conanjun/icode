@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <title>海康在线知识库</title>
+    <!-- 引入bootstrap -->
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/zTreeStyle.css">
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <!-- 标题 -->
+    <h1 class="text-center title">
+        问答总览
+    </h1>
+    <!-- 排序栏选项栏 -->
+    <div class="fhead">
+        <a id="all">全部</a>
+        <a class="view-count" id="viewCount">
+            <span>浏览次数
+                <img src="./static/images/down.png" class="view-count-image">
+            </span>
+        </a>
+    </div>
+
+    <!-- 搜索栏 -->
+    <div class="search-row">
+        <!--文本框-->
+        <div class="search">
+            <p class="search-icon"><img src="./static/images/search.png"></p>
+            <input type="text" name="search" class="form-control" id="keyword">
+            <span class="mui-icon mui-icon-search ss"></span>
+        </div>
+        <!--下拉框-->
+        <div class="select">
+            <div class="selectContanier">
+                <select class="col form-control searchType">
+                    <option value="1">问题</option>
+                    <option value="2">答案</option>
+                </select>
+            </div>
+            <div id="searchBtn">
+                <img src="./static/images/search.png">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 页面显示 -->
+    <div class="content-box row">
+        <div class="tree item col-md-2 col-xs-3 ztree-box">
+            <!-- 菜单具体展示内容 -->
+            <ul id="treeClasses" class="ztree"></ul>
+        </div>
+        <div id="listBox" class="col-md-9 col-xs-9">
+            <ul class="knowledge">
+
+            </ul>
+            <!-- 分页 -->
+            <div id="pageList"></div>
+        </div>
+    </div>
+    <!-- tab页切换 -->
+    <!--页面切换导航-->
+    <div class="tab-contanier">
+        <form id="showcollect" action="../../QuestionHk/doFindQueCollect">
+            <!-- 未认证成功单点登录的传参 -->
+            <input type="hidden" name="question">
+            <input type="hidden" name="answer">
+            <input type="hidden" name="type">
+            <input type="hidden" name="orderType">
+            <input type="hidden" name="queryType">
+            <input type="hidden" name="pageSize">
+            <input type="hidden" name="pageNo">
+            <input type="hidden" name="groupId">
+            <input type="hidden" name="collect">
+            <input type="hidden" name="showFlow">
+            <input type="hidden" name="originUrl">
+            <ul class="nav nav-pills menu">
+                <li class="active" id="home">
+                    <a>
+                        <div class="icon home-icon"></div>首页
+                    </a>
+                </li>
+                <li id="search">
+                    <a>
+                        <div class="icon search-icon"></div> 搜索
+                    </a>
+                </li>
+                <li id="collect">
+                    <a>
+                        <div class="icon collect-icon"></div>收藏
+                    </a>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+     <!--收藏按钮代理请求-->
+    <form action="../../QuestionHk/editCollect" id="editCollectForm">
+        <input type="hidden" name="originUrl">
+    </form>
+    <!-- 提示框样式 -->
+    <div class="tip">收藏成功</div>
+    <div class="tip">收藏成功</div>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="./static/js/jquery-1.9.1.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件 -->
+    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./static/js/jquery.ztree.all-3.5.js"></script>
+    <script src="./static/js/bootstrap-paginator.js"></script>
+    <script src="./js/indexCommon.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

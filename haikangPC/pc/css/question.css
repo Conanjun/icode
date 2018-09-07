@@ -1,0 +1,27 @@
+/* 详情 */
+.showQuestion{
+    height: auto;
+    width: 1000px;
+    margin: 0 auto;
+}
+/*收藏按钮*/
+.collectContanier{
+	margin-top: 45px;
+	margin-bottom: 45px;
+	text-align: center;
+}
+.collectBtn{
+	display: inline-block;
+	text-align: center;
+	height:95px;
+	width: 95px;
+    background: url('../static/images/collected.png') no-repeat;
+	color: #fff;
+	outline: none;
+	font-size: 17px;
+	border:none;
+}
+.collected{
+	background: url('../static/images/unCollect.png') no-repeat;
+	color:#BBBBBB;
+}
