@@ -533,7 +533,13 @@ KnowledgeBase.prototype = {
         this.collectOrderType = getLocalStorage('collectOrderType') || 14;
 
         this.nowPage = getLocalStorage('nowPage') || 'home';
-        
+
+        // 不登录返回
+        if(this.nowPage == 'collect' &&  this.isLogin !=1){
+            this.nowPage = 'home';
+            setLocalStorage('nowPage', 'home');
+        }      
+
         dom[this.nowPage].trigger('click');
 
     },
