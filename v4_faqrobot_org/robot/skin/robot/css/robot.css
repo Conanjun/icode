@@ -1,0 +1,702 @@
+@charset "utf-8";
+/* CSS Document */
+
+.robot_top {
+	background-color: #26c2f2;
+	height: 72px;
+	position: relative;
+}
+.robot_topL {
+	padding: 8px 0px 8px 16px;
+	overflow: hidden;
+	zoom: 1;
+}
+.robot_topL_icon {
+	float: left;
+	height: 56px;
+}
+.robot_topL_name {
+	float: left;
+	width: 458px;
+	padding-left: 18px;
+}
+.robot_topL_name h1 {
+	font: normal 16px/32px "微软雅黑";
+	color: #fff;
+}
+.robot_topL_name p {
+	font: normal 12px/18px "微软雅黑";
+	color: #fff;
+}
+.robot_topR {
+	width: 400px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	cursor: pointer;
+}
+.robot_topR ul {
+	width: 56px;
+	float: right;
+	text-align: center;
+	padding: 14px 12px 8px 12px;
+	font: normal 14px/18px "微软雅黑";
+	color: #fff;
+}
+.robot_topR ul.robot_topRon {
+	background-color: #009bcb;
+	height: 50px;
+}
+.robot_topR ul li a {
+	color: #fff;
+}
+.robot_content {
+	position: relative;
+}
+.robot_contentL {
+	margin-right: 393px;
+	position: relative;
+}
+/*.robot_wdlist {
+	border: 1px solid #d9d9d9;
+	border-top: none;
+	overflow-x: hidden;
+	position: relative;
+	/*overflow-y: auto;*/
+	/*height: 420px;
+	
+}*/
+.robot_ask {
+	padding-top: 26px;
+	position: relative;
+	overflow: hidden;
+	zoom: 1;
+}
+.robot_askL {
+	float: right;
+	margin-right: 77px;
+}
+.robot_askL dt {
+	border: 1px solid #f5f5f5;
+	background-color: #f5f5f5;
+	border-radius: 3px;
+	padding: 6px 5px;
+	position: relative;
+	font: normal 12px/20px "微软雅黑";
+	color: #666;
+	margin: 0px 12px 0px 80px;
+}
+.robot_askL dt span {
+	position: absolute;
+	top: 18px;
+	right: -8px;
+	background: url(../image/robot_askjt.gif) left center no-repeat;
+	width: 8px;
+	height: 9px;
+}
+.robot_askL dd {
+	font: normal 12px/24px "微软雅黑";
+	color: #ccc;
+	text-align: right;
+	padding-right: 10px;
+}
+.robot_askR {
+	height: 57px;
+	/*background: url(../image/robot_askiconbg.png) left center no-repeat;*/
+	position: absolute;
+	top: 25px;
+	right: 15px;
+	width: 57px;
+}
+.robot_question {
+	padding-top: 32px;
+	overflow: hidden;
+	zoom: 1;
+	position: relative;
+}
+.robot_questionL {
+	/*background: url(../image/robot_questioniconbg.png) left center no-repeat;*/
+	height: 56px;
+	position: absolute;
+	top: 30px;
+	left: 10px;
+   /* width: 57px;*/
+}
+.robot_questionL img,.robot_topL_icon img{
+    height:56px;
+}
+.robot_questionR {
+	margin-left: 81px;
+}
+.robot_questionR_qp {
+	background-color: #dff7ff;
+	border: 1px solid #dff7ff;
+	border-radius: 3px;
+	position: relative;
+	margin-right: 70px;
+	word-break:break-all;
+	*width:90%;
+}
+.questionR_icon {
+	position: absolute;
+	top: 24px;
+	left: -9px;
+	background:url("../image/robot_questionjt.gif") left center no-repeat;
+	width: 8px;
+	height: 9px;
+}
+.questionR_txt {
+	font: normal 12px/20px "微软雅黑";
+	color: #333;
+	padding: 13px 10px 0px 16px;
+}
+.questionR_txt dl {
+	padding-top: 0px;
+}
+.questionR_txt dl dd a {
+	color: #00aade;
+}
+.questionR_txt dl dd a:hover {
+	color: #0091bd;
+	text-decoration: none;
+}
+/*.questionR_txt img {
+	max-width: 95%
+}*/
+.robot_review {
+	padding: 10px 10px 15px 0px;
+	float: right;
+}
+.robot_review_none {
+	padding: 10px 10px 2px 0px;
+	float: right;
+}
+.robot_review a {
+	color: #fff;
+	cursor: pointer;
+}
+.robot_review_yes {
+	background-color: #26c2f2;
+	border: 1px solid #14abd9;
+	border-radius: 3px;
+	width: 51px;
+	padding: 2px 10px;
+	text-align: center;
+	margin-right: 10px;
+}
+.robot_review_yes.yeson {
+	background-color: #14abd9;
+	border: 1px solid #14abd9;
+}
+.robot_review_yes span {
+	background: url(../image/yes_icon.png) left center no-repeat;
+	width: 9px;
+	height: 12px;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0px 7px 3px 0px;
+	color: #fff;
+}
+.robot_review_no {
+	background-color: #b3b3b3;
+	border: 1px solid #999;
+	border-radius: 3px;
+	padding: 2px 5px;
+	text-align: center;
+}
+.robot_review_no.noon {
+	background-color: #999999;
+	border: 1px solid #999;
+}
+.robot_review_no code {
+	background: url(../image/no_icon.png) left center no-repeat;
+	width: 9px;
+	height: 12px;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0px 4px 3px 0px;
+	color: #fff;
+}
+.robot_questionR_time {
+	color: #ccc;
+	line-height: 24px;
+}
+.robot_write {
+	border: 1px solid #d9d9d9;
+	border-top: none;
+	background-color: #f7f7f7;
+	padding: 0px 0px 20px 8px;
+	position: absolute;
+	width: 100%;
+}
+.robot_write_top {
+	position: relative;
+}
+.robot_write_top ul li {
+	float: left;
+	font: normal 12px/22px "微软雅黑";
+}
+.robot_write_name {
+	color: #666;
+	font: normal 12px/24px "微软雅黑";
+	padding: 4px 0px;
+}
+.robot_write_txt {
+	padding: 4px 0px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 226px;
+}
+.robot_write_number {
+	color: #999;
+	text-align: right;
+	padding-right: 12px;
+	width: 130px;
+}
+.robot_write_number span {
+	color: #26c2f2;
+}
+.robot_write_clear {
+	background:url(../image/clear_icon.gif) 6px center no-repeat;
+	color: #666;
+	height: 22px;
+	line-height: 24px;
+	padding: 0px 5px 0px 25px;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid #f7f7f7;
+	width: 48px;
+}
+.robot_write_clear.clearon {
+	background-color: #e6f2f5;
+	border: 1px solid #ceeaf3;
+}
+.robot_input {
+	position: relative;
+}
+.robot_textarea {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 5px 10px;
+	background-color: #fff;
+	margin-right: 98px;
+	overflow: hidden;
+	height: 69px;
+}
+.robot_textarea textarea {
+	border: 0 none;
+	color: #ccc;
+	font: 12px/18px "微软雅黑";
+	height: 57px;
+	outline: medium none;
+	overflow: hidden;
+	overflow-y: auto;
+	resize: none;
+	width: 100%;
+	word-wrap: break-word;
+	height: 69px;
+}
+.robot_textarea.robot_inputon {
+	border-color: #26c2f2;
+}
+.robot_send {
+	background-color: #26c2f2;
+	border-radius: 3px;
+	text-align: center;
+	padding: 13px 20px;
+	position: absolute;
+	top: 0px;
+	right: 12px;
+	height: 55px;
+	cursor: pointer;
+}
+.robot_send.sendon {
+	background-color: #00aade;
+}
+.robot_send dd {
+	font: normal 16px/18px "微软雅黑";
+	color: #fff;
+	cursor: pointer;
+}
+.robot_contentR {
+	width: 384px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	overflow: hidden;
+}
+.hottitle {
+	border: 1px solid #c0f0ff;
+	border-top: none;
+	background-color: #e7f9ff;
+	height: 38px;
+	font: normal 16px/38px "微软雅黑";
+	color: #26c2f2;
+	text-align: center;
+	cursor: pointer;
+}
+.robot_contentR ul.hottitle_on {
+	background-color: #c0f0ff;
+}
+.robot_hot {
+	display: none;
+	border-left: 1px solid #d9d9d9;
+	border-right: 1px solid #d9d9d9;
+	border-bottom: 1px solid #b2ecff;
+	border-top: none;
+	overflow: hidden;
+	zoom: 1;
+}
+.robot_hot dl {
+	padding-top: 3px;
+}
+.robot_hot dl dt {
+	background: url(../image/hot_icon.gif) left center no-repeat;
+	font: normal 12px/21px "微软雅黑";
+	color: #26c2f2;
+	padding-left: 15px;
+	cursor: pointer;
+}
+.robot_hot dl dd {
+	font: normal 12px/21px "微软雅黑";
+	color: #333;
+	display: none;
+}
+.robot_hot ul {
+	float: left;
+	width: 88px;
+	height: 76px;
+	margin: 0px 13px;
+	text-align: center;
+	padding-top: 12px;
+	font: normal 14px/21px "微软雅黑";
+	color: #fff;
+}
+.robot_hot ul li a {
+	/*color: #c0f0ff;*/
+	color: #666;
+}
+.robot_hot ul li a:hover {
+	/*color: #fff;*/
+	text-decoration: none;
+}
+.hot_gundong {
+	overflow: hidden;
+	overflow-y: auto;
+	height: 453px;
+}
+.robot_chadd {/*
+	background-color: #ffac2a;*/
+	cursor: pointer;
+}
+.robot_chadd.chaddon {
+	/*background-color: #ff9b1f;*/
+}
+.robot_chajf {
+	/*background-color: #31d8aa;*/
+	cursor: pointer;
+}
+.robot_chajf.chajfon {
+/*	background-color: #25ce99;*/
+}
+.robot_youhq {
+	/*background-color: #ec516f;*/
+	cursor: pointer;
+}
+.robot_youhq.youhqon {
+	/*background-color: #e7405c;*/
+}
+.robot_jt {
+	position: absolute;
+	top: 0px;
+	right: 384px;
+	width: 9px;
+	background: url(../image/jtbg.gif) left center repeat-y;
+}
+.robot_jt ul {
+	background: url(../image/robot_right.gif) center center no-repeat;
+	height: 421px;
+	cursor: pointer;
+}
+.robot_jt ul.jt_left {
+	background-image: url(../image/robot_left.gif);
+	height: 421px;
+	border-right: 1px solid #cacaca;
+}
+.jt_hover {
+	background: url(../image/robot_jtbg421.gif) left center no-repeat;
+	height: 421px;
+}
+.robot_jt ul.jt_lefton {
+	background-image: url(../image/robot_lefton.gif);
+}
+.robot_jt ul.jt_righton {
+	background-image: url(../image/robot_righton.gif);
+}
+.robot_hot dl dt.dton {
+	color: #0091bd;
+	text-decoration: none;
+}
+.robot_textarea textarea {
+	word-wrap: break-word;
+}
+.relateTxt {
+	color: #333;
+	font: 12px/20px "微软雅黑";
+	padding: 0 10px 15px 16px;
+}
+.robot_review2 {
+	float: right;
+	padding: 10px 10px 10px 0;
+}
+.robot_review2 a {
+	color: #fff;
+	cursor: pointer;
+}
+.relateTxt2 {
+	color: #333;
+	font: 12px/20px "微软雅黑";
+	padding: 13px 10px 0 16px;
+}
+/* 弹出框*/
+.fadeBackModal {
+	background-color: #CCC;
+	left: 0;
+	right: 0;
+	position: fixed;
+	display: none;
+	opacity: 0.1;
+	z-index: 100;
+}
+.fadeBackContent {
+	background: #FFF;
+	position: absolute;
+	left: 35%;
+	top: 15%;
+	display: none;
+	z-index: 110;
+}
+#pingjia input {
+	font-family: 微软雅黑;
+	font-size: 12px;
+	margin-left: 20px;
+}
+#btn input {
+	background-color: #EAEAEA;
+	width: 58px;
+	height: 34px;
+	cursor: pointer;
+	border: 0 none;
+	font-family: 微软雅黑;
+	font-size: 14px;
+}
+#send input {
+	background-color: #EAEAEA;
+	width: 58px;
+	height: 34px;
+	cursor: pointer;
+	border: 0 none;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	margin-top: 20px;
+	margin-left: 170px;
+}
+#pingjia p {
+	font-family: 微软雅黑;
+	font-size: 16px;
+	margin-top: 10px;
+}
+.hid p {
+	font-family: 微软雅黑;
+	font-size: 16px;
+	margin-top: 20px;
+	margin-left: 40px;
+}
+.rad {
+	font-size: 14px;
+	margin-top: 20px;
+	margin-left: 55px;
+}
+.fade {
+	font-size: 14px;
+	margin-top: 20px;
+	margin-left: 65px;
+}
+.contTitle {
+	margin: 20px 0 0 20px;
+}
+#cont {
+	font-family: 微软雅黑;
+	font-size: 14px;
+	margin: 0 0 0 20px;
+	overflow: auto;
+	width: 360px;
+	height: 110px;
+}
+#head_bg {
+	width: 100%;
+	height: 50px;
+	background: #3d9dc4;
+}
+.btnclose {
+	float: right;
+	margin: -30px 35px 0 0;
+}
+.btnclose a {
+	color: #333;
+	text-decoration: none;
+	cursor: pointer;
+}
+.btnclose a img {
+	width: 20px;
+}
+.fontColor {
+	color: #666666;
+}
+#send {
+	margin-bottom: 20px;
+}
+.showWaring {
+	background-color: #faf9f9;
+	color: #cd2c68;
+	font: 12px/35px "微软雅黑";
+	height: 30px;
+	text-align: center;
+	width: 570px;
+	position: absolute;
+	bottom: 1px;
+	display: none;
+	margin-left: 1px;
+}
+.jinzhi{
+	cursor:not-allowed;
+}
+<!--图文-->
+.img_hover{ 
+	border:3px solid #FFF;
+	position: relative;
+    float: left;
+    width:347px;
+}
+
+.msg-col {
+	font-size: 14px;
+	width: 350px;
+}
+.msg-item-wrapper {
+	background-color: #f4f4f4;
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	margin-bottom: 26px;
+	position: relative;
+}
+.msg-item-wrapper a{
+	color:#333;
+}
+.msg-item {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	padding: 2px 0;
+}
+.multi-msg .msg-meta {
+	line-height: 28px;
+	margin: 0 14px;
+}
+.msg-meta {
+	font-size: 13px;
+	margin-left:13px;
+}
+.cover {
+	font-size: 0;
+	height: 160px;
+	margin: 0 14px 12px;
+	overflow: hidden;
+	position: relative;
+}
+.cover .msg-t {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+	bottom: 0;
+	color: #fff;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.msg-t {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	line-height: 28px;
+	margin: 6px 14px 0;
+	max-height: 56px;
+	overflow: hidden;
+}
+.cover .i-title {
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.cover img {
+	width: 100%;
+}
+img {
+	border: 0 none;
+	height: auto;
+	max-width: 100%;
+	vertical-align: middle;
+}
+.sub-msg-item {
+	border-top: 1px solid #c6c6c6;
+	overflow: hidden;
+	padding: 12px 14px;
+	background-color: #fff;
+}
+.rel {
+	position: relative;
+}
+.thumb {
+	float: right;
+	font-size: 0;
+}
+.thumb img {
+	border: 1px solid #b2b8bd;
+	height: 70px;
+	width: 70px;
+}
+.sub-msg-item .msg-t {
+	font-size: 14px;
+	line-height: 24px;
+	margin-left: 0;
+	margin-right: 85px;
+	margin-top: 0;
+	max-height: 48px;
+	overflow: hidden;
+	padding-left: 4px;
+	padding-top: 12px;
+}
+.defultImg {
+	border: 1px solid #b2b8bd;
+	color: #c0c0c0;
+	font-size: 14px;
+	line-height: 70px;
+	width: 70px;
+	display: block;
+	text-align: center;
+	text-shadow: 0 1px 0 #fff;
+	margin-left: 120px;
+}
+.codeIcon {
+	width: 160px;
+	float: left;
+	height: 160px;
+	margin: 10px;
+	overflow: hidden;
+	position:relative;
+}
+.i_margin-top{
+	margin-top:3px;
+}

@@ -1,0 +1,147 @@
+.whole .head{
+  background-image:url(../images/head_bac.png);
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn,.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover{
+  background:#ffa300;
+  box-shadow:none;
+}
+.itemHeadFocus:before{
+  background:#ffa300;
+}
+div.SC_frontClass{
+  background:#ffa300;
+}  
+#itemCtxCtnBox div.SC_frontClass{
+  height:60px;
+}
+/* 热点问题 */
+.MN_queListIndex{
+  color:#ffa300;
+}
+.MN_queList:hover .MN_guideQue{
+  color:#ffa300;
+}
+.whole .body .bodyRight .bodyRightCtx #feedBackBtn,
+.whole .body .bodyRight .bodyRightCtx #feedBackBtn:hover{
+  background:#ffa300;
+  box-shadow:none;
+}
+.whole .body .bodyRight .bodyRightCtx #feedBackBtn{
+  cursor: pointer;
+  width: 70px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  border-radius: 100px; 
+  transition: all 0.2s ease-in-out;
+  margin: 10px auto; 
+}
+
+.layui-layer-btn .layui-layer-btn0 {
+  border-color: #ffa300;
+  background-color: #ffa300;
+  color: #fff;
+}
+textarea#queAndadv{
+  outline: none;
+  resize: none;
+  border: 1px solid #eee;
+  border-radius:4px;
+  display: inline-block;
+  width: 100%;
+  height: 200px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  margin-top:4px;
+}
+#linaxiType{
+  margin-top:4px;
+  padding-left:10px;
+  width:100%;
+  border: 1px solid #eee;
+  height: 30px;
+  border-radius:4px;
+}
+div.MN_record{
+  color:#ffa300;
+}
+.MN_gusList, .MN_relateList, .FA_star{
+  color:#ffa300;
+}
+a:hover, a:focus {
+  color: #ffa300;
+  text-decoration: underline;
+}
+.linaxiTip{
+  position:absolute
+}
+span.MN_docSearch{
+  color:none;
+}
+.MN_quickLink:hover p,a:hover span.MN_innerSearch,a:hover span.MN_classifySearch,a:hover span.MN_docSearch{
+  color: #ffa300;
+}
+span.MN_docSearch,.MN_innerSearch{
+  color:#222;
+}
+.AU_innerCtn_focus{
+  background-color: #ffa300;
+}
+.MN_gusList:hover>span{
+  border-bottom: 1px solid #ffa300;
+}
+.MN_kfCtn a,#messageAgain,#backMessage{
+  color:#ffa300
+}
+div.tooltip{
+  text-align:left;
+}
+.msg-item-wrapper a,#quickLink a:hover,#quickLink a:focus,#artiSearch a:hover,#artiSearch a:focus{
+  text-decoration: none;
+} 
+.btn-primary {
+  color: #fff;
+  background-color: #ffa300;
+  border-color: #ffa300;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active{
+  background-color: #ffa300;
+  border-color: #ffa300; 
+}
+.MN_no,.MN_reasonSend{
+  color: #ffa300;
+  border: 1px solid #ffa300;
+}
+.MN_no:hover{
+  background-color:#ffa300 
+}
+.MN_reasonItem{
+  color: #ffa300;
+}
+.rad a{
+  display: inline-block;
+  width: 16px;
+  height: 17px;
+  background: url(../images/yellow.png) -96px -15px;
+  vertical-align: text-bottom;
+  margin-right:5px;
+}
+.muiSel a{
+  display: inline-block;
+  width: 16px;
+  height: 17px;
+    vertical-align: text-bottom;
+  background: url(../images/yellow.png) 145px 17px;
+  margin-right:5px;
+}
+#robotInfo{
+  font-size:20px;
+  line-height: 40px;
+}
+div.MN_relateList:hover>span{
+  border-bottom:1px solid #ffa300
+}
+div.MN_kfCtn>p>a{
+  color:#ffa300!important;
+}

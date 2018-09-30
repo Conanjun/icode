@@ -1,0 +1,634 @@
+@charset "utf-8";
+body,
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  overflow: hidden;
+}
+/* 基础样式 */
+/*taskId=823 修改对话框样式 Amend by zhaoyuxing */
+.MN_kfCtn_outer{
+  float: left;
+}
+.MN_kfCtn {
+  border: 1px solid #fff;
+  background: #fff;
+  box-shadow: 0 10px 25px -5px rgba(152, 152, 152, 0.3);
+}
+.MN_khCtn {
+  border: 1px solid #5677fc;
+  background: #5677fc;
+  text-align: left;
+  color: #fff;
+}
+.MN_kfTriangle1 {
+  border: none;
+  left: -15px;
+  top: -1px;
+  border-top: 15px solid #fff;
+  border-left: 14px solid transparent;
+}
+.MN_kfTriangle2 {
+  border: none;
+  left: -12px;
+  top: 0;
+  border-top: 15px solid #fff;
+  border-left: 14px solid transparent;
+}
+.MN_khTriangle1 {
+  border: none;
+  right: -15px;
+  top: -1px;
+  border-top: 15px solid #fff;
+  border-right: 14px solid transparent;
+}
+.MN_khTriangle2 {
+  border: none;
+  right: -12px;
+  top: 0;
+  border-top: 15px solid #fff;
+  border-right: 14px solid transparent;
+}
+.MN_answer,
+.MN_ask {
+  padding: 5px 74px;
+  overflow: hidden
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+  top: 0;
+}
+.MN_answer .MN_kfImg{
+  left: -58px;
+}
+.MN_ask .MN_khImg {
+  right: -58px;
+}
+.MN_kfCtn,
+.MN_khCtn {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 22px;
+  padding: 12px 16px;
+}
+.MN_kfCtn {
+  width: 100%;
+  border-radius: 8px 8px 8px 2px;
+}
+.MN_khCtn {
+  border-radius: 8px 8px 2px 8px;
+  box-shadow: 0 10px 25px -5px rgba(152, 152, 152, 0.3);
+}
+
+.MN_guideQue {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+/* taskId=823 定制右侧栏样式 */
+#itemCtxCtnBox #commonQue{
+  padding: 20px;
+}
+.MN_queListIndex{
+  display: none;
+}
+.MN_queList {
+  border-bottom: none;
+  background:#fff;
+  margin-bottom: 12px;
+  border-radius: 8px 8px 2px 8px;
+}
+.MN_queList:hover{
+  background-color: #5677fc;
+  color: #fff;
+  webkit-transition: background-color .8s;
+  transition: background-color .8s;
+}
+/* .MN_queList:hover .MN_guideQue {
+  color: #1b96ff;
+} */
+.MN_quickLink p {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.MN_quickLink:hover p {
+  color: #1b96ff;
+}
+
+/* taskId=823 plantdata通用功能样式 开始*/
+/* 定制时间显示样式 */
+.MN_kftime, .MN_khtime{
+  font-size: 14px;
+  color: #c0c4cc;
+  background: transparent;
+  margin-top: 3px;
+}
+.MN_kfName, .MN_khName{
+  display: none;
+}
+.MN_triangle{
+  display: none;
+}
+.MN_yes,.MN_no{
+  background: transparent;
+  font-size: 12px;
+  color: #606266;
+  text-align: center;
+  /* width: 50px; */
+  border: none;
+  border-radius: 5px;
+  padding: 0;
+  margin-right: 0;
+}
+.MN_yes:hover,.MN_no:hover{
+  color: #5677fc;
+  background: transparent;
+}
+.MN_helpful {
+  height: 20px;
+  min-width: 100px;
+  margin-bottom:5px;
+  margin-top: -1px;
+}
+.MN_helpful .line{
+  display: inline-block;
+  height: 14px;
+  border-left: 1px solid #DCDFE6;
+  margin-left: 8px;
+  margin-right: 3px;
+}
+.MN_helpful .usefull{
+  display: inline-block;
+  width: 18px;
+  height: 16px;
+  background: url(../images/comment.png) no-repeat 1px 0px;
+  vertical-align: middle;
+  margin-top: -4px;
+  margin-right:4px; 
+}
+.MN_helpful .usefull.hover{
+  background: url(../images/comment.png) no-repeat 1px -16px;
+}
+.MN_helpful .useless{
+  display: inline-block;
+  width: 18px;
+  height: 16px;
+  background: url(../images/comment.png) no-repeat -18px 1px;
+  vertical-align: middle;
+  margin-right:4px; 
+}
+.MN_helpful .useless.hover{
+  background: url(../images/comment.png) no-repeat -18px -14px;
+}
+.layui-layer-btn .layui-layer-btn0{
+  background: #5677fc;
+  border-color: #5677fc;
+  border-radius: 5px;
+}
+.layui-layer-btn .layui-layer-btn1{
+  border-radius: 5px;
+}
+/* taskId=823 plantdata通用功能样式 结束*/
+
+
+/* 滚动条样式 */
+.SC_frontClass {
+  width: 4px;
+  height: 40px;
+}
+/* 正文开始 */
+.whole {
+  background: #fff;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(152, 152, 152, 0.3);
+}
+/* taskId=823 plantdata页面定制  背景*/
+.whole .head {
+  background-color: #35A5EB;
+  background-image: url(../images/head_bac.jpg);
+  background-repeat: no-repeat;
+  background-position: left 35%;
+  height: 80px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.whole .head:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .head:before {
+  content: '';
+  display: block;
+  background: rgba(0, 0, 0, 0.9);
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=10);
+  opacity: .1;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.whole .head .headLeft {
+  position: relative;
+  line-height: 80px;
+  float: left;
+}
+/* taskId=823 头部动画*/
+.headcenter{
+  display: inline;
+  float: left;
+}
+.headcenter .la-line-scale-pulse-out{
+  color: #5677FC;
+  width: 45px;
+  height: 36px;
+  margin-top: 22px;
+  position: absolute;
+  left: 50%;
+}
+
+.AU_outerCtn{
+  padding: 16px;
+  border: 1px solid #dcdfe6;
+}
+.AU_outerCtn .AU_innerCtn{
+  line-height: 22px;
+  font-size: 14px;
+  color: #303133;
+}
+.AU_outerCtn .AU_innerCtn_focus{
+  color: #5677fc;
+  background: transparent;
+}
+.AU_outerCtn .AU_innerCtn_focus .AU_replaceTip{
+  color: #5677fc;
+}
+/*
+* taskId = 502 聊天页面logo大小问题
+* 设置最大宽度
+*/
+.whole .head .headLeft .logo {
+  vertical-align: middle;
+  max-height: 70px;
+  margin-right: 20px;
+  max-width: 400px;
+}
+.whole .head .headLeft .titleCtn {
+  vertical-align: middle;
+  display: inline-block;
+}
+.whole .head .headLeft .titleCtn p {
+  color: #fff;
+  line-height: 24px;
+}
+.whole .head .headLeft .titleCtn .title {
+  font-size: 16px;
+}
+.whole .head .headRight {
+  position: relative;
+  margin-top: 24px;
+  float: right;
+  display: none;
+}
+.whole .head .headRight span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.whole .head .headRight .close {
+  background: url(../images/close.png) no-repeat center;
+  background-size: contain;
+}
+.whole .head .headRight .close1 {
+  background: url(../images/close_1.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close2 {
+  background: url(../images/close_2.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close3 {
+  background: url(../images/close_3.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .body {
+  position: relative;
+}
+.whole .body .bodyLeft {
+  position: absolute;
+  float: left;
+  height: 100%;
+}
+.whole .body .bodyLeft:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftTop {
+  overflow: hidden;
+  position: relative;
+  background: #ebeef5;
+}
+.whole .body .bodyLeft .bodyLeftTop .chatCtn {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.whole .body .bodyLeft .bodyLeftBottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-top: 1px solid #dddddd;
+  height: 150px;
+  background: #f5f7fa;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn {
+  padding: 10px 20px 0 20px;
+  position: relative;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .inputTip {
+  position: absolute;
+  color: #ccc;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .input {
+  outline: none;
+  resize: none;
+  border: none;
+  display: inline-block;
+  width: 100%;
+  height: 85px;
+  background: #f5f7fa;
+  color: #303133;
+  font-size: 14px;
+}
+/* taskId=823 plantdata定制 修改下边距 Amend By zhaoyuxing*/
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  padding-bottom: 16px;
+  padding-right: 16px;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn span {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn a {
+  vertical-align: middle;
+  color: #ccc;
+}
+/* taskId=823 plantdata定制 隐藏清屏按钮 Amend by zhaoyuxing*/
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg {
+  display: none;
+  width: 30px;
+  height: 30px;
+  background: url(../images/clear_normal.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg:hover {
+  background: url(../images/clear_hover.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn {
+  float: right;
+  width: 64px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  background: #5677fc;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover {
+  background: #5677fc;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5);
+}
+.whole .body .bodyRight {
+  position: relative;
+  height: 100%;
+  float: right;
+  width: 330px;
+  border-left: 1px solid #dcdfe6;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f5f7fa;
+}
+.whole .body .bodyRight .bodyRightCtx .itemBtnCtn {
+  font-size: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn {
+  display: inline-block;
+  width: 33.3%;
+}
+.whole .body .bodyRight .bodyRightCtx .artiSearchHide, .whole .body .bodyRight .bodyRightCtx .thirdURLRecommend {
+    display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead {
+  text-align: center;
+  height: 48px;
+  line-height: 48px;
+  font-size: 16px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-bottom: 2px solid #dcdfe6;
+  /* box-shadow: 0 9px 35px -8px rgba(0, 122, 255, 0.3); */
+  position: relative;
+  cursor: pointer;
+  color: #606266;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead1:before {
+  content: '';
+  width: 100%;
+  height: 2px;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead2:before {
+  content: '';
+  width: 100%;
+  height: 2px;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead3:before {
+  content: '';
+  width: 100%;
+  height: 2px;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead4:before {
+  content: '';
+  width: 100%;
+  height: 2px;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+/* taskId=823 plantdata定制样式 */
+/* .itemHeadFocus:before {
+  background: #007aff;
+} */
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead:hover,.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead.itemHeadFocus{
+  color:#5677fc;
+  border-bottom-color: #5677fc;
+}
+
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackCtn {
+  padding: 15px 20px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servCos {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 82px;
+  cursor: pointer;
+  text-align: center;
+  color: #ccc;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 20px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes {
+  background: url(../images/icon_my_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes:hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes_hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo {
+  background: url(../images/ico_no_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo:hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo_hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYesInput,
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoInput {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason label {
+  margin: 10px 20px;
+  cursor: pointer;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn {
+  position: relative;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackTip {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #ccc;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackInput {
+  outline: none;
+  resize: none;
+  border: 1px solid #eee;
+  display: inline-block;
+  width: 100%;
+  height: 55px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn {
+  float: right;
+  cursor: pointer;
+  width: 70px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  background: #5677fc;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn:hover {
+  background: #5677fc;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5);
+}
+
+/* taskid=802 快捷服务功能 顾荣 2018/2/9
+添加：快捷服务iframe布局 */
+#serveIframe,#outIframe{
+  position:absolute;
+  background-color:white;
+  width:100%;
+  display:none;
+  top:45px;
+  left:0;
+  right:10px;
+  bottom:0;
+  z-index: 99;
+}
+#serveIframe iframe,#outIframe iframe{
+  width:100%;
+  height:100%;
+}
+#outIframe{
+  margin-top: 5px
+}
+#cloQuIframe{
+  position:absolute;
+  width:60px;
+  height:45px;
+  top:45%;
+  left:0;
+  color:red;
+  font-size: 16px;
+  opacity: 0.5;
+  cursor: pointer; 
+  background:url("../../../../assets/plugins/lightbox/img/prev.png")
+}

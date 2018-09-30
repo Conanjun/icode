@@ -1,3 +1,4 @@
+if(!Array.prototype.filter){Array.prototype.filter=function(c){if(this===void 0||this===null){throw new TypeError()}var f=Object(this);var a=f.length>>>0;if(typeof c!=="function"){throw new TypeError()}var e=[];var b=arguments.length>=2?arguments[1]:void 0;for(var d=0;d<a;d++){if(d in f){var g=f[d];if(c.call(b,g,d,f)){e.push(g)}}}return e}};
 /**
  * bluebird build version 3.5.1
  * Features enabled: core, race, call_get, generators, map, nodeify, promisify, props, reduce, settle, some, using, timers, filter, any, each
@@ -84,7 +85,7 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
     /**************************** BEGIN ****************************/
     /**
     * base.js v-1.2.0
-    * 
+    *
     * Copyright (c) 2016/3/3 Han Wenbo
     *
     * Here are some common public methods!
@@ -387,18 +388,26 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
     // 匹配html中所有图片资源，加载完毕执行
     imageLoad: function (str, callback) {
       // 正则根据后缀名匹配图片资源，不区分大小写 Amend by zhaoyuxing
-      var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/ig),
-        imgPromiseArr = []
-
+    //   var imgArr = str.match(/https?[^>]*?\.(png|jpg|bmp|jpeg|gif)/ig),
+      var imgPromiseArr = [],
+        url=[];
+        if(str.indexOf('<img')>-1){
+          str = '<div>'+str+'</div>'
+            for(var k=0;k<$(str).find('img').length;k++){
+                url.push($($(str).find('img')[k]).attr('src'))
+            }
+        }else if(str.match(/^http/)){
+            url.push(str);
+        }
       try {// 防止ie8报错
-        for (var i = 0; i < imgArr.length; i++) {
+        for (var i = 0; i < url.length; i++) {
           var imgPromise = new Promise(function (resolve, reject) {
             var pic = new Image()
 
             pic.onload = function () { //加载完毕后(建议)
               resolve(pic.src + '加载完毕')
             }
-            pic.src = imgArr[i] //这句放在onload后面(兼容ie8)
+            pic.src = url[i] //这句放在onload后面(兼容ie8)
           })
           imgPromiseArr.push(imgPromise)
         }
@@ -1189,11 +1198,11 @@ isGOffline = false;
                 // taskid=974 国泰基金文档检索 提交人：顾荣
                 // 添加：当s=ig输入引导接口中返回文档检索结果时展示在右侧边栏
                 if (data.fullTextSearch&&data.fullTextSearch==1){//如果文档检索开启
-                    
+
                     if(This.options.igfullTextSearch){
                         This.options.igfullTextSearch();
                     }
-                  var checkDocument='<p class="MN_titleSearch">文档检索</p>';                 
+                  var checkDocument='<p class="MN_titleSearch">文档检索</p>';
                   if(data.document&&data.document.length>0){  //如果返回文档检索则将它展示在右侧
                     for(var k=0;k<data.document.length;k++){
 
@@ -1201,12 +1210,12 @@ isGOffline = false;
                     /**
                      * taskid=1441
                      * 修改：标题取消折行，展示正文，标题与正文中命中词语高亮 顾荣 2018/7/2
-                     */ 
+                     */
                       var newTitle=data.document[k].title;
                       if(data.document[k].highLightResultList!=null){//高亮配置项开启
                         var highLightWord=data.document[k].matchWords//高亮的词语
-                        newTitle=newTitle.split(eval("/"+highLightWord.join('|')+"/ig"));
-                        var arr1=data.document[k].title.match(eval("/"+highLightWord.join('|')+"/ig"));
+                        newTitle=newTitle.split(new RegExp(highLightWord.join('|'),'g'));
+                        var arr1=data.document[k].title.match(new RegExp(highLightWord.join('|'),'g'));
                         if(arr1){
                           for(var hw=0;hw<arr1.length;hw++){//循环替换标题高亮词
                             newTitle.splice(hw*2+1,0,'<span class="highLight">'+arr1[hw]+'</span>')
@@ -1217,15 +1226,15 @@ isGOffline = false;
                         if(highLightarr[0]){//匹配到正文
                           var newp=''
                           for(var hi=0;hi<highLightarr.length;hi++){//循环正文列表
-                            var hsplit=highLightarr[hi].highLishtSentence.split(eval("/"+highLightWord.join('|')+"/ig"));
-                            var arr2=highLightarr[hi].highLishtSentence.match(eval("/"+highLightWord.join('|')+"/ig"));
+                            var hsplit=highLightarr[hi].highLishtSentence.split(new RegExp(highLightWord.join('|'),'g'));
+                            var arr2=highLightarr[hi].highLishtSentence.match(new RegExp(highLightWord.join('|'),'g'));
                             if(arr2){
                               for(var hw=0;hw<arr2.length;hw++){//循环替换正文高亮词
                                 hsplit.splice(hw*2+1,0,'<span class="highLight">'+arr2[hw]+'</span>')
-                              }                              
+                              }
                             }
                             newp+='<p>'+hsplit.join('')+'</p>';
-                          }                        
+                          }
                         }
                       }
 
@@ -1236,8 +1245,8 @@ isGOffline = false;
                       if(data.document[k].pdfUrl){
                         var btnTmp = '';
                         btnTmp = '<button tipUrl=\"'+ data.document[k].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
-                        checkDocument += '<div class="MN_docSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;"  title="' + data.document[k].title + '"><span class="MN_docSearch">' 
-                        checkDocument += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span><div class="tipisHide hide" style="position: absolute;bottom: 5px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div>'  
+                        checkDocument += '<div class="MN_docSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;"  title="' + data.document[k].title + '"><span class="MN_docSearch">'
+                        checkDocument += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span><div class="tipisHide hide" style="position: absolute;bottom: 5px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[k].url+'\">下载</button></div>'
                       }else{
                         checkDocument += '<div class="MN_docSearchCtn"><a href="' + ( data.document[k].url) + '" target="_blank" title="' + data.document[k].title + '"><span class="MN_docSearch">'
                         checkDocument += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[k].classify, 5) + '</span>'
@@ -1247,22 +1256,22 @@ isGOffline = false;
                       }
                       checkDocument +='</div>'
                     }
-      
+
                     $('body').off('mouseover','div.MN_docSearchCtn').on('mouseover','div.MN_docSearchCtn',function() {
                       $(this).find('.tipisHide').removeClass('hide');
                     })
-      
+
                     $('body').off('mouseout','div.MN_docSearchCtn').on('mouseout','div.MN_docSearchCtn',function() {
                       $(this).find('.tipisHide').addClass('hide');
                     })
-      
+
                     $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
                       window.open($(this).attr('tipUrl'))
                     })
                   }else{
                     checkDocument += '<p class="MN_noSearch">无结果</p>'
                   }
-                    $("#artiSearch").html(checkDocument);                  
+                    $("#artiSearch").html(checkDocument);
                 }
               }
             }
@@ -1553,7 +1562,7 @@ isGOffline = false;
           ['[难受]', "[:(]"],
           ['[哭]', "[:'(]"],
           ['[无语]', "[:|]"],
-          ['[闭嘴]', "[:-#]"],// 10 
+          ['[闭嘴]', "[:-#]"],// 10
           ['[惊讶]', "[:-*]"],
           ['[撇嘴]', "[*-)]"],
           ['[微笑]', "[):]"],
@@ -1589,7 +1598,7 @@ isGOffline = false;
           ['[起床]', "[:(]"],
           ['[早上好]', "[:'(]"],
           ['[哎呀]', "[:|]"],
-          ['[上班去]', "[:-#]"],// 10 
+          ['[上班去]', "[:-#]"],// 10
           ['[奋斗]', "[:-*]"],
           ['[谢谢]', "[*-)]"],
           ['[多蒜少肉]', "[):]"],
@@ -1597,6 +1606,156 @@ isGOffline = false;
           ['[加油]', "[(H)]"],
           ['[睡觉]', "[(a)]"]
         ],
+        '广联达表情': [
+          ['[doge脸]', "[:D]"],
+          ['[点赞]', "[(D)]"],
+          ['[发怒]', "[:@]"],
+          ['[害羞]', "[:$]"],
+          ['[喊口号1]', "[8o|]"],
+          ['[喊口号2]', "[8-|]"],
+          ['[滑稽]', "[:|]"],
+          ['[挥手]', "[(S)]"],
+          ['[奸笑]', "[^o)]"],
+          ['[哭泣]', "[:'(]"],// 10
+          ['[困]', "[8-)]"],
+          ['[流汗]', "[*-)]"],
+          ['[拍手]', "[(R)]"],
+          ['[省略号]', "[+o(]"],
+          ['[帅]', "[(H)]"],
+          ['[谁叫我]', "[:-#]"],
+          ['[送花]', "[(F)]"],
+          ['[偷笑]', "[;)]"],
+          ['[吐舌头]', "[(W)]"],
+          ['[问号脸]', "[(u)]"],// 20
+          ['[下班了]', "[(a)]"],
+          ['[笑脸]', "[):]"],
+          ['[星星眼]', "[(#)]"],
+          ['[晕]', "[({)]"],
+          ['[早上好]', "[(k)]"],
+          ['[震惊]', "[:-o]"]
+        ],
+        '德邦表情' : [
+          ['[微笑]', '/::)'],
+          ['[撇嘴]', '/::~'],
+          ['[色]', '/::B'],
+          ['[发呆]', '/::|'],
+          ['[得意]', '/:8-)'],
+          ['[流泪]', '/::<'],
+          ['[害羞]', '/::$'],
+          ['[闭嘴]', '/::X'],
+          ['[睡]', '/::Z'],
+          ['[大哭]', '/::\'('],//10
+          ['[尴尬]', '/::-|'],
+          ['[发怒]', '/::@'],
+          ['[调皮]', '/::P'],
+          ['[呲牙]', '/::D'],
+          ['[惊讶]', '/::O'],
+          ['[难过]', '/::('],
+          ['[酷]', '/::+'],
+          ['[冷汗]', '/:--b'],
+          ['[抓狂]', '/::Q'],
+          ['[吐]', '/::T'],//10
+          ['[偷笑]', '/:,@P'],
+          ['[愉快]', '/:,@-D'],
+          ['[白眼]', '/::d'],
+          ['[傲慢]', '/:,@o'],
+          ['[饥饿]', '/::g'],
+          ['[困]', '/:|-)'],
+          ['[惊恐]', '/::!'],
+          ['[流汗]', '/::L'],
+          ['[憨笑]', '/::>'],
+          ['[悠闲]', '/::,@'],//10
+          ['[奋斗]', '/:,@f'],
+          ['[咒骂]', '/::-S'],
+          ['[疑问]', '/:?'],
+          ['[嘘]', '/:,@x'],
+          ['[晕]', '/:,@@'],
+          ['[疯了]', '/::8'],
+          ['[哀]', '/:,@!'],
+          ['[骷髅]', '/:!!!'],
+          ['[敲打]', '/:xx'],
+          ['[再见]', '/:bye'],//10
+          ['[擦汗]', '/:wipe'],
+          ['[抠鼻]', '/:dig'],
+          ['[鼓掌]', '/:handclap'],
+          ['[糗大了]', '/:&-('],
+          ['[坏笑]', '/:B-)'],
+          ['[左哼哼]', '/:<@'],
+          ['[右哼哼]', '/:@>'],
+          ['[哈欠]', '/::-O'],
+          ['[鄙视]', '/:>-|'],
+          ['[委屈]', '/:P-('],//10
+          ['[快哭了]', '/::\'|'],
+          ['[阴险]', '/:X-)'],
+          ['[亲亲]', '/::*'],
+          ['[吓]', '/:@x'],
+          ['[可怜]', '/:8*'],
+          ['[菜刀]', '/:pd'],
+          ['[西瓜]', '/:<W>'],
+          ['[啤酒]', '/:beer'],
+          ['[篮球]', '/:basketb'],
+          ['[乒乓]', '/:oo'],//10
+          ['[咖啡]', '/:coffee'],
+          ['[饭]', '/:eat'],
+          ['[猪头]', '/:pig'],
+          ['[玫瑰]', '/:rose'],
+          ['[凋谢]', '/:fade'],
+          ['[嘴唇]', '/:showlove'],
+          ['[爱心]', '/:heart'],
+          ['[心碎]', '/:break'],
+          ['[蛋糕]', '/:cake'],
+          ['[闪电]', '/:li'],//10
+          ['[炸弹]', '/:bome'],
+          ['[刀]', '/:kn'],
+          ['[足球]', '/:footb'],
+          ['[瓢虫]', '/:ladybug'],
+          ['[便便]', '/:shit'],
+          ['[月亮]', '/:moon'],
+          ['[太阳]', '/:sun'],
+          ['[礼物]', '/:gift'],
+          ['[拥抱]', '/:hug'],
+          ['[强]', '/:strong'],//10
+          ['[弱]', '/:weak'],
+          ['[握手]', '/:share'],
+          ['[胜利]', '/:v'],
+          ['[抱拳]', '/:@)'],
+          ['[勾引]', '/:jj'],
+          ['[拳头]', '/:@@'],
+          ['[差劲]', '/:bad'],
+          ['[爱你]', '/:lvu'],
+          ['[NO]', '/:no'],
+          ['[OK]', '/:ok'],//10
+          ['[爱情]', '/:love'],
+          ['[飞吻]', '/:<L>'],
+          ['[跳跳]', '/:jump'],
+          ['[发抖]', '/:shake'],
+          ['[怄火]', '/:<O>'],
+          ['[转圈]', '/:circle'],
+          ['[磕头]', '/:kotow'],
+          ['[回头]', '/:turn'],
+          ['[跳绳]', '/:skip'],
+          ['[投降]', '/:oY'],//10
+          ['[激动]', '/:#-0'],
+          ['[乱舞]', '/:hiphot'],
+          ['[献吻]', '/:kiss'],
+          ['[左太极]', '/:<&'],
+          ['[右太极]', '/:&>'],
+          ['[你好]', "[:D]"],
+          ['[好的]', "[:-o]"],
+          ['[擦汗了]', "[:p]"],
+          ['[嗯嗯]', "[:@]"],
+          ['[紧张啦]', "[:s]"],// 10
+          ['[哭了]', "[:$]"],
+          ['[老板请吩咐]', "[:(]"],
+          ['[厉害啦]', "[:'(]"],
+          ['[马上]', "[:|]"],
+          ['[请稍等]', "[:-#]"],
+          ['[跳舞]', "[:-*]"],
+          ['[吐舌头]', "[*-)]"],
+          ['[委屈了]', "[):]"],
+          ['[谢谢老板]', "[;)]"],
+          ['[再见啦]', "[(H)]"]
+        ]
       }
       this.obj.faceType = []
       if (this.options.src.indexOf('wang') + 1) {//旺旺表情
@@ -1629,7 +1788,23 @@ isGOffline = false;
         this.obj.faceType[1] = 'gif'
         this.obj.faceType[2] = 'gif'
       }
-      this.obj.maxNum_y = Math.ceil(this.obj.face[this.obj.faceType[0]].length / this.options.rowNum)//云问表情最大行数
+      if (this.options.src.indexOf('gld') + 1) {//广联达表情
+        this.obj.faceType[0] = '广联达表情'
+        this.obj.faceType[1] = 'gif'
+        this.obj.faceType[2] = 'gif'
+      }
+      if (this.options.src.indexOf('dw') + 1) {// 德邦表情
+        this.obj.faceType[0] = '德邦表情'
+        this.obj.faceType[1] = 'gif'
+        this.obj.faceType[2] = 'gif'
+      }
+
+      /**
+       * 增加this.options.setMaxNum_y参数，用于设置表情显示的行数
+       * 使用场景：发送时不显示某些表情，但是接收时能够进行转义
+       * 使用说明：在app.js初始化插件时设置，如果没有特殊需要隐藏表情，则初始化时不需要设置该参数
+       * */
+      this.obj.maxNum_y = this.options.setMaxNum_y || Math.ceil(this.obj.face[this.obj.faceType[0]].length / this.options.rowNum)//云问表情最大行数
 
       this.obj.showTip = false//是否显示提示框
       this.obj.lastStrLen = 1//
@@ -1779,7 +1954,7 @@ isGOffline = false;
           fromVal = val.substr(0, cursortPos),
           toVal = val.substr(cursortPos, val.length - 1),
           mark = $(this).attr('mark')
-          $('.sendMsg').addClass('sendBtn');  
+          $('.sendMsg').addClass('sendBtn');
         This.$el.val(fromVal + mark + toVal)
         MN_Base.setCaretPos(This.$el[0], cursortPos + mark.length)
         This.options.callback(This.$el.val())
@@ -1915,7 +2090,7 @@ function autoUpload (url, $trigger, $ctn, startcall, callback, type, typecall) {
       return formData
     },
     loadstart: function (e, ran, xhr, fileData) {
-      
+
       for (var i = 0, len = fileData.length; i < len; i++) {
 
         startcall && startcall(ran)//开始时的回调
@@ -1923,7 +2098,7 @@ function autoUpload (url, $trigger, $ctn, startcall, callback, type, typecall) {
         $upFileAbort = $('<span class="upFileAbort">x</span>'),
         $upFileOuter = $('<div class="upFileOuter"></div>'),
         $upFileInner = $('<em class="upFileInner"></em>')
-        
+
         if (!(fileData[i] instanceof Array)) {
           var $upFileItem = $('<div class="upFileItem" size="' + fileData[i].size + '"></div>'),
             $upFileName = $('<p class="upFileName" size="' + fileData[i].size + '" hasRead="0">' + fileData[i].name + '</p>')
@@ -2073,7 +2248,7 @@ function uploadFile (options) {
       /*定义变量 目的：无限极发送消息设置字体功能的开关 Add by zhaoyuxing
       *说明：默认为0 ,在infinitus.html中设置为1 时开启
       */
-      useSetFont:0, 
+      useSetFont:0,
       isEn: false,//是否是英文版界面，页面提示信息都要换成英文
       interface: 'servlet/AQ',//网页端和H5页面调用的接口不同。分别为AQ和AppChat
       sysNum: 1000000,//客户唯一标识
@@ -2160,6 +2335,7 @@ function uploadFile (options) {
         chatUrl: 'h5chat'// 默认跳转的页面
       },
 	    sendFileId:'sendFile',//发送文件
+    sendCameraId:'sendCamera',//发送视频
       upFileModule: {//上传文件模块
         open: false,//是否启用功能
         maxNum: 1,//最大上传数量，0为不限制
@@ -2208,14 +2384,14 @@ function uploadFile (options) {
               $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>' + html + '<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>')
             } else {
               self.scrollbar.options.autoBottom = false;
-              $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+              $obj.html(newAnswer[0].ansCon || '感谢您的评价！');
               if(newAnswer.length > 1){
                 sedMsg()
               }
             }
           } else {
             self.scrollbar.options.autoBottom = false;
-            $obj.text(newAnswer[0].ansCon || '感谢您的评价！');
+            $obj.html(newAnswer[0].ansCon || '感谢您的评价！');
             if(newAnswer.length > 1){
               sedMsg()
             }
@@ -2252,13 +2428,13 @@ function uploadFile (options) {
       commentCallback: function () {},//评论后的回调
       leaveMsgCallback: function () {},//留言后的回调
       showMyWords:function(msg,time){},   //配置展示自己说话内容的html片段
-      showRobotWords:false,               //配置展示机器人回答内容的html片段 
+      showRobotWords:false,               //配置展示机器人回答内容的html片段
       topQueCallBack:function(){},//加载完热门问题后的回调 add by zhaoyuxing
       recommendLinkCallBack:function(data){},//加载完推荐资讯后的回调 add by zhaoyuxing
         /***
        * taskid = 367 身份认证强制跳转登录界面 amend by zhaoyuxing
        * 说明：s=p接口中获取页面跳转地址，进行页面跳转，并将原页面地址作为参数backUrl用于返回机器人页面
-       * */ 
+       * */
       tologinUrl: function(data){
         if(data.loginUrl){
           var backUrl = encodeURIComponent(window.location.href);
@@ -2272,7 +2448,7 @@ function uploadFile (options) {
       /***
        * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
        * 说明：增加kl接口的回调函数，可在函数中判断当前聊天状态，回调内容可在app.js中定义
-       * */ 
+       * */
       klCallback:function(data){},
     }
 
@@ -2292,14 +2468,14 @@ function uploadFile (options) {
     this.init();
     /**task=823 planetdata 定制 更改满意度评价结构
      * 说明：结构在.html中定义全局，覆盖默认结构
-     * */ 
+     * */
     if(window.location.pathname=='/robot/chat2_plantdata.html'){
       this.options.kfHtml=plantData.kfHtml;
     }
   }
 
   Faqrobot.prototype = {
-     
+
     /*定义变量 目的：猪八戒智能推荐排序开关 Add by zhaoyuxing
       *说明：默认为0 ,在猪八戒html中中设置为1 时开启
       */
@@ -2309,7 +2485,7 @@ function uploadFile (options) {
     init: function () {
         //默认开启设置setInputTop方法,如果不需要则在app.js设置变量setInputTop为false
         if((!this.options.setInputTop) && (this.options.sourceId == 3)){
-          
+
         }else{
           if(this.options.isSQ||this.options.isH5WKXT){
              this.options.setInputTop();//taskid=941 上汽聊天页面定制 上汽原型图与标准产品不一致：修改移动端键盘遮挡输入框问题方法 add by zhaoyuxing
@@ -2335,7 +2511,8 @@ function uploadFile (options) {
         if (this.options.upFileModule.open) {
             this.upFile()//上传图片->s=uf  s=image
         }
-	    	this.sendFile()//上传文件 ->s=uf s=image/voice/video/file
+        this.sendFile()//上传文件 ->s=uf s=image/voice/video/file
+        this.sendCamera()//上传视频
         this.queComment()//问题满意度评价->s=addulc
         this.initComment()//服务满意评价度准备->提示语
         this.initLeaveMsg()//留言准备->提示语
@@ -2361,26 +2538,60 @@ function uploadFile (options) {
         this.getTaskNum();
         /*************************************************
          * taskid=1411 文档检索高亮样式添加 顾荣 2018/7/4
-         * 修改：添加CSS样式 
+         * 修改：添加CSS样式
          ************************************************/
         //添加文档检索高亮样式
         this.highLight();
-        
+
         if (this.options.isWKXT) {//判断是否为五矿信托
-          this.dbToTop();          
+          this.dbToTop();
         }
-        
+
         this.isIE8(); // ie8下提示不兼容提示
         if(!MN_Base.isPC()){
             this.removeAds(); // 防止广告入侵
         }
         if(this.options.keyBoardBounce){
 			this.keyBoard()
-		}
+        }
+        this.setPasteImg() //粘贴截图
     },
-
+        /**
+     * 其它方式截图直接粘贴发送
+    */
+    setPasteImg: function(){
+        var This = this;
+        //粘贴事件
+        if(document.addEventListener){
+        document.addEventListener('paste', function (event) {
+            if (event.clipboardData || event.originalEvent) {
+                var clipboardData = (event.clipboardData || event.originalEvent.clipboardData);
+                if (clipboardData.items) {
+                    var blob;
+                    for (var i = 0; i < clipboardData.items.length; i++) {
+                        if (clipboardData.items[i].type.indexOf("image") !== -1) {
+                            blob = clipboardData.items[i].getAsFile();
+                        }
+                    }
+                    var render = new FileReader();
+                    render.onload = function (evt) {
+                        //输出base64编码
+                        var base64 = evt.target.result;
+                        if(base64.indexOf('data:image/png;base64,')>-1){
+                            base64 = base64.replace('data:image/png;base64,','')
+                        }
+                        This.sendScreenPic(base64);
+                    }
+                    if(blob){
+                      render.readAsDataURL(blob);
+                    }
+                }
+            }
+        })
+        }
+    },
     /**
-     *设置双击顶部滚到聊天最顶层 
+     *设置双击顶部滚到聊天最顶层
      */
     dbToTop:function(){
       var This_=this;
@@ -2438,7 +2649,6 @@ function uploadFile (options) {
         deTimer =setInterval(function(){
             var iframe = document.getElementsByTagName('iframe')[0];
             if (iframe) {
-                console.log(iframe)
                 var bodyNode = { tagName: '' }, iframeParent, targetNode = iframe.parentNode;
                 while (bodyNode.tagName != 'BODY') {
                     bodyNode = targetNode;
@@ -2454,8 +2664,8 @@ function uploadFile (options) {
             }
             del_times++;
             if (del_times > 10) window.clearInterval(deTimer)
-        }, 200);    
-    }, 
+        }, 200);
+    },
     /**设置发送文字的字体大小（无限极定制）
      * 说明：1、在askQue()中调用
      *      2、在需要发送的文字外，加上span标签，并加上font-size实现改变更改字体大小功能
@@ -2498,7 +2708,7 @@ function uploadFile (options) {
     },
     // 设置输入框top值的高度：解决键盘遮挡输入框bug
     setInputTop: function () {
-        var str= navigator.userAgent.toLowerCase(); 
+        var str= navigator.userAgent.toLowerCase();
         var ver=str.match(/cpu iphone os (.*?) like mac os/);
         if(ver){
             var version1 = ver[1].split('_')[0];
@@ -2549,16 +2759,16 @@ function uploadFile (options) {
         }else{
             var self = this;
             $('.'+this.options.editCtn).css('position','fixed');
-            var timer1;  
+            var timer1;
             $('.'+this.options.editCtn).on('focus',function() {
                 timer1 = setTimeout(function() {
                     self.scrollIntoView(false);
                 },100)
             });
-        
+
             $('.'+this.options.editCtn).on('blur',function() {
                 if(timer1){
-                    clearInterval(timer1);  
+                    clearInterval(timer1);
                 }
             });
         }
@@ -2736,7 +2946,7 @@ function uploadFile (options) {
            * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/8
            * 原因：由于ppmoney的h5页面地址不是‘h5chat’,而是‘h5chat_ppmoney’；
            * 修改：如何app.js中设定了h5页面的地址，则跳转到该地址；
-           */        
+           */
           if(This.options.h5chatUrl){
             This.showMsg('3s后将跳转至手机聊天页面', function () {
               location.href = location.href.replace(/\/[^\.\/]+\.html/, '\/' + This.options.h5chatUrl + '\.html')
@@ -2746,14 +2956,14 @@ function uploadFile (options) {
               location.href = location.href.replace(/\/[^\.\/]+\.html/, '\/' + This.options.autoSkip.chatUrl + '\.html')
             })
           }
-          
+
         }
       }
     },
     /**
      * taskid=933 国泰基金钉钉身份认证对接 提交人：顾荣  2018/3/22
      * 添加：判断是否请求钉钉身份信息
-     * 
+     *
     */
     //添加开始*******************************************************************************************
     DDinit : function(){
@@ -2784,7 +2994,7 @@ function uploadFile (options) {
                     },
                     success: function(data) {
                         if(data.status==0){
-                            var DDjson={ }//钉钉身份认证信息 
+                            var DDjson={ }//钉钉身份认证信息
                             DDjson.userid=data.userInfo.userid;//用户id
                             DDjson.name=data.userInfo.name;//用户姓名
                             DDjson.isAdmin=data.userInfo.isAdmin;
@@ -2808,7 +3018,7 @@ function uploadFile (options) {
             onFail : function(err) {
               THIS_.initBaseInfo()
             }
-          }) 
+          })
         }else{
           THIS_.initBaseInfo()
         }
@@ -2830,7 +3040,7 @@ function uploadFile (options) {
                         },
                         success: function(data) {
                           if(data.status==0){
-                            var DDjson={ }//钉钉身份认证信息 
+                            var DDjson={ }//钉钉身份认证信息
                             DDjson.userid=data.userInfo.userid;//用户id
                             DDjson.name=data.userInfo.name;//用户姓名
                             DDjson.isAdmin=data.userInfo.isAdmin;
@@ -2853,7 +3063,7 @@ function uploadFile (options) {
                 onFail : function(err) {
                   THIS_.initBaseInfo()
                 }
-            })      
+            })
           })
         }else{
           THIS_.initBaseInfo()
@@ -2883,11 +3093,17 @@ function uploadFile (options) {
       if(This.options.token){
         paramsData.token = This.options.token;
       }
+      /**
+       * 广联达聊天页面定制 需传入token
+       */
+      if(This.options.gldToken){
+        paramsData.access_token = This.options.gldToken;
+      }
 
       /*
         taskid=962,黄世鹏
         开发：智酷身份认证
-      */ 
+      */
       if(window.sessionStorage.getItem('loginIdent') || window.sessionStorage.getItem('webId')){
         paramsData.loginIdent=window.sessionStorage.getItem('loginIdent')
 		    paramsData.webId=window.sessionStorage.getItem('webId')
@@ -2895,7 +3111,7 @@ function uploadFile (options) {
       /**
        * taskid=933 国泰基金钉钉身份认证对接 提交人：顾荣  2018/3/22
        * 添加：判断是否请求钉钉身份信息
-       * 
+       *
       */
       //添加开始*******************************************************************************************
       if(datajson){//如果有钉钉省份认证信息
@@ -2908,23 +3124,40 @@ function uploadFile (options) {
       //添加结束*******************************************************************************************
       if((!!window.ActiveXObject || "ActiveXObject" in window)&&This.options.operationSystemName){//判断是否需要发送window系统用户名
         try{
-          var WshShell =new ActiveXObject("WScript.Shell");  
+          var WshShell =new ActiveXObject("WScript.Shell");
           var operationSystemName = WshShell.ExpandEnvironmentStrings("%USERNAME%");
           paramsData.login=operationSystemName;
         }
         catch(err){
-          console.log(err)
+          // console.log(err)
         }
       }
       if(!MN_Base.isPC()){
         if(window.location.host=='shlibrary.faqrobot.cn'){
             var stid=window.location.search.split('&')[window.location.search.split('&').length-1].split('=')[1];
-            paramsData.stid = stid;            
-        }            
+            paramsData.stid = stid;
+        }
       }
       return This.request({
         params: paramsData,
         callback: function (data) {
+           //logo显示隐藏
+          if(data.displayLogo === false){
+            $('#power').hide()
+          }else{
+            $('#power').show()
+          }
+          // 华勤身份认证
+          if(data.REDIRECT && data.REDIRECT == 'REDIRECT'){
+            window.location.href = data.URL;
+            return;
+          }
+          /**
+           * 对接h5获取clientId
+          */
+          if(data.clientId){
+            This.options.saveClientId = data.clientId
+          }
           // TaskId=388, 任务单逻辑描述:如果认证未成功，弹出提示后不调取任何接口.
           if(data.status == -1){
             This.options.tologinUrl(data)//taskid = 367 身份认证跳转
@@ -2943,7 +3176,7 @@ function uploadFile (options) {
           } else {
             This.options.isEn = false
           }
-          $('.loading').css('display','none')
+          $('.loading,#loadMask').hide()
           This.timerGo = true//控制定时请求
           This.options.initCallback(data)
           $('#' + This.options.inputCtnId).removeAttr('readonly')
@@ -2956,6 +3189,10 @@ function uploadFile (options) {
           */
           if(!This.isOffline){
               if(data.talkMessageList&&data.talkMessageList[0]){
+                var talkMessageList = This.filterContent(data.talkMessageList)
+                if(talkMessageList.length > 0){
+                  data.talkMessageList = talkMessageList;
+                }
                 /**
                  * 为五矿信托时，显示欢迎语和猜你想问  顾荣 2018/6/22
                  */
@@ -2970,13 +3207,14 @@ function uploadFile (options) {
               }
           }
           if(This.options.isH5WKXT){
-            This.options.addWaterMarker(data.authUser)            
+            This.options.addWaterMarker(data.authUser)
           }
           This.quickService(data)//快捷服务
           This.recommendLink(data)//推荐资讯
           This.unsatisfy(data)//不满意原因
           This.muiItem()
           This.topQue(data)//热门、常见问题
+          This.noticeList(data)//公告列表
           This.newQue(data)//新增问题
           This.userInfo(data)//用户信息
           This.poweredBy(data)//技术支持
@@ -2995,7 +3233,7 @@ function uploadFile (options) {
             This.recordEvent()// 历史记录
           }
           This.vipDirect();//taskId=605 返利网h5页面vip转人工直通 add by 赵宇星
-          // taskId=177 大小渠道 企业介绍首先取data.channelSourceConfig.chatInfo 
+          // taskId=177 大小渠道 企业介绍首先取data.channelSourceConfig.chatInfo
           if( data.channelSourceConfig && data.channelSourceConfig.chatInfo ){
               if ($('#' + This.options.robotInfo).length > 0) {
                 $('#' + This.options.robotInfo).html(data.channelSourceConfig.chatInfo)
@@ -3032,8 +3270,8 @@ function uploadFile (options) {
             if(data.channelSourceConfig){//如果channelSourceConfig中返回了机器人名字
               This.robot.robotName=data.channelSourceConfig.robotName||This.robot.robotName
             }
-            if(This.options.kf_Robot_Name||This.options.kf_Robot_Name==""){            
-              This.options.kf_Robot_Name=This.robot.robotName          
+            if(This.options.kf_Robot_Name||This.options.kf_Robot_Name==""){
+              This.options.kf_Robot_Name=This.robot.robotName
             }
             // taskId = 1193 闪退功能优化 Amend by zhaoyuxing 闪退时显示反问引导以及智能推荐
 				for (var i = 0; i<data.talkMessageList.length; i++) {
@@ -3048,7 +3286,7 @@ function uploadFile (options) {
 					}
 					var robotAnswer=[];
 					robotAnswer.push(obj);
-		  
+
 					var _data=new Object();
 					_data.robotAnswer=robotAnswer;
           if(data.talkMessageList[i].question){
@@ -3061,6 +3299,10 @@ function uploadFile (options) {
             if(data.talkMessageList[i].question.match('&gt;')){//>
               data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&gt;/g,'>');
             }
+            if(data.talkMessageList[i].question.match('&amp;')){//&
+              data.talkMessageList[i].question = data.talkMessageList[i].question.replace(/&amp;/g,'&');
+            }
+
           }
 					recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType,data.talkMessageList[i].name) : '') + ((data.talkMessageList[i].reply || (data.talkMessageList[i].gusList&&data.talkMessageList[i].gusList.length)) ? This.robotHtml(_data) : '')
 				}
@@ -3074,25 +3316,34 @@ function uploadFile (options) {
                 }else{
                   This.setFont()
                 }
-                MN_Base.imageLoad(recordData, function () {// 匹配html中所有图片资源，加载完毕执行 add by zhaoyuxing 
+                MN_Base.imageLoad(recordData, function () {// 匹配html中所有图片资源，加载完毕执行 add by zhaoyuxing
                   This.scrollbar.update()
                   This.scrollbarUpdate()
                 })
 			},
     //不满意原因
     unsatisfy: function (data) {
+      var This = this
       if(data.dialogueUselessReasonState == 0||data.dialogueUselessReasonState){
         sessionStorage.setItem('dialogueUselessReasonState',data.dialogueUselessReasonState);
       }
       if(data.dialogueUselessReasonItems){
-        var html = '<p>不满意的原因？</p>';
-        $.each(data.dialogueUselessReasonItems, function (i, item) {
-          html += '<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="' + (item.reason || '') + '"> ' + (item.reason || '') + '</label>';
-          dialogItemsList.push(item.reason);
-        })
-        $('#feedBackForm .servNoReason').html(html)
+        if(This.options.isGLDPc){
+          var oHtml = ''
+          $.each(data.dialogueUselessReasonItems, function (i, item) {
+            oHtml += '<label class="MN_unstais" title="'+(item.reason || '')+'">' + (item.reason || '') + '</label>';
+          })
+          $('#unstatisList .MN_List').html(oHtml)
+        }else{
+          var html = '<p class="MN_marginCtn">您不满意的原因？</p>';
+          $.each(data.dialogueUselessReasonItems, function (i, item) {
+            html += '<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="' + (item.reason || '') + '"> ' + (item.reason || '') + '</label>';
+            dialogItemsList.push(item.reason);
+          })
+          $('#feedBackForm .servNoReason,#feedbackForm .noSatiCtn').html(html)
+        }
       }else{
-        $('#feedBackForm .servNoReason').html("")
+        $('#feedBackForm .servNoReason,#feedbackForm .noSatiCtn').html("")
       }
     },
     getIsLogo: function(data) {
@@ -3133,10 +3384,13 @@ function uploadFile (options) {
       })
     },
     // 历史记录
-    historyRecord: function () {
+    historyRecord: function (index) {
       var This = this
-      This.recordIndex = This.recordIndex ? ++This.recordIndex : 1
-
+      if(index && This.options.isGLDPc){
+        This.recordIndex = index
+      }else{
+        This.recordIndex = This.recordIndex ? ++This.recordIndex : 1
+      }
       This.request({
         params: {
           s: 'hl',
@@ -3160,6 +3414,10 @@ function uploadFile (options) {
             } else {
                 if (data.list) {
                     if (data.list[0]) {
+                      var list = This.filterContent(data.list);
+                      if(list.length > 0) {
+                        data.list = list;
+                      }
                       var html = '',
                       recordData = ''
                       This.scrollbar.options.autoBottom = false// 防止自动滚动到底部
@@ -3204,7 +3462,7 @@ function uploadFile (options) {
                               }
                               var robotAnswer=[];
                               robotAnswer.push(obj);
-    
+
                               var _data=new Object();
                               _data.robotAnswer=robotAnswer;
                               if(data.list[i].question){
@@ -3217,7 +3475,10 @@ function uploadFile (options) {
                                 if(data.list[i].question.match('&gt;')){//>
                                   data.list[i].question = data.list[i].question.replace(/&gt;/g,'>');
                                 }
-                              }  
+                                if(data.list[i].question.match('&amp;')){//&
+                                  data.list[i].question = data.list[i].question.replace(/&amp;/g,'&');
+                                }
+                              }
                               recordData += (data.list[i].question ? This.customHtml(This.replaceFace(data.list[i].question),data.list[i].dateTime,data.list[i].askType,data.list[i].name) : '') + ((data.list[i].reply || '') ? This.robotHtml(_data) : '')
                         }
                         if(!MN_Base.isPC()){
@@ -3266,7 +3527,7 @@ function uploadFile (options) {
                           $('.MN_kfCtn img').not('.MN_kfImg').eq(k).wrap('<figure><div class="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '"><a href="' + $('.MN_kfCtn img').not('.MN_kfImg').eq(k).attr('src') + '" data-size="1920x1800"></a></div></figure>');
                       }
                   }
-              }              
+              }
             }
         }else{
 		  This.setFont()
@@ -3289,18 +3550,26 @@ function uploadFile (options) {
         $webInfoId = this.$obj.$webInfoId = $('#' + this.options.webInfoId)
 
         this.robot.kfPic = data.skinConfig ? data.skinConfig.kfPic : this.options.prefix + this.options.kfPic;//客服图标
-        if(this.options.isSQ){// taskid=941 上汽聊天页面定制 展示客户头像
-          if(data.authUser && data.authUser.photoUrl ){
-            this.robot.khPic = data.authUser.photoUrl;
+        if(this.options.isSQ || this.options.isGLDPc){// taskid=941 上汽聊天页面定制 展示客户头像
+          if(data.authUser){
+            if(data.authUser.photoUrl){
+              this.robot.khPic = data.authUser.photoUrl;
+            }else{
+              if(this.options.isGLDPc){
+                this.robot.khPic = this.options.prefix + this.options.khLoginPic;
+              }else{
+                this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
+              }
+            }
           }else{
-            this.robot.khPic = this.options.prefix + this.options.khPic;
+            this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
           }
         }else{
-            this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
+          this.robot.khPic = data.skinConfig ? data.skinConfig.khPic : this.options.prefix + this.options.khPic//客户图标
         }
         /***taskId=177 大小渠道
          * 说明： 机器人logo首先取channelSourceConfig.chatLogo
-         *        企业名称首先取data.channelSourceConfig.chatTitle 
+         *        企业名称首先取data.channelSourceConfig.chatTitle
          * */
         if( data.channelSourceConfig && data.channelSourceConfig.inputFieldWord){
           $('#' + this.options.inputCtnId).attr({'placeholder': data.channelSourceConfig.inputFieldWord});//设置输入框的input
@@ -3309,14 +3578,14 @@ function uploadFile (options) {
           $logoId.attr({'src': data.channelSourceConfig.chatLogo || data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
           $webNameId.text( data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName)
           $('#sqTitle').text(data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName)
-          
+
           this.intelTitle = data.channelSourceConfig.chatTitle || data.webConfig.webName || this.options.webName// 智能标题
         }else{
           $logoId.attr({'src':data.webConfig.logoUrl || this.options.prefix + this.options.logoUrl})
           $webNameId.text( data.webConfig.webName || this.options.webName)
           this.intelTitle = data.webConfig.webName || this.options.webName// 智能标题
           $('#sqTitle').text(data.webConfig.webName || this.options.webName)
-          
+
         }
       $webInfoId.text(MN_Base.addDots($.trim(MN_Base.getPlainText(data.webConfig.info || this.options.webInfo)), 20))
       this.artiTitle = this.options.artiTitle// 人工标题
@@ -3371,16 +3640,16 @@ function uploadFile (options) {
       var name,value;//存储url中的查询讯字符串、值
       var str=location.search; //取得url查询字符串
         str=str.substr(1); //取得所有参数   stringvar.substr(start [, length ]
-      
+
       var arr=str.split("&"); //各个参数放到数组里
       var urlCode=[];
-      for(var i=0;i < arr.length;i++){ 
-      var num=arr[i].indexOf("="); 
-          if(num>0){ 
+      for(var i=0;i < arr.length;i++){
+      var num=arr[i].indexOf("=");
+          if(num>0){
           name=arr[i].substring(0,num);
           value=arr[i].substr(num+1);
           urlCode[name]=value;
-          } 
+          }
       }
       var vip=urlCode.vip;
      //判断是否为h5页面
@@ -3435,7 +3704,7 @@ function uploadFile (options) {
         }
         return html
       }
-      //机器人整体结构 
+      //机器人整体结构
       if (data.webConfig) {//欢迎语结构
         this.robot.robotName = data.webConfig.robotName//机器人名字（客服名字）
         // taskid=177 大小渠道 修改人：顾荣 2018.4.27
@@ -3447,14 +3716,14 @@ function uploadFile (options) {
          * 原因：客服名字需要区分是机器人还是人工；
          * 添加：将后台返回的机器人名字赋值给this.options.kf_Robot_Name
          */
-        if(this.options.kf_Robot_Name||this.options.kf_Robot_Name==""){            
-          this.options.kf_Robot_Name=this.robot.robotName          
+        if(this.options.kf_Robot_Name||this.options.kf_Robot_Name==""){
+          this.options.kf_Robot_Name=this.robot.robotName
         }
         //%%
         if(!MN_Base.isPC()){
             $('.headName').html(this.robot.robotName);
         }
-        var helloWord = data.helloWord || data.webConfig.helloWord        
+        var helloWord = data.helloWord || data.webConfig.helloWord
         if (data.chatLink) {
           if (data.chatLink.helloWord) {
             helloWord = data.chatLink.helloWord
@@ -3539,9 +3808,8 @@ function uploadFile (options) {
                   var relateListStartSelectIndex =1;
                 }else{
                   var relateListStartSelectIndex = data.robotAnswer[index].relateListStartSelectIndex
-                 
                 }
-                
+
               if (!has_ydWords) {
                 if (this.options.isEn) {
                   ydWords = '<p>' + (gusWords.ydWords || 'Would you like to ask the following questions?') + '</p>'
@@ -3550,14 +3818,19 @@ function uploadFile (options) {
                 }
 
               }
-              for (var i = 0; i < relateList.length; i++) {
-                if (relateListStartSelectIndex) {
-                  relateListHtml += '<div class="MN_relateList"><span>' + (relateListStartSelectIndex) + '. </span><span class="MN_guideQue" sId="' + relateList[i].solutionId + '" title="' + relateList[i].question + '">' + relateList[i].question + '</span></div>'
-                } else {
-                  relateListHtml += '<div class="MN_relateList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + relateList[i].solutionId + '" title="' + relateList[i].question + '">' + relateList[i].question + '</span></div>'
+              if(This.options.isGLDPc){
+                for (var i = 0; i < relateList.length; i++) {
+                  relateListHtml += '<div class="MN_relateList"><span class="MN_guideQue" sId="' + relateList[i].solutionId + '" title="' + relateList[i].question + '">' + relateList[i].question + '</span></div>'
                 }
-                relateListStartSelectIndex++
-
+              }else{
+                for (var i = 0; i < relateList.length; i++) {
+                  if (relateListStartSelectIndex) {
+                    relateListHtml += '<div class="MN_relateList"><span>' + (relateListStartSelectIndex) + '. </span><span class="MN_guideQue" sId="' + relateList[i].solutionId + '" title="' + relateList[i].question + '">' + relateList[i].question + '</span></div>'
+                  } else {
+                    relateListHtml += '<div class="MN_relateList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + relateList[i].solutionId + '" title="' + relateList[i].question + '">' + relateList[i].question + '</span></div>'
+                  }
+                  relateListStartSelectIndex++
+                }
               }
               relateListHtml = ydWords + '<p>' + relateListHtml + '</p>' + '<p>' + (gusWords.afterWords || '') + '</p>'
             }
@@ -3572,7 +3845,12 @@ function uploadFile (options) {
             //%%
             commentHtml = this.options.kfHtml[1]
           }
-
+          //广联达转人工时判断用户是否登录
+          if(This.options.isGLDPc && data.robotAnswer[index].serviceType == "login"){
+            try{
+              window.LoginApp()
+            }catch(e){}
+          }
           var ansCon = data.robotAnswer[index].ansCon
           if (data.robotAnswer[index].msgType == 'voice') {
             //语音答案
@@ -3582,11 +3860,11 @@ function uploadFile (options) {
           } else if (data.robotAnswer[index].msgType == 'image') {
             //图片答案
             if(!MN_Base.isPC()){
-                ansCon = '<figure><div class="' + ansCon + '"><a href="' + ansCon + '" data-size="1920x1800"><img src="' + ansCon + '" class="imgBox"></a></div></figure>'                
+                ansCon = '<figure><div class="' + ansCon + '"><a href="' + ansCon + '" data-size="1920x1800"><img src="' + ansCon + '" class="imgBox"></a></div></figure>'
             }else{
                 ansCon = '<img src="' + ansCon + '" class="imgBox">'
             }
-            
+
           } else if (data.robotAnswer[index].msgType == 'video') {
             //视频答案
 
@@ -3651,9 +3929,9 @@ function uploadFile (options) {
                 $img=$('.MN_kfCtn img').not('.MN_kfImg').not('.i-img')
               }
               for(var k=0;k <  $img.length;k++){
-                  if( $img.eq(k).attr('src')){
+                  if(!$img.eq(k).parent('a').attr('target')&&$img.eq(k).attr('src')){
                     if( $img.eq(k).parents('.MN_kfCtn').find('figure').length>0){
-      
+
                     }else{
                       if( $img.length > 1){
                         for(var i=0;i <  $img.length;i++){
@@ -3679,6 +3957,12 @@ function uploadFile (options) {
                     }
                 }
             }
+
+          if(This.options.isGLDPc){//收到消息闪烁
+            try{
+              window.NewMessage();
+            }catch(e){}
+          }
         }
       } else {//彻底下线
         if (data.tspan >= '2000') {
@@ -3783,7 +4067,7 @@ function uploadFile (options) {
           }
           showPage($(nextThis).attr('page'),nextThis);
         })
-        
+
         function showPage(whichPage,Tthis){
           $(Tthis).parents('.distributionAns').find('.pagingList').html('');
           for(i = (whichPage-1)*PageSize; i < PageSize*whichPage ; i++){
@@ -3820,7 +4104,7 @@ function uploadFile (options) {
         if (word.indexOf('<script>')>-1) {
             word = word.replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
-        
+
       var html = ''
         //taskId=475 查看聊天记录，聊天记录图片不显示bug
         if(msgType=='image'){
@@ -3851,16 +4135,31 @@ function uploadFile (options) {
       }
       return html
     },
+    //公告列表
+    noticeList: function(data){
+      var This = this;
+      if(data.notice && data.notice.length > 0){
+        $('#showNoticeList').show()
+        $('.'+This.options.noticeTitle).html(data.notice[0].title)
+        $('.'+This.options.noticeText).html(data.notice[0].content)
+        $('#notice').find('.'+This.options.noticeText).html($(data.notice[0].content).text())
+        $('.'+This.options.noticeDate).html(data.notice[0].time.split(' ')[0])
+      }else{
+        $('#showNoticeList').hide()
+      }
+    },
     //快捷服务
     quickService: function (data) {
       if (!this._options.quickServId) {//不配置直接返回
         return
       }
-
+      if(this.options.quickCallback) {
+        this.options.quickCallback(data);
+      }
       var $quickServId = this.$obj.$quickServId = $('#' + this.options.quickServId),//快捷服务Id
         quickLink = data.quickLink,
         str = ''
-
+        clickName = ''
       //快捷服务结构
       if (quickLink && quickLink[0]) {
         for (var i = 0; i < quickLink.length; i++) {
@@ -3868,10 +4167,31 @@ function uploadFile (options) {
            * taskid=802 快捷服务区分本窗口新窗口打开 顾荣 2018/2/8
            * 修改：mediumType为null,undifiend,0新窗口打开，为1本窗口打开
            */
-          if(quickLink[i].mediumType==1){
-            str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+          if(this.options.isSQPc){
+            if(quickLink[i].name == '在线购车'){
+              clickName = 'shortcut_onlinebuying'
+            }else if(quickLink[i].name == '服务中心' || quickLink[i].name == '门店'){
+              clickName = "shortcut_servicecenter"
+            }else if(quickLink[i].name == '金融服务' || quickLink[i].name == '金融'){
+              clickName = "shortcut_loan"
+            }else if(quickLink[i].name == '销售中心' || quickLink[i].name == '在线购买'){
+              clickName = "shortcut_salescenter"
+            }else if(quickLink[i].name == '预约试驾' || quickLink[i].name == '试驾'){
+              clickName = "shortcut_testdrive"
+            }else if(quickLink[i].name == '搜索'){
+              clickName = "shortcut_search"
+            }
+            if(quickLink[i].mediumType==1){
+              str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" onclick="_swa('+"'"+'send'+"',"+"'"+'action'+"',"+"'"+clickName+"'"+')"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+            }else{
+              str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" target="_blank" onclick="_swa('+"'"+'send'+"',"+"'"+'action'+"',"+"'"+clickName+"'"+')"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+            }
           }else{
-            str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" target="_blank"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+            if(quickLink[i].mediumType==1){
+              str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+            }else{
+              str += '<a class="MN_quickLink" href="' + quickLink[i].linkUrl + '" target="_blank"><img src="' + quickLink[i].imageUrl + '"><p>' + quickLink[i].name + '</p></a>'
+            }
           }
         }
         $quickServId.empty().append(str)
@@ -3897,7 +4217,7 @@ function uploadFile (options) {
         str = ''
 
       //推荐资讯结构
-      if (chatFormSugLink[0]) {
+      if (chatFormSugLink && chatFormSugLink[0]) {
         for (var i = 0; i < chatFormSugLink.length; i++) {
           if (chatFormSugLink[i].type) {//1->图片
             str += '<a class="MN_imgRecommendLink" href="' + chatFormSugLink[i].linkurl + '" target="_blank"><img src="' + chatFormSugLink[i].content + '"></a>'
@@ -3999,7 +4319,7 @@ function uploadFile (options) {
       }
       var $userInfoId = this.$obj.$userInfoId = $('#' + this.options.userInfoId),//用户信息Id
         str = ''
-        //taskId =177  企业名称首先取data.channelSourceConfig.chatTitle 
+        //taskId =177  企业名称首先取data.channelSourceConfig.chatTitle
       var info = data.webConfig.info || (data.company ? data.company.info : ''),//简介
         webName =  data.webConfig.webName || (data.company ? data.company.webName : ''),//名称
         serviceQq = data.webConfig.serviceQq || (data.company ? data.company.qq : ''),//QQ
@@ -4008,7 +4328,7 @@ function uploadFile (options) {
         address = (data.company ? data.company.address : ''),//地址
         notice = (data.company ? data.company.notice : ''),//通知
         openTime = (data.company ? data.company.openTime : '')//工作时间
-        
+
         if(data.channelSourceConfig){
           webName = data.channelSourceConfig.chatTitle;
         }
@@ -4182,7 +4502,7 @@ function uploadFile (options) {
               }
               Promise.all(promiseArr)
               .then(function (data) {
-                if(This.isOffline){ 
+                if(This.isOffline){
                   This.timeRequest();
                   This.isOffline=false;
                   isGOffline = false;
@@ -4206,6 +4526,7 @@ function uploadFile (options) {
         }
         This.robot.html = This.robot._html = ''
         This.$obj.$inputCtnId.val('')//清空输入框
+        $('.AU_outerCtn').empty().hide()//输入引导消失
         $(document).trigger('keydown')
       }
     },
@@ -4218,6 +4539,9 @@ function uploadFile (options) {
       var This = this,
         hasCtn = false// 是否有内容
       if (data.robotAnswer) {
+        if(This.options.isGLDPc){
+          sessionStorage.setItem('effective',1)
+        }
         if (data.robotAnswer && data.robotAnswer.length > 0) {
           for (var i = 0; i < data.robotAnswer.length; i++) {
             if (data.robotAnswer[i].ansCon) {
@@ -4255,7 +4579,7 @@ function uploadFile (options) {
                      * 原因:判断是否是ios端，添加事件
                      * 添加 判断ios端，添加事件，弹出到pc端下载
                      */
-                    This.bodybindgClick();              
+                    This.bodybindgClick();
               }
             }
             This.documentHtml(data,i)//文档检索功能
@@ -4266,7 +4590,7 @@ function uploadFile (options) {
              * 原因：防止回复内容过多，需等DOM生产完才能滚屏
              * 设置300毫秒的延时再滚屏
              */
-            // 
+            //
             setTimeout(function(){
             	This.scrollbar.update()
             	This.scrollbarUpdate()
@@ -4296,7 +4620,7 @@ function uploadFile (options) {
         if (data.document) {
           if (data.document[0]) {
               for (var i = 0; i < data.document.length; i++) {
-                
+
                 /**
                  * taskid=1441
                  * 修改：标题取消折行，展示正文，标题与正文中命中词语高亮 顾荣 2018/7/2
@@ -4304,24 +4628,24 @@ function uploadFile (options) {
                 var newTitle=data.document[i].title;
                 if(data.document[i].highLightResultList!=null){//高亮配置项开启
                   var highLightWord=data.document[i].matchWords//
-                  newTitle=newTitle.split(eval("/"+highLightWord.join('|')+"/ig"));
-                  var arr1=data.document[i].title.match(eval("/"+highLightWord.join('|')+"/ig"));
+                  newTitle=newTitle.split(new RegExp(highLightWord.join('|'),'g'));
+                  var arr1=data.document[i].title.match(new RegExp(highLightWord.join('|'),'g'));
                   if(arr1){
                     for(var hw=0;hw<arr1.length;hw++){//循环替换标题高亮词
                       newTitle.splice(hw*2+1,0,'<span class="highLight">'+arr1[hw]+'</span>')
                     }
-                    newTitle=newTitle.join('')                    
+                    newTitle=newTitle.join('')
                   }
                   var highLightarr=data.document[i].highLightResultList//匹配到的正文
                   if(highLightarr[0]){//匹配到正文
                     var newp=''
                     for(var hi=0;hi<highLightarr.length;hi++){//循环正文列表
-                      var hsplit=highLightarr[hi].highLishtSentence.split(eval("/"+highLightWord.join('|')+"/ig"));
-                      var arr2=highLightarr[hi].highLishtSentence.match(eval("/"+highLightWord.join('|')+"/ig"));
+                      var hsplit=highLightarr[hi].highLishtSentence.split(new RegExp(highLightWord.join('|'),'g'));
+                      var arr2=highLightarr[hi].highLishtSentence.match(new RegExp(highLightWord.join('|'),'g'));
                       if(arr2){
                         for(var hw=0;hw<arr2.length;hw++){//循环替换正文高亮词
                           hsplit.splice(hw*2+1,0,'<span class="highLight">'+arr2[hw]+'</span>')
-                        }                        
+                        }
                       }
                      }
                     newp+='<p>'+hsplit.join('')+'</p>';
@@ -4334,10 +4658,10 @@ function uploadFile (options) {
                 if(data.document[i].pdfUrl){
                     var btnTmp = '';
                     btnTmp = '<button tipUrl=\"'+ data.document[i].pdfUrl +'\" class="btn btn-xs btn-primary previewDoc">预览</button>';
-                    html += '<div class="MN_innerSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;" title="' + data.document[i].title + '"><span class="MN_innerSearch">' 
+                    html += '<div class="MN_innerSearchCtn"><a class="hoverTip" href="#" style="cursor: pointer;position: relative;" title="' + data.document[i].title + '"><span class="MN_innerSearch">'
                     html +=newTitle+ '</span></a><span class="MN_classifySearch">' +MN_Base.addDots(data.document[i].classify, 5) + '</span><div class="tipisHide hide" style="position: absolute;bottom:5px;left:21px">'+btnTmp+'&nbsp;&nbsp;<button class="btn btn-xs btn-primary download" tipUrl=\"'+data.document[i].url+'\">下载</button></div>'
                   }else{
-                    html += '<div class="MN_innerSearchCtn"><a href="' + (data.document[i].url) + '" target="_blank" title="' + data.document[i].title + '"><span class="MN_innerSearch">' 
+                    html += '<div class="MN_innerSearchCtn"><a href="' + (data.document[i].url) + '" target="_blank" title="' + data.document[i].title + '"><span class="MN_innerSearch">'
                     html += newTitle + '</span></a><span class="MN_classifySearch">' + MN_Base.addDots(data.document[i].classify, 5) + '</span>'
                   }
                   if(newp){
@@ -4349,7 +4673,7 @@ function uploadFile (options) {
                 $('body').off('mouseover','div.MN_innerSearchCtn').on('mouseover','div.MN_innerSearchCtn',function() {
                   $(this).find('.tipisHide').removeClass('hide');
                 })
-  
+
                 $('body').off('mouseout','div.MN_innerSearchCtn').on('mouseout','div.MN_innerSearchCtn',function() {
                   $(this).find('.tipisHide').addClass('hide');
                 })
@@ -4357,7 +4681,7 @@ function uploadFile (options) {
               $('body').off('click','.previewDoc,.download').on('click','.previewDoc,.download',function() {
                 window.open($(this).attr('tipUrl'))
               })
-       
+
           } else {
             html += '<p class="MN_noSearch">无结果</p>'
           }
@@ -4475,11 +4799,9 @@ function uploadFile (options) {
             This.$obj.$chatCtnId.append(This.robotHtml(data))//添加机器人的话
             This.recommendUrl(data)
             MN_Base.imageLoad(This.robotHtml(data), function () {// 匹配html中所有图片资源，加载完毕执行
-              This.scrollbar.update()
-              This.scrollbarUpdate()
+                This.scrollbar.update()
+                This.scrollbarUpdate()
             })
-            This.scrollbar.update()
-            This.scrollbarUpdate()
           }
         })
       })
@@ -4491,7 +4813,19 @@ function uploadFile (options) {
             This.robot.guide = false// 退出引导
             This.scrollbar.options.autoBottom = true// 恢复自动滚动到底部
             var $This = $(this).find('.MN_guideQue')
-
+            if($(this).hasClass('MN_queList') && This.options.isSQPc){
+              if($(this).index() == 0){
+                _swa("send","action","FAQ_P1");
+              }else if($(this).index() == 1){
+                _swa("send","action","FAQ_P2");
+              }else if($(this).index() == 2){
+                _swa("send","action","FAQ_P3");
+              }else if($(this).index() == 3){
+                _swa("send","action","FAQ_P4");
+              }else if($(this).index() == 4){
+                _swa("send","action","FAQ_P5");
+              }
+            }
             This.$obj.$chatCtnId.append(This.customHtml($This.html()))//添加我的话
             /**
              * 如果下线,先调取s=p初始化，再调取s=aq和s=kl恢复正常回话
@@ -4502,7 +4836,7 @@ function uploadFile (options) {
             }
             Promise.all(promiseArr)
             .then(function (data) {
-                if(This.isOffline){ 
+                if(This.isOffline){
                     This.timeRequest();
                     This.isOffline=false;
                     isGOffline = false;
@@ -4510,7 +4844,7 @@ function uploadFile (options) {
                 /*
                 taskid=191,黄世鹏
                 修改：有特殊字符时会编译，将html方法改为text方法
-                */ 
+                */
                 This.request({
                     params: {
                         s: 'aq',
@@ -4541,7 +4875,7 @@ function uploadFile (options) {
             }
             Promise.all(promiseArr)
             .then(function (data) {
-                if(This.isOffline){ 
+                if(This.isOffline){
                     This.timeRequest();
                     This.isOffline=false;
                     isGOffline = false;
@@ -4549,7 +4883,7 @@ function uploadFile (options) {
                 /*
                 taskid=191,黄世鹏
                 修改：有特殊字符时会编译，将html方法改为text方法
-                */ 
+                */
                 This.request({
                     params: {
                         s: 'aq',
@@ -4579,11 +4913,11 @@ function uploadFile (options) {
             })
         })
     },
-  
+
     //问题满意度评价->s=addulc
     queComment: function () {
       var This = this
-      
+
       This.$obj.$chatCtnId.on('click.FA', '.MN_yes, .MN_no', function () {
         var $This = $(this),
           s = 'addufc'//满意
@@ -4608,8 +4942,10 @@ function uploadFile (options) {
                 This.options.helpfulModule.noCallback($helpful, data.message,data,This)
               }
             } else {
-              $This.parents('.MN_helpful').text(data.message || '感谢您的评价！')
+              $This.parents('.MN_helpful').html(data.message || '感谢您的评价！')
             }
+            This.scrollbar.update()
+            This.scrollbarUpdate()
 			if(MN_Base.isPC()){
               This.setFont()
             }
@@ -4648,16 +4984,15 @@ function uploadFile (options) {
           }
         })
       })
-
     },
-    //上传文件->s=uf
+    //发送图片->s=image
     upFile: function () {
       var This = this
       /**
        * taskid=784
        * h5chat底部表情等，增加选中范围和描述文字，并变蓝色
        */
-      var $file = $('<input type="file" class="FA_file" multiple="multiple">').css({
+      var $file = $('<input type="file" class="FA_file" accept="image/*" multiple="multiple">').css({
         'opacity': 0,
         'width': '100%',
         'height': '115%',
@@ -4679,7 +5014,7 @@ function uploadFile (options) {
         This.options.upFileModule.startcall && This.options.upFileModule.startcall()
         if(!MN_Base.isPC()){
             /*上传完成移除点击class*/
-            $('.editCtn_com span').removeClass('sendPicClick');        
+            $('.editCtn_com span').removeClass('sendPicClick');
         }
       }, function (data, ran,index) {
         if (data.status) {
@@ -4690,7 +5025,7 @@ function uploadFile (options) {
           var html = ''
             var tmpUrl = data.sendUrlMsg[index].url
 
-            //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing 
+            //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing
             MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
               This.scrollbar.update()
               This.scrollbarUpdate()
@@ -4711,7 +5046,7 @@ function uploadFile (options) {
                     break
                 case 1://图片，不加a，防止跳转
                     if(!MN_Base.isPC()){
-                        html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'                        
+                        html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'
                     }else{
                         html = '<img src="' + tmpUrl + '">'
                     }
@@ -4730,7 +5065,51 @@ function uploadFile (options) {
         }
       })
     },
-	//发送文件s=uf
+    //发送视频s=video
+    sendCamera: function(){
+      var This = this;
+      $('#'+This.defaults.sendCameraId).on('click',function(){
+        H5_upload('../' + This.options.interface + '?s=uf&sourceId='+ This.options.sourceId, This.options.upFileModule.maxNum, $('#'+This.defaults.sendCameraId), This.$obj.$chatCtnId, function (ran) {
+          $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
+          $('#' + This.options.sendBtnId).trigger('click.FA')
+          This.options.upFileModule.startcall && This.options.upFileModule.startcall()
+        }, function (data, ran,index) {
+          if (data.status) {
+            This.showMsg(data.message)
+            $('.FA_' + ran).parents('.MN_ask').remove()
+          } else {
+            var html = ''
+            var sourceInface = 'video'
+            var tmpUrl = data.sendUrlMsg[index].url
+            //视频文件
+            html = '<p>若无法播放，请点击<a href="' + tmpUrl + '" target="_blank" download>下载</a></p><br/>'
+            html += '<video style="width:100%" src="' + tmpUrl + '" controls="controls">您的浏览器不支持 video 标签。</video>'
+            This.request({
+              params: {
+                s: sourceInface,
+                path: tmpUrl
+              },
+              callback: function (data) {
+                This.askQueBack(data)// 获取发送的回调
+              }
+            })
+            $('.FA_' + ran).empty().append(html)
+            if(MN_Base.isPC()){
+              This.setFont();
+            }
+            setTimeout(function(){
+              This.scrollbar.update()
+              This.scrollbarUpdate()
+            },300)
+          }
+        }, '', function (noSuit) {
+          if (noSuit[0]) {
+            This.showMsg(noSuit.length + '个文件不符合类型')
+          }
+        })
+      })
+    },
+    //发送文件s=uf
     sendFile: function(sendFileId){
       var This = this;
       sendFileId = sendFileId || This.defaults.sendFileId ;
@@ -4752,16 +5131,20 @@ function uploadFile (options) {
             switch (data.sendUrlMsg[index].type) {
               case 1:
                 if(!MN_Base.isPC()){
-                  html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'                        
+                  html = '<figure><div class="' + tmpUrl + '"><a href="' + tmpUrl + '" data-size="1920x1800"><img src="' + tmpUrl + '"></a></div></figure>'
                 }else{
                     html = '<img src="' + tmpUrl + '">' //图片，不加a，防止跳转
                 }
                 sourceInface = 'image'
-                //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing 
+                //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing
                 MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
                   This.scrollbar.update()
                   This.scrollbarUpdate()
                 })
+                setTimeout(function(){
+                  This.scrollbar.update()
+                  This.scrollbarUpdate()
+                },300)
               break
               case 2://音频文件
                 html = '<p>若无法播放，请点击<a href="' + tmpUrl + '" target="_blank" download>下载</a></p><br/>'
@@ -4779,7 +5162,7 @@ function uploadFile (options) {
                 fileName = data.sendUrlMsg[index].name
                 break
             }
-           
+
             This.request({
               params: {
                 s: sourceInface,
@@ -4793,12 +5176,8 @@ function uploadFile (options) {
             $('.FA_' + ran).empty().append(html)
             $('.showFace .file').removeClass('active')
             if(MN_Base.isPC()){
-				This.setFont();
-			}
-            setTimeout(function(){
-              This.scrollbar.update()
-              This.scrollbarUpdate()
-            },300)
+              This.setFont();
+            }
           }
         }, '', function (noSuit) {
           if (noSuit[0]) {
@@ -4806,6 +5185,62 @@ function uploadFile (options) {
             $('.showFace .file').removeClass('active')
           }
         })
+      })
+    },
+    //发送截图
+    sendScreenPic: function(screenPicUrl){
+      var This = this;
+      $.ajax({
+        url:'../../servlet/AQ?s=ucp',
+        type:'post',
+        data:{
+          picData:screenPicUrl
+        },
+        success:function(data){
+          if(data.status == 0 && data.sendUrlMsg){
+            var tmpUrl = data.sendUrlMsg
+            var ran = ('ran' + Math.random()).replace(/\./, '');
+            $('#' + This.options.inputCtnId).val('%我要发文件%' + ran)
+            $('#' + This.options.sendBtnId).trigger('click.FA')
+            //taskid=2243 解决发送图片时页面无法滚动到底部bug  add by zhaoyuxing
+            MN_Base.imageLoad(tmpUrl, function () {// 匹配html中所有图片资源，加载完毕执行
+              This.scrollbar.update()
+              This.scrollbarUpdate()
+            })
+            This.request({
+              params: {
+                s: 'image',
+                path: tmpUrl,
+                name:''
+              },
+              callback: function (data) {
+                This.askQueBack(data)// 获取发送的回调
+                var html = '<img src="' + tmpUrl + '">'
+                $('.FA_' + ran).empty().append(html)
+              }
+            })
+          }else{
+            $('#' + This.options.inputCtnId).val(''),//输入框
+            This.showMsg('截图粘贴功能只有转人工后才能使用哦~')
+          }
+        }
+      })
+    },
+    //远程控制
+    teleControl: function(controlData){
+      var This = this;
+      This.request({
+        params: {
+          s: 'rc',
+          isAccept: controlData.isAccept,
+          sessionInfo: controlData.sessionInfo,
+          sessionAddress: controlData.sessionAddress
+        },
+        callback: function (data) {
+          if(data.status == 0){
+            $('#'+This.options.telecontrolModal).hide()
+          }
+        }
       })
     },
     //星座模块
@@ -5017,7 +5452,7 @@ function uploadFile (options) {
                 setTimeout(function () {
                 $inputCtnId.focus()
                 }, 50)
-            }  
+            }
       })
     },
     //服务满意评价度准备->提示语
@@ -5070,9 +5505,9 @@ function uploadFile (options) {
       //点击发送
       $commentSendBtnId.on('click.FA', function () {
         /*
-         * taskId = 501 主动评价时选择不满意，填写内容回车后，无法提交
-         * 解决：点击提交时把内容去除空格回车
-         * */
+        * taskId = 501 主动评价时选择不满意，填写内容回车后，无法提交
+        * 解决：点击提交时把内容去除空格回车
+        * */
         $commentInputCtnId.val($commentInputCtnId.val().replace(/\ +/g,""));//去掉空格
         $commentInputCtnId.val($commentInputCtnId.val().replace(/[ ]/g,""));//去掉空格
         $commentInputCtnId.val($commentInputCtnId.val().replace(/[\r\n]/g,""));//去掉回车换行
@@ -5142,6 +5577,7 @@ function uploadFile (options) {
               $('.MN_marginCtnCheckbox input').prop('checked',false)
               $('.noSatiCtn').hide()
               layer.msg(data.message)
+              This.showMsg(data.message)
             }
           }
         }
@@ -5244,7 +5680,7 @@ function uploadFile (options) {
             qq:{
                 number:true,
                 minlength:5,
-                maxlength:12 
+                maxlength:12
             },
             email:{
                 emailFlag:true,
@@ -5269,20 +5705,20 @@ function uploadFile (options) {
         },
         submitHandler: msgSubmit
       });
-      $.validator.addMethod("emailFlag",function(value,element,params){  
-      var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
+      $.validator.addMethod("emailFlag",function(value,element,params){
+      var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/
       if(emailreg.test(value.trim())||value.trim()==""){
           return true;
       }else{
           return false;
-      } 
+      }
       },"请输入正确格式的邮箱！");
       /**
        * taskId=494;顾荣 2017.12.27
       * 修改：优化手机号码正则
       */
       $.validator.addMethod("telFlag",function(value,element,params){
-      var telNumReg=/^1[0-9]{10}$/  
+      var telNumReg=/^1[0-9]{10}$/
       if(telNumReg.test(value.trim())||value.trim()==""){
           return true;
       }else{
@@ -5300,7 +5736,7 @@ function uploadFile (options) {
         var imgUrls=[]
         for(var i=0;i<$(".imgdivs").size();i++){
             if($(".imgdivs").eq(i).attr("rel")){
-            imgUrls.push($(".imgdivs").eq(i).attr("rel"));          
+            imgUrls.push($(".imgdivs").eq(i).attr("rel"));
             }
         }
         imgUrls=imgUrls.join(',')
@@ -5309,7 +5745,7 @@ function uploadFile (options) {
         for (var i = 0; i < This.options.entranceWords.length; i++) {
             entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
         }
-        
+
         $.ajax({
             type:'post',
             datatype:'json',
@@ -5326,13 +5762,13 @@ function uploadFile (options) {
                 qq:messageQQ,
                 email:messageEmail,
                 content:messageTxt,
-                imgUrls:imgUrls  
+                imgUrls:imgUrls
             },
             success:function(data){
                 if(data.status==0){
                     $("#successMessage").css("display","block")
                 }else{
-                    This.showMsg(data.message) 
+                    This.showMsg(data.message)
                 }
             }
         })
@@ -5355,7 +5791,7 @@ function uploadFile (options) {
           validator1.resetForm()
           $('.text-error').removeClass("text-error helper-font-small")
       })
-      $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
+      $("#leaveMsgBox #closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
           $("#leaveMsgForm").find("input").val('');
           $("#leaveMsgCtn").val("")
           $("#leaveMsgBox").css("display","none")
@@ -5407,7 +5843,7 @@ function uploadFile (options) {
               }
           })
         }
-        
+
 
         resetTimer()
 
@@ -5424,8 +5860,20 @@ function uploadFile (options) {
                                 $('#dialogFeedModal').removeClass('show');
                                 $('#dialogFeedModal').addClass('fade');
                             }
+                            if(This.options.isDeppon){//判断是否为德邦页面
+                              if(This.options.refuseEvaluate){
+                                This.request({
+                                  params:{
+                                    s:'closeEvaluation'
+                                  },
+                                  callback:function(){
+                                    This.options.refuseEvaluate = false;
+                                  }
+                                })
+                              }
+                            }
                         });
-						$('.pinjia').off('click').on('click',function(){
+            $('.pinjia').off('click').on('click',function(){
                           $('#muiList').html('');
                           $('#stapin').val('');
                           $("[name=satis]").eq(0).prop('checked',true)
@@ -5443,7 +5891,7 @@ function uploadFile (options) {
                             }else{
                               $('#dialogFeedModal').removeClass('fade').addClass('show')
                             }
-							This.setFont()
+              This.setFont()
                         })
                         $('#dialogStaBtn').unbind('click').bind('click', function () {
                             var level = 1;
@@ -5491,18 +5939,18 @@ function uploadFile (options) {
                                         btn: ['continue', 'close'],
                                         area: This.getSuitSize(),
                                         cancel: function () {// 关闭当前页面
-                                        This.closeWebPage()
+                                          This.closeWebPage()
                                         }
                                     })
                                     } else {
-                                    layer.msg(data.message + '您是否还有其他问题？', {
+                                      layer.msg(data.message + '您是否还有其他问题？', {
                                         time: 20000, //20s后自动关闭
                                         btn: ['继续问答', '关闭'],
                                         area: This.getSuitSize(),
                                         cancel: function () {// 关闭当前页面
-                                        This.closeWebPage()
+                                          This.closeWebPage()
                                         }
-                                    })
+                                      })
                                     }
                                     sessionStorage.setItem('isShow', '已评价');
                                     $('#dialogFeedModal').removeClass('show');
@@ -5537,13 +5985,13 @@ function uploadFile (options) {
                                 params: {
                                     s: 'kl'
                                 },
-                                callback: function (data) { 
+                                callback: function (data) {
                                   This.options.nowStateNew = data.nowState;
                                 /***
                                   * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
                                   * 说明：增加kl接口的回调函数，可在函数中判断当前聊天状态，回调内容可在app.js中定义
                                   * */
-                                 This.options.klCallback(data);
+                                This.options.klCallback(data);
                                     if (data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==0) {
                                         //$('#stapin').val('');
                                     }else if(data.nowState == 4 && sessionStorage.getItem('dialogueUselessReasonState')==1){
@@ -5568,18 +6016,38 @@ function uploadFile (options) {
                                         //$('#stapin').val('');
                                     }
                                     if (data.nowState == 3 || data.nowState == 5) {// 人工聊天
+                                        This.realTiemMessage();
                                         isArti = true
+                                        /****************广联达远程控制,满意度评价  start**************/
+                                        if(This.options.isGLDPc){
+                                          $('.corpation').removeClass('hide')
+                                          if(data && data.data instanceof Array && data.data.length > 0) {
+                                            data.data.forEach(function (item) {
+                                              if(item.eventResultType == 3){//远程控制请求
+                                                $('#'+This.options.telecontrolModal).show()
+                                                $('#'+This.options.telecontrolModal).find('span').html('客服正在请求远程操控您的电脑...')
+                                              }else if(item.eventResultType == 2){//满意度评价
+                                                This.options.isEvaluated = true;
+                                                window.open(item.url,'_blank','width=400,height=600,top=200,left=650')
+                                              }else{
+                                                $('#'+This.options.telecontrolModal).hide()
+                                                $('#'+This.options.kfInviteModal).hide()
+                                              }
+                                            })
+                                           }
+                                        }
+                                        /****************广联达远程控制,满意度评价 end**************/
                                         if (This.options.intelTitleChange) {// 是否修改标题
                                           /**
                                              * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
                                              * 添加：当为人工聊天时并且app.js中给kf_Person_Name（人工客服名字）赋了值，图标改为app.js中的kf_Person_Pic;客服名称改为kf_Person_Name
                                              */
                                             if(This.options.kf_Person_Name){
-                                              This.robot.robotName=This.options.kf_Person_Name    
-                                              This.robot.kfPic=This.options.prefix+This.options.kf_Person_Pic;                                          
+                                              This.robot.robotName=This.options.kf_Person_Name
+                                              This.robot.kfPic=This.options.prefix+This.options.kf_Person_Pic;
                                             }
 
-                                             if (This.options.artiTitleChange) {// 人工时是否修改标题
+                                            if (This.options.artiTitleChange) {// 人工时是否修改标题
                                             if (isArti != _isArti) {
                                                 This.titleChange(This.artiTitle)
                                                 _isArti = isArti
@@ -5587,37 +6055,39 @@ function uploadFile (options) {
 
                                             }
                                         }
-                                        $('.sendPicCtn').show()
-										if(MN_Base.ieVersion() > 9 || (!MN_Base.ieVersion())){
+                                        $('.sendPicCtn,.defaultHideBtn').show()
+                                        if(MN_Base.ieVersion() > 9 || (!MN_Base.ieVersion())){
                                           $('.corpation .pic,.corpation .file').show()
                                         }
                                         This.kuaijie()
                                     } else {// 智能聊天
-                    if(This.options.preventHide){
-                      $('.sendPicCtn').show()
-                    }else{
-                      $('.sendPicCtn').hide()
-                    }                  
-										
-                    if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
-                      $('.corpation .pic,.corpation .file').show()
-                    }else{
-                      $('.corpation .pic,.corpation .file').hide()
-                    }
+                                        if(This.options.preventHide){
+                                          $('.sendPicCtn,.defaultHideBtn').show()
+                                        }else{
+                                          $('.sendPicCtn,.defaultHideBtn').hide()
+                                        }
+
+                                        if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
+                                          $('.corpation .pic,.corpation .file').show()
+                                        }else if(This.options.isGLDPc){
+                                          $('.corpation').addClass('hide')
+                                        }else{
+                                          $('.corpation .pic,.corpation .file').hide()
+                                        }
                                         isArti = false
                                         if (This.options.intelTitleChange) {// 是否修改标题
                                           /**
                                              * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
                                              * 添加：当为机器人聊天时图标改为app.js中的kf_Robot_Pic;客服名称改为kf_Robot_Name
                                              */
-                                            
+
                                             if(This.options.kf_Robot_Name){
                                               var reg=/^(http|ftp)/
-                                            	if(reg.test(This.options.kf_Robot_Pic)){//判断是否为后台返回的机器人头像
-                                            		This.robot.kfPic=This.options.kf_Robot_Pic
-                                            	}else{
-                                            		This.robot.kfPic=This.options.prefix+This.options.kf_Robot_Pic;
-                                            	}
+                                              if(reg.test(This.options.kf_Robot_Pic)){//判断是否为后台返回的机器人头像
+                                                This.robot.kfPic=This.options.kf_Robot_Pic
+                                              }else{
+                                                This.robot.kfPic=This.options.prefix+This.options.kf_Robot_Pic;
+                                              }
                                               This.robot.robotName=This.options.kf_Robot_Name
                                             }
 
@@ -5635,18 +6105,18 @@ function uploadFile (options) {
                                             if(data.robotAnswer[0].ansCon=="" && data.robotAnswer.length > 1){
                                                 for (var i = 1, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
-                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
+                                                    //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin()
                                                     }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
-                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
+                                                    //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin()
                                                     }
                                                 }
-                                                
+
                                             }else{
                                                 for (var i = 0, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
@@ -5656,14 +6126,14 @@ function uploadFile (options) {
                                                     }
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
-                                                     //taskId=823 plantdata定制 同一会话发出者减少会话间距
-                                                     if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
+                                                    //taskId=823 plantdata定制 同一会话发出者减少会话间距
+                                                    if(window.location.pathname=='/robot/chat2_plantdata.html'||window.location.pathname=='/robot/h5chat_plantdata.html'){
                                                       plantData.adjustMargin();
                                                     }
                                                 }
                                             }
 
-                                             //延时，加载完图片等资源后再更新一次滚动条
+                                            //延时，加载完图片等资源后再更新一次滚动条
                                             setTimeout(function () {
                                                 This.scrollbar.update()
                                                 This.scrollbarUpdate()
@@ -5681,7 +6151,7 @@ function uploadFile (options) {
                                     }
                                     This.mouseIsOn = false
                                     This.tspan = data.tspan * 1000
-                                    This.offline()// 先下线才能再次上线                  
+                                    This.offline()// 先下线才能再次上线
                                 }
                             })
                         }
@@ -5725,7 +6195,7 @@ function uploadFile (options) {
           }
           if (!(noViewArr.join('').indexOf('0') + 1)) {
             MN_Base.getNaturalSize(e.target, function (w, h) {
-    
+
               var $img = $('<img class="FA_previewImg" src="' + e.target.src + '">').css({
                 maxWidth: 'none'
               }).appendTo($('.FA_previewImgCtn'))
@@ -5736,7 +6206,7 @@ function uploadFile (options) {
               var fh = $(window).height()
               var iw = e.currentTarget.naturalWidth
               var ih = e.currentTarget.naturalHeight
-   
+
               var m = iw / fw
               var n = ih / fh
               if (m >= 1 && n <= 1) {
@@ -5847,6 +6317,27 @@ function uploadFile (options) {
         }
       })
     },
+    //有效会话时关闭客户端显示满意度评价
+    showEvaluate: function(){
+      var This = this
+      if(This.options.isGLDPc){
+        try{
+          window.Clearup(true)
+        }catch(e){}
+      }
+      if(sessionStorage.getItem('effective') == 1 && This.options.nowStateNew != 0 && This.options.nowStateNew != 3 && This.options.nowStateNew != 5){
+        $('#dialogFeedModal').show();
+      }else{
+        if((!This.options.isEvaluated) && (This.options.nowStateNew == 3 || This.options.nowStateNew == 5)){//人工状态且未评价过
+          This.evaluate()
+        }else{
+          This.offline()
+          try{
+            window.CloseApp()
+          }catch(e){}
+        }
+      }
+    },
     //关闭浏览器兼容
     closeWebPage: function () {
       this.offline()
@@ -5941,13 +6432,13 @@ function uploadFile (options) {
 
       $clearBtnId.on('click.FA', function () {
         /**清空历史记录无效bug Amend By zhaoyuxing
-         *说明：闪退时，不显示欢迎语，'.MN_answer_welcome'元素不存在，清空记录失效 
-         *修改：增加判断，当闪退时清空所有内容；显示欢迎语是，清空除欢迎语外所有内容
-         */
+         *说明：闪退时，不显示欢迎语，'.MN_answer_welcome'元素不存在，清空记录失效
+        *修改：增加判断，当闪退时清空所有内容；显示欢迎语是，清空除欢迎语外所有内容
+        */
         if(This.$obj.$chatCtnId.find('.MN_answer_welcome').length){
           This.$obj.$chatCtnId.find('.MN_answer_welcome').siblings().remove()
         }else{
-         // 闪退时，先清空聊天记录并添加欢迎语
+        // 闪退时，先清空聊天记录并添加欢迎语
           This.$obj.$chatCtnId.children().remove()
           var obj={helloWord:This.robotHelloWord,
                   webConfig:{helloWord:This.robotHelloWord,robotName:This.robotName}
@@ -6039,7 +6530,7 @@ function uploadFile (options) {
         if (i == arr.length - 1) {
           dot = ''
         }
-       obj += '"' + str[1] + '"' + ':' + '"' + str[2] + '"' + dot
+      obj += '"' + str[1] + '"' + ':' + '"' + str[2] + '"' + dot
         //obj += "'" + str[1] + "'" + ":" + "'" +str[2] + "'"  + dot
       }
       return JSON.parse('{' + obj + '}')
@@ -6086,7 +6577,7 @@ function uploadFile (options) {
         second = time[6] || this.addZero(today.getSeconds())
 
       var result = this.options.formatDate.replace(/%hour%/g, hour).replace(/%minute%/g, minute).replace(/%second%/g, second).replace(/%year%/g, year).replace(/%month%/g, month).replace(/%date%/g, date)
-       /**taskId=823 plantdata定制，间隔n秒显示时间 Add By zhaoyuxing
+      /**taskId=823 plantdata定制，间隔n秒显示时间 Add By zhaoyuxing
          * 说明：记录前一次会话发送事件与本次时间相减，获得差值；小于设置的间隔则返回空
         * 方法在chat2_plantdata.html中定义全局变量
         */
@@ -6143,7 +6634,7 @@ function uploadFile (options) {
         uploader.on( 'beforeFileQueued', function( file ) {
           if($(".imgdivs").size()>=9){
               layer.msg("最多上传9张图片！");
-              return false; 
+              return false;
           }
           var arr=["jpeg","jpg","png","bmp","gif","JPEG","JPG","PNG","BMP","GIF"]
           if(!(arr.indexOf(file.ext)+1)) {
@@ -6157,13 +6648,13 @@ function uploadFile (options) {
           if($(".imgdivs").size()>=9){
               // 超过9张不添加
               layer.msg("图片超过9张图片！");
-              return false; 
+              return false;
           }else{
             var picDivs='<div class="imgdivs col-xs-2" rel='+response.sendUrlMsg[0].url+'><div><img src="'+response.sendUrlMsg[0].url  +'"><div class="delRound"  onclick="$(this).parent().parent().remove()">+</div></div></div>';
-            $("#picCav").append(picDivs) 
+            $("#picCav").append(picDivs)
           }
 
-        }); 
+        });
       })
     },
     //taskid=402 顾荣 任务：留言面板 2017.12.20
@@ -6190,12 +6681,12 @@ function uploadFile (options) {
             //可以重复上传
             duplicate:true,
         });
-  
+
         //加入队列之前
         uploader.on( 'beforeFileQueued', function( file ) {
             if($(".imgdivs").size()>=9){
                 layer.msg("最多上传9张图片！");
-                return false; 
+                return false;
             }
             var arr=["jpeg","jpg","png","bmp","gif","JPEG","JPG","PNG","BMP","GIF"]
             if(!(arr.indexOf(file.ext)+1)) {
@@ -6203,16 +6694,16 @@ function uploadFile (options) {
                 return false;
             }
         });
-  
+
         //上传成功
         uploader.on( 'uploadSuccess', function( file, response ) {
             if($(".imgdivs").size()>=9){
                 // 超过9张不添加
                 layer.msg("图片超过9张图片！");
-                return false; 
+                return false;
             }else{
-                var picDivs='<div class="imgdivs" rel='+response.sendUrlMsg[0].url+'><img src="'+response.sendUrlMsg[0].url  +'" /><p><a onclick="$(this).parent().parent().remove()">删除</a></p></div>';  
-                $("#imgsDiv").append(picDivs) 
+                var picDivs='<div class="imgdivs" rel='+response.sendUrlMsg[0].url+'><img src="'+response.sendUrlMsg[0].url  +'" /><p><a onclick="$(this).parent().parent().remove()">删除</a></p></div>';
+                $("#imgsDiv").append(picDivs)
             }
         });
     },
@@ -6227,39 +6718,112 @@ function uploadFile (options) {
       if(chatLink && chatLink[0]){
         for(var i=0;i<chatLink.length;i++){
           if(chatLink[i].type==0){
-            str +='<div><a href="'+chatLink[i].linkurl+'" target="black"><i class="timeTip glyphicon glyphicon-minus"></i><span>'+chatLink[i].content+'</span></a></div>' 
+            str +='<div><a href="'+chatLink[i].linkurl+'" target="black"><i class="timeTip glyphicon glyphicon-minus"></i><span>'+chatLink[i].content+'</span></a></div>'
           }
         }
         $recommendConsult.empty().append(str)
       }
     },
-	setFont:function(){
-      var This = this,
-          fontFamliy = sessionStorage.getItem('fontFamliy'),
-          fontSize = sessionStorage.getItem('fontSize');
-      if(fontFamliy){
-        fontFamliy = sessionStorage.getItem('fontFamliy')
-      }else{
-        fontFamliy = 'Microsoft YaHei, Arial, sans-serif'
-      }
-      if(fontSize){
-        fontSize = sessionStorage.getItem('fontSize')
-      }else{
-        fontSize = '14'
-      }
-      $('#fontFamliy').val(fontFamliy)
-      $('#fontSize').val(fontSize)
-      if($('.corpation').hasClass('corpation')){
-        $('html, body, #chatCtn div, .MN_answer p, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-family',fontFamliy)
-        $('html, body, #chatCtn div, .MN_answer p,  h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-size',fontSize + 'px');
-        // setTimeout(function(){
-        //   This.scrollbar.update()
-        //   This.scrollbarUpdate()
-        // },300)
+    setFont:function(){
+        var This = this,
+            fontFamliy = sessionStorage.getItem('fontFamliy'),
+            fontSize = sessionStorage.getItem('fontSize');
+        if(fontFamliy){
+          fontFamliy = sessionStorage.getItem('fontFamliy')
+        }else{
+          fontFamliy = 'Microsoft YaHei, Arial, sans-serif'
+        }
+        if(fontSize){
+          fontSize = sessionStorage.getItem('fontSize')
+        }else{
+          if(This.options.isGLDPc){
+            fontSize = '15'
+          }else{
+            fontSize = '14'
+          }
+        }
+        $('#fontFamliy').val(fontFamliy)
+        $('#fontSize').val(fontSize)
+        if($('.corpation').hasClass('corpation')){
+          $('html, body, #chatCtn div, .MN_answer p, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-family',fontFamliy)
+          $('html, body, #chatCtn div, .MN_answer p,  h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a').css('font-size',fontSize + 'px');
+          // setTimeout(function(){
+          //   This.scrollbar.update()
+          //   This.scrollbarUpdate()
+          // },300)
+        }
+      },
+      filterContent: function (array) {
+          var list = [];
+          if(array && array.length > 0 ) {
+              list = array.filter(function (item) {
+                  return item != undefined && item.status === 0
+              });
+           }
+           return list
+      },
+      // 人工客服消息实时
+      realTiemMessage: function () {
+        var This = this;
+        if(window.sessionStorage.getItem('inputingConfig') == '1' || This.options.isDeppon || This.options.isGLDPc){
+            $('#'+This.options.inputCtnId).unbind('keyup').bind('keyup',function () {
+                $.ajax({
+                    type: "POST",
+                    url: "../../servlet/AQ?s=inputing",
+                    data: {
+                        sysNum: This.options.sysNum,
+                        sourceId:0,
+                        q: $('#'+This.options.inputCtnId).val()
+                    },
+                });
+            })
+        }
+      },
+      //访客主动评价
+      evaluate: function(){
+        var This = this;
+        This.request({
+          params:{
+            s:'evaluate'
+          },
+          callback:function(data){
+
+          }
+        })
+      },
+      //正在监控方法
+      startMonitor:function(){
+
+      },
+      //退出监控方法
+      stopMonitor:function(){
+
+      },
+      //德邦发送抖屏
+      sendShakeScreen: function(){
+        var This = this;
+        This.request({
+          params:{
+            s:'shake'
+          },
+          callback:function(){
+            $('#'+This.options.shakeScreenModal).show()
+          }
+        })
+      },
+      //德邦结束人工
+      sendEndCustom:function(){
+        var This = this
+        This.request({
+          params:{
+            s:'end'
+          },
+          callback:function(){
+
+          }
+        })
       }
     }
-  }
-    
 })(MN, window, document)
     /**************************** END ****************************/
 //})();

@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>faqrobot智能问答机器人</title>
+    <link rel="stylesheet" href="skin/dc_dev/css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="skin/dc_dev/css/robot.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.autocomplete.css" type="text/css">
+    <link rel="stylesheet" href="css/nanoscroller.css" type="text/css">
+    <style type="text/css">
+        body, html {
+            width:100%;
+            height:100%;
+            /* background: url('./skin/dc_dev/image/bg.png') no-repeat; */
+            /* width: 965px; */
+            /* margin: 0px auto; */
+            /* margin-top:3%; */
+        }
+
+        body>img.bgImg {
+            width: 100%;
+            height:100%;
+        }
+
+        body>.chat_wrap {
+            width: 965px;
+            height: 650px;
+            position: absolute;
+            top: 50%;
+            left:50%;
+            margin-left:-480px;
+            margin-top:-325px;
+        }
+
+        #about .content {
+            background: #F2F2F2;
+        }
+
+
+        .satisfaction {
+            font-family: Tahoma;
+            font-size: 13px;
+            position: absolute;
+            top: 90px;
+            color: #F05B72;
+            cursor: pointer;
+        }
+
+        .icon-heart {
+            display: inline-block;
+            border: 1px solid #F05B72;
+            border-radius: 50%;
+            padding: 3px;
+            vertical-align: middle
+        }
+
+        .icon-heart>img {
+            width: 16px;
+        }
+
+        .robot_askR>img {
+            width: 57px;
+        }
+
+        .ac_over {
+            background: rgba(239, 132, 144, 0.5);
+            color: #fff;
+        }
+
+        .nano {
+            height: 421px;
+            /* border: 1px solid #d9d9d9; */
+            border-right: none;
+            border-top: none;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .nano .pane {
+            width: 8px;
+            right: -1px;
+            margin: 2px;
+            background: #F0F0F0;
+        }
+
+        .nano .pane .slider {
+            background: #dcd7d7;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.nanoscroller.js"></script>
+    <script type="text/javascript">
+        var s_tspan = 3;//主动请求的时间间隔
+        var s_state = 0;//聊天的状态
+        var baseUrl = 'http://127.0.0.1:10098/robot/';
+        baseUrl = '../';
+        var s_q_url = "";//问题的url
+        var s_a_url = "";//获取相关问题答案的url地址
+        var s_sysNum = "";
+        var hkey = "Enter";//hotKey
+        var t_count = 0;//运行的代理的次数
+        var dt;//定时器
+        var robotName = 'FAQRobot';
+    </script>
+    <script src="skin/dc_dev/js/jquery.faqrobot.dev.js?v=1.5"></script>
+</head>
+
+<body>
+    <img class="bgImg" src="./skin/dc_dev/image/bg.png" alt="">
+    <div class="chat_wrap">
+        <div class="robot_top">
+            <div class="robot_topL">
+                <ul class="robot_topL_icon">
+                    <img src="skin/dc_dev/image/serv_red.png" id="weblogo" />
+                </ul>
+                <ul class="robot_topL_name">
+                    <h1 id="titleRobot">我是东呈智能客服-呈呈</h1>
+                    <p>24小时竭诚为您服务.</p>
+                </ul>
+            </div>
+        </div>
+        <div class="robot_content">
+            <div class="robot_contentL">
+                <div id="about" class="nano has-scrollbar">
+                    <div class="content" tabindex="0" style="right: -17px;">
+                        <div class="robot_wdlist" id="left_content"> </div>
+                    </div>
+                </div>
+                <div class="pane" style="opacity: 1; visibility: visible;">
+                    <div class="slider"></div>
+                </div>
+                <div class="robot_write">
+                    <div class="robot_write_top">
+                        <div class="robot_write_name">
+                            <span>客官，请输入您要咨询的问题：</span>
+                            <span class="staffService">
+                                人工客服
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="robot_input">
+                        <div class="robot_textarea">
+                            <textarea maxlength="100" id="message"></textarea>
+                            <p class="wordCount">
+                                <span>0</span>/100</p>
+                        </div>
+                        <span class="robot_send" id="sendBtn">
+                            发送
+                        </span>
+                        <div class="satisfaction" onclick="dialog(500,430);return false;">
+                            <i class="icon-heart">
+                                <img src="./skin/dc_dev/image/heart.png" alt="">
+                            </i>
+                            满意度评价
+                        </div>
+                    </div>
+                </div>
+                <div class="showWaring" id="showErrorId">
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="robot_jt">
+                <ul>
+                </ul>
+            </div>
+            <div class="robot_contentR">
+                <ul class="switchBtnWrap">
+                    <li class="hotQuestion active">
+                        <span>常见问题</span>
+                    </li>
+                    <li class="quickService">
+                        <span>快捷服务</span>
+                    </li>
+                </ul>
+                <div class="hotQuestionList active" id="hotQuestion"></div>
+                <div class="quickServiceList" id="quickService">
+                    <ul>
+                        <li class="myOrder">
+                            <a href="http://www.dongchenghotels.com/mycity/listorder" target="_blank">
+                                <img src="./skin/dc_dev/image/u227.png" alt="">
+                                <span>我的订单</span>
+                            </a>
+                        </li>
+                        <li class="integralQuery">
+                            <a href="http://www.dongchenghotels.com/mycity/listcent" target="_blank">
+                                <img src="./skin/dc_dev/image/u231.png" alt="">
+                                <span>积分查询</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a class="a1" href="http://hotel.dossen.com/hotel/list" target="_blank">
+                                <img src="./skin/dc_dev/image/u229.png" alt="">
+                                <span>酒店预订</span>
+                            </a>
+
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <img src="./skin/dc_dev/image/u225.png" alt="">
+                            <span>下载APP领200元券</span>
+                        </li>
+                        <li>
+                            <img src="./skin/dc_dev/image/u223.png" alt="">
+                            <span>关注微信领福利</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="fadeBackModal"></div>
+        <div class="fadeBackContent">
+            <div id="head_bg">满意度评价</div>
+            <form>
+                <div id="pingjia" style="margin-left:40px;">
+                    <p>
+                        <strong>请您对刚才的服务沟通进行评价:</strong>
+                    </p>
+                    <div class="rad fontColor">
+                        <input type="radio" name="level" checked="checked" value="1" class="rdoGood"> 满意
+                        <input type="radio" name="level" value="0" style="margin-left:100px;" class="rdoBad"> 不满意 </div>
+                </div>
+                <div class="hid" id="hid" style="display:none">
+                    <p>
+                        <strong>您不满意的原因是？</strong>
+                    </p>
+                    <div class="fade fontColor">
+                        <input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确
+                        <input type="checkbox" name="reason[]" value=" 答非所问" style="margin-left:50px;"> 答非所问
+                        <input type="checkbox" name="reason[]" value="机器人骂人" style="margin-left:50px;"> 机器人骂人 </div>
+                    <div style="margin-top:20px; margin-left: 35px;">
+                        <label class="contTitle fontColor">为了更好的为您服务，请输入您的宝贵意见！</label>
+                        <br>
+                        <textarea name="content" id="cont"></textarea>
+                    </div>
+                    <input type="hidden" name="sub">
+                </div>
+                <div id="send">
+                    <input type="button" value="关闭" class="close" />
+                    <input type="button" value="发送" id="fadeBackId" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="skin/dc_dev/js/main.js"></script>
+<script type="text/javascript">
+    var option = {
+        basePath: '../servlet/',
+        chatContDiv: 'left_content',
+        topQuestionDiv: 'hotQuestion',
+        newQuestionDiv: 'showhottwo',
+        inputMagOldvalue: '如：黑金卡会员权益说明',
+        sendBtn: 'sendBtn',
+        inputMsgArea: 'message',
+        clearScreen: 'clearScreen',
+        showErrorId: 'showErrorId',
+        advFaqrobot: "advFaqrobot",
+        logoUrl: "skin/dc_dev/image/serv_red.png",
+        logoDiv: "weblogo"
+    };
+    $(document).ready(function () {
+        $("#message").faqrobot(10000, option);
+        $("input[name=level]").eq(0).attr("checked", 'checked');
+    });
+</script>
+<script src="skin/dc_dev/js/jquery.autocomplete.js" language="javascript" type="text/javascript"></script>
+
+</html>

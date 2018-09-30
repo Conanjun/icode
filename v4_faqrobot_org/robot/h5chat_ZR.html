@@ -13,7 +13,7 @@
     <link rel="stylesheet prefetch" href="skin/h5chat_ZR/css/photoswipe.css">
     <link rel="stylesheet prefetch" href="skin/h5chat_ZR/css/default-skin.css">
     <link rel="stylesheet" href="skin/h5chat_ZR/css/font-awesome.css">
-
+    <link rel="stylesheet" href="common/plugins/bootstrap/css/bootstrap.min.css">
 	<style>
 		.hide{
 			display:none !important;
@@ -40,6 +40,7 @@
     <script src="skin/h5chat_ZR/js/app.js?dev=2"></script>
     <script src="skin/h5chat_ZR/js/photoswipe.js"></script>
     <script src="skin/h5chat_ZR/js/photoswipe-ui-default.min.js"></script>
+    <script src="common/plugins/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>  
     <div class="view">
@@ -80,6 +81,24 @@
 			</form>
 		</div>
     	<!-- 留言结束 -->
+
+         <!-- 接入客服start -->
+        <div class="modal fade vipInsert" id="vipInsert" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            亲，此通道只解决智能锁问题哦<br />您是否想继续咨询
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <span class="btn btn-primary" id="sureInsert">是</span>
+                        <span class="btn btn-default" id="cancelInsert">否</span>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 接入客服end -->
 
     	<!-- <div class="back">
     		<img class="logo" id="logo">

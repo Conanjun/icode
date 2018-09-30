@@ -33,10 +33,12 @@ div.container1 div.header .robot_top ul.robot_top_icon {
   position: absolute;
   bottom: 0;
   left: 30px;
+  max-width: 100px;
 }
 div.container1 div.header .robot_top ul.robot_top_icon img {
   border: 0 none;
   max-width: 100%;
+  max-height: 98px;
   vertical-align: middle;
 }
 div.container1 div.header .robot_top ul.robot_top_name {

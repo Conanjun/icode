@@ -1,0 +1,579 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="Generator" content="EditPlus®">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>Faq Robot智能问答机器人</title>
+
+    <link rel="stylesheet" href="css/minichat.css?time=1513">
+    <link rel="stylesheet" type="text/css" href="skin/infinitus/css/style.css?v=1.1" />
+    <link rel="stylesheet" href="skin/infinitus/css/jquery.autocomplete.css" />
+    <script src="js/minichat.js?time=1513"></script>
+    <script type="text/javascript" src="skin/infinitus/js/main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!--历史记录弹框开始-->
+        <div class="record-ctn">
+            <div class="mask"></div>
+            <div class="r-c-ctx">
+                <div class="r-c-close">历史记录
+                    <img class="r-c-close-icon" src="skin/infinitus/images/close.png" width="41" />
+                </div>
+                <div class="r-c-record" id="robotHistory">
+                </div>
+                <div class="r-c-footer">
+                    <button type="button" id="closediagio">关闭</button>
+                </div>
+            </div>
+        </div>
+        <!--历史记录弹框结束-->
+
+        <!--离开确认弹框开始-->
+        <div class="cl-ctn">
+            <div id="close">
+                <div class="cl-title">您确定要退出此次会话吗？</div>
+                <div class="cl-body">
+                    <input id="cl-yes" type="button" value="确认" />
+                    <input id="cl-no" type="button" value="取消" />
+                </div>
+            </div>
+        </div>
+        <!--离开确认弹框结束-->
+
+        <!--评价弹框开始-->
+        <div class="c-ctn">
+            <div class="mask"></div>
+            <div id="comment">
+                <div class="c-title">
+                    <div class="title_left">
+                        <img src="skin/infinitus/images/love.png">
+                        <span>您对小极的服务感到满意吗？</span>
+                    </div>
+                    <div class="title_right" onClick="closePingJia();">
+                        <span>X</span>
+                    </div>
+                </div>
+                <div class="c-body">
+                    <div class="goodDiv" style="display:none;">
+                        <img src="skin/infinitus/images/jilove.png">
+                        <span>感谢您的评价，小极会继续努力哒！</span>
+                        <br>
+                        <input id="closeAll" type="button" value="关闭" class="cancel" />
+                    </div>
+                    <form id="c-form" class="c-form">
+                        <label class="rdoLabel">
+                            <input type="radio" checked name="level" value="1"> 送鲜花</label>
+                        <label class="rdoLabel">
+                            <input type="radio" name="level" value="0"> 拍板砖</label>
+                        <div class="lessReason" style="display:none;">
+                            <div class="badDiv">
+                                <div class="badDiv_left">
+                                    <img src="skin/infinitus/images/jicry.png">
+                                </div>
+                                <div class="badDiv_right">
+                                    <label class="cbxLabel">
+                                        <input type="checkbox" name="reason" value="回答不准确"> 回答不准确</label>
+                                    <label class="cbxLabel">
+                                        <input type="checkbox" name="reason" value="答非所问"> 答非所问</label>
+                                    <label class="cbxLabel">
+                                        <input type="checkbox" name="reason" value="操作太复杂"> 操作太复杂</label>
+                                    <label class="cbxLabel">
+                                        <input type="checkbox" name="reason" value="其他"> 其他（请填写您的宝贵意见）</label>
+                                </div>
+                            </div>
+                            <p>您不满意的原因是：</p>
+                            <input type="hidden" name="sub">
+                            <textarea id="c-textarea" name="content" placeholder="描述您的意见和建议，以便我们提升服务水平和质量，谢谢您~"></textarea>
+                        </div>
+                        <div class="btnDiv">
+                            <input id="subForm" type="button" value="提交" />
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--评价弹框结束-->
+
+        <div class="body">
+            <div class="b-left">
+                <!--聊天页面开始-->
+                <div class="leftChatCtn">
+                    <div id="left_content" class="b-chat"></div>
+                </div>
+
+                <!--聊天页面结束-->
+                <!--输入框页面开始-->
+                <div id="input" class="b-input">
+                    <!--整个-->
+                    <!--错误提示开始-->
+                    <p class="showWaring" id="showErrorId">
+                        <span>123</span>
+                    </p>
+                    <!--错误提示结束-->
+                    <div class="b-ctn">
+                        <!--容器-->
+                        <div class="b-i-left">
+                            <div class="edit-btn">
+                                <!--1-->
+                                <div class="kj">
+                                    <span class="fontsize">
+                                        <label for="fz"></label>
+                                        <select id="fz" name="fz">
+                                            <option selected="selected">12px</option>
+                                            <option>14px</option>
+                                            <option>16px</option>
+                                            <option>18px</option>
+                                            <option>20px</option>
+                                            <option>22px</option>
+                                            <option>26px</option>
+                                        </select>
+                                    </span>
+                                    <span id="clearScreen" class="cl-record">清空聊天记录</span>
+                                    <span class="record">历史记录</span>
+                                </div>
+
+
+                            </div>
+                            <textarea id="sendtxt" class="sendtxt"></textarea>
+                            <!--2-->
+                            <span class="assess"></span>
+                            <!--id="fadeBackIdLink"3-->
+                        </div>
+                        <div class="b-i-right">
+                            <input id="inputPR" type="button" value="发送" />
+                        </div>
+                        <div class="cl"></div>
+                    </div>
+                </div>
+                <!--输入框页面结束-->
+
+            </div>
+
+            <div id="bodyRight" class="b-right">
+                <div class="b-r-border">
+                    <div class="b-r-top">
+                        <span class="btn-click b-r-btn">快捷服务</span>
+                        <span class="b-r-btn">常见问题</span>
+                        <span class="b-r-btn" id="pageShow">页面展示</span>
+                    </div>
+                    <ul class="b-r-body">
+                        <li class="l">
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link10" id="searchCard"></a>
+                                <span>卡号查询</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link14" id="youhuika"></a>
+                                <span>优惠卡有效期查询</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link13" id="searchExc"></a>
+                                <span>专卖店查询</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link5" id="buyHistory"></a>
+                                <span>购买记录</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link2" id="myPay"></a>
+                                <span>我的报酬</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link3" id="sharePoints"></a>
+                                <span>我的纷享币</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link4" id="points"></a>
+                                <span>消费积分</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link15" id="peixun"></a>
+                                <span>培训积分</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link1" id="accountHas"></a>
+                                <span>账户余额</span>
+                            </div>
+
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link12" id="levelSearch"></a>
+                                <span>我的职级</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link11" id="validSearch"></a>
+                                <span>业务资格有效期</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link7" id="mymonthly"></a>
+                                <span>我的月刊</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link9" id="myInfo"></a>
+                                <span>我的信息</span>
+                            </div>
+                            <div style="" class="iconDiv">
+                                <a href="#" class="l-link6" id="coupon"></a>
+                                <span>我的优惠券</span>
+                            </div>
+                            <!--div style="" class="iconDiv">
+                                <a href="#" class="l-link8" id="mymessage"></a>
+                                <span>我的短信</span>
+                            </div-->
+
+                        </li>
+                        <li id="topQuestionDiv" class="m">
+
+                        </li>
+                        <li class="r" style="height:100%">
+                            <div style="height:100%">
+                                <iframe frameborder="0" width="100%" id="sugQuestions" src="skin/infinitus/demo.html"></iframe>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cl"></div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    //配置faqrobot插件参数
+    var s_tspan = 3;//主动请求的时间间隔
+    var s_state = 0;//聊天的状态
+    var baseUrl = 'http://127.0.0.1:10098/robot/';
+    baseUrl = '../';
+    var s_q_url = "";//问题的url
+    var s_a_url = "";//获取相关问题答案的url地址
+    var s_sysNum = "";
+    var hkey = "Enter";//hotKey
+    var t_count = 0;//运行的代理的次数
+    var dt;//定时器
+    var robotName = 'FAQRobot';
+    var robot_name = "faqrobot机器人";
+    var userId = false;
+    var option = {
+        // basePath:'../servlet/',
+        // chatContDiv:'left_content',
+        // topQuestionDiv:'topQuestionDiv',
+        // inputMagOldvalue:'请用一句简单的话描述您的需求，如"怎么修改手机号"',
+        // sendBtn:'inputPR',
+        // inputMsgArea:'sendtxt',
+        // clearScreen:'clearScreen',
+        // showErrorId:'showErrorId',
+        // logoUrl:"skin/chat5/images/logo.png",
+        // logoDiv:"weblogo",
+        // baseInfoDiv :"Contact_us",
+        // wordremain:'wordremain',
+        fadeBackId: 'subForm',
+        fadeBackIdLink: 'fadeBackIdLink',
+        // quickLink:'rservlist',
+        // sugQuestionDiv :"sugQuestions",
+        sourceId: 0
+    };
+    var requestTimes = 0;  //无限极超时直接访问s=p
+    var tmpUrl = location.href;
+    $(document).ready(function () {
+        $('#c-form input[name=level]').eq(0).attr('checked', true);
+		$('#tankuang').on('click',function(){
+            showIdea()
+        })
+        $('input[name="level"]').on('click',function(){
+            if($('#c-form input[name=level]').eq(1).prop('checked')){
+                $('#c-form .lessReason').css('display','block')
+            }else{
+                $('#c-form .lessReason').css('display','none')
+            }
+        })
+        //提交评价
+        $('#subForm').on('click',function(){
+            var level = 1;
+            var unstais = '';
+            for (var i = 0; i < $("[name=level]").length; i++) {
+                if ($('[name=level]').eq(i).prop('checked')) {
+                    if ($('[name=level]').eq(i).val() == '0') {
+                        level = 0;
+                    } else {
+                        level = 1;
+                    }
+                }
+            }
+            for (var i = 0; i < $("[name=reason]").length; i++) {
+                if ($('[name=reason]').eq(i).prop('checked')) {
+                    unstais += $('[name=reason]').eq(i).val() + ',';
+                }
+            }
+            FAQ.request({
+                params: {
+                    s: 'fadeback',
+                    sourceId: 0,
+                    content: $('#c-textarea').val(),
+                    level: level,
+                    sub: unstais
+                },
+                callback:function(data){
+                    FAQ.showMsg(data.message)
+                    closePingJia()
+                    setTimeout(function(){
+                        FAQ.offline()
+						window.top.close()
+						//if (navigator.userAgent.indexOf('MSIE') > 0) {
+						//	if (navigator.userAgent.indexOf('MSIE 6.0') > 0) {
+						//	  window.opener = null
+						//	  window.top.close()
+						//	} else {
+						//	  window.open('', '_top')
+						//	  window.top.close()
+						//	}
+						//} else if (navigator.userAgent.indexOf('Firefox') > 0) {
+						//	window.location.href = 'about:blank '
+						//} else {
+						//	window.opener = null
+						//	window.open('', '_self', '')
+						//	window.top.close()
+						//}
+                    },1000)
+                }
+            })
+        })
+        if (getUrlParam('userId') && getUrlParam('userId').indexOf('-') > 0) {
+            userId = true;
+        } else {
+            userId = false;
+        }
+        var FAQ = new Faqrobot({
+            logoUrl: 'robot/skin/chat5/images/logo.png',//logo地址 ----------
+            logoId: 'weblogo',
+            intelTitleChange: true,// 智能聊天是否修改标题
+            artiTitleChange: true,// 人工时是否修改标题
+            artiTitle: '人工客服',// 人工时的标题
+            robotInfo: 'robotInfo',
+
+            kfHtml: [
+
+                '<div class="MN_answer_welcome MN_answer"><span class="MN_serv_icon"></span><div class="MN_kfCtn"><div class="MN_kfName">%robotName%</div><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i><div class="say-word">%helloWord%</div><div class="MN_kftime">%formatDate%</div></div></div>',//欢迎语组合
+
+                '<div class="MN_helpful" style="margin-top: 8px;padding-top: 8px;"><span class="MN_reasonSend">提交</span><span class="MN_yes">已解决</span><span class="MN_no">未解决</span></div>',//是否满意组合
+
+                '<div class="MN_answer" aId="%aId%" cluid="%cluid%"><span class="MN_serv_icon"></span><div class="MN_kfCtn"><div class="MN_kfName">%robotName%</div><i class="MN_kfTriangle1 MN_triangle"></i><i class="MN_kfTriangle2 MN_triangle"></i><div class="say-word">%ansCon%%gusListHtml%%relateListHtml%<div class="MN_kftime">%formatDate%</div>%commentHtml%</div></div></div>',//回答组合
+
+            ],//客服结构(所有的属性和%xxx%都必须存在)
+            khHtml: '<div class="MN_ask"><span class="MN_serv_icon"></span><div class="MN_khCtn"><i class="MN_khTriangle1 MN_triangle"></i><i class="MN_khTriangle2 MN_triangle"></i><div class="say-word">%askWord%</div><div class="MN_khtime">%formatDate%</div></div></div>',//客户结构
+            /**
+             * taskid=554 顾荣  ppmoney客服头像与机器人 2018/1/5
+             * 原因：区分是机器人客服还是人工客服
+             * 修改：添加服图标分为机器人和人工客服
+             */
+            kfPic: 'robot/skin/chat2/images/robot.png',  //客服图标
+            kf_Robot_Pic: 'robot/skin/chat2/images/robot.png',  //机器人客服图标
+            kf_Person_Pic: 'robot/skin/chat2/images/robot.png',  //人工客服图标
+            kf_Robot_Name: '',//机器人客服名字，此处只是声明个变量，不用赋值
+            kf_Person_Name: '',//人工客服名字
+
+            khPic: 'robot/skin/chat2/images/serv.png', //客户图标
+            tipWord: '请用一句简单的话描述您的需求，如"怎么修改手机号"',//输入框提示语
+            formatDate: '%month%月%date%日 %hour%:%minute%:%second%',//配置时间格式(默认10:42:52 2016-06-24)
+            topQueId: 'topQuestionDiv',//热门、常见问题Id --------
+            quickServId: 'rservlist',//快捷服务Id
+            thirdUrlId: 'thirdUrl',
+            chatCtnId: 'left_content',//聊天展示Id y   --------------
+            inputCtnId: 'sendtxt',//输入框Id y   --------
+            sendBtnId: 'inputPR',//发送按钮Id y   ------
+            copyrightId: 'copyright',// 版权及联系我们
+            tipWordId: 'inputTip',
+            commentFormId: 'feedBackForm',//评论框formId -------
+            commentInputCtnId: 'feedBackInput',//评论输入框Id ----
+            commentSendBtnId: 'feedBackBtn',//评论发送按钮Id ---------
+            commentTipWordId: 'feedBackTip',//评论输入框提示语Id
+            artiSearchId: 'artiSearch',//智能搜索
+            recommendQueId: 'sugQuestions',//推荐问题Id
+            artiSearchCallback: function (data) {
+                if (data.fullTextSearch) {
+                    $('.thirdURL').addClass('thirdURLRecommend');
+                    $('.artiSearch').removeClass('artiSearchHide');
+                    $('.itemCtn').css('width', '25%');
+                    $('.itemHead4').trigger('click');
+                } else {
+                    $('.artiSearch').addClass('artiSearchHide');
+                    if ($('.thirdURL').hasClass('thirdURLRecommend')) {
+                        //存在推荐链接
+                        $('.itemCtn').removeAttr('style');
+                    }
+                    if ($('.itemHead4').is('.itemHeadFocus')) {
+                        $('.itemHead1').trigger('click');
+                    } else {
+                        $('#artiSearch').hide();
+                    }
+                }
+
+            },
+            leaveQue: {// 未知问题已回复
+                open: true,//是否启用功能
+            },
+            autoSkip: {//手机不能访问pc页面
+                open: true,//是否启用功能
+                chatUrl: 'h5chat',// 默认跳转的页面
+            },
+            clearBtnId: 'clearScreen',//清除按钮Id
+            closeBtnId: 'close',//关闭聊天页面
+
+            poweredCtnId: 'power',//技术支持Id
+            useSetFont:1,// 开启字号匹配功能 Amend by zhaoyuxing
+            thirdUrlCallBack: function (data, index) {
+                if (!index) index = 0;
+                if (data.robotAnswer[index].thirdUrl && data.robotAnswer[index].thirdUrl.url) {
+                    $('.thirdURL').removeClass('thirdURLRecommend');
+                    $('.itemHead5').trigger('click');
+                    $('.itemCtn').css('width', '25%');
+                    if (!$('.artiSearch').hasClass('artiSearchHide')) {
+                        $('.artiSearch').addClass('artiSearchHide')
+                    }
+                    $('#' + FAQ.options.thirdUrlId + ' iframe').attr('src', data.robotAnswer[index].thirdUrl.url);
+                } else {
+                    $('.thirdURL').addClass('thirdURLRecommend');
+                    $('.itemCtn').removeAttr('style');
+                    $('.itemHead1').trigger('click');
+                };
+            },
+            /**s=aq接口，返回数据的回调函数，用于获取返回值的thirdUrl，在页面展示中显示连接页面 Add by zhaoyuxing 
+             * */ 
+            getCallback:function(answer, data){
+                if(data.robotAnswer&&data.robotAnswer[0]){
+                    for(var i=0;i<data.robotAnswer.length;i++){
+                        if(data.robotAnswer[i].thirdUrl&&data.robotAnswer[i].thirdUrl.url){
+                            var linkUrl=data.robotAnswer[i].thirdUrl.url;
+                            $("#sugQuestions").attr('src',linkUrl);
+                             //显示页面展示栏
+                            $("#pageShow").addClass("btn-click").siblings().removeClass("btn-click");
+                            $("#bodyRight .b-r-body li").eq(2).show().siblings().hide();
+                        }
+                    }
+                }
+                
+               
+               
+            }
+        });
+        
+        // $("#sendtxt").faqrobot(10000,option);
+
+        //查看历史记录
+        $("#input .record").click(function () {
+            $(".record-ctn").fadeIn(100);
+            FAQ.searchHistory();
+        });
+
+        //卡号查询
+        $('#searchCard').click(function () {
+            FAQ.askQue('卡号查询');
+        })
+        //专卖店查询
+        $('#searchExc').click(function () {
+            FAQ.askQue('专卖店查询');
+        })
+        //账户余额
+        $('#accountHas').click(function () {
+            FAQ.askQue('账户余额');
+        })
+        //我的报酬
+        $('#myPay').click(function () {
+            FAQ.askQue('我的报酬');
+        })
+        //消费积分
+        $('#points').click(function () {
+            FAQ.askQue('消费积分');
+        })
+        //纷享荟积分
+        $('#sharePoints').click(function () {
+            FAQ.askQue('我的纷享币');
+        })
+        //购买记录
+        $('#buyHistory').click(function () {
+            FAQ.askQue('购买记录');
+        })
+        //优惠券
+        $('#coupon').click(function () {
+            FAQ.askQue('我的优惠券');
+        })
+        //我的月刊
+        $('#mymonthly').click(function () {
+            FAQ.askQue('我的月刊');
+        })
+        //我的短信
+        $('#mymessage').click(function () {
+            FAQ.askQue('我的短信');
+        })
+        //我的信息
+        $('#myInfo').click(function () {
+            FAQ.askQue('我的信息');
+        })
+        //有效期查询
+        $('#validSearch').click(function () {
+            FAQ.askQue('业务资格有效期');
+        })
+        //我的有效职级查询
+        $('#levelSearch').click(function () {
+            FAQ.askQue('我的职级');
+        })
+        //优惠卡
+        $('#youhuika').click(function () {
+            FAQ.askQue('优惠卡有效期查询');
+        })
+        //培训积分
+        $('#peixun').click(function () {
+            FAQ.askQue('培训积分');
+        })
+
+        $('.leftChatCtn').height($('.b-left').outerHeight() - $('.b-input').outerHeight());
+
+
+
+    })
+    $('#closeAll').click(function () {
+        closeParentPage();
+    })
+
+    
+    //调用自动补全插件 Add by zhaoyuxing
+    $('.sendtxt').autocomplete({
+        url: 'servlet/AQ?s=ig',
+            targetEl: $('.edit-btn'),//参照物(用于appendTo和定位)
+            posAttr: ['8px', '-3px'],//外边框的定位[left bottom]
+            itemNum: 10,//[int] 默认全部显示
+            callback: function(data) {//获取文本后的回调函数
+                $('#inputPR').trigger('click');
+        }
+    });
+
+
+
+</script>
+<!-- 无限极定制，不可动 -->
+<script>
+    function generalCallback(e) {
+        try {
+            var data = JSON.parse(e.data);
+            if (data.cmdNum != undefined && data.cmdNum === "20001") {
+                showIdea();
+            }
+        } catch (e) {
+        }
+    }
+    if ('addEventListener' in document) {
+        window.addEventListener('message', generalCallback, false);
+    } else if ('attachEvent' in document) {
+        window.attachEvent('onmessage', generalCallback);
+    }
+
+</script>
+
+</html>

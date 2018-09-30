@@ -1,0 +1,660 @@
+@charset "utf-8";
+body,
+html {
+  width: 100%;
+  height: 100%;
+  min-width: 800px;
+  min-height:600px;
+}
+body {
+  overflow: hidden;
+}
+.hide{
+  display: none;
+}
+/* 基础样式 */
+.MN_kfCtn {
+  border: 1px solid #fff;
+  background: #fff;
+  /* box-shadow: 0 10px 25px -5px rgba(152, 152, 152, 0.3); */
+}
+.MN_khCtn {
+  border: 1px solid #fff;
+  background: #fff;
+  text-align: left;
+  color: #333;
+}
+.MN_kftime, .MN_khtime, .MN_record{
+  font-size:12px !important;
+  width: 146px;
+  height:20px;
+  line-height: 20px;
+  border-radius: 2px;
+  color: #fff;
+}
+.MN_record{
+  color: #008CEE;
+    margin: 18px auto 0px;
+}
+.MN_khTriangle1 {
+  border-top: 8px solid transparent;
+  border-left: 8px solid #D9D9DB;
+  border-bottom: 8px solid transparent;
+  bottom: -1px;
+}
+.MN_khTriangle2 {
+  border-top: 8px solid transparent;
+  border-left: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+  /* right: -5px; */
+  bottom: -1px;
+}
+.MN_kfTriangle1 {
+  border-top: 8px solid transparent;
+  border-right: 8px solid #D9D9DB;
+  border-bottom: 8px solid transparent;
+  /* left: -10px; */
+  bottom: -1px;
+}
+.MN_kfTriangle2 {
+  border-top: 8px solid transparent;
+  border-right: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+  /* left: -6px; */
+  bottom: -1px;
+}
+.MN_khTriangle1, .MN_khTriangle2{
+  top: 7px;
+  right: -8px;
+}
+.MN_kfTriangle2,.MN_kfTriangle1{
+  top:10px;
+  left:-8px;
+}
+.MN_kfTriangle1{
+  left:-9px;
+}
+.MN_khTriangle1,.MN_khTriangle2{
+  top:10px;
+  right:-8px;
+}
+.MN_khTriangle1{
+  right:-9px;
+}
+
+.MN_answer,
+.MN_ask {
+  padding: 5px 100px;
+}
+.MN_kfName, .MN_khName{
+  opacity: 0;
+}
+.MN_khImg{
+  right: -75px;
+}
+.MN_kfImg{
+  left: -75px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+  top: -7px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.MN_kfCtn,
+.MN_khCtn {
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 1px solid #E5E5E7;
+  color: #333;
+}
+
+.MN_guideQue {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  width: 80%;
+}
+.MN_queList {
+  border-bottom: none;
+  padding: 14px 21px 0;
+  font-size: 14px;
+  color: #333;
+}
+.MN_queList:hover .MN_guideQue {
+  color: #1b96ff;
+}
+.MN_quickLink{
+  vertical-align: top;
+}
+.MN_quickLink p {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.MN_quickLink:hover p {
+  color: #1b96ff;
+}
+
+.MN_queListIndex{
+  width: 22px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 2px;
+  margin-right: 11px;
+  font-size: 14px;
+  color:#333;
+}
+.MN_queListIndex{
+  border-color: #ccc;
+  float: left;
+}
+
+/* 工具栏样式 */
+/* 字体 */
+.editDetail .corpation .font{
+  background-image: url(../images/fontUnClick.png);
+  background-size:18px 13px;
+}
+.editDetail .corpation .font.active{
+  background-image: url(../images/fontClick.png);
+}
+/* 表情 */
+.editDetail .corpation .emoj{
+  background-image: url(../images/emojUnClick.png);
+  background-size:16px 16px;
+}
+.editDetail .corpation .emoj.active{
+  background-image: url(../images/emojClick.png);
+ 
+}
+/* 发送图片 */
+.editDetail .corpation .pic{
+  background-image: url(../images/picUnClick.png);
+  background-size:18px 17px;
+  cursor: pointer;
+}
+.editDetail .corpation .pic.active{
+  background-image: url(../images/picClick.png);
+}
+/*发送文件*/
+.editDetail .corpation .file{
+  background-image: url(../images/fileUnClick.png);
+  background-size:18px 17px;
+  cursor: pointer;
+}
+.editDetail .corpation .file.active{
+  background-image: url(../images/fileClick.png);
+}
+/* 留言 */
+.editDetail .corpation .msg{
+  background-image: url(../images/msgUnClick.png);
+  background-size:18px 17px;
+}
+.editDetail .corpation .msg.active{
+  background-image: url(../images/msgClick.png);
+}
+.btn-row{
+  text-align: center;
+  margin: 30px 0 20px 0;
+}
+#messageBoardBtn{
+  display: inline-block;
+  width: 50%;
+}
+/* 表情 */
+.FA_srcCtn{
+  background: #F2F2F2;
+}
+/* 输入引导高亮 */
+.AU_replaceTip{
+  color: #FF6F1B;
+}
+/* 滚动条样式 */
+.SC_frontClass {
+  width: 4px;
+  height: 40px;
+}
+/* 正文开始 */
+.whole {
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 25px #ccc;
+  border-radius: 3px;
+}
+.whole .head {
+  background-color:#000;
+  /* background-image: url(../images/head_bac.png); */
+  background-repeat: no-repeat;
+  background-position: left 35%;
+  height: 69px;
+  /* padding: 0 20px; */
+  position: relative;
+  z-index: 1;
+}
+.whole .head:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .head:before {
+  content: '';
+  display: block;
+  /* background: rgba(0, 0, 0, 0.9); */
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=10);
+  opacity: .1;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.whole .head .headLeft {
+  position: relative;
+  /* line-height: 80px; */
+  height: 100%;
+  float: left;
+}
+.commonQue {
+  padding-bottom: 36px;
+  color: #333;
+}
+/*
+* taskId = 502 聊天页面logo大小问题
+* 设置最大宽度
+*/
+.whole .head .headLeft .logo {
+  vertical-align: middle;
+  height: 100%;
+  /* max-height: 70px; */
+  margin-right: 20px;
+  max-width: 400px;
+}
+.whole .head .headLeft .titleCtn {
+  vertical-align: middle;
+  display: inline-block;
+}
+.whole .head .headLeft .titleCtn p {
+  color: #fff;
+  line-height: 24px;
+}
+.whole .head .headLeft .titleCtn .title {
+  font-size: 16px;
+}
+.whole .head .headRight {
+  position: relative;
+  margin-top: 24px;
+  float: right;
+}
+.whole .head .headRight span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.whole .head .headRight .close {
+  background: url(../images/close.png) no-repeat center;
+  background-size: contain;
+}
+.whole .head .headRight .close1 {
+  background: url(../images/close_1.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close2 {
+  background: url(../images/close_2.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close3 {
+  background: url(../images/close_3.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .body {
+  position: relative;
+}
+.whole .body .bodyLeft {
+  position: absolute;
+  float: left;
+  height: 100%;
+}
+.whole .body .bodyLeft:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftTop {
+  overflow: hidden;
+  position: relative;
+  background: #f2f2f2;
+}
+.whole .body .bodyLeft .bodyLeftTop .chatCtn {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.whole .body .bodyLeft .bodyLeftBottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-top: 1px solid #dddddd;
+  height: 150px;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn {
+  padding: 0 20px 0 13px;
+  position: relative;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .inputTip {
+  position: absolute;
+  color: #ccc;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .input {
+  outline: none;
+  resize: none;
+  border: none;
+  display: inline-block;
+  width: 100%;
+  height: 76px;
+  color:    #757575;
+}
+::-webkit-textarea-placeholder { /* WebKit, Blink, Edge */
+  color:    #757575;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #757575;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #757575;
+}
+:-ms-textarea-placeholder { /* Internet Explorer 10-11 */
+  color:    #757575;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px 20px 14px 10px;
+  box-sizing: border-box;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn span {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn a {
+  vertical-align: middle;
+  color: #ccc;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg {
+  width: 30px;
+  height: 30px;
+  background: url(../images/clear_normal.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg:hover {
+  background: url(../images/clear_hover.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn {
+  float: right;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  border-radius: 100px;
+  background: #333;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover{
+
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover {
+  /* background: #0c7bf4;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5); */
+}
+/* 页面右侧 ：快捷服务/常见问题*/
+.whole .body .bodyRight {
+  position: relative;
+  height: 100%;
+  float: right;
+  width: 254px;
+  border-left: 1px solid #dddddd;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx {
+  position: relative;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  /* padding: 0 20px 20px 20px; */
+}
+.itemHead {
+  width: 180px;
+  text-align: center;
+  height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+  color:#333;
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(225, 225, 225, 0.3);
+  box-shadow: 0 9px 35px -8px rgba(225,225,225, 1);
+  position: relative;
+  letter-spacing: 2px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead1{
+  margin:22px 40px 15px 40px;
+  margin-top: 22px;
+  margin-bottom: 15px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead1:before{
+    content: '';
+    border: 3px solid #b81408;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead2{
+    margin: 10px 40px 7px 40px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead2:before{
+    content: '';
+    border: 3px solid #0823b9;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+/* 快捷服务 */
+.quickLink{
+    min-height:140px;
+
+}
+.MN_quickLink{
+  margin: 0 0 18px 0;
+}
+.MN_quickLink img{
+    max-width: 40px;
+    height: 40px;
+}
+.MN_quickLink p{
+  margin-top: 4px;
+  color: #333;
+}
+
+
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servCos {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 82px;
+  cursor: pointer;
+  text-align: center;
+  color: #ccc;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 20px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes {
+  background: url(../images/icon_my_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes:hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes_hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo {
+  background: url(../images/ico_no_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo:hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo_hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYesInput,
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoInput {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason label {
+  margin: 10px 20px;
+  cursor: pointer;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn {
+  position: relative;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackTip {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #ccc;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackInput {
+  outline: none;
+  resize: none;
+  border: 1px solid #eee;
+  display: inline-block;
+  width: 100%;
+  height: 55px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn {
+  float: right;
+  cursor: pointer;
+  width: 70px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  border-radius: 100px;
+  background: #1B96FF;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn:hover {
+  background: #0c7bf4;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5);
+}
+
+/* taskid=802 快捷服务功能 顾荣 2018/2/9
+添加：快捷服务iframe布局 */
+#serveIframe{
+  position:absolute;
+  background-color:white;
+  width:100%;
+  display:none;
+  top:45px;
+  left:0;
+  right:10px;
+  bottom:0;
+  z-index: 99;
+}
+#serveIframe iframe{
+  width:100%;
+  height:100%;
+}
+#cloQuIframe{
+  position:absolute;
+  width:60px;
+  height:45px;
+  top:45%;
+  left:0;
+  color:red;
+  font-size: 16px;
+  opacity: 0.5;
+  cursor: pointer; 
+  background:url("../../../../assets/plugins/lightbox/img/prev.png")
+}
+
+/* 会话满意度 */
+#dialogStaBtn{
+  background-color: #1296DB;
+  border-color: #1296DB;
+}
+
+/* 留言板 */
+
+#messageBoardBtn{
+  background-color: #1296DB;
+  border-color: #1296DB; 
+}
+@media (min-width: 768px){
+  #MessageBoardForm{
+    margin-left: -44px;
+  }
+}
+
+.MN_reasonSend, .MN_yes{
+  color: #429fff;
+  border: 1px solid #429fff;
+}
+.MN_gusList, .MN_relateList, .FA_star {
+  color: #1759fc;
+}
+
+
+.editDetail{
+  padding: 0 0 0 13px;
+}
+.editDetail .corpation .icon{
+  margin: 0 10px 0 0;
+}
+.editDetail .corpation{
+  padding-top: 7px;
+}
+.MN_reasonSend, .MN_yes, .MN_no{
+  padding: 0px 13.1px;
+  height: 28px;
+  line-height: 28px;
+}

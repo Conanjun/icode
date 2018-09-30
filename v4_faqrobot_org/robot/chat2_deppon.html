@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="images/logo_min.png" type="/image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>德邦快递在线客服</title>
+    <link href="common/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="common/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="skin/chat2_deppon/css/minichat.css">
+    <link rel="stylesheet" href="skin/chat2_deppon/css/app.css?time=1513">
+    <link href="common/css/radioskin/blue.css" rel="stylesheet">
+    <link href="common/css/commonCSS.css" rel="stylesheet">
+
+    <script src="js/dingtalk.js"></script>
+    <script src="js/minichat.js?time=1513"></script>
+    <script src="common/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="common/js/webuploader.min.js"></script>
+    <script src="common/js/customMethod.js"></script>
+    <script src="common/js/jquery.validate.js"></script>
+    <script src="skin/chat2_deppon/js/app.js"></script>
+    <script src="./skin/chat2_deppon/js/jquery.json-2.3.min.js"></script>
+    <script src="./skin/chat2_deppon/js/niuniucapture.js"></script>
+    <style type="text/css">
+        .form-horizontal .form-group {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .modal {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .modal-dialog {
+                margin: 5% auto;
+            }
+        }
+
+        input[name=satis],
+        input[name=ckb],
+        input[name=satisfaction] {
+            opacity: 0;
+        }
+
+        .rad a {
+            display: inline-block;
+            width: 16px;
+            height: 17px;
+            background: url(images/blue.png) -96px -15px;
+            vertical-align: text-bottom;
+            margin-right: 5px;
+        }
+
+        .muiSel a {
+            display: inline-block;
+            width: 16px;
+            height: 17px;
+            vertical-align: text-bottom;
+            background: url(images/blue.png) 145px 17px;
+            margin-right: 5px;
+        }
+
+        /* 
+            taskid=959，黄世鹏
+            修改：富文本为表格时排版问题
+        */
+
+        .MN_kfCtn table {
+            width: 100%!important
+        }
+
+        /* taskid=403 顾荣 任务:留言面板 样式开始 */
+
+        #MessageBoardModal #ansText {
+            height: 160px;
+        }
+
+        #MessageBoardModal .modal-dialog {
+            margin-top: 50px;
+        }
+
+        /* #MessageBoardModal .form-group i{
+            font-size:18px;
+        } */
+
+        #MessageBoardModal .control-label>img {
+            width: 24px;
+        }
+
+        #filebtn {
+            position: relative;
+            border: 1px solid lightgray;
+            overflow: hidden;
+            padding: 0px;
+        }
+
+        #filebtn>.webuploader-pick {
+            padding: 6px 12px
+        }
+
+        #filebtn input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .imgdivs {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .imgdivs>div>img {
+            width: 73.5px;
+            height: 73.5px;
+            border-radius: 4px;
+        }
+
+        #successMessage .modal-body {
+            text-align: center;
+        }
+
+        #successMessage .modal-body>div {
+            margin: 30px 0;
+        }
+
+        #successMessage .modal-footer {
+            text-align: center;
+            color: #2090b4
+        }
+
+        #successMessage .modal-footer span {
+            cursor: pointer;
+        }
+
+        #MessageBoardForm .form-group>label {
+            padding-right: 0px
+        }
+
+        .imgdivs>div {
+            position: relative
+        }
+
+        .delRound {
+            width: 20px;
+            height: 20px;
+            font-weight: 700;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            transform: rotate(45deg);
+            cursor: pointer;
+        }
+
+        /* taskid=403 顾荣 任务:留言面板 样式结束 */
+
+        #leaveMessageDBModal label {
+            font-weight: 200;
+        }
+
+        .quickContent {
+            overflow: hidden;
+            height: 100px;
+            float: right
+        }
+
+        .whole .head .headRight {
+            overflow: hidden
+        }
+    </style>
+    <script>
+        dataLayer = [];
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MF57NNK');
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF57NNK" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+</head>
+
+<body>
+    <div class="whole">
+        <div class="head">
+            <div class="headLeft">
+                <img id="logo" class="logo" src="skin/chat2_deppon/images/logo-main.png" alt="logo">
+                <div class="titleCtn"></div>
+            </div>
+            <div class="headRight">
+                <!-- 我要寄件单独写，以弹框形式访问下单页面 -->
+                <div data-toggle="modal" href='#modalOrderIframe' class="myMail">
+                    <div class='dbIco'>
+                        <img src='./skin/chat2_deppon/images/mail.png' />
+                    </div>
+                    <span>我要寄件</span>
+                </div>
+                <ul class="dbHeader quickContent"></ul>
+            </div>
+        </div>
+        <div class="body">
+            <div class="bodyLeft">
+                <div class="bodyLeftTop">
+                    <div id="chatCtn" class="chatCtn"></div>
+                </div>
+                <div class="bodyLeftBottom">
+                    <div class="showFace">
+                        <div class="editDetail">
+                            <div class="corpation">
+                                <div class="emoj icon faceBtn" title="表情"></div>
+                                <!-- taskId = 1539 转人工状态下发送文件优化 -->
+                                <div class="file icon" title="文件">
+                                    <input id="sendFile" type="file" class="FA_file" multiple="multiple" style="opacity: 0;filter: alpha(opacity=0);width: 100%; height: 115%; top: 0px; left: 0px; position: absolute;">
+                                </div>
+                                <div class="screenshots hide icon" title="截图" id="screenshots"></div>
+                                <div class="pinjia icon" title="满意度评价"></div>
+                                <div class="pinjiaNew icon hide" title="满意度评价"></div>
+                                <!-- <div class="artificial icon faqevent" title="主动转人工" id="artificial"></div> -->
+                                <div class="icon shakeScreen hide" title="抖屏"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputCtn">
+                        <p id="inputTip" class="inputTip">请输入</p>
+                        <textarea id="input" class="input" autocomplete="off"></textarea>
+                    </div>
+                    <div class="sendCtn">
+                        <span id="clearMsg" class="clearMsg"></span>
+                        <!-- <a id="power" target="_blank" href="javascript:void(0);" style="cursor: default;">
+                            <span class="power" id='copyright' style="cursor: default;">Powered By YunWen</span>
+                        </a> -->
+                        <span id="sendBtn" class="sendBtn">发送</span>
+                        <span id="endCustomBtn" class="endCustomBtn sendBtn">结束人工</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyRight">
+                <div class="newsList">
+                    <div class="newsListContent">
+                        <ul class='list'>
+                            <li class="active">
+                                <img src="./skin/chat2_deppon/images/1.jpg" />
+                            </li>
+                            <li>
+                                <img src="./skin/chat2_deppon/images/2.jpg" />
+                            </li>
+                            <li>
+                                <img src="./skin/chat2_deppon/images/3.jpg" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bodyRightCtx">
+                    <div class="itemBtnCtn">
+                        <div class="commonQue itemCtn">
+                            <div class="itemHead1 itemHead itemHeadFocus" index="1">常见问题</div>
+                        </div>
+                        <!-- <div class="thirdURL itemCtn thirdURLRecommend">
+                            <div class="itemHead5 itemHead" index="5">推荐链接</div>
+                        </div> -->
+
+                    </div>
+                    <div id="itemCtxCtnBox">
+                        <div class="itemCtxCtn">
+                            <div id="commonQue" class="itemCtx" index="1"></div>
+                            <!-- <div id="thirdUrl" class="itemCtx" index="5">
+                                <iframe frameborder="0" width="100%" height="100%" src="thirdUrlDemo.html"></iframe>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="QRcode">
+                    <div class="QRcodeImg">
+                        <img src="./skin/chat2_deppon/images/QRcode.png" />
+                        <p>扫码关注德邦微信</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束人工确认弹框  start -->
+    <div class="modal fade" aria-hidden="true" id="endCustomModal" data-backdrop="static">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close closeEndCustom" type="button">×</button>
+                    <h4 class="modal-title">结束人工</h4>
+                </div>
+                <div class="modal-body">
+                    您是否确认要结束人工？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default closeEndCustom">取消</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="confirmShutDown">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束人工确认弹框  嗯对 -->
+    <div class="modal fade" aria-hidden="true" id="dialogFeedModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close closepage1" type="button">×</button>
+                    <h4 class="modal-title">会话满意度评价</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="saveDialogform" class="form-horizontal">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satis" value="满意" checked/>
+                                    </a>满意</label>
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satis" value="不满意" />
+                                    </a>不满意</label>
+                            </div>
+                            <div class="form-group" id="muiList">
+
+                            </div>
+                            <div class="form-group">
+                                <textarea class="stapin" id="stapin" name="" placeholder="留下您的联系方式+反馈建议，以便我们提升服务水平和质量，谢谢！"></textarea>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" id="dialogStaBtn">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抖屏模态框 -->
+    <div class="shakeScreenModal" id="shakeScreenModal" aria-hidden="true" data-backdrop="static">
+        <div class="shakeCenter">您给客服发送了一个抖屏</div>
+    </div>
+
+    <!-- taskId=402 修改人：顾荣  任务：留言功能-->
+    <!-- 添加留言模态框和确定模态框 -->
+    <!-- 留言模态框开始 -->
+
+    <div class="modal" aria-hidden="true" id="MessageBoardModal" style="display:none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" onclick="$('#MessageBoardModal').css('display','none');clearform()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h1>留言板</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="MessageBoardForm">
+                        <div class="form-group">
+                            <label for="name" class="col-xs-2 control-label">
+                                <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
+                                <img src="./css/icon/one/name.png" style="width:20px">
+                            </label>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" placeholder="姓名" id="boardName" name="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-xs-2 control-label">
+                                <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
+                                <img src="./css/icon/one/call.png">
+                            </label>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" placeholder="手机号" id="boardPhone" name="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="QQ" class="col-xs-2 control-label">
+                                <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
+                                <img src="./css/icon/one/qq.png">
+                            </label>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" placeholder="QQ" id="boardQQ" name="QQ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-xs-2 control-label">
+                                <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i> -->
+                                <img src="./css/icon/one/email.png">
+                            </label>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" placeholder="邮箱" id="boardEmail" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ans_text" class="col-xs-2 control-label">
+                                <!-- <i class="fa fa-pencil" aria-hidden="true"></i> -->
+                                <img src="./css/icon/one/pen.png">
+                            </label>
+                            <div class="col-xs-9">
+                                <div id="MessageBoard">
+                                    <textarea name="ans_text" class="form-control" id="ansText" placeholder="写点留言吧..." maxlength="200"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">
+                            </label>
+                            <div class="col-xs-9" style="overflow:hidden">
+                                <div id="picCav">
+                                    <!-- 添加图片 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">
+                            </label>
+                            <div class="col-xs-9" style="text-align:right" style="position:relative">
+                                <span id="filebtn" class="btn btn-white">
+                                    上传图片
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-right" id="messageBoardBtn" onclick="$('#MessageBoardForm').submit()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 留言模态框结束 -->
+    <!-- 提交成功模态框开始 -->
+    <div class="modal" aria-hidden="true" id="successMessage" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <i class="fa fa-check-circle-o" style="font-size:60px;color:lightblue;"></i>
+                    </div>
+                    <div>
+                        您的留言已经提交,我们会尽快处理!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <span id="messageAgain" style="margin-right:1.5rem;">继续留言>></span>
+                        <span id="backMessage">返回聊天页>></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 提交成功模态框结束 -->
+    <!-- pc端引入钉钉对接JS -->
+
+    <!-- 德邦人工客服评价框 -->
+    <div class="modal fade" aria-hidden="true" id="dialogEvaluationModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close closepage1" type="button">×</button>
+                    <h4 class="modal-title">会话满意度评价</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="saveDBDialogform" class="form-horizontal">
+                        <fieldset>
+                            <div class="form-group satisfactionContext">
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satisfaction" value="1" />
+                                    </a>非常满意</label>
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satisfaction" value="2" checked/>
+                                    </a>满意</label>
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satisfaction" value="3" />
+                                    </a>对业务不满意</label>
+                                <label class="rad">
+                                    <a>
+                                        <input type="radio" name="satisfaction" value="4" />
+                                    </a>对客服不满意</label>
+                            </div>
+                            <div class="form-group" id="muiList">
+
+                            </div>
+                            <div class="form-group">
+                                <textarea class="stapin" id="stapinContext" name="" placeholder="留下您的联系方式+反馈建议，以便我们提升服务水平和质量，谢谢！"></textarea>
+                                <!-- <p style="color:#757575;">评价后结束本次回话，您可以取消继续咨询;</p> -->
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" id="dialogDBSave">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 德邦人工留言模态框 -->
+    <div class="modal fade" id="leaveMessageDBModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">请您留言，我们尽快给您服务!(在线时间8:30-21:00)</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id='leaveMessageDBForm'>
+                        <div class="form-group">
+                            <label for="name" class="col-xs-3 control-label">回复类型</label>
+                            <div class="col-xs-7">
+                                <select type="text" class="form-control" name='replyType' placeholder="回复类型">
+                                    <option value=''>在线回复</option>
+                                    <option value=''>短信回复</option>
+                                    <option value=''>电话回复</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-xs-3 control-label">姓名</label>
+                            <div class="col-xs-7">
+                                <input type='text' placeholder="请填写姓名" name='name' class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-xs-3 control-label">移动电话</label>
+                            <div class="col-xs-7">
+                                <input type='text' placeholder="请填写移动电话" name='phoneNumber' class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="col-xs-3 control-label">期望恢复时间段</label>
+                            <div class="col-xs-2">
+                                <select type='text' class="form-control timeOptions" name='timeStat'>
+                                </select>
+                            </div>
+                            <label for="name" class="col-xs-1 control-label">点</label>
+                            <label for="name" class="col-xs-1 control-label">——</label>
+
+                            <div class="col-xs-2">
+                                <select type='text' class="form-control timeOptions" name='timeEnd'></select>
+                            </div>
+                            <label for="name" class="col-xs-1 control-label">点</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="col-xs-3 control-label">留言内容</label>
+                            <div class="col-xs-7">
+                                <textarea class="form-control" name='content' placeholder="请填写留言内容" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id='leaveMessageDBSubmit'>确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a>
+    <div class="modal fade" id="modal-id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalOrderIframe" aria-hidden="false" data-backdrop='static'>
+        <div class="modal-dialog" style="width: 1200px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src='./skin/chat2_deppon/images/mail.png' />
+                    <span>我要寄件</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+
+                    <iframe width="100%" style="border:none;" height="600px" src="https://www.deppon.com/cms/console/sites/10000101/page/preview/mail/order"></iframe>
+                    <!-- <iframe width="100%" style="border:none;" height="600px" src="https://www.deppon.com/new/order/"></iframe> -->
+                    <!-- <iframe width="100%" style="border:none;" height="600px" src="http://localhost/web/knowledge/queViewSNew.html"></iframe> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMessageIframe" aria-hidden="false" data-backdrop='static'>
+        <div class="modal-dialog" style="width: 1200px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src='./skin/chat2_deppon/images/mail.png' />
+                    <span>我要留言</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <iframe width="100%" style="border:none;" height="600px" src="https://www.deppon.com/cms/console/sites/10000101/page/preview/mail/order"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("[name=satis]").eq(0).parent().css('background-position', '-111px -15px');
+            $("[name=satis]").unbind('click').bind('click', function () {
+                if ($(this).prop('checked')) {
+                    $(this).parent().css('background-position', '-111px -15px');
+                    $(this).parents('.rad').siblings().find('a').css('background-position', '-96px -15px');
+                }
+                if ($(this).val() == '不满意') {
+                    Faqrobot.prototype.muiItem();
+                } else {
+                    $('#muiList').html('');
+                }
+            });
+            $(document).delegate('[name=ckb]', 'click', function () {
+                if ($(this).prop('checked')) {
+                    $(this).parent().css('background-position', '129px 17px');
+                } else {
+                    $(this).parent().css('background-position', '145px 17px');
+                }
+
+            })
+            // taskid=403 顾荣 任务:留言面板 2012.12.22开始部分
+            //点击继续留言
+            $("#messageAgain").click(function () {
+                clearform()
+                $("#successMessage").css("display", "none");//关闭确定框
+                //清空图片预览区域
+            })
+            //点击返回聊天页
+            $("#backMessage").click(function () {
+                clearform()
+                $("#successMessage").css("display", "none")
+                $("#MessageBoardModal").css("display", "none")
+            })
+        })
+        var validator1 = $('#MessageBoardForm').validate({
+            rules: {
+                name: {
+                    minlength: 2,
+                    maxlength: 10,
+                },
+                phone: {
+                    telFlag: true
+                },
+                QQ: {
+                    number: true,
+                    minlength: 5,
+                    maxlength: 12
+                },
+                email: {
+                    emailFlag: true,
+                },
+                ans_text: {
+                    required: true,
+                }
+            },
+            messages: {
+                name: {
+                    minlength: "请输入2~10个字符！",
+                    maxlength: "请输入2~10个字符！"
+                },
+                QQ: {
+                    number: "请输入正确的QQ号码！",
+                    minlength: "请输入正确的QQ号码！",
+                    maxlength: "请输入正确的QQ号码！"
+                },
+                ans_text: {
+                    required: "留言不能为空！",
+                }
+            },
+            submitHandler: msgSubmit
+        });
+        $.validator.addMethod("emailFlag", function (value, element, params) {
+            var emailreg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/
+            if (emailreg.test(value.trim()) || value.trim() == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }, "请输入正确格式的邮箱！");
+        /**
+         * taskId=494;顾荣 2017.12.27
+        * 修改：优化手机号码正则
+        */
+        $.validator.addMethod("telFlag", function (value, element, params) {
+            var telNumReg = /^1[0-9]{10}$/
+            if (telNumReg.test(value.trim()) || value.trim() == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }, "请输入正确格式的手机号码！");
+        function msgSubmit() {
+            var messageName = $("#boardName").val().replace(/(^\s*)|(\s*$)/g, "")//姓名
+            var messagePhone = $("#boardPhone").val().replace(/(^\s*)|(\s*$)/g, "")//电话号码
+            var messageQQ = $("#boardQQ").val().replace(/(^\s*)|(\s*$)/g, "")//QQ号码
+            var messageEmail = $("#boardEmail").val().replace(/(^\s*)|(\s*$)/g, "")//电子邮箱
+            var messageTxt = $("#ansText").val().replace(/(^\s*)|(\s*$)/g, "")//留言内容
+            var imgs = [];//图片标签数组
+
+            for (var i = 0; i < $(".imgdivs").size(); i++) {
+                if ($(".imgdivs").eq(i).attr('rel')) {
+                    imgs.push($(".imgdivs").eq(i).attr('rel'))
+                }
+            }
+            imgs = imgs.join(",")
+            var urlEles = window.location.href.split("?")[1].split("&");
+            var sysNum = '';//获取当前网址的sysNum值
+            for (var i = 0; i < urlEles.length; i++) {
+                if (urlEles[i].indexOf("sysNum") > -1) {
+                    sysNum = urlEles[i].split("=")[1]
+                }
+            }
+            var sysNumReg = new RegExp('sourceId=(\d*[a-zA-Z]*[^?|^#|^&]*)');
+            var sourceId = 0
+            source = location.href.match(sysNumReg)
+            if (source) {
+                sourceId = source[1]
+            }
+            $.ajax({
+                type: 'post',
+                datatype: 'json',
+                cache: false,//不从缓存中去数据,
+                url: encodeURI('../../servlet/AQ'),
+                data: {
+                    s: 'leavemsg',
+                    sourceId: sourceId,
+                    sysNum: sysNum,
+                    entrance: document.referrer,
+                    name: messageName,
+                    telNum: messagePhone,
+                    qq: messageQQ,
+                    email: messageEmail,
+                    content: messageTxt,
+                    imgUrls: imgs
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        $("#successMessage").css("display", "block")
+                    } else {
+                        layer.msg(data.message)
+                    }
+                }
+            })
+        }
+        // 清空表单内容
+        function clearform() {
+            validator1.resetForm()
+            $('.text-error').removeClass("text-error helper-font-small")
+            $("#boardName").val("")
+            $("#boardPhone").val("")
+            $("#boardQQ").val("")
+            $("#boardEmail").val("")
+            $("#ansText").val("")
+            $("#picCav").html("")
+        } 
+    </script>
+</body>
+
+</html>

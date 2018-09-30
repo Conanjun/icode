@@ -1,0 +1,203 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link rel="shortcut icon" href="images/send.png" type="/image/x-icon">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>  
+    <title>智能客服小极</title>
+
+    <link rel="stylesheet" href="css/minichat.css?dev=332">
+	<link rel="stylesheet" href="skin/infinitusAppVoice/css/app.css?dev=010">
+    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+   	<script src="js/minichat.js?dev=066"></script>
+    <script src="skin/infinitusAppVoice/js/hammer.min.js"></script> 
+    <script src="skin/infinitusAppVoice/js/app.js?dev=254"></script>
+	<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<style>
+		/* 满意度评价 */
+        .unstatisRession,.choose,.feedBack{
+            width:80%;
+            margin:0 auto;
+        }
+		.feedBack{
+			width:95%;
+		}
+        .bad{
+            float: right;
+        }
+        .MN_marginCtnCheckbox{
+            display: block;
+            font-weight: normal;
+        }
+        .unstatisRession p{
+            font-weight: 700;
+        }
+        .feedbackPace{
+            display: inline-block;
+            float: right;
+            margin-top: 14%;
+        }
+        .textareaVal{
+            text-indent:10px;
+            padding:5px;
+            resize:none;
+            width: 100%;
+            height: 100px;
+        }
+		.modal-footer{
+			text-align:center;
+			border-top:none;
+		}
+		input[name="ckb"],input[name="pinjia"]{
+			vertical-align:text-bottom;
+		}
+	</style>
+</head>  
+<body>  
+    <div class="view">
+    	<!-- 常见问题开始 -->
+    	<div class="commonQueLayer" id="commonQueLayer"></div>
+    	<!-- 常见问题结束 -->
+
+    	<!-- 意见反馈开始 -->
+		<div class="feedbackLayer">
+			<form id="feedbackForm">
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="1" checked> 满意</label>
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="0"> 不满意</label>
+				<div class="noSatiCtn">
+					<p class="MN_marginCtn">您不满意的原因?</p>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+				</div>
+				<div class="MN_commentTipCtn">
+					<textarea class="MN_commentCtn" id="commentCtn" name="content"></textarea>
+				</div>
+				<div class="MN_commentBtn" id="commentBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 意见反馈结束 -->
+
+    	<!-- 留言开始 -->
+		<div class="leaveMsgLayer">
+			<form class="leaveMsgForm" id="leaveMsgForm">
+				<textarea class="MN_commentCtn" id="leaveMsgCtn" name="content"></textarea>
+				<input type="text" name="name" placeholder="姓名">
+				<input type="text" name="telNum" placeholder="手机号码">
+				<input type="text" name="qq" placeholder="QQ">
+				<input type="text" name="webSite" placeholder="网址">
+				<div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 留言结束 -->
+
+    	<div class="back">
+    		<img class="logo" id="logo">
+    		<p>对话历史加载中...</p>
+    	</div>
+    	<div class="front" id="robotFront">
+            <div class="barCtn">
+                <p id="title" class="title" style="margin:0;"></p>
+                <div class="returnBack">返回</div>
+				<div class="test" style="display: none; color: #000; word-wrap: break-word;">325</div>
+            </div>
+    		<div class="chatScroll">
+    			<div class="chatCtn" id="chatCtn">
+    				
+    			</div>
+    		</div>
+    		<div class="editCtn">
+    			<div class="editShow">
+    				<div class="cosStyle">
+                    	<div class="goinput"></div>
+                    </div>
+                    <div class="cosInput cosSome">
+    					<div class="textareaCtn">
+    						<textarea class="textarea" id="textarea"></textarea>
+    					</div>
+						<div class="inputBtn" id="pressVoice">按住 说话</div>
+    				</div>
+    				<div class="cosBtn cosSome">
+    					<div class="faceBtn"></div>
+    				</div>
+					<div class="cosBtn cosSome">
+    					<div class="addbtn"></div>
+    					<div class="sendBtn" id="sendBtn">发送</div>
+    				</div>
+					
+					
+    			</div>
+    			<div class="editHide">
+    				<div class="sendPicCtn editCtn_com">
+    					<span id="sendPic" class="sendPic"></span>
+    					<p>发送图片</p>
+    				</div>
+                    <div class="takePhotoCtn editCtn_com">
+                        <span class="takePhoto"></span>
+                        <p>拍照发送</p>
+                    </div>
+                    <div class="call400Ctn editCtn_com">
+                        <span class="call400"></span>
+                        <p>呼叫400</p>
+                    </div>
+                    <div class="nearMailCtn editCtn_com">
+						<span class="nearMail"></span>
+                        <p>附近专卖店</p>
+                    </div>
+    				<div class="commonQueCtn editCtn_com">
+    					<span class="commonQue"></span>
+    					<p>常见问题</p>
+    				</div>
+    				<div class="feedbackCtn editCtn_com">
+    					<span class="feedback"></span>
+    					<p>意见反馈</p>
+    				</div>
+    				<div class="leaveMsgCtn editCtn_com">
+    					<span class="leaveMsg"></span>
+    					<p>留言</p>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+	<div class="modal fade" style="display: none;padding-top:15%;" aria-hidden="true" id="satius" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title"><img  src="skin/infinitusApp/images/love.png" style="margin-right: 10px;"/>您对小极的服务满意吗？</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="choose">
+                        <label class="good"><input type="radio" name="pinjia" value="满意" checked>送鲜花</label>
+                        <label class="bad"><input type="radio" name="pinjia" value="不满意">拍板砖</label>
+                    </div>
+                    <div class="unstatisRession hide">
+                        <label class="MN_marginCtnCheckbox"><input type="checkbox" value="回答不准确" name="ckb">回答不准确</label>
+                        <label class="MN_marginCtnCheckbox"><input type="checkbox" value="答非所问" name="ckb">答非所问</label>
+                        <label class="MN_marginCtnCheckbox"><input type="checkbox" value="操作太复杂" name="ckb">操作太复杂</label>
+                        <label class="MN_marginCtnCheckbox"><input type="checkbox" value="其他（操作太复杂）" name="ckb">其他（操作太复杂）</label>
+                        <p>您不满意的原因是：</p>
+                        <textarea id="contentVal" class="textareaVal form-control" placeholder="描述您的意见和建议，以便我们提升服务水平和质量，谢谢您~"></textarea>
+                    </div>
+                    <div class="feedBack hide">
+                        <img src="skin/infinitusApp/images/jilove.png" alt="感谢您的评价">
+                        <div class="feedbackPace">
+                            <p>感谢您的评价，</p><br />
+                            <p>小极会继续努力哒！</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" id="submitBtn" style="width:30%;">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>  
+</html>

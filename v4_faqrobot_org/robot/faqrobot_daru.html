@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="客服系统,客服机器人,智能问答机器人,智齿问答机器人，云问科技，南京云问网络科技有限公司，www.faqrobot.org">
+<title>faqrobot智能问答机器人</title>
+<link rel="stylesheet" type="text/css" href="skin/chat5/css/css.css">
+<link rel="stylesheet" type="text/css" href="skin/chat5/css/nanoscroller.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css">
+<link rel="stylesheet" type="text/css" href="skin/chat5/css/layer.css">
+<style>
+/* 意见反馈 */
+div.hSContent {
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+}
+div.hSContent form.hSForm {
+  margin-left: 40px;
+  width: 340px;
+}
+div.hSContent form.hSForm div.feedback {
+  margin: 10px 0;
+}
+div.hSContent form.hSForm div.feedback p {
+  line-height: 30px;
+}
+div.hSContent form.hSForm div.feedback label {
+  cursor: pointer;
+}
+div.hSContent form.hSForm div#hid {
+  margin: 10px 0;
+}
+div.hSContent form.hSForm div#hid p {
+  line-height: 30px;
+}
+div.hSContent form.hSForm div.comment {
+  margin: 10px 0;
+  width: 340px;
+}
+div.hSContent form.hSForm div.comment #hsContent {
+  width: 320px;
+  height: 60px;
+  border: 1px solid #e0e0e0;
+  padding: 5px;
+  resize: none;
+}
+div.hSContent form.hSForm div.send {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 340px;
+}
+div.hSContent form.hSForm div.send input {
+  width: 70px;
+  background-color: #148dff;
+  border: 1px solid #148dff;
+  color: #ffffff;
+  border-radius: 3px;
+}
+button.RG_commentBtn {
+  width: 50px;
+  height: 26px;
+  background-color: #148dff;
+  border: 1px solid #148dff;
+  color: #ffffff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="toppart"> 
+  <!--==============logo=========================-->
+  <div class="logo"> <a href="javascript:;" style="margin:0 0 0 10px;"> <img  id="weblogo" style="margin-top:8px; height:60px;"> </a> </div>
+  <!--=============退出按钮==========================-->
+  <div class="closewrap">
+    <p class="csline"></p>
+    <p class="doclose" title="离开"></p>
+  </div>
+  <!--===============预留logo========================-->
+  <div class="companylogo">
+    <p class="cimg"></p>
+  </div>
+</div>
+<table id="givemetable" width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td class="vtdl"><!--=======================================-->
+        
+        <div  class="vtddcontent scroll_content" id="con_div">
+          <div id="scroll-div" class="nano">
+            <div class="content" >
+              <p class="spacing"></p>
+              <div class="vtddcntin" id="left_content"> </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--=======================================-->
+        
+        <div class="vooinputforms" style="height: 160px;">
+          <p class="showWaring" id="showErrorId" ><span></span></p>
+          <p class="spacing7" style="margin-right: 10%;"> <a href="javascript:;" id="clearScreen">清空聊天记录</a>&nbsp;&nbsp;&nbsp;&nbsp; <span>你还可以输入<span id="wordremain">100</span>个字</span> </p>
+          <table class="vamtable" width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td class="xtdx1" style="background-image: none; background-color: #eeeeee; width: 16px;">&nbsp;</td>
+                <td class="xtdx2" style="background: #eeeeee;">
+                  <div style="height: 80px; border-radius: 5px; background: #fff; margin-top: 0;">
+                    <input id="text-in" class="vaxtxtear" maxlength="100" style="font-size: 16px; text-indent: 18px; margin-top:0px; height: 78px; line-height: 78px;">
+                  </div>
+                  <p class="spacing5" style=" height:14px; padding-top:4px; font-size:11px; text-align:center; background-color: #EEEEEE;" id="devP">对机器人感兴趣请百度&nbsp;&nbsp;<a href="http://www.faqrobot.org">FaqRobot智能问答机器人</a></p></td>
+                <td class="xtdx3" style="background: #EEEEEE;"></td>
+                <td class="xtdx4"><input id="inputPR" name="" value="" class="dosubmitss" type="button" style="margin-top: 14px;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div></td>
+      <td class="vtdr"><div class="valrtop">
+          <div class="spacing"></div>
+          <div class="calist">
+            <p class="pnow">快捷服务</p>
+            <p>常见问题</p>
+            <p>联系我们</p>
+          </div>
+        </div>
+        <p class="spacing5"></p>
+        <div class="valcontentwrap">
+          <div class="valcontent" style="display:block;">
+            <div class="rservlist" id="rservlist"></div>
+          </div>
+          <div class="valcontent">
+            <div class="prbmvlist" id="topQuestionDiv"> 
+            </div>
+            <p class="spacing"></p>
+          </div>
+          <div class="valcontent">
+            <div class="prbmvlist" id="Contact_us"> 
+            </div>
+            <p class="spacing"></p>
+          </div>
+        </div></td>
+    </tr>
+  </tbody>
+</table>
+<div class="hSContent" style="display:none">
+  <form class="hSForm" id="hSForm">
+    <input name="uuid" type="hidden" />
+    <div class="feedback">
+      <p>您对本服务是否满意？</p>
+      <div>
+        <input type="radio" name="status" checked value="1" id="hsGood">
+        <label for="hsGood">满意</label>
+        <input type="radio" name="status" value="0" id="hsBad">
+        <label for="hsBad">不满意</label>
+      </div>
+    </div>
+    <div class="comment" id="hsDiv" style="display:none;">
+      <textarea name="content" id="hsContent" maxlength="100" style="font-family: Microsoft Yahei;"></textarea>
+    </div>
+    <div class="send">
+      <input type="button" value="提交" id="hsSubmit" style="font-family: Microsoft Yahei;" />
+    </div>
+  </form>
+</div>
+<script language="javascript" type="text/javascript" src="js/jquery-1.8.3.min.js"></script> 
+<script language="javascript" type="text/ecmascript" src="skin/chat5/js/jquery.autocomplete.js"></script> 
+<script language="javascript" type="text/javascript" src="skin/chat5/js/base.js"></script>
+<script language="javascript" type="text/javascript" src="skin/chat5/js/nanoScroller.js"></script> 
+<script language="javascript" type="text/javascript" src="skin/chat5/js/jquery.faqrobot.min.js"></script> 
+<script language="javascript" type="text/javascript" src="skin/chat5/js/layer.js"></script>
+<script type="text/javascript">
+	var s_tspan=3;//主动请求的时间间隔
+	var s_state=0;//聊天的状态
+	var baseUrl= 'http://127.0.0.1:10098/robot/';
+	baseUrl= '../';
+	var s_q_url="";//问题的url
+	var s_a_url="";//获取相关问题答案的url地址
+	var s_sysNum="";
+	var hkey = "Enter";//hotKey
+	var t_count=0;//运行的代理的次数
+	var dt;//定时器
+	var robotName='FAQRobot';
+	
+	var robot_name = "faqrobot机器人";
+</script> 
+<script type="text/javascript">
+    var option={
+      basePath:'../servlet/',
+      chatContDiv:'left_content',
+      newQuestionDiv :'topQuestionDiv',
+      inputMagOldvalue:'请输入您要咨询的内容',
+      sendBtn:'inputPR',
+      inputMsgArea:'text-in',
+      clearScreen:'clearScreen',
+      showErrorId:'showErrorId',
+      logoUrl:"skin/chat5/images/logo.png",
+      logoDiv:"weblogo",
+      baseInfoDiv :"Contact_us",
+      wordremain:'wordremain',
+      fadeBackId:'fadeBackId',
+      teachMetalk:'teachMetalk',
+      fadeBackIdLink:'fadeBackIdLink',
+      quickLink:'rservlist',
+      sourceId:0,
+      hServiceCallback: function(p) {
+        var pp = $(p);
+        var ppp = pp.find('.RG_commentBtn').html('评价');
+        return pp.prop('outerHTML');
+      }
+    };
+
+    var _Layindex;
+    $(document).ready(function() {
+      $("#text-in").faqrobot(10000,option);
+      $("#hsGood").on('click', function() {
+        if($('#hsDiv').css('display') == 'block') {
+          $("#hsDiv").hide();
+          $('.layui-layer-content').height($('.layui-layer-content').height()-120);
+        }
+      });
+      $("#hsBad").on('click', function() {
+        if($('#hsDiv').css('display') == 'none') {
+          $("#hsDiv").show();
+          $('.layui-layer-content').height($('.layui-layer-content').height()+120);
+        }
+      });
+      $('body').on('click', '#hsSubmit', function() {
+        $.ajax({
+          url: encodeURI('/Comment/CommentSatisfaction'),
+          type: 'post',
+          dataType: 'json',
+          cache: false,
+          data: {
+            uuid: $('#hSForm input[name=uuid]').val(),
+            status: $('#hSForm input[name=status]').val(),
+            reason: $('#hsContent').val()
+          },
+          success: function(data) {
+            layer.close(_Layindex);
+            $('.RG_commentBtn').parent().empty().append('<p class="RG_commentTip">感谢您的评价!</p>');
+            layer.msg(data.message);
+          }
+        });
+      });
+      //聊天框意见反馈
+      $("body").on('click', '.RG_commentBtn', function() {
+        $('#hSForm input[name=uuid]').val($(this).attr('uuid'));
+        _Layindex = layer.open({
+          type: 1,
+          title: "满意度评价",
+          skin: 'layui-layer-rim',
+          area: ['420px'],
+          content: $(".hSContent")
+        });
+      });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />	
+    <link rel="shortcut icon" href="images/send.png" type="/image/x-icon">  
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>  
+    <title>FaqRobot智能问答机器人</title>
+
+    <link rel="stylesheet" href="skin/h5chatzbj/css/minichat.css?dev=2">
+	<link rel="stylesheet" href="skin/h5chatzbj/css/app.css?dev=1">
+	<link href="./css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet prefetch" href="skin/h5chat/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="skin/h5chat/css/default-skin.css">
+	<link href="./css/commonCSS.css" rel="stylesheet">
+	
+	<script src="skin/h5chatzbj/js/minichat.js?time=1513"></script>
+	 <!-- <script src="js/minichat.js?time=1513"></script> -->
+    <script src="skin/h5chatzbj/js/app.js?dev=2"></script>
+	<style>
+		.editCtn .editShow .cosInput .textareaCtn .textarea{
+			border-bottom-color:#ff5d1a;
+		}
+		.editCtn .editShow .cosBtn .addbtn {
+			/* display: none; */
+			width: 0.09rem;
+			height: 0.09rem;
+			background: url(skin/h5chatzbj/images/plusred.png) no-repeat center;
+			background-size: contain;
+		}
+		.MN_reasonItem [name=reasonType]{
+			margin-top: -3px;
+		}
+
+	</style>
+</head>  
+<body>  
+    <div class="view">
+		<!-- 顶部轮播广告-->
+		<div class="lunbo" id="lunbo" style="display:none;">
+			<span class="closeAdv">
+				<img src="skin/h5chatzbj/images/close.png"/>
+			</span>
+			<span class="sound">
+					<img src="skin/h5chatzbj/images/sound.png"/>
+				</span>
+			<ul>
+				
+			</ul>
+		</div>
+    	<!-- 常见问题开始 -->
+    	<div class="commonQueLayer" id="commonQueLayer"></div>
+    	<!-- 常见问题结束 -->
+
+    	<!-- 意见反馈开始 -->
+		<div class="feedbackLayer">
+			<form id="feedbackForm">
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="1" checked> 有帮助</label>
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="0"> 无帮助</label>
+				<div class="noSatiCtn">
+					<p class="MN_marginCtn">您不满意的原因?</p>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+				</div>
+				<div class="MN_commentTipCtn">
+					<textarea class="MN_commentCtn" id="commentCtn" name="content"></textarea>
+				</div>
+				<div class="MN_commentBtn" id="commentBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 意见反馈结束 -->
+
+    	<!-- 留言开始 -->
+		<div class="leaveMsgLayer">
+			<form class="leaveMsgForm" id="leaveMsgForm">
+				<textarea class="MN_commentCtn" id="leaveMsgCtn" name="content"></textarea>
+				<input type="text" name="name" placeholder="姓名">
+				<input type="text" name="telNum" placeholder="手机号码">
+				<input type="text" name="qq" placeholder="QQ">
+				<input type="text" name="webSite" placeholder="网址">
+				<div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 留言结束 -->
+
+    	<div class="back">
+    		<img class="logo" id="logo">
+    		<p>网页由云问前端开发人员提供</p>
+    	</div>
+    	<div class="front">
+			<!-- 聊天部分-->
+    		<div class="chatScroll">
+    			<div class="chatCtn" id="chatCtn">
+    				
+    			</div>
+    		</div>
+    		<div class="editCtn">
+    			<div class="editShow">
+    				<div class="cosInput cosSome">
+    					<div class="textareaCtn">
+    						<textarea class="textarea" id="textarea"></textarea>
+    						<div class="faceBtn"></div>
+    					</div>
+						<div id="a" class="inputBtn">按住 说话</div>
+    				</div>
+    				<div class="cosBtn cosSome">
+    					<div class="addbtn"></div>
+    					<div class="sendBtn" id="sendBtn">发送</div>
+    				</div>
+    			</div>
+    			<div class="editHide">
+                    <div class="sendPicCtn editCtn_com">
+                        <span id="sendPic" class="sendPic"></span>
+                        <p>发送图片</p>
+                    </div>
+    				<div class="takePhotoCtn editCtn_com">
+    					<span class="takePhoto"></span>
+    					<p>拍照发送</p>
+    				</div>
+    				<div class="commonQueCtn editCtn_com">
+    					<span class="commonQue"></span>
+    					<p>常见问题</p>
+    				</div>
+    				<div class="feedbackCtn editCtn_com">
+    					<span class="feedback"></span>
+    					<p>意见反馈</p>
+    				</div>
+    				<div class="leaveMsgCtn editCtn_com">
+    					<span class="leaveMsg"></span>
+    					<p>留言</p>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</body> 
+<script>
+    $(function(){
+    	if(getUrlParam('sysNum')=='149750805214520963'){
+    		location.href='zbjAppTwo.html?sysNum='+getUrlParam('sysNum');
+    	}
+    })
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //鏋勯€犱竴涓惈鏈夌洰鏍囧弬鏁扮殑姝ｅ垯琛ㄨ揪寮忓璞�
+		var r = window.location.search.substr(1).match(reg);  //鍖归厤鐩爣鍙傛暟
+		if (r !== null) return decodeURIComponent(r[2]); return null; //杩斿洖鍙傛暟鍊�
+	}
+	//广告点击消失
+	$('.closeAdv').click(function(){
+		$(this).parent().remove();
+		$('.chatCtn ').css('padding','10px 0')
+	});
+	//	顶部轮播广告
+	function adv(id,height){
+		var ul=$(id);
+		var liFirst=ul.find('li:first');
+		$(id).animate({top:height}).animate({"top":0},0,function(){
+			var clone=liFirst.clone();
+			$(id).append(clone);
+			liFirst.remove();
+		})
+	}
+	setInterval("adv('ul','-50px')",3000)
+	var tmpsourceId=3;
+
+    
+</script> 
+</html>

@@ -202,7 +202,7 @@
 
     //调用自动补全插件
     $('.input').autocomplete({
-        url: 'servlet/AQ?s=ig',
+        url: 'servlet/AQ?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
             targetEl: $('.inputCtn'),//参照物(用于appendTo和定位)
             posAttr: ['0px', '100px'],//外边框的定位[left bottom]
             itemNum: 10,//[int] 默认全部显示

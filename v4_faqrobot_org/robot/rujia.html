@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="http://www.homeinns.com/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="http://www.homeinns.com/favicon.ico" type="image/x-icon">
+    <title>我是如家智能客服-YES SIR</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="skin/rujia/css/robot.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.autocomplete.css" type="text/css">
+    <link rel="stylesheet" href="css/nanoscroller.css" type="text/css">
+    <style type="text/css">
+		.nano {
+			height: 421px;
+			border: 1px solid #d9d9d9;
+			border-top: none;
+			overflow-x: hidden;
+			position: relative;
+		}
+		.nano .pane {
+			width: 8px;
+			right: -1px;
+			margin: 2px;
+		}
+		.nano .slider {
+			background: #f4f5f6;
+		}
+	</style>
+    <script type="text/javascript"  src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.nanoscroller.js"></script>
+    <script type="text/javascript">
+		var keepCount=0;
+		var hkey = "Enter";//hotKey
+        var dt;//定时器
+		var s_tspan=3;//主动请求的时间间隔
+        var s_state=0;//聊天的状态
+        var baseUrl= 'http://127.0.0.1:10098/robot/';
+        baseUrl= '../';
+        var s_q_url="";//问题的url
+        var s_a_url="";//获取相关问题答案的url地址
+        var s_sysNum="";
+        var t_count=0;//运行的代理的次数
+        var robotName='FAQRobot';
+    </script>
+    <script src="skin/rujia/js/jquery.faqrobot.dev.js"></script>
+    </head>
+    <body style="width:965px; margin:0 auto;"><div class="robot_top">
+    <div class="robot_topL">
+        <ul class="robot_topL_icon"><img src="skin/rujia/image/1_03.png"/></ul>
+        <ul class="robot_topL_name">
+            <h1>我是首旅如家智能客服——YES SIR</h1>
+            <p>24小时竭诚为您服务。</p>
+        </ul>
+    </div>
+    <div class="robot_topR">
+        <ul>
+            <li><a href="http://www.homeinns.com/" target="_blank"><img src="skin/rujia/image/gwsy_icon.png" class="fixpng" width="27" height="27" /></a></li>
+            <li><a href="http://www.homeinns.com/" target="_blank">官网首页</a></li>
+        </ul>
+        <ul>
+            <li><a href="http://www.homeinns.com/list/shanghai" target="_blank"><img src="skin/rujia/image/jdyd_icon.png" class="fixpng"  width="27" height="27" /></a></li>
+            <li><a href="http://www.homeinns.com/list/shanghai" target="_blank">酒店预订</a></li>
+        </ul>
+        <ul>
+            <li><a href="http://www.homeinns.com/promotion" target="_blank"><img src="skin/rujia/image/yhcx_icon.png" class="fixpng"  width="26" height="27" /></a></li>
+            <li><a href="http://www.homeinns.com/promotion" target="_blank">优惠促销</a></li>
+        </ul>
+        <ul>
+            <li><a href="http://www.homeinns.com/center" target="_blank"><img src="skin/rujia/image/hyzx_icon.png" class="fixpng"  width="24" height="27" /></a></li>
+            <li><a href="http://www.homeinns.com/center" target="_blank">会员中心</a></li>
+        </ul>
+        <ul>
+            <li><a href="http://www.homeinns.com/join/service" target="_blank"><img src="skin/rujia/image/jmrj_icon.png" class="fixpng"  width="35" height="27" /></a></li>
+            <li><a href="http://www.homeinns.com/join/service" target="_blank">加盟如家</a></li>
+        </ul>
+    </div>
+</div>
+<div class="robot_content">
+      <div class="robot_contentL">
+      
+      <div id="about" class="nano has-scrollbar">
+     	 <div class="content" tabindex="0" style="right: -17px;">
+  			  <div class="robot_wdlist" id="left_content"> </div>
+          </div>
+     </div>
+
+    <div class="robot_write">
+          <div class="robot_write_top">
+        <ul class="robot_write_name">
+              请输入您的问题：
+            </ul>
+        <ul class="robot_write_txt">
+              <li class="robot_write_number">您还可以输入<span style="color:#cb574a;" id="wordremain">100</span>个字符</li>
+              <li class="robot_write_clear" id="clearScreen">清空记录</li>
+            </ul>
+      </div>
+          <div class="robot_input">
+        <ul class="robot_textarea">
+              <textarea  maxlength="100" id="message"></textarea>
+            </ul>
+        <dl class="robot_send" id="sendBtn">
+              <dd style="margin-bottom:4px;"><img src="skin/rujia/image/send_icon.png" class="fixpng" /></dd>
+              <dd>发送</dd>
+            </dl>
+        <div style=" font-family:Tahoma;font-size:12px;display: block;height:16px;padding-top:4px; position: absolute; left: 2px;color:#ccc;">Powered By FaqRobot&nbsp;&nbsp;<a style="color:#cb574a;" href="javascript:void(0); " onclick="dialog(500,430);return false;" >意见反馈</a></div>
+      </div>
+        </div>
+  </div>
+      <div class="showWaring" id="showErrorId"><span></span></div>
+      <div class="robot_jt">
+        <ul>
+        </ul>
+  </div>
+      <div class="robot_contentR">
+    <ul class="hottitle" id="hotone">
+          热点问题
+        </ul>
+    <div class="robot_hot hot_gundong" id="showhotone" style="padding:13px 27px 11px 15px;"> </div>
+    <ul class="hottitle " id="hottwo">
+          推荐咨询
+        </ul>
+    <div class="robot_hot hot_gundong" id="showhottwo" style="padding:13px 27px 11px 15px;"> </div>
+    <ul class="hottitle hottitle_on " id="hotthree">
+          快捷服务
+        </ul>
+   <div class="robot_hot" id="showhotthree" style="padding:25px 0px 324px 20px; display:block; height:90px;">
+            <ul class="robot_chadd">
+                <li><a href="http://www.homeinns.com/member/order" target="_blank"><img src="skin/rujia/image/chadd_icon.png" class="fixpng" /></a></li>
+                <li><a href="http://www.homeinns.com/member/order" target="_blank">查订单</a></li>
+            </ul>
+            <ul class="robot_chajf">
+                <li><a href="http://www.homeinns.com/member/score" target="_blank"><img src="skin/rujia/image/chajf_icon.png" class="fixpng" /></a></li>
+                <li><a href="http://www.homeinns.com/member/score" target="_blank">查积分</a></li>
+            </ul>
+            <ul class="robot_youhq">
+                <li style="padding:5px 0px 6px 0px;">
+                <a href="http://www.homeinns.com/member/digitalcoupon" target="_blank"><img src="skin/rujia/image/youhq_icon.png"  class="fixpng" /></a></li>
+                <li><a href="http://www.homeinns.com/member/digitalcoupon" target="_blank">优惠券</a></li>
+            </ul> 
+            <ul style="width:200px; height:200px; padding:30px 50px;">
+            	<li><img src="skin/rujia/image/step_seven_ewm.png" style="width:60%;"></li>
+            </ul>
+        </div>
+  </div>
+    </div>
+<div class="fadeBackModal"></div>
+<div class="fadeBackContent" >
+      <div id="head_bg"></div>
+      <form >
+    <div id="pingjia" style="margin-left:40px;">
+          <p><strong>请您对刚才的服务沟通进行评价:</strong></p>
+          <div class="rad fontColor" >
+        <input type="radio" name="level" checked="checked" value="1" class="rdoGood">
+        送鲜花
+        <input type="radio" name="level"  value="0" style="margin-left:100px;" class="rdoBad">
+        拍板砖 </div>
+        </div>
+    <div class="hid" id="hid" style="display:none">
+          <p><strong>您不满意的原因是？</strong></p>
+          <div class="fade fontColor">
+        <input type="checkbox" name="reason[]"  value="回答不准确" >
+        回答不准确
+        <input type="checkbox" name="reason[]"  value=" 答非所问" style="margin-left:50px;">
+        答非所问
+        <input type="checkbox" name="reason[]"  value="机器人骂人" style="margin-left:50px;">
+        机器人骂人 </div>
+          <div style="margin-top:20px; margin-left: 35px;">
+        <label class="contTitle fontColor">为了更好的为您服务，请输入您的宝贵意见！</label>
+        <br>
+        <textarea name="content" id="cont"></textarea>
+      </div>
+          <input type="hidden" name="sub">
+        </div>
+    <div id="send">
+          <input type="button"  value="发送" id="fadeBackId" />
+          <input type="button"  value="取消" class="close" style="margin-left:5px;" />
+        </div>
+  </form>
+    </div>
+</body>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+    var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'showhotone',
+        newQuestionDiv: 'showhottwo',
+        sendBtn:'sendBtn',
+		inputMagOldvalue:'如：如何快速预订酒店？',
+        inputMsgArea:'message',
+        clearScreen:'clearScreen',
+        showErrorId:'showErrorId'};
+
+    $(document).ready(function() {
+        $("#message").faqrobot(100000,option);
+        $("input[name=level]").eq(0).attr("checked",'checked');
+  });
+</script>
+    <script src="js/jquery.autocomplete.js" language="javascript" type="text/javascript"></script>
+</html>

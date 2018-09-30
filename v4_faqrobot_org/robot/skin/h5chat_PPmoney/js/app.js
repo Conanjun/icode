@@ -1,6 +1,5 @@
 ;$(function() {
     FastClick.attach(document.body);
-
     set_chatScroll_height();
     function set_chatScroll_height() {
         var winW = $(window).width(),
@@ -13,16 +12,7 @@
         set_chatScroll_height();
     });
 
-	//调用自动补全插件
-    $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig',//[string]
-        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-        itemNum: 5,//[int] 默认全部显示
-        callback: function(data) {//获取文本后的回调函数
-            $('.sendBtn').trigger('click');
-        }
-    });
+
     //显示发送按钮
     $('.textarea').on('input', function() {
         if($(this).val()) {
@@ -366,6 +356,17 @@
         }, 50);
     });
     
+	//调用自动补全插件
+    $('.textarea').autocomplete({
+        url: 'servlet/appChat?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
+        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
+        itemNum: 5,//[int] 默认全部显示
+        callback: function(data) {//获取文本后的回调函数
+            $('.sendBtn').trigger('click');
+        }
+    });
+
     var timerDown = null;
     // 自动滚动到底部
     $('.textarea').on('focus', function() {
@@ -381,8 +382,6 @@
         }, 100);
     });
 
-    
-    
     // 人工评价
     $('body').on('click', '.RG_commentBtn', function() {
         window.uuid = $(this).attr('uuid');// 客服要求客户评价

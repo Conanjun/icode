@@ -1,0 +1,648 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+html, body {
+	font-family: "微软雅黑", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.428571429;
+	height: 100%
+}
+body {
+	margin: 0
+}
+a {
+	text-decoration: none;
+	cursor: pointer
+}
+.left {
+	float: left
+}
+.right {
+	float: right
+}
+.loading {
+	display: none;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	position: relative
+}
+.loading .holder {
+	width: 120px;
+	height: 180px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -130px 0 0 -60px
+}
+.loading .holder>img {
+	width: 80px;
+	height: 80px
+}
+.loading .holder .text {
+	position: absolute;
+	bottom: 0;
+	left: 12px
+}
+.loading .holder .text .dot1 {
+	opacity: 0;
+	-webkit-animation: dot 1.3s infinite;
+	-webkit-animation-delay: 0.0s;
+	animation: dot 1.3s infinite;
+	animation-delay: 0.0s
+}
+.loading .holder .text .dot2 {
+	opacity: 0;
+	-webkit-animation: dot 1.3s infinite;
+	-webkit-animation-delay: 0.2s;
+	animation: dot 1.3s infinite;
+	animation-delay: 0.2s
+}
+.loading .holder .text .dot3 {
+	opacity: 0;
+	-webkit-animation: dot 1.3s infinite;
+	-webkit-animation-delay: 0.3s;
+	animation: dot 1.3s infinite;
+	animation-delay: 0.3s
+}
+.loading .holder .text 100% {
+opacity:1
+}
+@-webkit-keyframes dot {
+0% {
+opacity:0
+}
+50% {
+opacity:0
+}
+100% {
+opacity:1
+}
+}
+@keyframes dot {
+0% {
+opacity:0
+}
+50% {
+opacity:0
+}
+}
+.page {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	display: none
+}
+.page .header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 50px;
+	z-index: 10;
+	zoom: 1;
+	font-size: 16px
+}
+.page .header .left, .page .header .right {
+	width: 60px;
+	text-align: center
+}
+.page .header .left>a, .page .header .right>a {
+	line-height: 50px;
+	display: block
+}
+.page .header .title {
+	text-align: center;
+	margin: 0 60px;
+	line-height: 50px
+}
+ @media only screen and (-webkit-min-device-pixel-ratio:2), only screen and (min--moz-device-pixel-ratio:2), only screen and (-o-min-device-pixel-ratio:2/1), only screen and (min-device-pixel-ratio:2) {
+.icon {
+background:url("../images/icon_phone@2x.png") no-repeat;
+background-size:190px auto
+}
+}
+.icon-chevron-left {
+	display: inline-block;
+	width: 14px;
+	height: 21px;
+	vertical-align: sub;
+	margin-right: 4px;
+	background-position: -176px -4px
+}
+.alert {
+	position: fixed;
+	top: 50px;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	width: 100%;
+	padding: 10px;
+	font-size: 14px;
+	text-align: center
+}
+.page-chat {
+	z-index: 2
+}
+.page-chat .header .title {
+	padding-top: 5px
+}
+.page-chat .header .title>span {
+	display: block;
+	line-height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap
+}
+.page-chat .header .title .staff-name {
+	font-size: 16px
+}
+.page-chat .header .title .staff-company {
+	font-size: 12px
+}
+.page-chat .body {
+	position: absolute;
+	top:15px;
+	bottom: 44px;
+	left: 0;
+	right: 0;
+	width: 100%
+}
+.page-chat .body .msg-holder {
+	height: 100%;
+	min-height: 100%;
+	padding:0 14px 14px 14px;
+	word-wrap: break-word;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch
+}
+.page-chat .body .msg-holder .staff-info {
+	text-align: center;
+	font-size: 12px
+}
+.page-chat .body .msg-holder .staff-info>p {
+	margin: 0
+}
+.page-chat .body .msg-holder .transfer-info {
+	margin: 14px 0;
+	text-align: center;
+	font-size: 12px;
+	height: 34px;
+	line-height: 34px
+}
+.page-chat .body .msg-holder .transfer-info>img {
+	width: 34px;
+	height: 34px;
+	border-radius: 17px;
+	display: inline-block;
+	vertical-align: middle
+}
+.page-chat .body .msg-holder .msg-date {
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	margin-bottom: 5px
+}
+.page-chat .body .msg-holder .staff-msg, .page-chat .body .msg-holder .client-msg {
+	width: 100%;
+	margin-bottom: 18px
+}
+.page-chat .body .msg-holder .staff-msg:after, .page-chat .body .msg-holder .client-msg:after {
+	content: ' ';
+	display: block;
+	clear: both
+}
+.page-chat .body .msg-holder .staff-msg .msg, .page-chat .body .msg-holder .client-msg .msg {
+	position: relative;
+	border-radius: 3px;
+	padding: 10px;
+	word-wrap: break-word;
+	word-break: break-all
+}
+.page-chat .body .msg-holder .staff-msg .msg:after, .page-chat .body .msg-holder .client-msg .msg:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	height: 0;
+	width: 0
+}
+.page-chat .body .msg-holder .staff-msg .msg img, .page-chat .body .msg-holder .client-msg .msg img {
+	max-width: 100%
+}
+.page-chat .body .msg-holder .staff-msg .picture, .page-chat .body .msg-holder .client-msg .picture {
+	position: relative
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover, .page-chat .body .msg-holder .client-msg .picture .mask .cover {
+	position: absolute;
+	width: 10px;
+	height: 100%
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover:after, .page-chat .body .msg-holder .client-msg .picture .mask .cover:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	height: 0;
+	width: 0
+}
+.page-chat .body .msg-holder .staff-msg .picture img, .page-chat .body .msg-holder .client-msg .picture img {
+	max-width: 100%;
+	max-height: 120px
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status, .page-chat .body .msg-holder .client-msg .msg .msg-status, .page-chat .body .msg-holder .staff-msg .picture .msg-status, .page-chat .body .msg-holder .client-msg .picture .msg-status {
+	position: absolute;
+	top: 12px;
+	display: none;
+	text-align: center
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status.msg-loading, .page-chat .body .msg-holder .client-msg .msg .msg-status.msg-loading, .page-chat .body .msg-holder .staff-msg .picture .msg-status.msg-loading, .page-chat .body .msg-holder .client-msg .picture .msg-status.msg-loading {
+	display: block
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status.msg-loading:before, .page-chat .body .msg-holder .client-msg .msg .msg-status.msg-loading:before, .page-chat .body .msg-holder .staff-msg .picture .msg-status.msg-loading:before, .page-chat .body .msg-holder .client-msg .picture .msg-status.msg-loading:before {
+	content: url(../images/sending.gif);
+	width: 20px
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status.msg-faild, .page-chat .body .msg-holder .client-msg .msg .msg-status.msg-faild, .page-chat .body .msg-holder .staff-msg .picture .msg-status.msg-faild, .page-chat .body .msg-holder .client-msg .picture .msg-status.msg-faild {
+	display: block;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	font-size: 12px;
+	line-height: 18px
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status.msg-faild:before, .page-chat .body .msg-holder .client-msg .msg .msg-status.msg-faild:before, .page-chat .body .msg-holder .staff-msg .picture .msg-status.msg-faild:before, .page-chat .body .msg-holder .client-msg .picture .msg-status.msg-faild:before {
+	content: "!"
+}
+.page-chat .body .msg-holder .staff-msg {
+	padding-right: 14%
+}
+.page-chat .body .msg-holder .staff-msg .name {
+	font-size: 12px;
+	margin-bottom: 5px
+}
+.page-chat .body .msg-holder .staff-msg .msg {
+	float: left;
+	margin-left: 8px
+}
+.page-chat .body .msg-holder .staff-msg .msg:after {
+	top: 0;
+	left: -8px;
+	border-left: 10px solid;
+	border-top: 10px solid
+}
+.page-chat .body .msg-holder .staff-msg .picture {
+	float: left;
+	text-align: left
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover {
+	top: 10px;
+	left: 0
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover:after {
+	top: -10px;
+	left: 0;
+	border-left: 10px solid;
+	border-top: 10px solid
+}
+.page-chat .body .msg-holder .staff-msg .msg .msg-status, .page-chat .body .msg-holder .staff-msg .picture .msg-status {
+	right: -24px
+}
+.page-chat .body .msg-holder .client-msg {
+	padding-left: 14%
+}
+.page-chat .body .msg-holder .client-msg .msg {
+	float: right;
+	margin-right: 8px
+}
+.page-chat .body .msg-holder .client-msg .msg:after {
+	top: 0;
+	right: -8px;
+	border-right: 10px solid;
+	border-top: 10px solid
+}
+.page-chat .body .msg-holder .client-msg .picture {
+	float: right;
+	text-align: right
+}
+.page-chat .body .msg-holder .client-msg .picture .mask .cover {
+	bottom: 15px;
+	right: 0
+}
+.page-chat .body .msg-holder .client-msg .picture .mask .cover:after {
+	bottom: -10px;
+	right: 0;
+	border-right: 10px solid;
+	border-bottom: 10px solid
+}
+.page-chat .body .msg-holder .client-msg .msg .msg-status, .page-chat .body .msg-holder .client-msg .picture .msg-status {
+	left: -24px
+}
+.page-chat .footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	border-top-width: 1px;
+	border-top-style: solid
+}
+.page-chat .footer .input-holder {
+	width: 100%;
+	position: relative
+}
+.page-chat .footer .input-holder .left, .page-chat .footer .input-holder .right {
+	position: absolute;
+	bottom: 0;
+	height: 44px;
+	text-align: center;
+	padding: 6px 8px
+}
+.page-chat .footer .input-holder .left {
+	width: 48px;
+	left: 0
+}
+.page-chat .footer .input-holder .left #cameraBtn {
+	width: 32px;
+	height: 32px;
+	display: block;
+	font-size: 18px;
+	position: relative
+}
+.page-chat .footer .input-holder .left #cameraBtn .icon-camera {
+	display: block;
+	width: 28px;
+	height: 22px;
+	background-position: 0 -4px;
+	margin: 4px 0 0 2px
+}
+.page-chat .footer .input-holder .left #cameraBtn>input {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	opacity: 0;
+	margin: 0;
+	padding: 0;
+	width: 32px;
+	height: 32px;
+	cursor: pointer
+}
+.page-chat .footer .input-holder .right {
+	right: 0;
+	width: 52px
+}
+.page-chat .footer .input-holder .right #sendBtn {
+	display: block;
+	border: 0;
+	background: none;
+	padding: 0;
+	height: 32px;
+	font-size: 16px;
+	font-weight: bold;
+	outline: none
+}
+.page-chat .footer .input-holder .text-box {
+	margin: 0 52px 0 0;
+	padding: 7px 0
+}
+.page-chat .footer .input-holder .text-box #textarea {
+	width: 100%;
+	height: auto;
+	min-height: 28px;
+	max-height: 110px;
+	border-radius: 5px;
+	padding: 4px;
+	font-size: 14px;
+	border-width: 1px;
+	border-style: solid;
+	outline: 0;
+	word-wrap: break-word;
+	overflow-x: hidden;
+	overflow-y: auto
+}
+.page-chat .footer .input-holder #shutUp {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	line-height: 44px;
+	z-index: 5
+}
+.page-chat #viewImage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 12;
+	padding-top: 50px
+}
+.page-chat #viewImage .viewer-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	font-size: 16px;
+	text-align: center
+}
+.page-chat #viewImage .viewer-header .btn-close-viewer {
+	float: left;
+	width: 60px
+}
+.page-chat #viewImage .viewer-header .btn-view-fullsize {
+	float: right;
+	width: 80px
+}
+.page-chat #viewImage .viewer-header .title {
+	margin: 0 80px
+}
+.page-chat #viewImage .viewer-body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	text-align: center;
+	white-space: nowrap;
+	padding: 5px
+}
+.page-chat #viewImage .viewer-body .align-helper {
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	margin-left: -4px
+}
+.page-chat #viewImage .viewer-body img {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle
+}
+.page-detail {
+	z-index: 3;
+	left: 100%;
+	background: #f0f0f0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch
+}
+.page-detail .body {
+	margin-top: 50px
+}
+.page-detail .body .content {
+	padding: 18px
+}
+.page-detail .body .content .intro {
+	position: relative;
+	padding-left: 90px;
+	height: 80px
+}
+.page-detail .body .content .intro .avatar {
+	position: absolute;
+	top: 0;
+	left: 0
+}
+.page-detail .body .content .intro .avatar>img {
+	width: 80px;
+	height: 80px;
+	border-radius: 40px
+}
+.page-detail .body .content .intro .info {
+	height: 80px;
+	overflow: hidden
+}
+.page-detail .body .content .intro .info .name {
+	padding-top: 10px;
+	font-size: 22px;
+	font-weight: bold
+}
+.page-detail .body .content .contact {
+	margin-top: 25px
+}
+.page-detail .body .content .contact .group {
+	margin-bottom: 15px
+}
+.page-detail .body .content .contact .group .control {
+	position: relative;
+	font-size: 20px;
+	height: 28px;
+	line-height: 28px
+}
+.page-detail .body .content .contact .group .control .btn-holder {
+	position: absolute;
+	top: 0;
+	right: 0
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn {
+	margin-right: 10px
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn:last-child {
+	margin-right: 0
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn .icon {
+	display: inline-block;
+	width: 24px;
+	height: 22px;
+	vertical-align: middle
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn .icon-comment {
+	background-position: -107px -4px
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn .icon-phone {
+	background-position: -130px -4px
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn .icon-envelope {
+	background-position: -152px -4px
+}
+.page-leave-msg {
+	z-index: 3;
+	left: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch
+}
+.page-leave-msg .body {
+	margin-top: 50px
+}
+.page-leave-msg .body .content {
+	padding: 15px;
+	position: relative
+}
+.page-leave-msg .body .content .form-holder .intro {
+	margin-bottom: 20px
+}
+.page-leave-msg .body .content .form-holder .form-group {
+	margin-bottom: 15px
+}
+.page-leave-msg .body .content .form-holder .form-group>label {
+	display: none;
+	font-size: 12px;
+	margin-bottom: 2px
+}
+.page-leave-msg .body .content .form-holder .form-group>textarea, .page-leave-msg .body .content .form-holder .form-group>input {
+	display: block;
+	width: 100%;
+	padding: 6px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 4px;
+	outline: none
+}
+.page-leave-msg .body .content .form-holder .form-group>textarea {
+	height: auto
+}
+.page-leave-msg .body .content .form-holder .form-group>input {
+	height: 44px
+}
+.page-leave-msg .body .content .form-holder>button {
+	margin-top: 15px;
+	display: block;
+	width: 100%;
+	padding: 11px 0;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.42857143;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 4px;
+	border: none;
+	outline: none
+}
+.page-leave-msg .body .content .result-holder {
+	display: none;
+	text-align: center;
+	padding-top: 25px
+}
+.page-leave-msg .body .content .result-holder>img {
+	width: 100px
+}
+.page-leave-msg .body .content .result-holder>h2 {
+	margin: 10px 0
+}
+.page-leave-msg .body .content .result-holder>button {
+	margin: 30px auto 15px;
+	display: block;
+	width: 120px;
+	padding: 7px 0;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.42857143;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 4px;
+	border: none;
+	outline: none
+}

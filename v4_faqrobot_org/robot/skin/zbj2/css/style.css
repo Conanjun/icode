@@ -1,0 +1,945 @@
+@charset "utf-8";
+
+
+/***通用样式开始***/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0;font-family:宋体,SimSun;line-height: 25px;}
+body,html {width: 100%; height: 100%;}
+body {min-width: 760px;}
+table {border-collapse:collapse;border-spacing:0;}
+fieldset,img {border:0}
+a {text-decoration: none;}
+h2 {color: #fff; font-size: 22px;}
+address,caption,cite,code,dfn,em,strong,th,var {font-style:normal;}
+ol,ul,li {list-style:none}
+caption,th {text-align:left}
+q:before,q:after {content:''}
+abbr,acronym { border:0}
+/***通用样式结束***/
+
+
+/***自定义样式开始***/
+.cl {
+	clear: both;
+}
+/***自定义样式结束***/
+
+.psBarW {
+	width: 100%;
+	height: 100%;
+	min-height: 300px;
+	min-width: 500px;
+}
+.container {
+	width: 100%;
+	height: 100%;
+}
+.container .header {
+	width: 100%;
+	height: 80px;
+	position: relative;
+	border-bottom: 1px solid #ddd;
+	background: #2D8EF2;
+}
+.container .header .headerLeft {
+	float: left;
+	font-size: 0;
+	position: relative;
+	z-index: 2;
+}
+.container .header .headerLeft a {
+	display: inline-block;
+	width: 70px;
+	height: 68px;
+	position: absolute;
+	padding: 12px 0 0 12px;
+}
+.container .header .headerLeft .title {
+	color: #fff;
+	font-size: 18px;
+	margin: 23px 0 0 90px;
+	letter-spacing: 2px;
+
+}
+.container .header .headerLeft .desc {
+	color: #afd4fa;
+	font-size: 12px;
+	margin-left: 90px;
+	line-height: 20px;
+	text-align: left;
+}
+.container .header .headerRight {
+	float: right;
+}
+.container .header .headerRight .h-r-arti {
+	float: right;
+	display: inline-block;
+	line-height: 80px;
+	background: url(../images/jump.png) no-repeat 0px center;
+	text-indent: 30px;
+	position: relative;
+	color: #000;
+}
+.container .header .headerRight .h-r-arti:after {
+	content: "";
+	position: absolute;
+	display: inline-block;
+	width: 2px;
+	height: 30px;
+	background: #ddd;
+	top: 24px;
+	right: -40px;
+}
+.container .header .headerRight .h-r-close {
+	float: right;
+	display: inline-block;
+	height: 80px;
+	width: 80px;
+	background: url(../images/close.png) no-repeat center;
+	cursor: pointer;
+}
+
+.container .header .headerRight .service{
+	float:right;
+	overflow:hidden;
+	margin-top: 10px;
+}
+.container .header .headerRight .service ul{
+	height: 60px;
+}
+.container .header .headerRight .service ul li{
+	float: right;
+	height: 60px;
+	list-style: outside none none;
+	margin-right: 20px;
+	width: 60px;
+}
+.container .header .headerRight .service ul li img{
+	height: 60px;
+	width: 60px;
+}
+
+.container .body {
+	width: 100%;
+	height: 200px;
+	position: relative;
+	background: #f9f9f9;
+	overflow: hidden;
+}
+.container .body .bodyLeft {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	position: relative;
+	width: 75%;
+}
+
+.container .body .bodyLeft .closeRight{
+	width: 9px;
+	height: 100%;
+	background: url() no-repeat;
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+.container .body .bodyLeft .closeRight:hover{
+	background: url(../images/arrowBg.png) repeat-y;
+}
+
+.container .body .bodyLeft .closeRight .arrow{
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	top: 50%;
+	margin-top: -4px;
+}
+.container .body .bodyLeft .closeRight .arrowRight{
+	background: url(../images/arrowRight.png) no-repeat center;
+}
+.container .body .bodyLeft .closeRight .arrowRightOn{
+	background: url(../images/arrowRightOn.png) no-repeat center;
+}
+.container .body .bodyLeft .closeRight .arrowLeft{
+	background: url(../images/arrowLeft.png) no-repeat center;
+}
+.container .body .bodyLeft .closeRight .arrowLeftOn{
+	background: url(../images/arrowLeftOn.png) no-repeat center;
+}
+
+.container .body .bodyLeft .psBarC {
+	width: 100%;
+	margin-left: -9px;
+	overflow: hidden;
+	display: inline-block;
+	position: relative;
+}
+/***聊天界面开始***/
+.container .body .bodyLeft .psBarC .chatCtn {
+	width: 100%;
+	margin: 0 auto;
+	padding: 15px 0;
+}
+.container .body .bodyLeft .psBarC .chatCtn .chat-ctn {
+	padding: 30px 0;
+}
+
+/*客服说话开始*/
+.container .body .bodyLeft .psBarC .chatCtn .serv {
+	position: relative;
+	vertical-align: middle;
+	font-size: 14px;
+	color: #000;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn {
+	display: inline-block;
+	border-radius: 5px;
+	border: 1px solid #adcae3;
+	margin-left: 18px;
+	position: relative;
+	background: #F5F9FE;
+	max-width: 60%;
+	position: relative;
+	padding-bottom: 6px;
+	color: #222;
+}
+
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn>div {
+	padding:0 10px;
+	min-width: 207px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn div .nameWrap {
+	position: absolute;
+	bottom:	-20px;
+	color: #cbcbcb;
+	font-size: 12px;
+	left: 0px;
+	white-space: nowrap;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn div dl dt {
+	line-height: 24px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn div dl dd a {
+	color: #517CAF;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong {
+	text-align: right;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong div {
+	font-size: 13px;
+	text-align: right;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong a {
+	font-size: 13px;
+	display: inline-block;
+	line-height: 20px;
+	cursor: pointer;
+	text-indent: 10px;
+	white-space: nowrap;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong a:hover {
+	color: #5a91d7;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong .robot_review_yes {
+	background: url(../images/good-qq.png) no-repeat 3px 0;
+	width: 52px;
+
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .ishaveyong .robot_review_no {
+	background: url(../images/bad-qqq.png) no-repeat 4px 3px;
+	width: 64px;
+	margin-left: 5px;
+
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .triangle1 {
+	position: absolute;
+	display: block;
+	width: 16px;
+	height: 12px;
+	left: -11px;
+	top: 10px;
+	background: url(../images/triangleRight.png) no-repeat;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .nameWrap {
+	position: absolute;
+	bottom: -20px;
+	font-size: 12px;
+	color: #cbcbcb;
+	margin-left: 5px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .say-word {
+	padding: 8px 10px 8px 6px;
+	word-wrap: break-word;
+	word-break:break-all;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .say-word vedio{
+	width:100%;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .say-word dd {
+	color: #5a91d7;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .say-word dd:hover {
+	color: #222;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .say-word a {
+	color: #5a91d7;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn p a {
+	color: #5a91d7;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn p a:hover {
+	color: #222;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .pre-say-word {
+	padding-left: 20px;
+	padding-top: 10px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .wc-pre p {
+	padding: 0px 11px 5px 18px;
+
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .time {
+	margin-left: 6px;
+	font-style: normal;
+	white-space: nowrap;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-ctn .helper_aid_34510 a {
+	padding: 0 6px 0 0;
+	cursor: pointer;
+	color: #858585;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .serv-icon {
+	display: inline-block;
+	width: 47px;
+	height: 50px;
+	position: relative;
+	top: 0;
+	vertical-align: top;
+	margin-top: -8px;
+
+}
+/*客服说话结束*/
+
+
+/*用户说话开始*/
+.container .body .bodyLeft .psBarC .chatCtn .customer {
+	position: relative;
+	vertical-align: middle;
+	color: #000;
+	font-size: 14px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-ctn {
+	display: inline-block;
+	border-radius: 5px;
+	border: 1px solid #d2d2d2;
+	margin-right: -4px;
+	position: relative;
+	background: #fff;
+	max-width: 60%;
+	position: relative;
+	float: right;
+	padding-bottom: 8px;
+	min-width: 137px;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-ctn .triangle {
+	position: absolute;
+	display: block;
+	width: 16px;
+	height: 12px;
+	right: -13px;
+	top: 9px;
+	background: url(../images/triangleLeft2.png) no-repeat;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-ctn .say-word {
+	padding: 8px 16px 2px 16px;
+	word-break: break-all;
+	word-wrap: break-word;
+	color: #666;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-ctn .say-word span {
+	padding: 8px 10px;
+	word-wrap: break-word;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-ctn .time {
+	font-size: 12px;
+	color: #cbcbcb;
+	position: absolute;
+	bottom: -20px;
+	right: 5px;
+	white-space: nowrap;
+	font-style: normal;
+}
+.container .body .bodyLeft .psBarC .chatCtn .customer .serv-icon {
+	display: inline-block;
+	height: 45px;
+	position: relative;
+	top: 0;
+	vertical-align: top;
+	margin-top: -8px;
+	margin-left: 26px;
+	float: right;
+	width: 45px;
+}
+body:nth-of-type(1) .container .body .bodyLeft .psBarC .chatCtn .customer .serv-icon{
+	margin-right:30px;
+}
+/*用户说话结束*/
+.container .body .bodyRight {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 25%;
+	height: 100%;
+	border-left: 1px solid #DDD;
+	height: 100%;
+	background: #fff;
+}
+.container .body .bodyRight .fuzb1 {
+	width: 100%;
+	height: 50%;
+	overflow: auto;
+	box-sizing: border-box;
+}
+.container .body .bodyRight .fuzb1 p {
+	font-size: 15px;
+	color: #666;
+	font-weight: bold;
+	line-height: 34px;
+	letter-spacing: 1px;
+	text-indent: 12px;
+	border-bottom: 1px solid #d9d9d9;
+	background: #f9f9f9;
+}
+.container .body .bodyRight .fuzb1 dl {
+	padding-top: 15px;
+	padding-left: 14px;
+	padding-right: 14px;
+	color: #5a91d7;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.container .body .bodyRight .fuzb1 dl dt:hover {
+	color: #222;
+}
+.container .body .bodyRight .fuzb1 dl a {
+	font-size: 14px;
+	color: #5a91d7;
+	line-height: 26px;
+}
+.container .body .bodyRight .fuzb1 dl a:hover {
+	color: #222;
+}
+
+.container .body .bodyRight .fuzb2 {
+	width: 100%;
+	height: 50%;
+	overflow: auto;
+	box-sizing: border-box;
+}
+.container .body .bodyRight .fuzb2 p {
+	font-size: 15px;
+	color: #666;
+	font-weight: bold;
+	line-height: 34px;
+	letter-spacing: 1px;
+	text-indent: 12px;
+	border-bottom: 1px solid #d9d9d9;
+	border-top: 1px solid #d9d9d9;
+	background: #f9f9f9;
+}
+.container .body .bodyRight .fuzb2 dl {
+	margin-top: 4px;
+	padding-left: 14px;
+	padding-right: 14px;
+	color: #5a91d7;
+	word-break: break-all;
+	word-wrap: break-word;
+	box-sizing: border-box;
+	height: 100%;
+}
+.container .body .bodyRight .fuzb2 dl div {
+
+}
+.container .body .bodyRight .fuzb2 dl dt {
+}
+.container .body .bodyRight .fuzb2 dl .fkz {
+	display: table-cell;
+	vertical-align: middle;
+	height:70px;
+	margin: 0 auto;
+	display: inline-block;
+	width: 100%;
+}
+.container .body .bodyRight .fuzb2 dl dt:hover {
+	color: #222;
+}
+.container .body .bodyRight .fuzb2 dl a {
+	font-size: 14px;
+	color: #5a91d7;
+	line-height: 26px;
+	width: 100%;
+	outline: none;
+	height: 100%;
+	display: inline-block;
+	width: 100%;
+}
+.container .body .bodyRight .fuzb2 dl a:hover {
+	color: #222;
+}
+.container .body .bodyRight .fuzb2 dl a img {
+	display: block;
+	max-height: 60px;
+	max-width: 100%;
+	margin: 1px auto;
+}
+/***输入框开始***/
+.container .body .bodyLeft .bodyFooter {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	border-top: 1px solid #ddd;
+	background: #fff;
+}
+.container .body .bodyLeft .bodyFooter .error {
+	position: absolute;
+	top: -24px;
+	color: #F00;
+	font-size: 12px;
+	width: 300px;
+	text-align: center;
+	margin: 0 auto;
+	left: 50%;
+	margin-left: -150px;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn {
+	width: 98%;
+	height: 110px;
+	padding-top: 10px;
+	margin: 0 auto;
+	position: relative;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn textarea {
+	width: 100%;
+	height: 70px;
+	resize: none;
+	outline: none;
+	box-sizing: border-box;
+	padding: 5px;
+	overflow: auto;
+	border: none;
+	border-radius: 3px;
+	font-size: 12px;
+	color:#bbb;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn textarea:focus {
+	border: 1px solid #22A9E7;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .remainNum {
+	font-size: 12px;
+	display: inline-block;
+	float: right;
+	color: #888;
+	margin-top: -4px;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .remainNum span {
+	font-size: 10px;
+	color: #22A9E7;
+	font-weight: bold;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer {
+	width: 100%;
+	height: 42px;
+	position: absolute;
+	bottom: 0;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-left {
+	float: left;
+	font-size: 12px;
+	margin-top: 12px;
+	color: #bbb;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-left span {
+	display: inline-block;
+	text-indent: 20px;
+	cursor: pointer;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-left span:hover {
+	color: #5a91d7;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-left .clRecord {
+	background: url(../images/delete3.png) no-repeat;
+	margin-left: 5px;
+	position: relative;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-left .comment {
+	background: url(../images/Satisfaction.png) no-repeat;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-right {
+	float: right;
+	font-size: 16px;
+	background: #3897e7;
+	border-radius: 3px;
+	text-align: center;
+	margin-top: 5px;
+	width: 10%;
+	padding: 7px 0px 6px 0px;
+	color: #fff;
+	cursor: pointer;
+}
+.container .body .bodyLeft .bodyFooter .b-f-ctn .b-f-footer .b-f-f-right:hover {
+	background: #2a85d1;
+}
+/***输入框结束***/
+
+/***各种弹框开始***/
+
+/*离开确认弹框开始*/
+.container .closeMask {
+	display: none;
+	z-index: 998;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: #000;
+	opacity: .2;
+	filter: alpha(opacity=20);
+}
+.container .cl-ctn {
+	display: none;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+}
+.container .cl-ctn #close {
+
+	width: 270px;
+	background: #fff;
+	font-size: 12px;
+	border-radius: 3px;
+	position: relative;
+	left: 50%;
+	margin-left: -125px;
+	top: 50%;
+	margin-top: -84px;
+}
+.container .cl-ctn #close .cl-title {
+	text-align: center;
+	line-height: 44px;
+	border-bottom: 1px solid #ddd;
+	font-size: 15px;
+}
+.container .cl-ctn #close .cl-body {
+	width: 210px;
+	margin: 0 auto;
+	line-height: 36px;
+	padding: 15px 0;
+}
+.container .cl-ctn #close .cl-body input {
+	padding: 6px 25px;
+	cursor: pointer;
+	outline: none;
+	border-radius: 3px;
+	font-size: 13px;
+}
+
+.container .cl-ctn #close .cl-body #cl-yes {
+	margin-top: 6px;
+	background: #2D8EF2;
+	border: none;
+	margin-left: 17px;
+}
+.container .cl-ctn #close .cl-body #cl-yes:hover {
+	background: #3879D9;
+	color: #fff;
+}
+.container .cl-ctn #close .cl-body #cl-no {
+	background: #AAB2BD;
+	border: none;
+	margin-left: 16px;
+}
+.container .cl-ctn #close .cl-body #cl-no:hover {
+	background: #a2aab4;
+	color: #fff;
+}
+
+/*离开确认弹框结束*/
+
+/*评论弹框开始*/
+.container .c-ctn {
+	display: none;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(0, 0, 0, .2);
+}
+.container .c-ctn #comment {
+	width: 500px;
+	background: #fff;
+	font-size: 12px;
+	border-radius: 3px;
+	position: relative;
+	left: 50%;
+	margin-left: -250px;
+	top: 50%;
+	margin-top: -200px;
+}
+.container .c-ctn #comment .c-title {
+	text-align: center;
+	line-height: 55px;
+	background: #4BA9DF;
+	border-radius: 5px 5px 0 0;
+	font-size: 15px;
+}
+.container .c-ctn #comment .c-body {
+	width: 400px;
+	margin: 0 auto;
+	line-height: 36px;
+	padding: 20px 0;
+}
+.container .c-ctn #comment .c-body .c-form {
+	margin-left: 42px;
+}
+.container .c-ctn #comment .c-body .c-form span {
+	display: block;
+}
+.container .c-ctn #comment .c-body .c-form span label {
+	vertical-align: 1px;
+}
+.container .c-ctn #comment .c-body .c-form span.c-a-comment {
+	margin-left: -46px;
+}
+.container .c-ctn #comment .c-body .c-form #c-textarea {
+	position: absolute;
+	top: 199px;
+	resize: none;
+	background: #ECECEC;
+	border: 1px solid #DEDEDE;
+	padding: 5px 6px;
+	width: 336px;
+	height: 36px;
+	overflow-y: auto;
+	font-size: 12px;
+	border-radius: 3px;
+}
+.container .c-ctn #comment .c-body .c-form #submit {
+	padding: 6px 25px;
+	background: #4BA9DF;
+	border: 1px solid #4BA9DF;
+	border-radius: 3px;
+	margin: 40px 10px 0 88px;
+	outline: none;
+	cursor: pointer;
+}
+.container .c-ctn #comment .c-body .c-form #submit:hover {
+	background: #3879D9;
+	color: #fff;
+}
+.container .c-ctn #comment .c-body .c-form #cancel {
+	padding: 6px 25px;
+	background: #AAB2BD;
+	border: 1px solid #ECECEC;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+}
+.container .c-ctn #comment .c-body .c-form #cancel:hover {
+	background: #a2aab4;
+	color: #fff;
+}
+
+/*评论弹框结束*/
+
+/***各种弹框结束***/
+
+.img_hover{
+	border:3px solid #FFF;
+	position: relative;
+	float: left;
+	width:347px;
+}
+
+.msg-col {
+	font-size: 12px;
+	width: 350px;
+}
+.msg-item-wrapper {
+	background-color: #f4f4f4;
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	position: relative;
+}
+.msg-item-wrapper a{
+	color:#333;
+}
+.msg-item {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+	margin: 0 10px 10px;
+}
+.multi-msg .msg-meta {
+	line-height: 28px;
+	margin: 0 14px;
+}
+.msg-meta {
+	font-size: 13px;
+	margin-left:13px;
+}
+.cover {
+	font-size: 0;
+	margin: 0 14px 12px;
+	overflow: hidden;
+	position: relative;
+}
+.cover .msg-t {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+	bottom: 0;
+	color: #fff;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.msg-t {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	line-height: 28px;
+	margin: 6px 14px 0;
+	max-height: 56px;
+	overflow: hidden;
+}
+.cover .i-title {
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.cover img {
+	width: 100%;
+}
+img {
+	border: 0 none;
+	height: auto;
+	vertical-align: middle;
+	max-width: 100%;
+}
+.sub-msg-item {
+	border-top: 1px solid #c6c6c6;
+	overflow: hidden;
+	padding: 12px 14px;
+	background-color: #fff;
+}
+.rel {
+	position: relative;
+}
+.thumb {
+	float: right;
+	font-size: 0;
+}
+.thumb img {
+	border: 1px solid #b2b8bd;
+	height: 70px;
+	width: 70px;
+}
+.sub-msg-item .msg-t {
+	font-size: 12px;
+	line-height: 24px;
+	margin-left: 0;
+	margin-right: 85px;
+	margin-top: 0;
+	max-height: 48px;
+	overflow: hidden;
+	padding-left: 4px;
+	padding-top: 12px;
+}
+.defultImg {
+	border: 1px solid #b2b8bd;
+	color: #c0c0c0;
+	font-size: 12px;
+	line-height: 70px;
+	width: 70px;
+	display: block;
+	text-align: center;
+	text-shadow: 0 1px 0 #fff;
+	margin-left: 120px;
+}
+.codeIcon {
+	width: 160px;
+	float: left;
+	height: 160px;
+	margin: 10px;
+	overflow: hidden;
+	position:relative;
+}
+.i_margin-top{
+	margin-top:3px;
+}
+.MN_leaveQueBottom{
+	display:none;
+}
+.MN_lookLeaveQue{
+	color:#5a91d7;
+}
+.container .body .bodyLeft .psBarC .chatCtn .serv .wc-pre .MN_leaveQueItem>div p{
+	padding-left:0;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+.mskeLayBg {background: #000; width: 100%; height:100%; position: absolute; left: 0px; top: 0px; z-index: 10; opacity: 0.5; filter: alpha(opacity=50); }
+.mskelayBox {  margin-top: -251px; margin-left: -494px; position: absolute; left: 50%; top: 50%; border: 7px solid #FFF; z-index: 20; background: #FFF;max-width:800px; max-height:800px; overflow:auto;}
+.mskeClose{ position:absolute;top:10px; right:10px; background:url(../../../css/close.png) no-repeat; width:27px; height:27px; z-index:20; border:2px solid #fff; border-radius:50%;}
+/*未解决*/
+.unsolved{
+	margin:0 12px 10px;
+}
+.unsolved a{
+	display:block;
+	margin-bottom:5px;
+	vertical-align:bottom;
+}
+.unsolved>p{
+	font-weight:bold;
+	margin-bottom:5px;
+}
+.unsolved>textarea{
+	border: 1px solid #cfcfcf;
+    border-radius: 4px;
+    font-family: 微软雅黑;
+    font-size: 14px;
+    height: 80px;
+    margin-bottom: 5px;
+    padding: 5px;
+    resize: none;
+    width: 98%;
+}
+.unsolved>a input{
+	margin-right:5px;
+}
+.unsolved>button{
+	background-color: #FE9900;
+    border: 0 none;
+    border-radius: 4px;
+    color: #fff;
+    height: 26px;
+    width: 56px;
+}
+
+.whole .body .bodyLeft .bodyLeftTop {
+    overflow: hidden;
+    position: relative;
+	background: #F5F5F5;
+}
+
+.whole .body .bodyLeft .bodyLeftTop .chatCtn {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.MN_khtime,.MN_kftime{
+    display: none;
+}

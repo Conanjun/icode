@@ -3,6 +3,9 @@ body, html {
     width: 100%;
     height: 100%;
 }
+.AU_replaceTip{
+    color:#295af3
+}
 /**/
 .MN_kfImg {
     left: -55px;
@@ -34,13 +37,13 @@ body, html {
     border-left: 10px solid #F8E9E9;
 }
 .MN_gusList, .MN_relateList, .FA_star {
-    color: #FF636A;
+    color: #295af3;
 }
 .MN_queListIndex {
-    color: #FF636A;
+    color: #295af3;
 }
 .MN_kfCtn a {
-    color: #FF636A;
+    color: #295af3;
 }
 .MN_yes, .MN_no {
     font-size: 0;
@@ -55,13 +58,13 @@ body, html {
     background-size: contain;
 }
 .MN_commentBtn {
-    background: #FF636A;
+    background: #295af3;
 }
 .MN_reasonItem {
-    color: #FF636A;
+    color: #295af3;
 }
 .MN_reasonSend {
-    background: #FF636A;
+    background: #295af3;
 }
 /**/
 .view {
@@ -175,7 +178,7 @@ body, html {
     padding-right: 0.087rem;
     overflow: auto;
     border: none;
-    border-bottom: 1px solid #FF636A;
+    border-bottom: 1px solid #295af3;
     border-radius: 0;
 }
 .editCtn .editShow .cosInput .textareaCtn .faceBtn {
@@ -219,7 +222,7 @@ body, html {
     width: 100%;
     height: 0.09rem;
     line-height: 0.09rem;
-    background: #FF636A;
+    background: #295af3;
     color: #fff;
     border-radius: 3px;
 }
@@ -373,11 +376,11 @@ body, html {
     display: none;
 }
 .orderIdd{
-    color: #FF636A
+    color: #295af3
 }
 
 .oSpan{
-	background: #FE6868;
+	background: #295af3;
     color: #fff;
     padding: 0px 4px 2px 4px;
     height: 16px;

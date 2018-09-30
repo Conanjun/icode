@@ -379,7 +379,7 @@
             }catch(e) {}
         },
         //格式化时间 true 214321421->2016-9-9 11:23  
-        formatTime(time, bool) {  
+        formatTime:function(time, bool) {
             if(!time) return '';  
             if(bool) {//true  
                 var date = new Date(time*1000).toLocaleString().replace(/\//g, '-').replace(/:\d+$/, '')  

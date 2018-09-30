@@ -1,6 +1,0 @@
-body,p,div{margin:0;padding:0;width:100%;}
-body{position: relative;font-family:"微软雅黑";margin:0;padding:0;}
-#mydiv{width:270px;position: fixed;right:-272px;top:0;height:100%;z-index: 9999;}
-
-iframe{height:100%;width:100%;outline: none;border: none;}
-#myp{width:50px;height:50px;background:url(http://v4.faqrobot.org/robot/skin/frame/images/question.png?sysNum=1476067342641247) no-repeat center;position: fixed;top:50%;right: 0;background-size: cover;cursor: pointer;}

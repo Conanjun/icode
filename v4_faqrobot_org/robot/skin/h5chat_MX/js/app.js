@@ -13,16 +13,7 @@
       set_chatScroll_height();
   });
 
-//调用自动补全插件
-  $('.textarea').autocomplete({
-      url: 'servlet/appChat?s=ig',//[string]
-      targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-      posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-      itemNum: 5,//[int] 默认全部显示
-      callback: function(data) {//获取文本后的回调函数
-          $('.sendBtn').trigger('click');
-      }
-  });
+
   //显示发送按钮
   $('.textarea').on('input', function() {
       if($(this).val()) {
@@ -313,33 +304,33 @@
           open: true,//是否启用功能
           faceObj: Face,//表情插件实例
       },
-      helpfulModule: {//答案满意度模块
-          open: true,//是否启用功能
-          yesCallback: function($obj, msg) {//满意的回调
-              $obj.text(msg || '感谢您的评价！');
-          },
-          noCallback: function($obj, msg) {//不满意的回调
-              if(window.uselessReasonItems) {
-                  if(window.uselessReasonItems[0]) {
-                      $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
+      // helpfulModule: {//答案满意度模块
+      //     open: true,//是否启用功能
+      //     yesCallback: function($obj, msg) {//满意的回调
+      //         $obj.text(msg || '感谢您的评价！');
+      //     },
+      //     noCallback: function($obj, msg) {//不满意的回调
+      //         if(window.uselessReasonItems) {
+      //             if(window.uselessReasonItems[0]) {
+      //                 $('.MN_reasonSend', $obj).css('display', 'inline-block').siblings().hide();
 
-                      var html = '';
-                      for(var i=0; i<window.uselessReasonItems.length; i++) {
-                          var checked = '';
-                          if(!i) {
-                              checked = 'checked';
-                          }
-                          html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
-                      }
-                      $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
-                  }else {
-                      $obj.text(msg || '感谢您的评价！');
-                  }
-              }else {
-                  $obj.text(msg || '感谢您的评价！');
-              }
-          }
-      },
+      //                 var html = '';
+      //                 for(var i=0; i<window.uselessReasonItems.length; i++) {
+      //                     var checked = '';
+      //                     if(!i) {
+      //                         checked = 'checked';
+      //                     }
+      //                     html += '<div class="MN_reasonItem"><input id="MN_reason'+ i +'" type="radio" value="'+ window.uselessReasonItems[i].tId +'" name="reasonType" '+ checked +'><label for="MN_reason'+ i +'">'+ window.uselessReasonItems[i].reason +'</label></div>';
+      //                 }
+      //                 $obj.before('<form class="MN_reasonForm"><div class="MN_reasonCtn"><p class="MN_reasonTitle">非常抱歉没能解决您的问题，请反馈未解决原因，我们会根据您的反馈进行优化与完善！</p>'+ html +'<div class="MN_reasonContent"><textarea name="content" placeholder="您的意见"></textarea></div></div></form>');
+      //             }else {
+      //                 $obj.text(msg || '感谢您的评价！');
+      //             }
+      //         }else {
+      //             $obj.text(msg || '感谢您的评价！');
+      //         }
+      //     }
+      // },
       initCallback: function(data) {//初始化基本信息的回调
           window.uselessReasonItems = data.uselessReasonItems;
       },
@@ -364,6 +355,17 @@
       }, 50);
   });
   
+    //调用自动补全插件
+    $('.textarea').autocomplete({
+        url: 'servlet/appChat?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
+        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
+        itemNum: 5,//[int] 默认全部显示
+        callback: function(data) {//获取文本后的回调函数
+            $('.sendBtn').trigger('click');
+        }
+    });
+
   var timerDown = null;
   // 自动滚动到底部
   $('.textarea').on('focus', function() {

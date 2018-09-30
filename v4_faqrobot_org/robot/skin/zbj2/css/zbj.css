@@ -1,0 +1,257 @@
+/* 滚动条样式 */
+.SC_frontClass {
+    width: 4px;
+    height: 40px;
+  }
+
+/*快捷服务显示样式*/  
+.container .header .headerRight .service {
+	height: 60px;
+}
+.container .header .headerRight .service .MN_quickLink{
+	float: right;
+	height: 60px;
+  list-style: outside none none;
+  margin: 0;
+	margin-right: 20px;
+  width: 60px;
+}
+.container .header .headerRight .service .MN_quickLink img{
+	height: 60px;
+	width: 60px;
+}
+
+/* 热门问题样式 */
+#showhotone{
+  color: #5D8EFF;
+  word-break: break-all;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+#showhotone .MN_queListIndex{
+  width: auto;
+  border: none;
+  color: #5D8EFF;
+}
+#showhotone .MN_queListIndex::after{
+  content:"."
+}
+#showhotone .MN_queList{
+      border-bottom: none;
+      padding: 5px 20px;
+}
+
+/* 推荐信息样式 */
+.container .body .bodyRight .fuzb2{
+  overflow: hidden
+}
+.container .body .bodyRight .fuzb2 .MN_wordRecommendLink,.container .body .bodyRight .fuzb2 .MN_imgRecommendLink{
+  display: block;
+  padding-top: 5px;
+}
+.fuzb2 #recomdCtn{
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+.fuzb2 #showhottwo{
+  position: absolute;
+  width: 100%;
+}
+.container .body .bodyRight .fuzb2 .MN_wordRecommendLink p,.container .body .bodyRight .fuzb2 .MN_imgRecommendLink img{
+  display: inline-block;
+  font-size: 14px;
+  color: #5D8EFF;
+  background: transparent;
+  font-weight: normal;
+  border: none;    
+  padding: 5px 3px;
+  vertical-align: top;
+}
+.container .body .bodyRight .fuzb2 .MN_imgRecommendLink img{
+  line-height: 34px;
+  height: 34px;
+  padding: 5px 14px;
+}
+
+/* 对话框样式 */
+.MN_answer, .MN_ask{
+  padding: 5px 90px;
+}
+.MN_ask{
+  padding-right: 100px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg{
+  top: 0
+}
+.MN_kfCtn, .MN_khCtn{
+  border-radius: 5px;
+  max-width: 60%;
+}
+.MN_kfCtn{
+  margin-left: 18px;
+}
+.MN_kfTriangle2, .MN_kfTriangle1 {
+  top: 10px;
+  left: -8px;
+}
+.MN_kfTriangle1 {
+  left: -9px;
+}
+.MN_kfTriangle2 {
+  border-top: 8px solid transparent;
+  border-right: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+  bottom: -1px;
+}
+.MN_khCtn{
+  background-color: #FECD7E;
+  color: rgb(102, 102, 102);
+  min-width: 137px;
+  border: none;
+}
+.MN_kfCtn a{
+  color:#5D8EFF;
+}
+.MN_gusList, .MN_relateList, .FA_star{
+  color:#5D8EFF;
+}
+MN_khTriangle1, .MN_khTriangle2 {
+  top: 10px;
+}
+.MN_khTriangle1 {
+  border-top: 8px solid transparent;
+  border-left: 8px solid #FECD7E;
+  border-bottom: 8px solid transparent;
+  top: 7px;
+  right: -7px;
+}
+.MN_khTriangle2 {
+  border: none
+}
+
+/* 满意度结构样式*/
+.MN_yes,.MN_no{
+  font-size: 13px;
+  display: inline-block;
+  line-height: 20px;
+  cursor: pointer;
+  text-indent: 10px;
+  white-space: nowrap;
+  color: #000;
+  border: none
+}
+.MN_yes,.MN_yes:hover{
+  width: 52px;
+  background: url(../images/good-qq.png) 3px 0px no-repeat;
+  margin-right: 0px;
+  padding-right: 0px;
+}
+.MN_no,.MN_no:hover{
+  width: 64px;
+  margin-left: 5px;
+  background: url(../images/bad-qqq.png) 4px 3px no-repeat;
+}
+.MN_yes:hover,.MN_no:hover{
+  color: #5D8EFF;
+}
+
+
+/* 设置视频、音频宽度不超过对话框 Add by zhaoyuxing*/
+.MN_kfCtn video{
+  width: 100%;
+}
+/*输入引导框样式*/
+.AU_outerCtn{
+  width: 98%;
+}
+
+.AU_outerCtn .AU_innerCtn:nth-child(2n){
+  background:#f4f4f4
+}
+.AU_outerCtn .AU_innerCtn:nth-child(2n).AU_innerCtn_focus{
+  background: #e3f8ff;
+}
+
+  /* taskid=403 顾荣 任务:留言面板 样式开始 */
+  #MessageBoardModal #ansText{
+    height:160px;
+}
+#MessageBoardModal .modal-dialog{
+    margin-top: 50px;
+}
+/* #MessageBoardModal .form-group i{
+    font-size:18px;
+} */
+#MessageBoardModal .control-label>img{
+    width:24px;
+}
+#filebtn{
+    position: relative;
+    border:1px solid lightgray;
+    overflow: hidden;
+    padding:0px;
+}
+#filebtn>.webuploader-pick{
+    padding: 6px 12px
+}
+#filebtn input{
+    position:absolute;
+    opacity:0;
+    right:0;
+    top:0;
+}
+.imgdivs{
+    text-align:center;
+    padding:15px;
+}
+.imgdivs>div>img{
+    width:73.5px;
+    height:73.5px;
+    border-radius:4px;
+}
+#successMessage .modal-body{
+    text-align:center;
+}
+#successMessage .modal-body>div{
+    margin:30px 0;
+}
+#successMessage .modal-footer{
+    text-align: center;
+    color:#2090b4   
+}
+#successMessage .modal-footer span{
+    cursor: pointer;   
+}
+#MessageBoardForm .form-group>label{
+    padding-right:0px
+}
+.imgdivs>div{
+    position:relative
+}
+.delRound{
+    width:20px;
+    height:20px;
+    font-weight:700;
+    border-radius: 50%;
+    background-color: red;
+    color:white;
+    position: absolute;
+    right:-8px;
+    top:-8px;
+    transform:rotate(45deg);
+    cursor:pointer;
+}
+ /* taskid=403 顾荣 任务:留言面板 样式结束 */
+video,audio{
+  max-width: 100%
+}
+.MN_reasonItem{
+  color: #5D8EFF;
+}
+.MN_reasonSend{
+  border-radius: 5px;
+  color: #fff;
+  background:#FE9900;
+  border-color: #FE9900;
+}

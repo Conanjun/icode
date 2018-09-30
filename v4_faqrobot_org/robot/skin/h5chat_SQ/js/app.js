@@ -490,8 +490,8 @@
         
                     // 收集来源的关键词
                     var entranceWords = ''
-                    for (var i = 0; i < This.options.entranceWords.length; i++) {
-                        entranceWords += (MN_Base.getParam(This.options.entranceWords[i], document.referrer) || '') + ','
+                    for (var i = 0; i < FAQ.options.entranceWords.length; i++) {
+                        entranceWords += (MN_Base.getParam(FAQ.options.entranceWords[i], document.referrer) || '') + ','
                     }
                     $.ajax({
                         type:'post',
@@ -500,8 +500,8 @@
                         url:encodeURI('../servlet/appChat'),
                         data:{
                             s: 'leavemsg',
-                            sourceId:This.options.sourceId,
-                            sysNum:This.options.sysNum,
+                            sourceId:FAQ.options.sourceId,
+                            sysNum:FAQ.options.sysNum,
                             entrance:document.referrer,
                             entranceWords:entranceWords,
                             name:messageName,
@@ -513,7 +513,7 @@
                             if(data.status==0){
                                 $("#successMessage").css("display","block")
                             }else{
-                                This.showMsg(data.message)  
+                                FAQ.showMsg(data.message)  
                             }
                         }
                     })
@@ -860,43 +860,24 @@
             $('.service').removeClass('hide');
         }
     }
-    // 百度地图API功能
-    var content = '',//地址
-        latitude = '',//纬度
-        longitude = '',//经度
-        pois = '';
-    var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398,39.897445);
-    map.centerAndZoom(point,12);
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function(r){
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
-            var mk = new BMap.Marker(r.point);
-            map.addOverlay(mk);
-            map.panTo(r.point);
-            latitude = r.point.lat
-            longitude = r.point.lng
-            $.ajax({
-                url: 'http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location='+r.point.lat+','+r.point.lng+'&output=json&pois=1&ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6',
-                dataType:'jsonp',
-                success: function (data) {
-                    content = data.result.formatted_address
-                    pois = JSON.stringify(data.result.pois)
-                    localStorage.setItem('pois',pois)
-                }
-            });
-        }
-        else {
-            alert('failed'+this.getStatus());
-        }
-    },{enableHighAccuracy: true})
-    $('#location').on('click',function(){
+
+    /**
+     * 点击发送地理位置
+    */
+	//$('#location').click(function () {
 		//window.getLocation(function (data) {
-			// $('#chatCtn').append(data)
-         //});
-        //var imgHtml = '<a href="http://api.map.baidu.com/marker?location='+latitude+','+longitude+'&title=我的位置&content='+content+'&output=html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
-        var imgHtml = '<a href="./location.html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
-        FAQ.askQue(imgHtml)
+		//	 $('#chatCtn').append(data)
+		// });
+	 //});
+    $('#location').on('click',function(){
+		window.getLocation(function (data) {
+			// var _data = JSON.stringify(data);
+			var content = data.address,
+				latitude = data.latitude,//维度
+				longitude = data.longitude;//经度
+			var imgHtml = '<a href="http://api.map.baidu.com/marker?location='+latitude+','+longitude+'&title=我的位置&content='+content+'&output=html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
+			FAQ.askQue(imgHtml)
+		});
     })
 });
 

@@ -1,0 +1,27 @@
+.editCtn .editShow .cosInput .textareaCtn .faceBtn{
+    background: url(../images/expression@2x.png) no-repeat center;
+    background-size: 37px;
+}
+.editCtn .editShow .cosBtn .addbtn{
+    background: url(../images/add@2x.png) no-repeat center;
+}
+.editCtn .editShow .cosBtn .sendBtn{
+    background: #008CEE;
+}
+
+.MN_khCtn {
+    border: 1px solid #008CEE;
+    background: #008CEE;
+    text-align: left;
+    color: #fff;
+}
+.MN_khTriangle1 {
+    border-left: 15px solid #008CEE;
+}
+.MN_khTriangle2 {
+    border-left: 15px solid #008CEE;
+}
+.MN_reasonSend, .MN_yes {
+    background: #3994F3;
+    color: #fff;
+}

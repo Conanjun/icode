@@ -1,0 +1,233 @@
+input.text-error {
+	border: 1px solid;
+	background: #ffdedd none repeat scroll 0 0 !important;
+	border-color: #ff5b57 !important;
+}
+
+textarea.text-error {
+	border: 1px solid;
+	background: #ffdedd none repeat scroll 0 0 !important;
+	border-color: #ff5b57 !important;
+}
+
+label.text-error {
+	font-weight: bold;
+	color: #EA5200;
+}
+
+.paginator-text-right {
+    float: none;
+    text-align: right;
+    width: 100%;
+}
+
+.red {
+	color: red;
+}
+
+label.white {
+	color: white;
+}
+
+.tableHead {
+	margin-bottom: 15px;
+}
+
+.treeDiv {
+	height:120px;
+	overflow: auto;
+}
+
+.treeDivOfquery {
+	height:100%;
+	overflow: auto;
+}
+
+.treeDivOfConfigure {
+	width:140px;
+	height:80px;
+	overflow: auto;
+}
+
+.icon-green {
+	color: lime;
+}
+
+.icon-red {
+	color: red;
+}
+
+.selRP ul {
+    clear: both;
+    list-style: outside none none;
+	padding-left: 0;
+}
+
+.selRP li {
+    padding-top: 5px;
+}
+.queTitle{
+	word-break: break-all;
+	word-wrap: break-word;
+	font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* system/configuration start */
+.upKuai {
+	border: 2px dotted #dddddd;
+	text-align: center;
+	width: 100px;
+	height: 100px;
+	float:left;
+	margin-right:20px;
+	position:relative;
+	overflow:hidden;
+}
+
+.upKuai span {
+	width:20px;
+	height:20px;
+	background-image:
+	url(../images/close.png);
+	position:absolute;
+	right:0;
+	top:0;
+	cursor:pointer;
+}
+
+.upKuai img {
+	width:100%;
+	max-width:100%;
+	cursor:pointer;
+}
+
+.kuaiIcon {
+	display:inline-block;
+	width:100px;
+	height:100px;
+}
+/* system/configuration end */
+
+/* knowledge/editFlow start */
+.overdueImg {
+    height: 20px;
+}
+#listData4{
+    color: #337ab7;
+}
+.Ider {
+    padding: 0 0 10px 0;
+    margin: 5px 0;
+    border-radius: 3px;
+    min-height: 100px;
+    border: 1px #E4E4E4 solid;
+}
+#similarList a.cutText {
+    color: inherit;
+}
+#similarList a.cutText:hover{
+    text-decoration:none;
+}
+a.sha {
+    font-size:12px;
+}
+.borderColorRed {
+    border-color: red;
+}
+.IderHead {
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e2e7eb;
+    font-size:18px;
+}
+.ansItem_focus {
+    background: #F6F6F6;
+}
+/* knowledge/editFlow end */
+
+.form-control[readonly] {
+    cursor: pointer;
+}
+
+/* 查看聊天记录头像样式 */
+
+#chatModal .chats img {
+	max-width: 300px;
+}
+#chatModal .chats .image ,#chatModal .chats .image img{
+	width: 30px;
+	height: 30px;
+}
+#chatModal .chats iframe {
+	max-width: 300px;
+}
+
+h4 span {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+#myDropdown span.caret {
+	vertical-align: super;
+}
+
+table tr td {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+/* 函数节流，防止按钮重复点击提交样式 */
+
+.throttle-active::after {
+	content: '';
+	display: block;
+	width: 18px;
+	height: 18px;
+	border-radius: 100%;
+	border: 3px solid white;
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	animation: throttle-active-rotate 0.5s infinite linear;
+}
+
+.throttle-disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+@keyframes throttle-active-rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(180deg);
+		opacity: 0.7;
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* 函数节流，防止按钮重复点击提交样式 */
+
+#full-screen-loading {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	background-color: rgba(0, 0, 0, 0.1);
+	display: none;
+}
+
+#full-screen-loading .ajax-spinner-bars {
+	margin: 0;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}

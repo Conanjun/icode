@@ -13,16 +13,6 @@
         set_chatScroll_height();
     });
 
-	//调用自动补全插件
-    $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig',//[string]
-        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-        itemNum: 5,//[int] 默认全部显示
-        callback: function(data) {//获取文本后的回调函数
-            $('.sendBtn').trigger('click');
-        }
-    });
     //显示发送按钮
     $('.textarea').on('input', function() {
         if($(this).val()) {
@@ -243,6 +233,7 @@
         logoUrl: 'robot/skin/h5chat/images/logo@2x.png',//logo地址 ----------
         logoId: 'logo',// ----------
         webNameId: 'MN_logoWord',//公司名称Id
+        corpid:'ding5b2e5cdb2588c99935c2f4657eb6378f',//钉钉认证公司的corpid
         intelTitleChange: true,// 智能聊天是否修改标题
         intelTitle: '',// 智能聊天时的标题
         artiTitleChange: true,// 人工时是否修改标题
@@ -379,7 +370,16 @@
         }, 100);
     });
 
-    
+	//调用自动补全插件
+    $('.textarea').autocomplete({
+        url: 'servlet/appChat?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
+        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
+        itemNum: 5,//[int] 默认全部显示
+        callback: function(data) {//获取文本后的回调函数
+            $('.sendBtn').trigger('click');
+        }
+    });    
     
     // 人工评价
     $('body').on('click', '.RG_commentBtn', function() {

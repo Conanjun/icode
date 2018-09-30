@@ -1,0 +1,337 @@
+body {
+	background-color: #f0f0f0
+}
+.loading {
+	background-color: #69b40f;
+	color: #fff
+}
+.page {
+	background-color: #f0f0f0
+}
+.page .header {
+	color: #fff;
+	background-color: #69b40f
+}
+.page .alert.info {
+	color: #5287ad;
+	background-color: rgba(217,237,247,0.95)
+}
+.page .alert.success {
+	color: #5d8847;
+	background-color: rgba(223,240,216,0.95)
+}
+.page .alert.warning {
+	color: #fff;
+	background-color: rgba(246,188,102,0.95)
+}
+.page .alert.danger {
+	color: #fff;
+	background-color: rgba(230,107,98,0.95)
+}
+.page-chat .body .msg-holder .staff-info>p {
+	color: #777
+}
+.page-chat .body .msg-holder .transfer-info {
+	color: #777
+}
+.page-chat .body .msg-holder .transfer-info>b {
+	color: #555
+}
+.page-chat .body .msg-holder .msg-date {
+	color: #999
+}
+.page-chat .body .msg-holder .staff-msg .msg-status.msg-faild, .page-chat .body .msg-holder .client-msg .msg-status.msg-faild {
+	background-color: #d45d51;
+	color: #fff
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover, .page-chat .body .msg-holder .client-msg .picture .mask .cover {
+	background-color: #f0f0f0
+}
+.page-chat .body .msg-holder .staff-msg .picture img, .page-chat .body .msg-holder .client-msg .picture img {
+	background-color: #f5f5f5
+}
+.page-chat .body .msg-holder .staff-msg .name {
+	color: #777
+}
+.page-chat .body .msg-holder .staff-msg .msg {
+	background-color: #fff
+}
+.page-chat .body .msg-holder .staff-msg .msg:after {
+	border-left-color: transparent;
+	border-top-color: #fff
+}
+.page-chat .body .msg-holder .staff-msg .picture .mask .cover:after {
+	border-left-color: #f0f0f0;
+	border-top-color: transparent
+}
+.page-chat .body .msg-holder .client-msg .msg {
+	background-color: #f96868
+}
+.page-chat .body .msg-holder .client-msg .msg:after {
+	border-right-color: transparent;
+	border-top-color: #f96868
+}
+.page-chat .body .msg-holder .client-msg .picture .mask .cover:after {
+	border-right-color: #f0f0f0;
+	border-bottom-color: transparent
+}
+.page-chat .footer {
+	background-color: #fefefe;
+	border-top-color: #e0e0e0
+}
+.page-chat .footer .input-holder #sendBtn {
+	color: #999
+}
+.page-chat .footer .input-holder #sendBtn.active {
+	color: #5cb85c
+}
+.page-chat .footer .input-holder .text-box #textarea {
+	background-color: #fff;
+	border-color: #e9e9e9;
+	color: #333;
+}
+.page-chat .footer .input-holder #shutUp.default {
+	color: #444;
+	background-color: rgba(97,97,97,0.65)
+}
+.page-chat .footer .input-holder #shutUp.warning {
+	color: #8a6d3b;
+	background-color: rgba(252,248,227,0.65)
+}
+.page-chat .footer .input-holder #shutUp.danger {
+	color: #a94442;
+	background-color: rgba(242,222,222,0.65)
+}
+.page-chat #viewImage {
+	background-color: #f0f0f0
+}
+.page-chat #viewImage .viewer-header {
+	color: #fff;
+	background-color: #69b40f
+}
+.page-chat #viewImage .viewer-header a {
+	color: #fff
+}
+.page-detail .body .content .contact .group label {
+	color: #555
+}
+.page-detail .body .content .contact .group .control .btn-holder .btn {
+	color: #69b40f
+}
+.page-leave-msg .body .content .form-holder .form-group>label {
+	color: #777
+}
+.page-leave-msg .body .content .form-holder .form-group>textarea, .page-leave-msg .body .content .form-holder .form-group>input {
+	color: #555;
+	background-color: #fff;
+	border-color: #ccc
+}
+.page-leave-msg .body .content .form-holder>button {
+	background-color: #81c21d;
+	color: #fff
+}
+.page-leave-msg .body .content .result-holder>p {
+	color: #555
+}
+.page-leave-msg .body .content .result-holder>button {
+	background-color: #81c21d;
+	color: #fff
+}
+.page-leave-msg .body .content .result-holder>a {
+	color: #81c21d
+}
+.robot_help {
+	float: right;
+	width: 52px;
+}
+.yun_head{
+	background: #c20d24 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 18px;
+    height: 35px;
+    letter-spacing: 2px;
+    line-height: 35px;
+    text-align: center;
+    width: 100%;
+}
+.robot_help_yes {
+	width: 20px;
+	height: 20px;
+	float: right;
+	margin: 0px 3px;
+	background: url(../images/good-m.png) no-repeat;
+}
+.robot_help_no {
+	width: 20px;
+	height: 20px;
+	float: right;
+	margin: 0px 3px;
+	background: url(../images/bad-m.png) no-repeat;
+}
+.helper {
+	color: #ccc;
+	text-align: right;
+}
+.content ol {
+	padding-left: 20px;
+	color: #c50f28;
+}
+.content a {
+	color: #c50f28;
+}
+.showWaring {
+	color: #cd2c68;
+	font-famliy:"微软雅黑";
+	height: 30px;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	display: none;
+	margin-left: 1px;
+	bottom: 40px;
+}
+.img_hover {
+	border: 3px solid #FFF;
+	position: relative;
+	float: left;
+	width: 347px;
+}
+.msg-col {
+	font-size: 14px;
+	width: 350px;
+}
+.msg-item-wrapper {
+	background-color: #f4f4f4;
+	border: 1px solid #d3d3d3;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	margin-bottom: 26px;
+	position: relative;
+	width: 350px;
+}
+.msg-item {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	border-radius: 5px 5px 0 0;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	padding: 2px 0;
+}
+.multi-msg .msg-meta {
+	line-height: 28px;
+	margin: 0 14px;
+}
+.msg-meta {
+	font-size: 13px;
+}
+.cover {
+	font-size: 0;
+	height: 160px;
+	margin: 0 14px 12px;
+	overflow: hidden;
+	position: relative;
+}
+.cover .msg-t {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6) !important;
+	bottom: 0;
+	color: #fff;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.msg-t {
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	line-height: 28px;
+	margin: 6px 14px 0;
+	max-height: 56px;
+	overflow: hidden;
+}
+.cover .i-title {
+	display: block;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.cover img {
+	width: 100%;
+}
+img {
+	border: 0 none;
+	height: auto;
+	max-width: 100%;
+	vertical-align: middle;
+}
+.sub-msg-item {
+	border-top: 1px solid #c6c6c6;
+	overflow: hidden;
+	padding: 12px 14px;
+	background-color: #fff;
+}
+.rel {
+	position: relative;
+}
+.thumb {
+	float: right;
+	font-size: 0;
+}
+.thumb img {
+	border: 1px solid #b2b8bd;
+	height: 70px;
+	width: 70px;
+}
+.sub-msg-item .msg-t {
+	font-size: 14px;
+	line-height: 24px;
+	margin-left: 0;
+	margin-right: 85px;
+	margin-top: 0;
+	max-height: 48px;
+	overflow: hidden;
+	padding-left: 4px;
+	padding-top: 12px;
+}
+.defultImg {
+	border: 1px solid #b2b8bd;
+	color: #c0c0c0;
+	font-size: 14px;
+	line-height: 70px;
+	width: 70px;
+	display: block;
+	text-align: center;
+	text-shadow: 0 1px 0 #fff;
+	margin-left: 120px;
+}
+.codeIcon {
+	width: 160px;
+	float: left;
+	height: 160px;
+	margin: 10px;
+	overflow: hidden;
+	position: relative;
+}
+.i_margin-top {
+	margin-top: 3px;
+}
+.logoSize {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+}
+.logoSize img {
+	width: 40px;
+}
+.logoMsg {
+	position: absolute;
+	left: 40px;
+}
+.rightLogo {
+	position: absolute;
+	right: 40px;
+}
+.staff-msg{
+	position:relative;
+}
+.client-msg{
+	position:relative;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优惠卡查询</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+html,body{
+	font-size:16px;
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-12">
+            <h4 style="text-align:center;">
+                优惠卡有效期查询
+            </h4>
+            <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">优惠卡卡号：</label>
+                <input type="text" class="form-control certificateCode"  id="kahao" placeholder="请输入优惠卡卡号">
+              </div>
+              <button type="button" class="btn btn-default" onClick="qfcList();">查询</button>
+            </form>
+            <div class="col-lg-12" style="height:10px;"></div>
+            <label id="labelResult" style="display:none;">查询结果</label>
+            <div id="qfcDiv">
+            	 
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+function qfcList(){
+	$.ajax({
+	type:'post',
+	datatype:'json',
+	cache:false,
+	url:encodeURI('../../../wxj/WxjQuery/getUCardInfo'),
+	data:'dealerNo='+$('#kahao').val(),
+	success:
+	function(data){
+	  if(data.status==0){
+			var sHtml = '';
+			if(data.dealerNo){
+				sHtml += '<p style="border-bottom:1px solid #ccc; margin:5px 0;"></p>'; 
+				sHtml += '<p><strong>优惠卡卡号：</strong>'+data.dealerNo+'</p>';
+				sHtml += '<p><strong>姓名：</strong>'+data.fullName+'</p>';
+				sHtml += '<p><strong>申请日期：</strong>'+data.appDate+'</p>';
+				if(!data.inactiveDate || data.inactiveDate==''){
+					sHtml += '<p><strong>有效期：</strong>已失效</p>';
+				}else{
+					sHtml += '<p><strong>有效期：</strong>'+data.inactiveDate+'</p>';
+				}
+				
+			}else{
+				sHtml += '<p style="border-bottom:1px solid #ccc; margin:5px 0;"></p>'; 
+				sHtml += '<p style="text-align:center;">当前记录为空。</p>';
+			}
+			$('#labelResult').show();
+			$('#qfcDiv').html(sHtml);
+	  }else{
+		  alert(data.message);
+	  }
+	}
+})
+}
+$('#kahao').keydown(function(event){
+	if(event.keyCode==13){
+		qfcList();
+	 	return false;
+	}
+})
+</script>
+</html>

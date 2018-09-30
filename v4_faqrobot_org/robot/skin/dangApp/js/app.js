@@ -170,6 +170,7 @@
             //$(this).addClass('orderWholeClicked').removeClass('orderWhole');
     });
         var FAQ = new Faqrobot({
+        setInputTop:false,//当当移动端默认不开启ios11键盘遮挡问题
         //sysNum: 1000000,//客户唯一标识
         //jid: 0,//自定义客服客户图标
         //robotName: 'FaqRobot',//机器人名称
@@ -321,10 +322,18 @@
     $('#chatCtn').undelegate('a','click').delegate('a','click',function(){
         var tmpHref=$(this).attr('href');
 		//当当APP中点击超链接，判断当前a标签是否设置了链接地址，如果设置了，并且不带有任何class就是一个单纯的链接地址
-		if(tmpHref.indexOf('http')>=0 && typeof($(this).attr('class'))=="undefined"){
-            location.href = $(this).attr('href');
-			return false;
+        if(tmpHref){
+            if(tmpHref.indexOf('http')>=0 && typeof($(this).attr('class'))=="undefined"){
+                location.href = $(this).attr('href');
+                return false;
+            }
         }
+
     })
+    // 人工评价
+    $('body').on('click', '.RG_commentBtn', function() {
+        window.uuid = $(this).attr('uuid');// 客服要求客户评价
+        $('.feedback').trigger('click');
+    });
 });
 

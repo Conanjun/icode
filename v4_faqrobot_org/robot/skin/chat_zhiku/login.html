@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>智酷登录</title>
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link href="./font-awesome/css/font-awesome.min.css" rel="stylesheet" /> -->
+    <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/login/css/common.css" rel="stylesheet">
+    <!-- <link href="./css/bootstrap.min.css" rel="stylesheet"> -->
+    <!--[if lt IE 9]>
+        <script src="./js/html5shiv.min.js"></script>
+        <script src="./js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        body{
+            background:url(./img/loginBg.jpg) no-repeat scroll center center;
+            background-size:cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            font-size: 14px
+        }
+        #content{
+            width: 300px;
+            height: 450px;
+            background: white;
+            margin: auto;
+        }
+        .blueT{
+            text-align: center;
+            color: #499de9;
+            border-bottom:2px solid #e2e7eb;
+            margin: 0 auto;
+            padding: 20px;
+            font-size: 20px
+        }
+        .uname,.pwd{
+            text-align: center;
+        }
+        .form{
+            padding: 6px 12px;
+            padding-left: 26px;
+            border:1px solid #ccc
+        }
+        .ileft{
+            position: absolute;
+            left: 10px;
+            top: 3px;
+            font-size: 14px;
+            color: #2f96f4
+        }
+        .uname{
+            margin-top: 50px
+        }
+        .pwd{
+            margin-top: 20px;
+            margin-bottom: 80px
+        }
+        .login{
+            width: 70%;
+            margin: auto;
+            background:#2f96f4;
+            color: #fff
+        }
+        .error{background:red; color: #fff;}
+        .error .gritter-item{background:red}
+        .error .gritter-top{background:red}
+        .error .gritter-bottom{background:red}
+        .gritter-item p{color: #fff;}
+        .gritter-title{color: #fff;}
+    </style>
+</head>  
+<body>
+   <form id="content">
+        <h2 class="blueT">智能客服登录</h2>
+        <div class="uname">
+            <span style="position:relative">
+                <i class="fa fa-user ileft" aria-hidden="true"></i>
+                <input type="text" name="userName"  class="form" placeholder="用户名">
+            </span>
+        </div>
+        <div class="pwd">
+            <span style="position:relative">
+                <i class="fa fa-lock ileft" aria-hidden="true"></i>
+                <input type="password" name="password"  class="form" placeholder="密码">
+            </span>
+        </div>
+        <div class="form-group from-button" style="text-align:center">
+            <button class="btn login" type="button" >登录</button>
+        </div>
+    </form>
+</body>  
+</html>
+<script src="/assets/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="/web/common/js/security.js"></script>
+<script src="/web/common/js/customMethod.js"></script>
+<script>
+    $('.login').on('click',function(){
+		var access_token=0 
+        $.ajax({
+            type: 'post',
+            cache: false,
+            url: '/workOrderInfo/keyPair',
+            dataType: 'json',
+            success: function(data) {
+                if(data.status) {
+                    if(data.status !== 0) {
+                        yunNoty(data);
+                        return;
+                    }
+                }
+                var modulus = data.Modulus,
+                    exponent = data.Exponent,
+                    username = $("input[name=userName]").val(),
+                    epwd = $("input[name=password]").val(),
+                    un = null,
+                    pwd = null;
+                if (username.length != 256) {
+                    var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
+                    un = RSAUtils.encryptedString(publicKey, username);
+                }
+                if (epwd.length != 256) {
+                    var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
+                    pwd = RSAUtils.encryptedString(publicKey, epwd);
+                }
+				$.ajax({
+					type:'post',
+					cache:'false',
+                    url:'/Token/getToken?appId=LT3EugM38XyCNOPvj2&secret=fF4dvO1Cah0B866233E5',
+					success:function(info){
+						access_token=info.access_token
+						URL = encodeURI('/zhiku/login?userName='+un+'&pwd='+pwd+'&access_token='+access_token);
+						console.log(un+'&pwd='+pwd+'&access_token='+access_token)
+						$.ajax({
+							type: 'post',
+							datatype: 'json',
+							cache: false,
+							url: URL,
+							success: function(data) {
+								if (data.status==0) {
+									yunNoty(data)
+									window.sessionStorage.setItem('loginIdent',data.loginIdent)
+									window.sessionStorage.setItem('webId',data.webConfig.Id)
+									window.location.href='/robot/chat2_zhiku.html?sysNum=' + data.webConfig.SysNum
+								}else{
+									yunNoty(data)
+								}
+							}
+						});
+					}
+				})
+               
+            }
+        })
+    })
+    $('input[name=password]').on('keydown',function(e){
+        if(e.keyCode==13 || e.keyCode==108){
+            $('.login').click()
+        }
+    })
+</script>
+

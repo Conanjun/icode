@@ -141,9 +141,9 @@
              * 原因：区分是机器人客服还是人工客服
              * 修改：添加服图标分为机器人和人工客服
              */
-            kfPic: 'robot/src/yun/0.png',  //客服图标
-            kf_Robot_Pic: 'robot/src/yun/0.png',  //机器人客服图标
-            kf_Person_Pic: 'robot/skin/chat2/images/robot.png',  //人工客服图标
+            kfPic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //客服图标
+            kf_Robot_Pic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //机器人客服图标
+            kf_Person_Pic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //人工客服图标
             kf_Robot_Name:'',//机器人客服名字，此处只是声明个变量，不用赋值
             kf_Person_Name:'',//人工客服名字
 
@@ -223,7 +223,7 @@
 
     //调用自动补全插件
     $('.input').autocomplete({
-        url: 'servlet/AQ?s=ig',
+        url: 'servlet/AQ?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
             targetEl: $('.inputCtn'),//参照物(用于appendTo和定位)
             posAttr: ['0px', '100px'],//外边框的定位[left bottom]
             itemNum: 10,//[int] 默认全部显示
@@ -276,13 +276,13 @@
     set_body_height();
     set_bodyLeftTop_height();
     set_bodyLeft_width();
-	set_bodyright_iframe_height();
+    set_bodyright_iframe_height();
     $(window).on('resize.TH', function() {
         set_whole_size();
         set_body_height();
         set_bodyLeftTop_height();
         set_bodyLeft_width();
-		set_bodyright_iframe_height();
+        set_bodyright_iframe_height();
     });
 
     function set_whole_size() {
@@ -308,7 +308,7 @@
     function set_bodyLeft_width() {
         $('.bodyLeft').width($('.whole').outerWidth() - $('.bodyRight').outerWidth());
     }
-	 function set_bodyright_iframe_height() {
+     function set_bodyright_iframe_height() {
         $('#thirdUrl iframe').height($('.bodyRight').outerHeight() - 50);
     }
     function getUrlParam(name) {

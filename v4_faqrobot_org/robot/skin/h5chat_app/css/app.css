@@ -2,6 +2,7 @@
 body, html {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 .hide{
     display:none !important;
@@ -375,7 +376,7 @@ ul li {
     visibility: hidden;
 }
 .editCtn .editHide .takePhotoCtn,.editCtn .editHide .sendPicCtn  {
-    /* display: none; */
+    display: none;
 }
 .editCtn .editHide .editCtn_com span {
     display: inline-block;
@@ -559,7 +560,8 @@ ul li {
     background: url(../images/icon.png) no-repeat;
 }
 .commonQueLayer {
-    display: none;
+    /* display: none; */
+    overflow: auto;
 }
 .MN_queList, .MN_noQueList {
     padding: 0.024rem 0.032rem;
@@ -771,7 +773,7 @@ ul li {
 .FA_moodCtn{
     background: #F5F5F7; 
 }
-.MN_khCtn .FA_upFileCtn a{
+.MN_khCtn .FA_upFileCtn a,.MN_khCtn p a{
     color: #fff;
 }
 
@@ -794,91 +796,262 @@ ul li {
     width:100%;
     margin:0 auto;
 }
-/**===== spinner2 =====*/
-#spinner2 {
-  display: block;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  height: 50px;
-  width: 50px;
-  margin: -25px 0 0 -25px;
-  border: 5px solid transparent;
-  border-top-color: #000000;
-  border-bottom-color: #000000;
-  border-radius: 50%;
-  -webkit-animation: spinner2 .5s linear infinite;
-  animation: spinner2 .5s linear infinite;
+/**===== 初始化加载框 start =====*/
+.loadMask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f3f3f3;
+    z-index: 9999;
+}
+#dots {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 10px;
+    width: 60px;
+    margin: -25px 0 0 -25px;
 }
 
-#spinner2:after {
-  content: "";
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  bottom: 5px;
-  left: 5px;
-  border: 5px solid transparent;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.25);
-  -webkit-animation: spinner2_after 1s linear infinite;
-  animation: spinner2_after 1s linear infinite;
+#dots span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    -webkit-animation: dots 1.5s infinite ease-out;
+    animation: dots 1.5s infinite ease-out;
 }
 
-@keyframes spinner2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  50% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+#dots span:nth-child(1) {
+    left: 0px;
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
 }
-@keyframes spinner2_after {
-  0% {
-    border-top: 5px solid #000000;
-    border-bottom: 5px solid #000000;
-  }
-  50% {
-    border-top: 5px solid rgba(0, 0, 0, 0.25);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.25);
-  }
-  100% {
-    border-top: 5px solid #000000;
-    border-bottom: 5px solid #000000;
-  }
+
+#dots span:nth-child(2) {
+    left: 15px;
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
 }
-@-webkit-keyframes spinner2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  50% {
-    -webkit-transform: rotate(180deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+
+#dots span:nth-child(3) {
+    left: 30px;
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
 }
-@-webkit-keyframes spinner2_after {
-  0% {
-    border-top: 5px solid #000000;
-    border-bottom: 5px solid #000000;
-  }
-  50% {
-    border-top: 5px solid rgba(0, 0, 0, 0.25);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.25);
-  }
-  100% {
-    border-top: 5px solid #000000;
-    border-bottom: 5px solid #000000;
-  }
+
+#dots span:nth-child(4) {
+    left: 45px;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
 }
-/** END of spinner2 */
+
+@keyframes dots {
+    0% {
+        background: #000000;
+        -webkit-transform: scale(0.1);
+        transform: scale(0.1);
+    }
+    50% {
+        background: rgba(0, 0, 0, 0.25);
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+    }
+    100% {
+        background: #000000;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@-webkit-keyframes dots {
+    0% {
+        background: #000000;
+        -webkit-transform: scale(0.1);
+    }
+    50% {
+        background: rgba(0, 0, 0, 0.25);
+        -webkit-transform: scale(0.5);
+    }
+    100% {
+        background: #000000;
+        -webkit-transform: scale(1);
+    }
+}
+/** 初始化加载框 end */
+
+/* ==========常见问题，意见反馈,留言功能模态框 start ===========*/
+#leaveMsgHeader .header{
+    font-size:14px;
+}
+#feedbackForm{
+    padding:0 3%;
+}
+.leaveMsgForm{
+    padding:3% 3% 0;
+}
+.commonQueModal,.feedbackModal{
+    display: none;
+    z-index: 19891015;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    -webkit-background-clip: content;
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+    border-radius: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+}
+.commonQueModal .header,.feedbackModal .header,#leaveMsgBox .header{
+    padding:3%;
+    margin:0;
+    border-bottom:1px solid #ccc;
+    font-size:14px;
+}
+.commonQueModal .commonQue-content{
+    height:auto;
+    overflow: hidden;
+}
+.form-group i.iconfont{
+    position: absolute;
+    top: 0;
+    left: 16px;
+    font-size: 26px;
+}
+/* ==========常见问题，意见反馈,留言功能模态框 end ===========*/
+
+/* ============地理位置 start ==============*/
+.sendLocation{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 1000;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+}
+.location{
+    width: 100%;
+    height: 100%;
+}
+.location .header{
+    width: 100%;
+    padding:3%;
+    background:#fff;
+    color: #303030;
+    position: fixed;
+    top:0;
+    z-index:999;
+    border-bottom:1px solid #ccc;
+    margin: 0;
+    font-size: 14px;
+}
+.location .header .left{
+    width:20%;
+    height:100%;
+    color: #fff;
+    background: #2b84e2;
+    padding: 1%;
+    border-radius: 5px;
+}
+.location .header .left span{
+    height:10px;
+    display: inline-block;
+}
+#allmap{
+    width:100%;
+    height:240px;
+    position: relative !important;
+    top:40px;
+    z-index:999 !important;
+}
+.mapListWrap{
+    width: 100%;
+    height:800px;
+    position: relative;
+    top:40px;
+}
+.mapList{
+    position: relative;
+    top:40px;
+    width:100%;
+    overflow: auto;
+    background:#fff;
+}
+.mapList li{
+    width:100%;
+    padding:2% 3%;
+    height: 50px;
+    border-bottom:1px solid #ccc;
+    font-size:14px;
+    color:#282828;
+}
+.mapList li:first-child{
+    font-size:18px;
+    line-height:40px;
+}
+.mapList li .firstLi{
+    width:90%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.mapList li .locList{
+    display: inline-block;
+    width:90%;
+    height:100%;
+}
+.mapList li .locList p{
+    width:100%;
+    margin-bottom:0;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.mapList li .locList .address{
+    color:#A2A2A2;
+    font-size:12px;
+}
+.mapList li span.check{
+    float: right;
+}
+.mapList li .locCheck{
+    display: none;
+    line-height: 40px;
+    float: right;
+}
+.staticImage{
+    color:#fff;
+    margin-bottom:5px;
+    display:block;
+}
+.map{
+    color:#fff !important;
+}
+.map:focus,.map:hover{
+    text-decoration: none;
+}
+.header .closePage{
+    width:15px;
+    height:15px;
+    background: url(../images/icon.png) 0 -40px no-repeat;
+}
+/* ============地理位置 end ==============*/
+
 
 /*跳转原生页*/
 .MN_kfCtn .go-native{

@@ -48,7 +48,7 @@ input::-ms-input-placeholder {
     padding: 15px 20px;
     top: 75px;
     left: 8%;
-    font-size: 13px; 
+    font-size: 13px;
     -moz-box-shadow: 1px 1px 10px 5px #E0E0E0;/* 老的 Firefox */
     box-shadow: 1px 1px 10px 5px #E0E0E0;
     border-radius: 8px;
@@ -91,7 +91,7 @@ input::-ms-input-placeholder {
 #chat-context .chat-item span{
     width: 110px;
     padding: 1px;
-    font-size: 12px; 
+    font-size: 12px;
 }
 .chIndex-context{
     position: relative;
@@ -110,11 +110,11 @@ input::-ms-input-placeholder {
     padding:0 8px;
 }
 .item-context{
-    border-radius:20px; 
+    border-radius:20px;
     background: #F3F4F6;
     padding:10px;
     display:inline-block;
-    color: #A9A9A9;    
+    color: #A9A9A9;
 }
 
 .chat-My{
@@ -145,7 +145,7 @@ input::-ms-input-placeholder {
 
 .chat-operation i{
     font-size:23px;
-    margin: 5px;  
+    margin: 5px;
     color: #dddddd;
     cursor: pointer;
 }
@@ -168,6 +168,10 @@ input::-ms-input-placeholder {
     border-radius: 6px;
 }
 .bootom-btn{
+    /* midea增加开始 */
+    position: absolute;
+    bottom: 5px;
+    /* midea增加结束 */
     border-radius: 5px;
     padding: 5px 20px;
     border: none;
@@ -176,14 +180,38 @@ input::-ms-input-placeholder {
 }
 
 .btn-out{
+    /* midea增加开始 */
+    right: 80px;
+    /* midea增加结束 */
     background: #fff;
     border: 1px  solid #ddd;
     padding: 5px 15px;
 }
 .btn-send{
+    /* midea增加开始 */
+    right: 0;
+    /* midea增加结束 */
     background: #148DF5;
     color: #fff;
 }
+
+/* midea增加开始 */
+.chatArea {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 1px;
+    bottom: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-size: 14px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    outline-color: transparent;
+    cursor: text;
+}
+/* midea增加结束 */
 
 .chat-hint{
     margin: 10px 0px 1px 20px;
@@ -200,7 +228,7 @@ input::-ms-input-placeholder {
     border: 1px solid #ddd;
 }
 .serviceOrder{
-    padding-top: 10px; 
+    padding-top: 10px;
 }
 .serviceO-page{
     color:#ABABAB;
@@ -244,14 +272,14 @@ input::-ms-input-placeholder {
     -webkit-line-clamp: 2;
     overflow: hidden;
     -o-text-overflow: ellipsis;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
 }
 .serviceOC-titl{
     /* cursor: pointer; */
 }
 .serviceOC-foot {
     margin-top: 15px;
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
     position: absolute;
     bottom: 5px;
     width: 92%;
@@ -268,7 +296,7 @@ input::-ms-input-placeholder {
 
 
 .notice{
-    
+
 }
 
 .notice-Context{
@@ -287,7 +315,7 @@ input::-ms-input-placeholder {
     -webkit-line-clamp: 3;
     overflow: hidden;
     -o-text-overflow: ellipsis;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     overflow: hidden;
 }
 
@@ -362,7 +390,7 @@ input::-ms-input-placeholder {
 
 
 #chat-modal{
-    padding: 20px 0px; 
+    padding: 20px 0px;
 }
 .serve{
     position: relative;
@@ -380,8 +408,10 @@ input::-ms-input-placeholder {
     text-align: center;
     color: #ddd;
     position: relative;
+    background: #ddd;
 }
 .process-text{
+    position: relative;
     width: 100%;
 }
 .process-text p{
@@ -477,7 +507,7 @@ input::-ms-input-placeholder {
     border: 1px solid #3990D6;
     background: #fff;
     padding: 5px 8px;
-    margin-right: 10px; 
+    margin-right: 10px;
     color: #3990D6;
 }
 
@@ -486,7 +516,7 @@ input::-ms-input-placeholder {
     border: 1px solid #FCBF62;
     background: #fff;
     padding: 5px 8px;
-    margin-right: 10px; 
+    margin-right: 10px;
     color: #FCBF62;
 }
 
@@ -566,7 +596,7 @@ input::-ms-input-placeholder {
   border: 1px solid #ddd;
   list-style: none;
   float: left;
-  margin-right: 40px; 
+  margin-right: 40px;
   cursor: pointer;
 }
 
@@ -620,7 +650,7 @@ input::-ms-input-placeholder {
     right: -20px;
     background: #fff;
     z-index: 99999;
-    box-shadow: 1px 1px 5px 2px #b5b5b5; 
+    box-shadow: 1px 1px 5px 2px #b5b5b5;
 }
 .expedite-content{
     width: 250px;
@@ -645,12 +675,12 @@ input::-ms-input-placeholder {
 }
 
 .chatFile{
-    
+
 }
  #hasUp p{
     margin: 5px 0 10px 0;color: #8F8F8F;
 }
-.giftgray { 
+.giftgray {
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);
@@ -745,7 +775,7 @@ input::-ms-input-placeholder {
     color: #efeff2;
 }
 .MN_reasonSend, .MN_yes, .MN_no{
-    border-radius:4px; 
+    border-radius:4px;
 }
 .MN_reasonItem label{
     margin-left: 5px;
@@ -807,7 +837,7 @@ input::-ms-input-placeholder {
 
 .FA_advCtn {/*配置广告*/
     height: 50px;
-    background: #E7FAE0 url(../images/logo.png) no-repeat center;
+    background: #E7FAE0 url(../img/logo.png) no-repeat center;
     background-size: contain;
     margin-bottom: 10px;
     position: relative;
@@ -983,3 +1013,78 @@ button, a{
 .notTriggerBtn {
     color: #ccc !important;
 }
+
+/*流程图片样式*/
+.flowIco-ok{
+    position: absolute;
+    top: 14px;
+    left: 13px;
+    background: url(../img/ok.png);
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+}
+.flowIco-inbox{
+    position: absolute;
+    top: 14px;
+    left: 13px;
+    background: url(../img/inbox.png);
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+}
+.flowIco-refresh{
+    position: absolute;
+    top: 14px;
+    left: 13px;
+    background: url(../img/refresh.png);
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+}
+.flowIco-record{
+    position: absolute;
+    top: 14px;
+    left: 13px;
+    background: url(../img/record.png);
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+}
+
+.flowIco-remove{
+    top: 3px;
+    right: -14px;
+    position: absolute;
+    background: url(../img/remove.png);
+    background-size: cover;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+}
+.relative{
+    position: relative;
+    display: inline-block;
+}
+
+/* midea增加 */
+.chat-hint_hiden {
+    display: none;
+}
+/* midea结束 */
+
+/* midea身份认证失败显示的模态框 */
+.msg-modal .modal-dialog {
+    top:30%;
+}
+.msg-modal .modal-body{
+    text-align: center;
+    min-height: 80px;
+    width: 100%;
+    display: table;
+}
+.msg-modal .modal-body .authMsg{
+    display: table-cell;
+    vertical-align: middle
+}
+/* midea身份认证失败显示的模态框 结束 */

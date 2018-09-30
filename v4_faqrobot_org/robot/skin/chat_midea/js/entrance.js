@@ -11,7 +11,9 @@
     var url = document.getElementById('entranceScript').src;
     // 获取途径
     var mideaSource = GetQueryString('mideaSource');
-    
+    var receiveId = GetQueryString('receiveId');
+    var groupId = GetQueryString('groupId');
+
     function domainURI(str){  
         var durl=/http:\/\/([^\/]+)\//i;  
         domain = str.match(durl);
@@ -34,7 +36,7 @@
         this.iWidth = parameter.width || 1100;
         this.location = domainURI(url)
         this.imgsrc = parameter.imgsrc || this.location + 'robot/skin/chat_midea/img/robotIT.png';
-        this.openUrl = parameter.openUrl || this.location + 'robot/midea.html?sysNum=1476067342641247&false' + '&mideaSource=' + mideaSource;
+        this.openUrl = parameter.openUrl || this.location + 'robot/midea.html?sysNum=1476067342641247&false' + '&mideaSource=' + mideaSource + '&receiveId=' + receiveId + '&groupId=' + groupId;
         this.icoBottom = parameter.ibottom || 0;
         this.icoRight = parameter.iright || 0;
         this.rightImg = this.location + 'robot/skin/chat_midea/img/right.png';

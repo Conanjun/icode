@@ -27,17 +27,31 @@
     <script src="./js/webuploader.min.js"></script>
     <script src="skin/h5chat_app/js/photoswipe.js"></script>
     <script src="skin/h5chat_app/js/photoswipe-ui-default.min.js"></script>
-
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&services=true&ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6"></script>
 </head>
 
 <body>
     <div class="view">
         <!-- 常见问题开始 -->
-        <div class="commonQueLayer" id="commonQueLayer"></div>
+        <div class="commonQueModal">
+            <h4 class="header">
+                <span>常见问题</span>
+                <span class="pull-right closePage" id="closeLeaveMsgBox"></span>
+            </h4>
+            <div class="commonQue-content">
+                <div class="commonQueLayer" id="commonQueLayer">
+                    
+                </div>
+            </div>
+        </div>
         <!-- 常见问题结束 -->
 
         <!-- 意见反馈开始 -->
-        <div class="feedbackLayer">
+        <div class="feedbackModal">
+            <h4 class="header">
+                <span>意见反馈</span>
+                <span class="pull-right closePage" id="closeLeaveMsgBox"></span>
+            </h4>
             <form id="feedbackForm">
                 <label class="MN_marginCtn MN_marginCtnRadio">
                     <input type="radio" name="level" value="1" checked> 满意</label>
@@ -62,33 +76,28 @@
         <!-- taskid=403 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 -->
         <!-- 留言开始 -->
         <div id="leaveMsgBox">
-            <!-- <div class="leaveMsgLayer"> -->
             <div id="leaveMsgDiv">
-                <div id="leaveMsgHeader">
-                    <h4>留言
-                        <span class="pull-right" id="closeLeaveMsgBox">关闭</span>
+                <!-- <div id="leaveMsgHeader"> -->
+                    <h4 class="header">
+                        <span>留言</span>
+                        <span class="pull-right closePage" id="closeLeaveMsgBox"></span>
                     </h4>
-                </div>
-                <hr>
+                <!-- </div> -->
                 <form class="leaveMsgForm" id="leaveMsgForm">
                     <div class="form-group">
-                        <!-- <i class="fa fa-user-o" aria-hidden="true"></i> -->
-                        <img src="./css/icon/two/name.png" style="width:0.05rem">
+                        <i class="iconfont icon-yonghu" aria-hidden="true"></i>
                         <input type="text" class="form-control" name="name" placeholder="姓名">
                     </div>
                     <div class="form-group">
-                        <!-- <i class="fa fa-phone" aria-hidden="true"></i> -->
-                        <img src="./css/icon/two/call.png">
+                        <i class="iconfont icon-dianhua" aria-hidden="true"></i>
                         <input type="text" class="form-control" name="telNum" placeholder="手机号码">
                     </div>
                     <div class="form-group">
-                        <!-- <i class="fa fa-qq" aria-hidden="true"></i> -->
-                        <img src="./css/icon/two/qq.png">
+                        <i class="iconfont icon-qq1" aria-hidden="true"></i>
                         <input type="text" class="form-control" name="qq" placeholder="QQ">
                     </div>
                     <div class="form-group">
-                        <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i>    -->
-                        <img src="./css/icon/two/email.png" style="top:0.03rem;">
+                        <i class="iconfont icon-youxiang" aria-hidden="true"></i>   
                         <input type="text" class="form-control" name="email" placeholder="邮箱">
                     </div>
                     <div class="form-group">
@@ -202,8 +211,8 @@
                         <p>文件</p>
                     </div>
 
-                    <div class="editCtn_com" id="location">
-                        <p class="icon-ctn">
+                    <div class="sendPicCtn editCtn_com" id="location">
+                        <p class="icon-ctn locationInfo">
                             <i class="iconfont icon-weizhi"></i>
                         </p>
                         <p>位置</p>
@@ -236,9 +245,25 @@
                 </div>
             </div>
         </div>
-        <div class="loading">
-            <div class="loadImg" id="spinner2"></div>
-            <div class="loadCenter">您的网络不稳定，请稍后再试</div>
+        <!-- 初始加载框 -->
+        <div id="loadMask" class="loadMask">
+            <div id="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <!-- 发送位置 -->
+        <div class="sendLocation">
+            <div class="location">
+                <h4 class="header">
+                    <span class="left" id="sendLocation">发送</span>
+                    <span class="right pull-right closePage"></span>
+                </h4>
+                <div id="allmap"></div>
+                <ul id="mapList" class="mapList"></ul>
+            </div>
         </div>
     </div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">

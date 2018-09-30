@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+  <meta name="renderer" content="webkit">
+  <title>FaqRobot智能问答机器人</title>
+  <link rel="icon" href="skin/zbj2/images/bitbug_favicon.ico" type="image/x-icon">
+   <link rel="shortcut icon" href="skin/zbj2/images/bitbug_favicon.ico" type="image/x-icon">
+   <link rel="stylesheet" href="css/minichat.css?time=1513">
+   <link rel="stylesheet" href="skin/zbj2/css/zbj.css" />
+  <link rel="stylesheet" type="text/css" href="skin/zbj2/css/tpwstyle.css?v=1.2" />
+  <link rel="stylesheet" href="skin/zbj2/css/jquery.autocomplete.css" />
+  <link rel="stylesheet" href="skin/zbj2/css/nanoscroller.css" />
+  <link rel="stylesheet" href="skin/zbj2/css/blue.css" />
+  <link rel="stylesheet" href="skin/zbj2/css/tpw.css">
+  <script type="text/javascript" src="skin/zbj2/js/jquery-1.10.1.min.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/jquery.autocomplete.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/nanoScroller.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/jquery.icheck.js"></script>
+  <!-- <script type="text/javascript" src="skin/zbj2/js/jquery.faqrobot.afdev.js"></script> -->
+  <script type="text/javascript" src="js/minichat.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/tpw.js"></script>
+  <script type="text/javascript" src="skin/zbj2/js/main.js"></script>
+ </head>
+ <body>
+ 	<div class="psBarW">
+        <div class="container">
+        <!--离开确认弹框开始-->
+		<div class="cl-ctn">
+			<div id="close">
+				<div class="cl-title">确认关闭对话框？</div>
+				<div class="cl-body">
+					<input id="cl-yes" type="button" value="确定" />
+					<input id="cl-no" type="button" value="取消" />
+				</div>
+			</div>
+		</div>
+		<!--离开确认弹框结束-->
+		<!--评价弹框开始-->
+		<div class="c-ctn">
+			<div id="comment">
+				<div class="c-title">为了下次更好的为您服务，请您给本次服务一个评价！</div>
+				<div class="c-body">
+					<form id="c-form" class="c-form">
+						<span>您对本服务的评价是</span>
+						<span>
+							<input type="radio" id="c2" name="level" value="1" checked="checked"/>
+							<label for="c2">有帮助</label>
+						</span>
+						<span>
+							<input type="radio" id="c1" name="level" value="0"/>
+							<label for="c1">无帮助</label>
+						</span>
+						<span class="c-a-comment">评论：</span>
+						<textarea id="c-textarea" name="content" placeholder="描述您的意见和建议，以便我们提升服务水平和质量，谢谢您！"></textarea>
+						<input id="submit" type="button" value="提交" />
+						<input id="cancel" type="button" value="取消" />
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--评价弹框结束-->
+        	<!--顶部开始-->
+            <div class="header">
+            	<div class="headerLeft">
+					<div class="logoImg" ><img id="logo" src="skin/zbj2/images/logologo-black_bd12a6d.png" /></div>
+					<div class="pp">
+						<p class="title11" id="title">天蓬网智能客服-雇主</p>
+						<p class="title1" id="robotInfo">及时、好用、全天候</p>
+					</div>
+				</div>
+				<div class="headerRight">
+                	<!--<span class="h-r-close" title="关闭"></span>-->
+                    <!--服务配置开始-->
+                    <div class="service" id="showhotthree" style="margin-top: 0">
+                      <ul>
+                      </ul>
+                    </div>
+                    <!--服务配置结束-->
+            	</div>
+			</div>
+            <!--顶部结束-->
+            <div class="body">
+                <div class="bodyLeft">
+                	<!---->
+                    <div class="closeRight">
+                    	<span class="arrow arrowRight"></span>
+                    </div>
+                    <!---->
+                    <div class="psBarC nano">
+						<div class="bodyLeftTop">
+								<div id="left_content" class="chatCtn">                           
+								</div>
+						</div>
+                    </div>
+                    <!--输入框开始-->
+                    <div class="bodyFooter">
+                    	<p id="showErrorId" class="error"></p>
+                		<div class="b-f-ctn">
+                        	<textarea id="sendtxt" maxlength="200"></textarea>
+                            <div class="b-f-footer">
+                            	<div class="b-f-f-left" style="width:15%;">
+                                	<span id="clearScreen" class="clRecord" title="清空记录">清空记录</span>
+                                </div>
+                            </div>
+                            <div id="inputPR" class="b-f-f-right">
+                            	<span id="sendImg">发送</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--输入框结束-->
+                </div>
+                <div class="bodyRight">
+                    <div class="fuzb1">
+                        <p>其他人都在问</p>
+                        <div id="showhotone"></div>
+                    </div>
+                    <div class="fuzb2">
+						<p>推荐信息</p>
+						<div id="recomdCtn">
+							<div id="showhottwo"></div>
+						</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ <script>
+ 
+ 	$(function(){
+ 		//setinterval("text()",10);
+ 		$(window).resize(function(){
+ 			var width=$(window).width()-140-$(".bodyRight").width();
+ 			$("#sendtxt").width(width);
+ 		});
+ 	});
+ 	
+ 
+	//配置faqrobot插件参数
+	var s_tspan=3;//主动请求的时间间隔
+	var s_state=0;//聊天的状态
+	var baseUrl= 'http://127.0.0.1:10098/robot/';
+	baseUrl= '../';
+	var s_q_url="";//问题的url
+	var s_a_url="";//获取相关问题答案的url地址
+	var s_sysNum="";
+	var hkey = "Enter";//hotKey
+	var t_count=0;//运行的代理的次数
+	var dt;//定时器
+	var robotName='FAQRobot';
+	var robot_name = "faqrobot机器人";
+	var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'showhotone',
+		recommend:'showhottwo',
+		inputMagOldvalue:'请完整描述您的问题，比如：如何发布服务',
+        sendBtn:'inputPR',
+        inputMsgArea:'sendtxt',
+        clearScreen:'clearScreen',
+        showErrorId:'showErrorId',
+		logoUrl:"skin/zbj2/images/logo——logo-black_bd12a6d.png",
+		logoDiv:"weblogo",
+		baseInfoDiv :"Contact_us",
+		wordremain:'wordremain',
+		fadeBackId:'submit',
+		teachMetalk:'teachMetalk',
+		fadeBackIdLink:'fadeBackIdLink',
+		quickLink:'showhotthree',
+		sourceId:0
+	};
+    //    $("#sendtxt").faqrobot(14435836731645796,option);
+//	var imw = $('.logoImg').width()+15
+//	$('.pp').css('margin-left',imw)
+ </script>
+</html>

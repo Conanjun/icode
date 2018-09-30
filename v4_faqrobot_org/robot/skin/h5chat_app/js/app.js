@@ -17,6 +17,7 @@
         html: $('html'),
         body: $('body'),
         chatScroll: $('.chatScroll'),// 滚动外框
+        loadMask:$('#loadMask'),//初始化加载框
         view: $('.view'),//页面显示区域，用于绑定快捷服务展开/收缩事件 不能用body hack ios
         textarea: $('.textarea'),// 输入框元素
         sendBtn: $('.sendBtn'),// 发送按钮
@@ -26,12 +27,31 @@
         faceBack: $('.FA_backCtn'),// 表情框元素
         editCtn: $('.editHide'),// 快捷服务元素
         editShow: $('.editShow'),// 输入框元素行
-        sendFeedBack: $('#sendFeedBack'),//快捷服务按钮
+        sendFeedBack: $('#sendFeedBack'),//意见反馈按钮
         sendFileId: 'sendPhoto,sendPicture',//需要绑定上传文件事件的元素id
         sendfaceIconClass: 'faceBtn',// 发送表情图标按钮class值
         expendbtnIconClass: 'expendBtn',// 快捷服务栏图标按钮class值
         chatCtnId: 'chatCtn' ,// 滚动内部元素的id
-        nativeBtnClass:'nativeBtn'// 跳转原生页面按钮class
+        nativeBtnClass:'nativeBtn',// 跳转原生页面按钮class
+        sendCommonQue: $('#sendCommonQue'),//常见问题按钮
+        commonQueModal: $('.commonQueModal'),//常见问题模态框
+        closeCommonQue:$('.commonQueModal .closePage'),//常见问题关闭按钮
+        commonQueLayer:$('#commonQueLayer'),
+        feedbackModal: $('.feedbackModal'),//意见反馈模态框
+        closefeedback:$('.feedbackModal .closePage'),//意见反馈关闭按钮
+        leaveMsgBox: $('#leaveMsgBox'),//留言模态框
+        MN_marginCtn: $('.MN_marginCtn'),//满意不满意选项
+        noSatiCtn: $('.noSatiCtn'),//不满意原因
+        sendLocation: $('.sendLocation'),//地理位置模态框
+        locationInfo: $('.locationInfo'),//显示发送地理位置模态框按钮
+        mapList: $('#mapList'),//展示附近地址列表
+        allmap: $('#allmap'),//展示地图的div
+        header: $('.location .header'),//地理位置模态框头部
+        locCheck: 'locCheck',//地址列表的选择框的父级span
+        check: 'check',//第一个地址的选择框父级span
+        sendLocationId: $('#sendLocation'),//发送地图到聊天框的按钮
+        mapInput: 'mapInput',//地址列表的选择框
+        closeLocation: $('.sendLocation .closePage')//关闭地图模态框按钮
     }
 
     /**
@@ -61,6 +81,15 @@
             this.switchFaceBtn();
             this.RGComment();
             this.hideEdit();
+            this.commonQueModal();
+            this.chooseCommonQue();
+            this.feedBackModal();
+            this.sendLeaveMsg();
+            this.switchStatis();
+            this.sendMapModal();
+            this.chooseLocation();
+            this.sendLocation();
+            this.closeModal();
         },
         /**
          *  @function 在Faqrobot 类实例化以后才可执行的方法，这些方法中需要用到FAQ对象中的方法
@@ -272,6 +301,7 @@
             FAQ.initBaseInfo();
             FAQ.timeRequest();
             isGOffline = false;// 重新进入输入引导可用
+            android.getClientId(FAQ.options.saveClientId)
         },
          /**
          * @function  添加按钮跳转原生页按钮
@@ -295,7 +325,239 @@
                     }
                 }
             }
-        }
+        },
+        /**
+         * @function 常见问题模态框
+         * 点击常见问题触发模态框展示，列出当前所有的常见问题
+         */
+        commonQueModal: function () {
+            var This = this
+            //常见问题
+            This.options.sendCommonQue.on('click', function () {
+                This.options.commonQueModal.show()
+                This.options.commonQueLayer.height(This.options.commonQueModal.height()-40)
+            });
+        },
+        /**
+         * @function 选择常见问题发送
+         * 选择相应的常见问题触发消息发送
+         */
+        chooseCommonQue: function () {
+            var This = this
+            This.options.body.on('click', function (e) {
+                if (e.target.className == 'MN_queList') {
+                    This.options.commonQueModal.hide();
+                    This.set_chatScroll_height();
+                }
+                if (e.target.parentNode) {
+                    if (e.target.parentNode.className == 'MN_queList') {
+                        This.options.commonQueModal.hide();
+                        This.set_chatScroll_height(); 
+                    }
+                }
+                // 关闭各种框
+                if (e.target.className == 'pull-right closePage') {
+                    $(e.target).find('.closePage').trigger('click');
+                }
+            });
+        },
+        /**
+         * @function 意见反馈模态框
+         * 点击意见反馈触发模态框展示，可以进行意见输入，不满意原因选择
+         */
+        feedBackModal: function () {
+            var This = this
+            This.options.sendFeedBack.on('click', function () {
+                This.options.feedbackModal.show()
+            });
+        },
+        /**
+         * @function 留言模态框
+         * 点击留言触发模态框展示，可以进行留言信息输入提交
+         */
+        sendLeaveMsg: function () {
+            var This = this
+            This.options.body.on("click", "#sendLeaveMsg,.LeaveMsg", function () {
+                This.options.leaveMsgBox.css("display", "block");
+                FAQ.writeMsg()
+            })
+        },
+        /**
+         * @function 切换满意不满意
+         */
+        switchStatis: function () {
+            var This = this
+            This.options.MN_marginCtn.eq(0).on('click', function () {
+                This.options.noSatiCtn.hide();
+            });
+            This.options.MN_marginCtn.eq(1).on('click', function () {
+                This.options.noSatiCtn.show();
+            });
+        },
+        /**
+         * @function    地理位置模态框
+         * 说明：自动定位到当前用户所在的位置，可以选择附近的任一位置进行发送给人工客服
+         */
+        sendMapModal:function(){
+            var This = this
+            This.options.sendLocation.hide()
+            This.options.locationInfo.on('click', function () {
+                This.options.sendLocation.show()
+                This.showLocation()
+                This.options.mapList.height(This.options.sendLocation.height() - (This.options.header.height()+30) - This.options.allmap.height())
+                This.options.loadMask.show()
+                This.options.mapList.scrollTop(0)
+            })
+        },
+        /**
+         * @function    显示当前位置信息
+         * 说明：定位访客地理信息
+         */
+        showLocation:function(){
+            var This = this
+            This.map = new BMap.Map("allmap");
+            This.point = new BMap.Point(116.331398, 39.897445);
+            This.map.centerAndZoom(This.point, 15);
+            This.geolocation = new BMap.Geolocation();
+            This.geolocation.getCurrentPosition(function (r) {
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    var mk = new BMap.Marker(r.point);
+                    This.map.addOverlay(mk);
+                    This.map.centerAndZoom(r.point, 15);
+                    This.map.panTo(r.point);
+                    This.latitude = r.point.lat
+                    This.longitude = r.point.lng
+                    This.getNearbyLoc(r.point.lat, r.point.lng)
+                } else {
+                    alert('failed' + this.getStatus());
+                }
+            }, {
+                enableHighAccuracy: true
+            })
+        },
+        /**
+         * @function    获取附近十个坐标点
+         * @param  lat   经度
+         * @param  lng   纬度
+         */
+        getNearbyLoc:function(lat, lng){
+            var html = ''
+            var This = this
+            $.ajax({
+                url: 'http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=' + lat + ',' + lng + '&output=json&pois=1&ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6',
+                dataType: 'jsonp',
+                success: function (data) {
+                    This.firstAddress = data.result.addressComponent
+                    This.pois = data.result.pois
+                    html = '<li lat="' + This.pois[0].point.y + '" lng="' + This.pois[0].point.x + '" content="' + This.pois[0].addr + '"><div class="firstLi">' + This.pois[0].name + '(' + This.firstAddress.district + '' + This.firstAddress.street + '' + This.firstAddress.street_number + ')</div><span class="check"><input class="mapInput" type="radio" name="address" checked/></span></li>'
+                    for (var i = 0; i < This.pois.length; i++) {
+                        html += '<li lat="' + This.pois[i].point.y + '" lng="' + This.pois[i].point.x + '" content="' + This.pois[i].addr + '"><div class="locList"><p class="name">' + This.pois[i].name + '</p><p class="address">' + This.pois[i].addr + '</p></div><span class="locCheck"><input type="radio" name="address" class="mapInput"/></span></li>'
+                    }
+                    This.options.mapList.html(html)
+                    This.options.loadMask.hide()
+                }
+            });
+        },
+        /**
+         * @function    选择发送的位置
+         * 说明：在切换位置坐标时重新标记地图，随着选择位置不同地图展示的点不同
+         */
+        chooseLocation:function(){
+            //点击每个位置选中
+            var This = this
+            This.options.body.on('click', '#mapList li', function () {
+                if ($(this).find('div').hasClass('firstLi')) {
+                    $(this).find('.check').css('display', 'block')
+                    $('.' + This.options.locCheck).css('display', 'none')
+                    $(this).find('.check input').prop('checked', true)
+                } else {
+                    $('.' + This.options.locCheck).css('display', 'none')
+                    $('.' + This.options.check).css('display', 'none')
+                    $(this).find('.locCheck').css('display', 'block')
+                    $(this).find('.locCheck input').prop('checked', true)
+                }
+                This.latitude = $(this).attr('lat')
+                This.longitude = $(this).attr('lng')
+                This.map.clearOverlays()
+                var retriveInit = []
+                retriveInit.push({
+                    lat: This.latitude,
+                    lng: This.longitude
+                })
+                This.point = new BMap.Point(This.longitude, This.latitude);
+                This.map.centerAndZoom(This.point, 15);
+                var mk = new BMap.Marker(This.point);
+                This.map.addOverlay(mk);
+            })
+        },
+        /**
+         * @function    发送位置
+         * 说明：点击发送，可发送选择的位置，点击位置信息可以跳转到地图页
+         */
+        sendLocation:function(){
+            var This = this
+            //发送位置
+            This.options.sendLocationId.on('click', function () {
+                for (var i = 0; i < $('.' + This.options.mapInput).length; i++) {
+                    if ($('.' + This.options.mapInput).eq(i).prop('checked')) {
+                        This.latitude = $('.' + This.options.mapInput).eq(i).parents('li').attr('lat')
+                        This.longitude = $('.' + This.options.mapInput).eq(i).parents('li').attr('lng')
+                        This.content = $('.' + This.options.mapInput).eq(i).parents('li').attr('content')
+                        // This.imgHtml = '<a href="http://api.map.baidu.com/marker?location='+This.latitude+','+This.longitude+'&title=我的位置&content='+This.content+'&output=html"><span class="staticImage">' + This.content + '</span><img src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&zoom=18&center=' + This.longitude + ',' + This.latitude + '&markers=' + This.longitude + ',' + This.latitude + '"/></a>'
+                        This.imgHtml = '<a class="map">' + This.content + '<img src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&zoom=18&center=' + This.longitude + ',' + This.latitude + '&markers=' + This.longitude + ',' + This.latitude + '"/></a>'
+                        This.options.closeLocation.trigger('click')
+                        FAQ.askQue(This.imgHtml)
+                    }
+                }
+                $('.map').on('click', function () {
+                    var Request = This.UrlSearch($(this).find('img').attr('src'));
+                    var markers = Request.markers;
+                    var content = $(this).text();
+                   // window.location.href='http://api.map.baidu.com/marker?location='+markers.split(',')[1]+','+markers.split(',')[0]+'&title=我的位置&content='+content+'&output=html'
+                    window.open('http://api.map.baidu.com/marker?location='+markers.split(',')[1]+','+markers.split(',')[0]+'&title=我的位置&content='+content+'&output=html','_blank'); 
+                });
+            })
+        },
+        /**
+         * @function    获取URL中各个参数
+         * @param url  url、src、href等路径
+         */
+        UrlSearch:function(url){
+            var request = {};
+            var name, value;
+            var str = url; //取得整个地址栏
+            var num = str.indexOf("?")
+            str = str.substr(num + 1); //取得所有参数   stringvar.substr(start [, length ]
+
+            var arr = str.split("&"); //各个参数放到数组里
+            for (var i = 0; i < arr.length; i++) {
+                num = arr[i].indexOf("=");
+                if (num > 0) {
+                    name = arr[i].substring(0, num);
+                    value = arr[i].substr(num + 1);
+                    request[name] = value;
+                }
+            }
+            return request;
+        },
+        /**
+         * @function    关闭底部常见问题，意见反馈，地图模态框
+         */
+        closeModal: function () {
+            var This = this
+            //地图
+            This.options.closeLocation.on('click', function () {
+                This.options.sendLocation.hide()
+            })
+            //常见问题
+            This.options.closeCommonQue.on('click', function () {
+                This.options.commonQueModal.hide()
+            })
+            //意见反馈
+            This.options.closefeedback.on('click', function () {
+                This.options.feedbackModal.hide()
+            })
+        },
     };
 
     var app = new FaqrobotApp();
@@ -352,6 +614,7 @@
         interface: 'servlet/appChat',
         setInputTop: false,//默认开启ios11键盘遮挡问题
         ish5chatApp: true,
+        saveClientId:'saveClientId',
         //sysNum: 1000000,//客户唯一标识
         //jid: 0,//自定义客服客户图标
         //robotName: 'FaqRobot',//机器人名称
@@ -429,7 +692,7 @@
             faceObj: Face,//表情插件实例
         },
         preventAdjust: true,// 禁止快捷服务按钮自动计算宽度
-        preventHide: true,// 机器人聊天时 仍然显示发送文件、图片功能
+        preventHide: false,// true:机器人聊天时 仍然显示发送文件、图片功能
         initCallback: function (data) {//初始化基本信息的回调
             window.uselessReasonItems = data.uselessReasonItems;
             try {
@@ -455,7 +718,7 @@
 
         },
         commentCallback: function () {//评论后的回调
-            layer.close(layerCtn);
+            app.options.closefeedback.trigger('click')
         },
         leaveMsgCallback: function () {//留言后的回调
             layer.close(layerCtn);
@@ -492,76 +755,6 @@
         }
     });
 
-
-
-
-    /******************常见问题、留言、意见反馈模态框*************************/
-    var layerCtn = null;//所有的弹出层
-
-    //常见问题
-    $('#sendCommonQue').on('click', function () {
-        layerCtn = layer.open({
-            type: 1,
-            title: '常见问题',
-            content: $('.commonQueLayer'),
-            area: ['1rem', '100%'],
-            end: function () {
-                // set_chatScroll_height();
-            },
-        });
-    });
-
-    //选择常见问题(事件委托)
-    $('body').on('click', function (e) {
-        if (e.target.className == 'MN_queList') {
-            layer.close(layerCtn);
-        }
-        if (e.target.parentNode) {
-            if (e.target.parentNode.className == 'MN_queList') {
-                layer.close(layerCtn);
-            }
-        }
-        // 关闭各种框
-        if (e.target.className == 'layui-layer-setwin') {
-            $(e.target).find('.layui-layer-close').trigger('click');
-        }
-    });
-
-    //意见反馈
-    $('#sendFeedBack').on('click', function () {
-        layerCtn = layer.open({
-            type: 1,
-            title: '意见反馈',
-            content: $('.feedbackLayer'),
-            area: ['1rem', '100%'],
-            end: function () {
-                // set_chatScroll_height();
-            },
-        });
-    });
-
-    $('.MN_marginCtn').eq(0).on('click', function () {
-        $('.noSatiCtn').hide();
-    });
-    $('.MN_marginCtn').eq(1).on('click', function () {
-        $('.noSatiCtn').show();
-    });
-
-    //留言
-    $('#sendLeaveMsg').on('click', function () {
-        $("#leaveMsgBox").css("display", "block");
-        FAQ.writeMsg()
-    });
-
-
-    //taskid=402 顾荣 任务：留言面板 2017.12.20
-    // 添加a链接弹出框
-    $("body").on("click", ".LeaveMsg", function () {
-        $("#leaveMsgBox").css("display", "block");
-        FAQ.writeMsg()
-    })
-
-    /******************常见问题、留言、意见反馈模态框*************************/
 });
 
 

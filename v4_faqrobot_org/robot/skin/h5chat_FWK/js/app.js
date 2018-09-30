@@ -13,16 +13,6 @@
         set_chatScroll_height();
     });
 
-	//调用自动补全插件
-    $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig',//[string]
-        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-        itemNum: 5,//[int] 默认全部显示
-        callback: function(data) {//获取文本后的回调函数
-            $('.sendBtn').trigger('click');
-        }
-    });
     //显示发送按钮
     $('.textarea').on('input', function() {
         if($(this).val()) {
@@ -195,7 +185,7 @@
     //faqrobot
     var FAQ = new Faqrobot({
         interface:'servlet/appChat',
-		//sysNum: 1000000,//客户唯一标识
+        //sysNum: 1000000,//客户唯一标识
         //jid: 0,//自定义客服客户图标
         //robotName: 'FaqRobot',//机器人名称
         logoUrl: 'robot/skin/h5chat/images/logo@2x.png',//logo地址 ----------
@@ -212,9 +202,9 @@
          * 原因：区分是机器人客服还是人工客服
          * 修改：添加服图标分为机器人和人工客服
          */
-        kfPic: 'robot/skin/h5chat/images/robot.png',  //客服图标
-        kf_Robot_Pic: 'robot/skin/h5chat/images/robot.png',  //机器人客服图标
-        kf_Person_Pic: 'robot/skin/h5chat/images/robot.png',  //人工客服图标
+        kfPic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //客服图标
+        kf_Robot_Pic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //机器人客服图标
+        kf_Person_Pic: 'robot/skin/chat2_FWK/images/FWKrobot.png',  //人工客服图标
         kf_Robot_Name:'',//机器人客服名字，此处只是声明个变量，不用赋值
         kf_Person_Name:'',//人工客服名字
 
@@ -337,7 +327,16 @@
         }, 100);
     });
 
-    
+    //调用自动补全插件
+    $('.textarea').autocomplete({
+        url: 'servlet/appChat?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
+        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
+        itemNum: 5,//[int] 默认全部显示
+        callback: function(data) {//获取文本后的回调函数
+            $('.sendBtn').trigger('click');
+        }
+    });
     
     // 人工评价
     $('body').on('click', '.RG_commentBtn', function() {

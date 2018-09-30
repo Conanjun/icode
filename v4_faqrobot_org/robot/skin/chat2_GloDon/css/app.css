@@ -1,0 +1,1014 @@
+@charset "utf-8";
+body,
+html {
+  width: 100%;
+  height: 100%;
+}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fieldset, lengend, button, input, textarea, th, td, a{
+  font-size: 15px;
+}
+body {
+  overflow: hidden;
+}
+.hide{
+  display: none;
+}
+/* 基础样式 */
+.MN_kfCtn {
+  border: 1px solid #fff;
+  background: #fff;
+  /* box-shadow: 0 10px 25px -5px rgba(152, 152, 152, 0.3); */
+}
+.MN_khCtn {
+  border: 1px solid #fff;
+  background: #fff;
+  text-align: left;
+  color: #222;
+}
+.MN_kftime, .MN_khtime, .MN_record{
+  font-size:12px !important;
+  width: 125px;
+}
+.MN_record{
+    margin: 18px auto 0px;
+}
+.MN_khTriangle1 {
+  border-top: 8px solid transparent;
+  border-left: 8px solid #D9D9DB;
+  border-bottom: 8px solid transparent;
+  bottom: -1px;
+}
+.MN_khTriangle2 {
+  border-top: 8px solid transparent;
+  border-left: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+  /* right: -5px; */
+  bottom: -1px;
+}
+.MN_kfTriangle1 {
+  border-top: 8px solid transparent;
+  border-right: 8px solid #D9D9DB;
+  border-bottom: 8px solid transparent;
+  /* left: -10px; */
+  bottom: -1px;
+}
+.MN_kfTriangle2 {
+  border-top: 8px solid transparent;
+  border-right: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+  /* left: -6px; */
+  bottom: -1px;
+}
+.MN_khTriangle1, .MN_khTriangle2{
+  top: 7px;
+  right: -8px;
+}
+.MN_kfTriangle2,.MN_kfTriangle1{
+  top:10px;
+  left:-8px;
+}
+.MN_kfTriangle1{
+  left:-9px;
+}
+.MN_khTriangle1,.MN_khTriangle2{
+  top:10px;
+  right:-8px;
+}
+.MN_khTriangle1{
+  right:-9px;
+}
+
+.MN_answer,
+.MN_ask {
+  padding: 5px 70px;
+}
+.MN_khImg{
+  right: -55px;
+}
+.MN_kfImg{
+  left: -55px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+  top: -7px;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+.MN_kfCtn,
+.MN_khCtn {
+  padding: 10px 15px;
+  border-radius: 3px;
+  border: 1px solid #E5E5E7;
+}
+
+.commonQue .MN_guideQue {
+  display: inline-block;
+  width: 80%;
+  line-height: 24px;
+  margin-left:0;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.MN_queList {
+  border-bottom: none;
+  padding: 6px 16px;
+  font-size: 14px;
+  color: #333;
+}
+.MN_queList:hover .MN_guideQue {
+  color: #1b96ff;
+}
+.MN_quickLink{
+  vertical-align: top;
+}
+.MN_quickLink p {
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.MN_quickLink:hover p {
+  color: #1b96ff;
+}
+
+.MN_queListIndex{
+  width: 21px;
+  height: 25px;
+  float: left;
+  line-height: 25px;
+  border-radius: 2px;
+  margin-right: 6px;
+  font-size: 14px;
+  color: #009dda;
+}
+
+
+/* 工具栏样式 */
+/* 字体 */
+.editDetail .corpation .font{
+  background-image: url(../images/fontUnClick.png);
+  background-size:18px 13px;
+}
+.editDetail .corpation .font.active{
+  background-image: url(../images/fontClick.png);
+}
+/* 表情 */
+.editDetail .corpation .emoj{
+  background-image: url(../images/emojUnClick.png);
+  background-size:16px 16px;
+}
+.editDetail .corpation .emoj.active{
+  background-image: url(../images/emojClick.png);
+ 
+}
+/* 发送图片 */
+.editDetail .corpation .pic{
+  background-image: url(../images/picUnClick.png);
+  background-size:18px 17px;
+  cursor: pointer;
+}
+.editDetail .corpation .pic.active{
+  background-image: url(../images/picClick.png);
+}
+/* 留言 */
+.editDetail .corpation .msg{
+  background-image: url(../images/msgUnClick.png);
+  background-size:18px 17px;
+}
+.editDetail .corpation .msg.active{
+  background-image: url(../images/msgClick.png);
+}
+.btn-row{
+  text-align: center;
+  margin: 30px 0 20px 0;
+}
+#messageBoardBtn{
+  display: inline-block;
+  width: 50%;
+}
+/* 表情 */
+.FA_srcCtn{
+  background: #F2F2F2;
+}
+/* 输入引导高亮 */
+.AU_replaceTip{
+  color: #FF6F1B;
+}
+/* 滚动条样式 */
+.SC_frontClass {
+  width: 4px;
+  height: 40px;
+}
+/* 正文开始 */
+.whole {
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(152, 152, 152, 0.3);
+}
+.whole .head {
+  background-color:#000;
+  /* background-image: url(../images/head_bac.png); */
+  background-repeat: no-repeat;
+  background-position: left 35%;
+  height: 69px;
+  /* padding: 0 20px; */
+  position: relative;
+  z-index: 1;
+}
+.whole .head:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .head:before {
+  content: '';
+  display: block;
+  /* background: rgba(0, 0, 0, 0.9); */
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=10);
+  opacity: .1;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.whole .head .headLeft {
+  position: relative;
+  /* line-height: 80px; */
+  height: 100%;
+  float: left;
+}
+.commonQue {
+  margin-bottom: 15px;
+  color: #333;
+}
+/*
+* taskId = 502 聊天页面logo大小问题
+* 设置最大宽度
+*/
+.whole .head .headLeft .logo {
+  vertical-align: middle;
+  height: 100%;
+  /* max-height: 70px; */
+  margin-right: 20px;
+  max-width: 400px;
+}
+.whole .head .headLeft .titleCtn {
+  vertical-align: middle;
+  display: inline-block;
+}
+.whole .head .headLeft .titleCtn p {
+  color: #fff;
+  line-height: 24px;
+}
+.whole .head .headLeft .titleCtn .title {
+  font-size: 16px;
+}
+.whole .head .headRight {
+  position: relative;
+  margin-top: 24px;
+  float: right;
+}
+.whole .head .headRight span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.whole .head .headRight .close {
+  background: url(../images/close.png) no-repeat center;
+  background-size: contain;
+}
+.whole .head .headRight .close1 {
+  background: url(../images/close_1.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close2 {
+  background: url(../images/close_2.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .head .headRight .close3 {
+  background: url(../images/close_3.png) no-repeat center;
+  background-size: contain;
+  display:none;
+}
+.whole .body {
+  position: relative;
+}
+.whole .body .bodyLeft {
+  position: absolute;
+  float: left;
+  height: 100%;
+}
+.whole .body .bodyLeft:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftTop {
+  overflow: hidden;
+  position: relative;
+  background: #f2f2f2;
+}
+.whole .body .bodyLeft .bodyLeftTop .chatCtn {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.whole .body .bodyLeft .bodyLeftBottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-top: 1px solid #dddddd;
+  height: 150px;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn {
+  padding: 5px 20px 0 13px;
+  position: relative;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .inputTip {
+  position: absolute;
+  color: #ccc;
+}
+.whole .body .bodyLeft .bodyLeftBottom .inputCtn .input {
+  outline: none;
+  resize: none;
+  border: none;
+  display: inline-block;
+  width: 100%;
+  height: 85px;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px 20px 20px 10px;
+  box-sizing: border-box;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn span {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn a {
+  vertical-align: middle;
+  color: #ccc;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg {
+  width: 30px;
+  height: 30px;
+  background: url(../images/clear_normal.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .clearMsg:hover {
+  background: url(../images/clear_hover.png) no-repeat center;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn {
+  float: right;
+  width: 80px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  border-radius: 100px;
+  background: #009BDB;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover{
+
+}
+.whole .body .bodyLeft .bodyLeftBottom .sendCtn .sendBtn:hover {
+  /* background: #0c7bf4;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5); */
+}
+/* 页面右侧 ：快捷服务/常见问题*/
+.whole .body .bodyRight {
+  position: relative;
+  height: 100%;
+  float: right;
+  width: 254px;
+  border-left: 1px solid #dddddd;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx {
+  position: relative;
+  top: 0;
+  width: 100%;
+  height:auto;
+  overflow: auto;
+  box-sizing: border-box;
+  /* padding: 0 20px 20px 20px; */
+}
+.itemHead {
+  width: 180px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(225, 225, 225, 0.3);
+  box-shadow: 0 9px 35px -8px rgba(225,225,225, 1);
+  position: relative;
+
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead1{
+  margin:22px 25px 15px;
+  margin-top: 22px;
+  margin-bottom: 15px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead1:before{
+    content: '';
+    border: 3px solid #009dda;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead2{
+    margin: 10px 40px 10px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead2:before{
+    content: '';
+    border: 3px solid #009BDB;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+/* 快捷服务 */
+.quickLink{
+    min-height:140px;
+
+}
+.MN_quickLink{
+  margin: 0 0 18px 0;
+}
+.MN_quickLink img{
+    max-width: 56px;
+    height: 56px;
+}
+.MN_quickLink p{
+  margin-top: 4px;
+  color: #333;
+}
+
+
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servCos {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 82px;
+  cursor: pointer;
+  text-align: center;
+  color: #ccc;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 20px;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes {
+  background: url(../images/icon_my_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes:hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYes_hover {
+  color: #222;
+  background: url(../images/icon_my_hover.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo {
+  background: url(../images/ico_no_normal.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo:hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNo_hover {
+  color: #222;
+  background: url(../images/ico_no_hov.png) no-repeat center top;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servYesInput,
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoInput {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason {
+  display: none;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .servNoReason label {
+  margin: 10px 20px;
+  cursor: pointer;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn {
+  position: relative;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackTip {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #ccc;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackInput {
+  outline: none;
+  resize: none;
+  border: 1px solid #eee;
+  display: inline-block;
+  width: 100%;
+  height: 55px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn {
+  float: right;
+  cursor: pointer;
+  width: 70px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  border-radius: 100px;
+  background: #1B96FF;
+  webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 0;
+}
+.whole .body .bodyRight .bodyRightCtx .itemCtxCtn .itemCtx .feedBackWordCtn .feedBackBtn:hover {
+  background: #0c7bf4;
+  box-shadow: 0 7px 25px -5px rgba(12, 123, 244, 0.5);
+}
+
+/* taskid=802 快捷服务功能 顾荣 2018/2/9
+添加：快捷服务iframe布局 */
+#serveIframe{
+  position:absolute;
+  background-color:white;
+  width:100%;
+  display:none;
+  top:45px;
+  left:0;
+  right:10px;
+  bottom:0;
+  z-index: 99;
+}
+#serveIframe iframe{
+  width:100%;
+  height:100%;
+}
+#cloQuIframe{
+  position:absolute;
+  width:60px;
+  height:45px;
+  top:45%;
+  left:0;
+  color:red;
+  font-size: 16px;
+  opacity: 0.5;
+  cursor: pointer; 
+  background:url("../../../common/plugins/lightbox/img/prev.png")
+}
+
+/* 会话满意度 */
+#dialogFeedModal{
+  overflow: auto;
+}
+.form-horizontal .form-group {
+  margin-right: 0;
+  margin-left: 0;
+}
+.hideUnstatis{
+  display: none;
+}
+#dialogFeedModal .form-group{
+  margin-bottom: 0;
+}
+#dialogFeedModal .modal-body{
+  padding: 0 15px;
+}
+.modal {
+  background: rgba(0, 0, 0, 0.3);
+}
+@media (min-width: 768px) {
+  #dialogFeedModal .modal-dialog{
+    width: 400px;
+    margin: 40px auto;
+  }
+  #noticeModal .modal-dialog{
+    margin: 80px auto;
+  }
+}
+input[name=satis],
+input[name=ckb] {
+  opacity: 0;
+}
+.rad a {
+  display: inline-block;
+  width: 16px;
+  height: 17px;
+  background: url('../../../images/blue.png') -96px -15px;
+  vertical-align: text-bottom;
+  margin-right: 5px;
+}
+.muiSel a {
+  display: inline-block;
+  width: 16px;
+  height: 17px;
+  vertical-align: text-bottom;
+  background: url('../../../images/blue.png') 145px 17px;
+  margin-right: 5px;
+}
+#dialogFeedModal .modal-header{
+  border-bottom: none;
+}
+#dialogFeedModal .chooseFun{
+  text-align: center;
+  margin-bottom: 10px;
+} 
+#dialogFeedModal label.rad{
+  width: 100px;
+  text-align: center;
+  line-height: 34px;
+  height: 34px;
+  border: 1px solid rgb(224,233,233);
+  border-radius: 3px;
+  color: rgb(141,154,154);
+  cursor: pointer;
+  font-weight: normal;
+  margin: 0 40px;
+}
+#dialogFeedModal label.rad .fa{
+  font-size:16px;
+}
+#dialogFeedModal label.rad.active,#dialogFeedModal label.rad.blue{
+  background:#1296DB;
+  color:#fff;
+}
+#dialogFeedModal h4.modal-title{
+  text-align: center;
+  color:#444;
+}
+.unstatisList{
+  text-align: center;
+}
+.unstatisList .showList{
+  line-height: 24px;
+  color: rgb(105,105,105)
+}
+.MN_List{
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  text-align: center;
+}
+.MN_List .MN_unstais{
+  width: 170px;
+  text-align: center;
+  line-height: 32px;
+  height: 32px;
+  border: 1px solid rgb(224,233,233);
+  border-radius: 3px;
+  color: rgb(141,154,154);
+  cursor: pointer;
+  margin: 5px 5px 0;
+  font-weight: normal;
+  padding: 0 5px;
+  overflow: hidden;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.MN_List .MN_unstais.active,.MN_List .MN_unstais.blue{
+  background:#1296DB;
+  color:#fff;
+}
+.comment{
+  padding:5px;
+  resize:none;
+  width: 97%;
+  height: 100px;
+  outline: none;
+  border-radius: 4px;
+  border-color: rgb(224,233,233)
+}
+.commit{
+  text-align: center;
+  border-top:none;
+  padding-top:0;
+}
+#commitComment{
+  width:200px;
+  background-color: #1296DB;
+  border-color: #1296DB;
+  margin-bottom:10px;
+}
+.noComment{
+  color:rgb(172, 175, 175);
+  cursor: pointer;
+}
+/* 
+  taskid=959，黄世鹏
+  修改：富文本为表格时排版问题
+*/
+.MN_kfCtn table {
+  width: 100%!important
+}
+/* taskid=403 顾荣 任务:留言面板 样式开始 */
+#MessageBoardModal #ansText {
+  height: 160px;
+}
+#MessageBoardModal .modal-dialog {
+  margin-top: 50px;
+}
+#MessageBoardModal .control-label>img {
+  width: 24px;
+}
+#filebtn {
+  position: relative;
+  border: 1px solid lightgray;
+  overflow: hidden;
+  padding: 0px;
+}
+#filebtn>.webuploader-pick {
+  padding: 6px 12px
+}
+#filebtn input {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 0;
+}
+.imgdivs {
+  text-align: center;
+  padding: 15px;
+}
+.imgdivs>div>img {
+  width: 73.5px;
+  height: 73.5px;
+  border-radius: 4px;
+}
+#successMessage .modal-body {
+  text-align: center;
+}
+#successMessage .modal-body>div {
+  margin: 30px 0;
+}
+#successMessage .modal-footer {
+  text-align: center;
+  color: #2090b4
+}
+#successMessage .modal-footer span {
+  cursor: pointer;
+}
+#MessageBoardForm .form-group>label {
+  padding-right: 0px
+}
+.imgdivs>div {
+  position: relative
+}
+.delRound {
+  width: 20px;
+  height: 20px;
+  font-weight: 700;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+#messageBoardBtn{
+  background-color: #1296DB;
+  border-color: #1296DB; 
+}
+@media (min-width: 768px){
+  #MessageBoardForm{
+    margin-left: -44px;
+  }
+}
+.MN_reasonSend, .MN_yes{
+  color: #42a0fd;
+  border: 1px solid #42a0fd;
+}
+.MN_gusList, .MN_relateList, .FA_star {
+  color: #3669fe;
+}
+/* taskid=403 顾荣 任务:留言面板 样式结束 */
+
+/* 右侧公告 */
+.notice{
+  margin-top:20px;
+  display: none;
+}
+.noticeCtx{
+  margin: 0 13px;
+  padding: 0 0 6px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 1px 1px 20px rgba(225,225,225, 1);
+  text-align: center;
+}
+.noticeCtx .noticeHeader{
+  width:100%;
+  height:20px;
+}
+.noticeCtx .noticeHeader span{
+  display: block;
+  float: right;
+  width:64px;
+  height:20px;
+  line-height: 20px;
+  background: #ea5458;
+  color:#fff;
+  font-size:10px;
+  text-align: center;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.noticeCtx .noticeContent{
+  width: 100%;
+  padding:0 15px;
+  color:#333;
+  font-size: 14px;
+}
+.noticeCtx .noticeContent .noticeTitle{
+  margin-bottom: 7px;
+  line-height:18px;
+  font-size:14px !important;
+}
+.noticeCtx .noticeContent .noticeSummary{
+  color:#aaa;
+  line-height:18px;
+  margin-bottom:7px;
+}
+.noticeCtx .noticeContent .noticeText{
+  max-height: 60px;
+  text-align: left;
+  display: -webkit-box; 
+  display: -moz-box;  
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  -webkit-box-orient: vertical; 
+  -webkit-line-clamp:3;   /*显示行数*/
+}
+.noticeCtx .noticeFooter{
+  width: 100%;
+  margin:11px 0 5px;
+  padding: 0 15px;
+  height: 18px;
+  line-height:18px;
+}
+.noticeCtx .noticeFooter .noticeDetail,.noticeCtx .noticeFooter .noticeDetail:hover, .noticeCtx .noticeFooter .noticeDetail:focus{
+  float: left;
+  color: #ffaa2e;
+  cursor: pointer;
+  text-decoration: none;
+  font-size:14px !important;
+  outline: none;
+}
+.noticeCtx .noticeFooter .noticeDate{
+  float: right;
+  color:#aaa;
+  font-size:14px !important;
+}
+.notice .noticeLine{
+  width: 88%;
+  padding:0 15px;
+  height:0;
+  border-bottom:1px solid #80cae4;
+  margin:12px 15px 7px;
+}
+/* 公告详情弹框 */
+.noticeModal .modal-header{
+  padding:0;
+  border-bottom: none;
+}
+.noticeModal .modal-header .modal-title{
+  width:96px;
+  height:30px;
+  display: inline-block;
+  line-height: 30px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background: #ea5458;
+  color:#fff;
+  text-align: center;
+  font-size:14px !important;
+}
+.noticeModal .modal-header button{
+  font-size: 30px !important;
+  margin: 0px 5px 0 0;
+  font-weight: normal;
+}
+.noticeModal .form-group{
+  color:#333;
+  line-height:20px;
+  margin-bottom:0;
+  font-size:14px !important;
+}
+.noticeModal .form-group .noticeHeader{
+  margin-bottom: 10px;
+}
+.noticeModal .form-group .noticeHeader .date{
+  color:#aaa;
+  float: right;
+}
+.noticeModal .summary{
+  color:#aaa;
+  margin: 16px 0;
+}
+.noticeModal .noticeText{
+  color:#333;
+}
+.noticeModal .noticeText p{
+  font-size:14px !important;
+}
+/* 聊天功能框 */
+.editDetail .corpation .icon{
+  width:20px;
+  height:18px;
+}
+.editDetail .corpation .emoj{
+  background-image: url('../images/emojUnClick.png');
+}
+.editDetail .corpation .file{
+  background-image: url('../images/fileUnClick.png');
+}
+.editDetail .corpation .evaluate{
+  background-image: url('../images/commentUnClick.png');
+}
+.editDetail .corpation .screen{
+  background-image: url('../images/screenUnClick.png');
+}
+.editDetail .corpation .emoj.active{
+  background-image: url('../images/emojClick.png');
+}
+.editDetail .corpation .file.active{
+  background-image: url('../images/fileClick.png');
+}
+.editDetail .corpation .evaluate.active{
+  background-image: url('../images/commentClick.png');
+}
+.editDetail .corpation .screen.active{
+  background-image: url('../images/screenClick.png');
+}
+/* 远程控制请求框 */
+.showControlModal{
+  width: 80%;
+  margin: 0 auto;
+  height: 32px;
+  line-height: 32px;
+  background: rgba(185, 181, 181, 0.6);
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  color: #fff;
+  text-indent: 10px;
+  display: none;
+}
+.showControlModal .controlFooter{
+  float: right;
+}
+.showControlModal .controlFooter .btn{
+  padding: 3px 10px;
+  border: none;
+  color: #fff;
+  font-size:15px;
+  margin-right: 5px;
+}
+.showControlModal .controlFooter .agree{
+  background: #61a5e0;
+}
+.showControlModal .controlFooter .refuse{
+  background:#bbb9b9;
+}
+.kfInviteModal .evaluateUrl{
+  color: #337ab7;
+  width:100%;
+  word-break: break-all;
+}
+.evaluateUrl{
+  cursor: pointer;
+}

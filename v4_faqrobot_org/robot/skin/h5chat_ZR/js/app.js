@@ -19,18 +19,6 @@
         set_chatScroll_height();
     });
 
-	//调用自动补全插件 taskId=408 自如定制 点击推荐内容后，自动发送信息
-    $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig',//[string]
-        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
-        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
-        itemNum: 5,//[int] 默认全部显示
-        callback: function(data) {//获取文本后的回调函数
-            //由于发送按钮被隐藏，直接调用发送事件
-            $('.sendBtnNew').trigger('click');
-
-        }
-    });
     //显示发送按钮
     $('.textarea').on('input', function() {
         if($(this).val()) {
@@ -193,6 +181,10 @@
         artiTitleChange: true,// 人工时是否修改标题
         artiTitle: '人工客服',// 人工时的标题
         titleInsteadId: 'title',// 代替标题Id
+        vipInsert:'vipInsert',//接入客服模态框
+        cancelInsert:'cancelInsert',//取消接入客服
+        sureInsert:'sureInsert',//确定接入客服
+        vipQuestion:'vipQuestion',//vip转人工时发送问题
         //userInfoId: 'userInfoId',//用户信息Id
         kfPic: 'robot/skin/h5chat/images/robot.png',  //客服图标
         khPic: 'robot/skin/h5chat/images/user.png', //客户图标
@@ -334,6 +326,19 @@
         $('.feedback').trigger('click');
     });
 
+    
+	//调用自动补全插件 taskId=408 自如定制 点击推荐内容后，自动发送信息
+    $('.textarea').autocomplete({
+        url: 'servlet/appChat?s=ig&sourceId='+FAQ.options.sourceId+'&sysNum='+FAQ.options.sysNum,
+        targetEl: $('.editShow'),//参照物(用于appendTo和定位)
+        posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
+        itemNum: 5,//[int] 默认全部显示
+        callback: function(data) {//获取文本后的回调函数
+            //由于发送按钮被隐藏，直接调用发送事件
+            $('.sendBtnNew').trigger('click');
+
+        }
+    });
     
     /*TaskId:  418 自如页面定制
     *说明：选择满意度评价操作评级 推送功能
@@ -540,6 +545,20 @@
                 $('body').scrollTop(1000000);
                 clearInterval(timerDown);
         }, 100);
+    }
+    /**
+     * 说明：点击“否”取消接入VIP客服，点击“是”确定接入VIP客服,点击“点我解决”弹出模态框
+    */ 
+    vipInsert()
+    function vipInsert(){
+        //否
+        $('#'+FAQ.options.cancelInsert).on('click',function(){
+            $('.'+FAQ.options.vipInsert).modal('hide')
+        })
+        //是
+        $('#'+FAQ.options.sureInsert).on('click',function(){
+            FAQ.pushChannel()
+        })
     }
 });
 

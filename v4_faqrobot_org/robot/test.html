@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh-cmn-Hans">
+    <meta charset="UTF-8">
+    <title>DWebviewJavaScriptBridge Test</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,user-scalable=no" />
+</head>
+<style>
+    .btn {
+        text-align: center;
+        background: dodgerblue;
+        color: white;
+        padding: 20px;
+        margin: 30px;
+        font-size: 24px;
+        border-radius: 4px;
+        box-shadow: 4px 2px 10px #999;
+    }
+
+    .btn:active {
+        opacity: .7;
+        box-shadow: 4px 2px 10px #555;
+    }
+</style>
+
+<body>
+    <div class="btn" onclick="getTokenTest()">获取token</div>
+    <div class="btn" onclick="openWebViewTest()">打开webview</div>
+    <div class="btn" onclick="closeWebViewTest()">关闭webview</div>
+    <div class="btn" onclick="serviceErrorTest()">服务器错误</div>
+    <div class="btn" onclick="shareTest()">分享</div>
+    <div class="btn" onclick="payTest()">支付
+        <br/>
+    </div>
+    <div class="btn" onclick="statisticsTest()">统计</div>
+    <div class="btn" onclick="getLocationTest()">位置</div>
+    <script src="https://oss-qa-bm.saicmotort.com/oss/download/assets/jsbridge/jssdk.js"></script>
+    <script type="text/javascript" src="jssdk.js"></script>
+    <script>
+        getTokenTest();
+        function getTokenTest() {
+            getToken(
+                function (data) {
+                    alert(data.token)
+                }
+            )
+        }
+
+        function openWebViewTest() {
+            openWebView('www.baidu.com', function (data) {
+                alert(data.url)
+            })
+        }
+
+        function closeWebViewTest() {
+            closeWebView('default', function (data) {
+                alert(data.message)
+            })
+        }
+
+        function serviceErrorTest() {
+            serviceError('14101', function (data) {
+                alert(data.message)
+            })
+        }
+
+        function shareTest() {
+            share('测试', '分享内容', 'www.baidu.com', function (data) {
+                alert(data.message)
+            })
+        }
+
+        function payTest() {
+            pay(1, '00001', '100.9', function (data) {
+                alert(data.message)
+            })
+        }
+
+        function statisticsTest() {
+            statistics('click', '1000', function (data) {
+                alert(data.message)
+            })
+        }
+
+        function getLocationTest() {
+            getLocation(
+                function (data) {
+                    alert(data.latitude + data.longitude + data.name + data.address)
+                }
+            )
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>专卖店查询</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+html,body{
+	font-size:16px;
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-12">
+            <h4 style="text-align:center;">
+                专卖店查询
+            </h4>
+              <div class="kahao_search" id="city_china_val">
+                <select class="province" disabled="disabled"  data-first-title="选择省" >
+                </select>
+                <select class="city" disabled="disabled"  data-first-title="选择市">
+                </select>
+                <select class="area" disabled="disabled"  data-first-title="选择地区" >
+                </select>
+                <button type="button" onClick="searchExclusive();" id="searchBtn" class="btn btn-default" style="padding:3px 12px;">查询</button>
+              </div>
+            <div class="col-lg-12" style="height:10px;"></div>
+            <label id="labelResult" style="display:none;">查询结果</label>
+            <div id="exclusiveDiv">
+            	 
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../js/jquery-1.8.3.min.js"></script> 
+<script src="js/jquery.cxselect.js"></script> 
+<script>
+$.cxSelect.defaults.url = 'js/cityData.min.json';
+$('#city_china_val').cxSelect({
+  selects: ['province', 'city', 'area'],
+  nodata: 'none'
+});
+function searchExclusive(){
+	var province=$('.province').val();
+	var city=$('.city').val();
+	var county=$('.area').val();
+	if(!county || county==null)county='';
+	$.ajax({
+		type:'post',
+		datatype:'json',
+		cache:false,
+		url:encodeURI('../../../wxj/WxjQuery/getDealerStoreByDealerNo'),
+		data:'province='+province+'&city='+city+'&county='+county,
+		success:
+		function(data){
+		  if(data.status==0){
+				var s = [];
+				if(data.List && data.List.length>0){
+					var list=data.List;
+					for(var i=0;i<list.length;i++){
+						s.push('<p style="border-bottom:1px solid #ccc; margin:5px 0;"></p>'); 
+						s.push('<p><strong>地址：</strong>'+list[i].STOREADDRESS+'</p>');
+						var tmpPhone=list[i].TELEPHONE=='null'?'':list[i].TELEPHONE;
+						s.push('<p><strong>固定电话：</strong>'+tmpPhone+'</p>');
+					}
+				}else{
+					s.push('<p style="border-bottom:1px solid #ccc; margin:5px 0;"></p>'); 
+					s.push('<p style="text-align:center;>当前记录为空。</p>');
+				}
+				$('#labelResult').show();
+				$('#exclusiveDiv').html(s.join(''));
+		  }else{
+			  alert(data.message);
+		  }
+		}
+	})
+} 
+</script>
+</body>
+</html>

@@ -8,9 +8,9 @@
 
     var MN = jQuery.noConflict();//避免jQuery版本冲突
     var $ = jQuery.noConflict();//重新定义$
-    /**add by zhaoyuxing 
+    /**add by zhaoyuxing
      * 说明：用户刷新页面时，清空已转人工记录
-     * 
+     *
     */
     sessionStorage.setItem('switchHuman',0);
 
@@ -80,7 +80,7 @@
     /**************************** BEGIN ****************************/
     /**
     * base.js v-1.2.0
-    * 
+    *
     * Copyright (c) 2016/3/3 Han Wenbo
     *
     * Here are some common public methods!
@@ -108,7 +108,7 @@
           //
         },
         defaults = {
-          prefix: '../',//接口路径前缀(不能写根路径)
+          prefix: '../',//接口路径前缀(不能写根路径) ../
           $formObj: $(),//被序列化的form表单
           dataObj: {},
           callback: function () {}//回调函数
@@ -1069,7 +1069,9 @@
             This.$obj.$AU_outerCtn.empty().hide()
           }
         } else {
-          This.outerCtnEvent()
+			if(e.target.value !='' && e.target.value && e.target.value !=undefined){
+			  This.outerCtnEvent()
+			}
         }
       })
 
@@ -1749,7 +1751,7 @@ function autoUpload (url, $trigger, $ctn, startcall, callback, type, typecall) {
       return formData
     },
     loadstart: function (e, ran, xhr, fileData) {
-      
+
       for (var i = 0, len = fileData.length; i < len; i++) {
 
         startcall && startcall(ran)//开始时的回调
@@ -1757,7 +1759,7 @@ function autoUpload (url, $trigger, $ctn, startcall, callback, type, typecall) {
         $upFileAbort = $('<span class="upFileAbort">x</span>'),
         $upFileOuter = $('<div class="upFileOuter"></div>'),
         $upFileInner = $('<em class="upFileInner"></em>')
-        
+
         if (!(fileData[i] instanceof Array)) {
           var $upFileItem = $('<div class="upFileItem" size="' + fileData[i].size + '"></div>'),
             $upFileName = $('<p class="upFileName" size="' + fileData[i].size + '" hasRead="0">' + fileData[i].name + '</p>')
@@ -1880,6 +1882,48 @@ function uploadFile (options) {
 
 /**************************** BEGIN ****************************/
 /**
+ * 获取IE的版本号
+ * 当浏览器为IE10以下的IE浏览器时，跳转到相关提示页面
+ * 不传参数返回当前IE版本，如果不是IE内核浏览器，返回false
+ * 传userAgent字符串，用来判断其他IE浏览器的版本
+ */
+
+ // midea增加开始
+(function () {
+  // IE的版本号
+  window.IEnum = NaN
+
+  function IETester(userAgent) {
+    var UA =  userAgent || navigator.userAgent
+    var IENumber = NaN
+
+    if (/msie/i.test(UA)) {
+        IENumber = UA.match(/msie (\d+\.\d+)/i)[1]
+    }
+    if (~UA.toLowerCase().indexOf('trident') && ~UA.indexOf('rv')) {
+        IENumber = UA.match(/rv:(\d+\.\d+)/)[1]
+    }
+    return IENumber
+  }
+
+  try {
+    // IEnum为全局的变量
+    IEnum = Number(IETester())
+    // 如果IE版本小于10，则跳转到浏览器问题页
+    // if (IEnum < 10) {
+
+    // }
+    console.log('IE的版本是：', IEnum)
+  } catch (err) {
+    console.log(err)
+  }
+}())
+// midea增加结束
+
+/**************************** END ****************************/
+
+/**************************** BEGIN ****************************/
+/**
  * jquery.faqrobot.js plugin 1.2.0
  *
  * Copyright (c) 2016/3/20 Han Wenbo
@@ -1902,6 +1946,8 @@ function uploadFile (options) {
 
   var plugName = 'faqrobot',
     defaults = {
+	  flagPage:true,//判断是否只进入一次点击分页方法
+      pageArray:[],
       isEn: false,//是否是英文版界面，页面提示信息都要换成英文
       interface: 'servlet/AQ',//网页端和H5页面调用的接口不同。分别为AQ和AppChat
       sysNum: 1000000,//客户唯一标识
@@ -2077,6 +2123,7 @@ function uploadFile (options) {
       this.initInput()//输入框准备->剩余字数/提示语
       this.needPerson()//转人工->s=needperson
       this.askFlwQue()//回答引导问题->s=aq
+	  this.askDistributionQue()
       this.askGuideQue()//回答引导问题->s=aq
       if (this.options.upFileModule.open) {
         this.upFile()//上传文件->s=uf
@@ -2271,6 +2318,19 @@ function uploadFile (options) {
         }
       }
     },
+    // 获取 url参数
+    getUrlQuery:function (variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (pair[0] == variable) {
+              return   decodeURI(pair[1]);
+
+          }
+      }
+      return false;
+    },
     //初始化基本信息->s=p->logo/欢迎语/快捷服务/热门问题/用户信息
     initBaseInfo: function () {
       var This = this
@@ -2283,6 +2343,10 @@ function uploadFile (options) {
           productNo: This.options.productId
         },
         callback: function (data) {
+          if(data.status == -1 ){// s = p 接口失败
+            This.options.initFailCallback(data); // 机器人初始化失败回调
+            return;
+          }
           if(data.notice && data.notice.length>0){
 			 This.options.noticeCallback(data);
 		  }
@@ -2296,7 +2360,7 @@ function uploadFile (options) {
           $('#' + This.options.inputCtnId).removeAttr('readonly')
           This.setLogo(data)//设置logo->客服图标/客户图标
           /**add by zhaoyuxing app闪退 时不显示欢迎语和问题引导；
-           * 应用场景：退出转人工时，显示之前聊天记录 
+           * 应用场景：退出转人工时，显示之前聊天记录
            * */
           if(parseInt(sessionStorage.getItem('switchHuman'))){
             if(data.talkMessageList && data.talkMessageList[0]){//taskId:406 闪退时不显示欢迎语以及导问 必须2层判断，后台可能传输null []  data.talkMessageList[0]
@@ -2356,17 +2420,17 @@ function uploadFile (options) {
 					}
 					var robotAnswer=[];
 					robotAnswer.push(obj);
-		  
+
 					var _data=new Object();
 					_data.robotAnswer=robotAnswer;
-		  
+
 					recordData += (data.talkMessageList[i].question ? This.customHtml(This.replaceFace(data.talkMessageList[i].question),data.talkMessageList[i].dateTime,data.talkMessageList[i].askType) : '') + ((data.talkMessageList[i].reply || '') ? This.robotHtml(_data) : '')
 				}
 				//recordData = This.iosBindEvent(recordData);
-				
+
 				recordData=recordData.replace(/"/g, '\'').replace(/\n+/g, '').replace(/(href=)(['"])([\S]+)(['""])(\s)/g, '$1' + '\"' + '$3' + '\"' + '$5');
 				This.$obj.$chatCtnId.append(recordData)//添加机器人的话
-		  
+
 				//This.bodybindgClick();
 				// $('#' + This.options.chatCtnId).append('<div class="flashOutDeal">以上为历史记录</div>')
 				This.scrollbar.scrollTo('bottom', true);
@@ -2517,13 +2581,13 @@ function uploadFile (options) {
     robotName:'',
     //欢迎语
     sayHello: function (data) {
-      this.robotName= data.webConfig.robotName;
+      this.robotName= this.getUrlQuery('mideaSource') ? this.getUrlQuery('mideaSource') : data.webConfig.robotName;
       this.$obj.$chatCtnId.empty().append(this.robotHtml(data));
     },
     scrollbarUpdate: function () {
       this.scrollbar.scrollTo('bottom')
     },
-    
+
     //机器人结构
     robotHtml: function (data, index, hotQue) {//hotQue代表欢迎语下面的热点问题
       index = index || 0//默认渲染机器人的第一句话
@@ -2563,7 +2627,7 @@ function uploadFile (options) {
       }
       //机器人整体结构
       if (data.webConfig) {//欢迎语结构
-        this.robot.robotName = data.webConfig.robotName//机器人名字
+        this.robot.robotName = this.getUrlQuery('mideaSource') ? this.getUrlQuery('mideaSource') : data.webConfig.robotName // 机器人名称
         //%%
         var helloWord = data.helloWord || data.webConfig.helloWord
         if (data.chatLink) {
@@ -2591,8 +2655,17 @@ function uploadFile (options) {
 
                 has_ydWords = true
               }
-              for (var i = 0; i < gusList.length; i++) {
-                gusListHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + gusList[i].solutionId + '" title="' + (gusList[i].seedQuestion || gusList[i]).question + '">' + (gusList[i].seedQuestion || gusList[i]).question + '</span></div>'
+              /******************
+               * taskid = 337 智能接待组分页展示功能
+               * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+               * ***********************/
+              if(data.serviceType == 'guideconfig'){//答案为接待组
+                var ansConList = gusList;
+                gusListHtml = This.distriPageList(gusList,ansConList)
+              }else{
+                for (var i = 0; i < gusList.length; i++) {
+                  gusListHtml += '<div class="MN_gusList"><span>' + (i + 1) + '. </span><span class="MN_guideQue" sId="' + gusList[i].solutionId + '" title="' + (gusList[i].seedQuestion || gusList[i]).question + '">' + (gusList[i].seedQuestion || gusList[i]).question + '</span></div>'
+                }
               }
             }
           }
@@ -2613,7 +2686,16 @@ function uploadFile (options) {
                 }
 
               }
-              gusListHtml = ydWords + '<p>' + gusListHtml + '</p>' + '<p>' + (gusWords.afterWords || '') + '</p>'
+              /******************
+               * taskid = 337 智能接待组分页展示功能
+               * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+               * 分页时不需要展示gusWords.afterWords
+               * ***********************/
+              if(data.serviceType == 'guideconfig'){
+                gusListHtml = ydWords + '<p>' + gusListHtml + '</p>'
+              }else{
+                gusListHtml = ydWords + '<p>' + gusListHtml + '</p>' + '<p>' + (gusWords.afterWords || '') + '</p>'
+              }
             }
           }
 
@@ -2677,6 +2759,86 @@ function uploadFile (options) {
       }
 
       return html
+    },
+	/******************
+     * taskid = 337 智能接待组分页展示功能
+     * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+     * ***********************/
+    distriPageList:function(gusList,ansConList){
+      var i = 0,
+          // pageArray = [],//存储数据
+          liCount = ansConList.length,//数据总条数
+          PageSize  = 8,//每页显示条数
+          PageCount  = Math.ceil(liCount/PageSize),//总页数
+          currentPage = 1,//设置当前页
+          isShow = 'none',//判断是否显示上下页
+          replyNum = '0',//判断元素距离底部的距离
+		  pageHeight ='200px',//技能组分页页面高度
+          pagingList = '';//渲染数据到页面
+          if(liCount <= PageSize){
+            isShow = 'none';
+            replyNum = '0';
+          }else{
+            isShow = 'block';
+            replyNum = '32px';
+          }
+          this.options.pageArray = [];
+          for(var i = 0;i < ansConList.length;i++){
+            this.options.pageArray.push('<li class="MN_pageLi"><a class="pageQueList">'+ansConList[i].question+'</a></li>');
+          }
+          for(i = 0;i < PageSize;i++){
+            if(this.options.pageArray[i]){
+              pagingList += this.options.pageArray[i]
+            }
+          }
+          if(this.options.flagPage){
+            this.pageData(PageCount,PageSize)
+          }
+          gusList = '<div class="distributionAns"><div class="distributionTitle">请选择您需要转接的客服技能组</div><ul class="pagingList" style="height:'+pageHeight+'">'+pagingList+'</ul><div class="replyNumber" style="margin-bottom:'+replyNum+'">点击问题获取答案</div><div class="pageNum" style="display:'+isShow+'"><div class="prev" page="'+currentPage+'">上一页</div><div class="next" page="'+currentPage+'">下一页</div></div></div>'
+          return gusList;
+    },
+    /***********************************
+     * taskid = 337 智能接待组分页展示功能
+     * 根据参数guideconfig来判断是否需要分页，如果类型为guideconfig则分页展示，否则不分页
+     * 点击上一页、下一页来渲染数据
+     * *********************************/
+    pageData: function(PageCount,PageSize){
+      this.options.flagPage = false;
+      var This = this;
+      PageCount  = Math.ceil(This.options.pageArray.length/PageSize),//总页数
+      //上一页
+      $('body').on('click','.prev',function(){
+        var prevThis = this;
+        if($(prevThis).attr('page') > 1){
+          var page = Number($(prevThis).attr('page'))-1;
+          $(prevThis).attr('page',page);
+          $(prevThis).next().attr('page',page)
+        }else{
+          $(prevThis).attr('page',PageCount)
+          $(prevThis).next().attr('page',PageCount)
+        }
+        showPage($(prevThis).attr('page'),prevThis);
+      })
+      //下一页
+      $('#client').on('click','.next',function(){
+        var nextThis = this;
+        if($(nextThis).attr('page') < PageCount){
+          var page = Number($(nextThis).attr('page'))+1;
+          $(nextThis).attr('page',page);
+          $(nextThis).prev().attr('page',page);
+        }else{
+          $(nextThis).attr('page',1)
+          $(nextThis).prev().attr('page',1)
+        }
+        showPage($(nextThis).attr('page'),nextThis);
+      })
+      
+      function showPage(whichPage,Tthis){
+        $(Tthis).parents('.distributionAns').find('.pagingList').html('');
+        for(i = (whichPage-1)*PageSize; i < PageSize*whichPage ; i++){
+          $(Tthis).parents('.distributionAns').find('.pagingList').append(This.options.pageArray[i]);
+        }
+      }
     },
     //客户结构
     customHtml: function (word, time,msgType) {
@@ -2925,7 +3087,7 @@ function uploadFile (options) {
         }
         This.robot.html = This.robot._html = ''
         This.$obj.$inputCtnId.val('')//清空输入框
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
       }
     },
     // 语义表情转字符表情
@@ -2960,6 +3122,60 @@ function uploadFile (options) {
             if (hasCtn) {
               This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
               This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
+
+              // 在ie的版本10以上才执行 或者 非ie
+              if (!IEnum || IEnum > 9) {
+                // midea增加
+                // 机器人消息同步
+                var customerId = sessionStorage.getItem('mideaCustomerId')
+                var customerName = olcsSession.obtainStorage('name')
+                var content = []
+                // 发送类型sendType  0： 访客发给机器人   1： 机器人回复访客
+                var robotAnswer = data.robotAnswer[0]
+
+                // 机器人找不到答案
+                if (robotAnswer.answerType === -1) {
+                  content.push({
+                    type: 'text',
+                    text: robotAnswer.gusWords.ydWords
+                  })
+                  robotAnswer.gusList.forEach(function (item) {
+                    content.push({
+                      type: 'text',
+                      text: item.question
+                    })
+                  })
+                  console.log('找不到答案的content：', content)
+                } else {
+                  content =  this.aqformat(robotAnswer.ansCon)
+                  console.log('找到答案的content：', content)
+                  // if (robotAnswer.msgType === 'image') {
+                  //   content.push({
+                  //     type: 'imgUrl',
+                  //     url: robotAnswer.ansCon
+                  //   })
+                  // } else {
+                  //   if (/<\/?.+?>/.test(robotAnswer.ansCon)) { // 被html标签嵌套
+                  //     content =  this.aqformat(robotAnswer.ansCon)
+                  //   } else {
+                  //     content.push({
+                  //       text: this.aqformat(robotAnswer.ansCon),
+                  //       type: 'text'
+                  //     })
+                  //   }
+                  // }
+                }
+                // 同步访客的消息
+                olcsGetInfo.saveMsgForRobot(customerId, customerName, data.question, 0)
+                // 同步机器人
+                setTimeout(function(){
+                  // 同步机器人
+                  olcsGetInfo.saveMsgForRobot(customerId, customerName, JSON.stringify(content), 1)
+                }, 1000)
+
+                console.log('发送的内容是', data)
+                // midea结束
+              }
             }
             This.recommendQue(data)//推荐问题
             This.recommendUrl(data)//推荐链接
@@ -2968,7 +3184,7 @@ function uploadFile (options) {
              * 原因：防止回复内容过多，需等DOM生产完才能滚屏
              * 设置300毫秒的延时再滚屏
              */
-            // 
+            //
             setTimeout(function(){
             	This.scrollbar.update()
             	This.scrollbar.scrollTo('bottom')
@@ -2982,6 +3198,55 @@ function uploadFile (options) {
         }
       }
     },
+    // midea开始
+    // 机器人问答字符串处理
+    aqformat: function (str) {
+      var sendBody = []
+      str = str.split('&nbsp;').join('')
+      var div = document.createElement('div')
+      div.innerHTML = str
+      console.log('div的内容是：', div)
+      var deepCopy = function (div) {
+        for (var i = 0; i < div.childNodes.length; i++) {
+          var child = div.childNodes[i]
+          if (child.childNodes && child.childNodes.length > 1) {
+            deepCopy(child)
+          } else {
+            if (child.localName === 'a') {
+              sendBody.push({
+                type: 'fileUrl',
+                url: /http/.test(child.innerText) ? child.href : child.pathname,
+                text: child.innerText
+              })
+            } else if (child.localName === 'img') {
+              if (!/icon/.test(child.src)) {
+                console.log('图片', child)
+                sendBody.push({
+                  type: 'imgUrl',
+                  url: child.src
+                })
+              }
+            } else {
+              var text
+              if (child.childNodes.length > 0) {
+                deepCopy(child)
+              } else {
+                text = child.innerText || child.data
+                if (text && !/icon/.test(text)) {
+                  sendBody.push({
+                    type: 'text',
+                    text: text
+                  })
+                }
+              }
+            }
+          }
+        }
+      }
+      deepCopy(div)
+      return sendBody
+    },
+    // midea结束
     // 获取正确的语音文本
     getCurrectWords: function (html) {
       var $html = $(html)
@@ -3120,6 +3385,32 @@ function uploadFile (options) {
             This.scrollbarUpdate()
           }
         })
+      })
+    },
+	//回答接待组问题->s=aq
+    askDistributionQue: function () {
+      var This = this
+      $('body').on('click.FA', '.pageQueList', function () {//#.MN_guideQue的父级是必不可少的
+        This.robot.guide = false// 退出引导
+        This.scrollbar.options.autoBottom = true// 恢复自动滚动到底部
+        var $ThisPage = $(this)
+        This.$obj.$chatCtnId.append(This.customHtml($ThisPage.html()))//添加我的话
+          /**
+           * 如果下线,先调取s=p初始化，再调取s=aq和s=kl恢复正常回话
+           */
+          var promiseArr = [];
+          if(This.isOffline){
+            promiseArr.push(This.initBaseInfo());
+          }
+          Promise.all(promiseArr)
+          .then(function (data) {
+            if(This.isOffline){ 
+              This.timeRequest();
+              This.isOffline=false;
+              isGOffline = false;
+            }
+			window.olcsGetInfo.openOnlineServer($ThisPage.text())
+          })
       })
     },
     //回答引导问题->s=aq
@@ -3416,18 +3707,30 @@ function uploadFile (options) {
       }
 
       //键盘事件
-      $(document).on('keyup.FA', function (e) {
+      $(document).on('keydown.FA', function (e) {
         This.remainWord($inputCtnId, $tipWordId, $remainWordId)
         var isInputCtn = $(document.activeElement).is('#' + This.options.inputCtnId)
 
-        if (e.keyCode == 13 && isInputCtn) {//Enter键发送
-          This.askQue()
+        if (sessionStorage.getItem('switchFlag') === 'robot') {
+          if (e.keyCode == 13 && isInputCtn) {//Enter键发送
+            // midea增加
+            // 如果全为空格或者换行符不允许发送
+            if ($inputCtnId.val().replace(/\n/g, "").replace(/(^\s*)|(\s*$)/g, "") !== '') {
+              console.log('keydown,输入框输入的内容：', $inputCtnId.val().replace(/(^(\s|\n)*)|((\s|\n)*$)/g, "").replace(/\n/g, "").replace(/(\s+)/g, " "));
+              This.askQue()
+              $inputCtnId.val('')
+            }
+          }
+          // midea结束
+          // midea注释开始
+          // This.askQue()
+          // midea注释结束
         }
       })
 
       //文本框改变事件
       $inputCtnId.on('input.FA, propertychange.FA', function (e) {
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
         $tipWordId.hide()
       })
       // 快捷发送欢迎语(防止键盘拉起)
@@ -3447,7 +3750,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $tipWordId.hide()
             }
           } else {
@@ -3472,10 +3775,28 @@ function uploadFile (options) {
 
       //点击发送
       $sendBtnId.on('click.FA', function () {
-        This.askQue()
-        setTimeout(function () {
-          $inputCtnId.focus()
-        }, 50)
+        // midea增加
+        // 全部为空白字符或者空白字符组合换行符不能发送
+        if (sessionStorage.getItem('switchFlag') === 'robot') {
+          if ($inputCtnId.val().replace(/\n/g, "").replace(/(^\s*)|(\s*$)/g, "") !== '') {
+            // var customerId = sessionStorage.getItem('mideaCustomerId');
+            // var customerName = olcsSession.obtainStorage('name');
+            // // 同步访客消息
+            // olcsGetInfo.saveMsgForRobot(customerId, customerName, $inputCtnId.val().replace(/(^(\s|\n)*)|((\s|\n)*$)/g, "").replace(/\n/g, "").replace(/(\s+)/g, " "), 0)
+            console.log('send,输入框输入的内容：', $inputCtnId.val().replace(/(^(\s|\n)*)|((\s|\n)*$)/g, "").replace(/\n/g, "").replace(/(\s+)/g, " "));
+            This.askQue()
+            setTimeout(function () {
+              $inputCtnId.focus()
+            }, 50)
+          }
+        }
+        // midea结束
+        // midea注释开始
+        // This.askQue()
+        // setTimeout(function () {
+        //   $inputCtnId.focus()
+        // }, 50)
+        // midea注释结束
       })
     },
     //服务满意评价度准备->提示语
@@ -3503,7 +3824,7 @@ function uploadFile (options) {
       }
 
       $commentInputCtnId.on('input.FA, propertychange.FA', function (e) {
-        $(document).trigger('keyup')
+        $(document).trigger('keydown')
         $commentTipWordId.hide()
       })
 
@@ -3512,7 +3833,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $commentTipWordId.hide()
             }
           } else {
@@ -3650,7 +3971,7 @@ function uploadFile (options) {
         if (isIE) {
           if (e.type == 'focus') {
             if ($(this).val()) {
-              $(document).trigger('keyup')
+              $(document).trigger('keydown')
               $leaveMsgTipWordId.hide()
             }
           } else {
@@ -3883,7 +4204,7 @@ function uploadFile (options) {
                                                     This.options.getCallback(This.getCurrectWords(This.robotHtml(data, i)), data)//获取到答案后的回调
                                                     This.recommendQue(data, i)//推荐问题
                                                 }
-                                                
+
                                             }else{
                                                 for (var i = 0, len = data.robotAnswer.length; i < len; i++) {
                                                     This.$obj.$chatCtnId.append(This.robotHtml(data, i))//添加机器人的话
@@ -3905,7 +4226,7 @@ function uploadFile (options) {
                                     }
                                     This.mouseIsOn = false
                                     This.tspan = data.tspan * 1000
-                                    This.offline()// 先下线才能再次上线                  
+                                    This.offline()// 先下线才能再次上线
                                 }
                             })
                         }
@@ -3949,7 +4270,7 @@ function uploadFile (options) {
           }
           if (!(noViewArr.join('').indexOf('0') + 1)) {
             MN_Base.getNaturalSize(e.target, function (w, h) {
-    
+
               var $img = $('<img class="FA_previewImg" src="' + e.target.src + '">').css({
                 /*width: w,
 	            					height: h,
@@ -3966,7 +4287,7 @@ function uploadFile (options) {
               //var ih = getIMG.height
               var iw = e.currentTarget.naturalWidth
               var ih = e.currentTarget.naturalHeight
-   
+
               var m = iw / fw
               var n = ih / fh
               if (m >= 1 && n <= 1) {
@@ -3996,7 +4317,7 @@ function uploadFile (options) {
               //图片预览end
 
               $('.FA_previewCtn').show()
-            
+
               // 移动缩放初始化删除margintop、left参数
               imgAutoSize();
 
@@ -4029,9 +4350,26 @@ function uploadFile (options) {
             var difx = mausx - winx;
             var dify = mausy - winy;
             var imgName = $('.FA_previewImg');
-            var clicked = false;
+          var clicked = false;
+          if(!document.getElementsByClassName){   
+            document.getElementsByClassName = function(className, element){   
+            var children = (element || document).getElementsByTagName('*');   
+            var elements = new Array();   
+            for (var i=0; i<children.length; i++){   
+            var child = children[i];   
+            var classNames = child.className.split(' ');   
+            for (var j=0; j<classNames.length; j++){   
+            if (classNames[j] == className){   
+            elements.push(child);   
+            break;   
+            }   
+            }   
+            }   
+            return elements;   
+            };   
+          }  
             var myimage = document.getElementsByClassName('FA_previewImg');
-            
+
 
             // 拖拽
             imgName.mousemove(function (event) {
@@ -4066,33 +4404,40 @@ function uploadFile (options) {
             imgName.on('mousewheel',MouseWheelHandler);
 
             function MouseWheelHandler(e) {
-                var e = window.event || e;
-                var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-                imgName.width(Math.max(400, Math.min(1400, imgName.width() + (60 * delta))));
-                e.preventDefault();
+                // var e = window.event || e;
+                var e = e.originalEvent;
+                if (!e) { 
+                  e = window.event || e;
+                }
+              console.log(e.wheelDelta)
+              console.log(e.deltaY)
+              var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.deltaY)));
+              
+              imgName.width(Math.max(400, Math.min(1400, imgName.width() + (60 * delta))));
+              if (e.preventDefault) { e.preventDefault(); };
                 popup(imgName)
                 return false;
             }
             function popup(popupName) {
-                var _scrollHeight = $(document).scrollTop(),//获取当前窗口距离页面顶部高度 
-                _windowHeight = $(window).height(),//获取当前窗口高度 
-                _windowWidth = $(window).width(),//获取当前窗口宽度 
-                _popupHeight = popupName.height(),//获取弹出层高度 
-                _popupWeight = popupName.width(),//获取弹出层宽度 
+                var _scrollHeight = $(document).scrollTop(),//获取当前窗口距离页面顶部高度
+                _windowHeight = $(window).height(),//获取当前窗口高度
+                _windowWidth = $(window).width(),//获取当前窗口宽度
+                _popupHeight = popupName.height(),//获取弹出层高度
+                _popupWeight = popupName.width(),//获取弹出层宽度
                 _posiTop = (_windowHeight - _popupHeight) / 2 ,
-                _posiLeft = (_windowWidth - _popupWeight) / 2; 
-                popupName.css({ "left": _posiLeft + "px", "top": _posiTop + "px", "display": "block" });//设置position 
+                _posiLeft = (_windowWidth - _popupWeight) / 2;
+                popupName.css({ "left": _posiLeft + "px", "top": _posiTop + "px", "display": "block" });//设置position
             }
         }
 
 
 
-   
-        
 
 
 
-        
+
+
+
 
 
         })
@@ -4202,7 +4547,7 @@ function uploadFile (options) {
 
       $(window).on('unload.FA', function () {
         This.offline()
-      }) 
+      })
       //This.offline()
     },
     //下线请求->s=offline

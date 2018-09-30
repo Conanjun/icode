@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>faqrobot智能问答机器人</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="skin/robot/css/robot.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.autocomplete.css" type="text/css">
+    <link rel="stylesheet" href="css/nanoscroller.css" type="text/css">
+    <style type="text/css">
+.nano {
+	height: 421px;
+	border: 1px solid #d9d9d9;
+	border-top: none;
+	overflow-x: hidden;
+	position: relative;
+}
+.nano .pane {
+	width: 8px;
+	right: -1px;
+	margin: 2px;
+}
+.nano .slider {
+	background: #f4f5f6;
+}
+.quick{
+	border:1px solid #d9d9d9;
+	overflow:hidden;
+}
+.quick ul{
+	height: 100%;
+    list-style: none;
+    margin: 0 auto;
+    padding: 10px;
+}
+.quick ul li{
+    float: left;
+    height: 110px;
+    text-align: center;
+	margin-left:48px;
+}
+
+
+.quick ul li img {
+    height: 88px;
+    max-width: 100%;
+    width: 88px;
+}
+
+.quick ul span {
+    color: #00aade;
+}
+</style>
+    <script type="text/javascript"  src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.nanoscroller.js"></script>
+    <script type="text/javascript">
+        var s_tspan=3;//主动请求的时间间隔
+        var s_state=0;//聊天的状态
+        var baseUrl= 'http://127.0.0.1:10098/robot/';
+        baseUrl= '../';
+        var s_q_url="";//问题的url
+        var s_a_url="";//获取相关问题答案的url地址
+        var s_sysNum="";
+        var hkey = "Enter";//hotKey
+        var t_count=0;//运行的代理的次数
+        var dt;//定时器
+        var robotName='FAQRobot';
+    </script>
+    <script  src="skin/robot/js/jquery.faqrobot.dev.js?v=1.3"></script>
+    </head>
+    <body style="width:965px; margin:0 auto;">
+<div class="robot_top">
+      <div class="robot_topL">
+    <ul class="robot_topL_icon">
+          <img id="weblogo"/>
+        </ul>
+    <ul class="robot_topL_name">
+          <h1 id="titleRobot">我是智能客服,很高兴为您服务.</h1>
+          <p>24小时竭诚为您服务.</p>
+        </ul>
+  </div>
+     <div class="robot_topR">
+    </div>
+    </div>
+<div class="robot_content">
+      <div class="robot_contentL">
+    <div id="about" class="nano has-scrollbar">
+          <div class="content" tabindex="0" style="right: -17px;">
+        <div class="robot_wdlist" id="left_content"> </div>
+      </div>
+        </div>
+    <div class="pane" style="opacity: 1; visibility: visible;">
+          <div class="slider" ></div>
+        </div>
+    <div class="robot_write">
+          <div class="robot_write_top">
+        <ul class="robot_write_name">
+              请输入您的问题：
+            </ul>
+        <ul class="robot_write_txt">
+              <li class="robot_write_number">您还可以输入<span id="wordremain">100</span>个字符</li>
+              <li class="robot_write_clear" id="clearScreen">清空记录</li>
+            </ul>
+      </div>
+          <div class="robot_input">
+        <ul class="robot_textarea">
+              <textarea maxlength="100" id="message"></textarea>
+            </ul>
+        <dl class="robot_send" id="sendBtn">
+              <dd style="margin-bottom:4px;"><img src="skin/robot/image/send_icon.png" class="fixpng" /></dd>
+              <dd >发送</dd>
+            </dl>
+        <div style=" font-family:Tahoma;font-size:12px;display: block;height:16px;padding-top:4px; position: absolute; left: 2px;color:#ccc;" ><span id="advFaqrobot">Powered By FaqRobot&nbsp;&nbsp;</span><a href="javascript:void(0); " onclick="dialog(500,430);return false;" >意见反馈</a></div>
+      </div>
+        </div>
+  </div>
+      <div class="showWaring" id="showErrorId" ><span></span></div>
+      <div class="robot_jt">
+        <ul>
+        </ul>
+  </div>
+      <div class="robot_contentR">
+    <ul class="hottitle hottitle_on" id="hotone" >
+          热点问题
+        </ul>
+    <div class="robot_hot hot_gundong" id="showhotone" style="padding:13px 27px 11px 15px;display:block;"> </div>
+    <ul class="hottitle " id="hottwo">
+          推荐咨询
+        </ul>
+    <div class="robot_hot hot_gundong" id="showhottwo" style="padding:13px 27px 11px 15px;"> </div>
+        <!-- <ul class="hottitle " id="hotthree">
+          快捷服务
+        </ul> -->
+    <div style="padding:25px 0px 324px 20px;  height:90px; display:none;" id="showhotthree" class="quick">
+    	<ul>
+        	
+        </ul>
+    </div>
+  </div>
+    </div> 
+<div class="fadeBackModal"></div>
+<div class="fadeBackContent" >
+      <div id="head_bg"></div>
+      <form >
+    <div id="pingjia" style="margin-left:40px;">
+          <p><strong>请您对刚才的服务沟通进行评价:</strong></p>
+          <div class="rad fontColor" >
+        <input type="radio" name="level" checked="checked" value="1" class="rdoGood">
+        送鲜花
+        <input type="radio" name="level"  value="0" style="margin-left:100px;" class="rdoBad">
+        拍板砖 </div>
+        </div>
+    <div class="hid" id="hid" style="display:none">
+          <p><strong>您不满意的原因是？</strong></p>
+          <div class="fade fontColor">
+        <input type="checkbox" name="reason[]"  value="回答不准确" >
+        回答不准确
+        <input type="checkbox" name="reason[]"  value=" 答非所问" style="margin-left:50px;">
+        答非所问
+        <input type="checkbox" name="reason[]"  value="机器人骂人" style="margin-left:50px;">
+        机器人骂人 </div>
+          <div style="margin-top:20px; margin-left: 35px;">
+        <label class="contTitle fontColor">为了更好的为您服务，请输入您的宝贵意见！</label>
+        <br>
+        <textarea name="content" id="cont"></textarea>
+      </div>
+          <input type="hidden" name="sub">
+        </div>
+    	<div id="send">
+          <input type="button"  value="发送" id="fadeBackId" />
+          <input type="button"  value="取消" class="close" style="margin-left:5px;" />
+        </div>
+  </form>
+    </div>
+</body>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+    var option={
+        basePath:'../servlet/',
+        chatContDiv:'left_content',
+        topQuestionDiv:'showhotone',
+        newQuestionDiv: 'showhottwo',
+		inputMagOldvalue:'请在这里用一句简单的话提问',
+        sendBtn:'sendBtn',
+        inputMsgArea:'message',
+        clearScreen:'clearScreen',
+        showErrorId:'showErrorId',
+		logoUrl:"skin/robot/image/logo.png",
+		logoDiv:"weblogo",
+		advFaqrobot:"advFaqrobot",
+		kfUrl:'skin/robot/image/logo.png',
+		khUrl:'skin/robot/image/robot_askicon.png',
+		quickLink:'showhotthree'
+	};
+    $(document).ready(function() {
+        $("#message").faqrobot(10000,option);
+        $("input[name=level]").eq(0).attr("checked",'checked');
+    });
+	</script>
+    <script src="skin/robot/js/jquery.autocomplete.js" language="javascript" type="text/javascript"></script>
+</html>

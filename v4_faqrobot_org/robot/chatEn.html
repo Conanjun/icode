@@ -1,18 +1,19 @@
+
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
     <link rel="shortcut icon" href="images/logo_min.png" type="/image/x-icon">  
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <title>FaqRobot</title>
 
-    <link rel="stylesheet" href="css/minichat.css?time=1513">
+    <link rel="stylesheet" href="skin/hk/css/minichat.css?time=1513">
 	<link rel="stylesheet" href="skin/chat2/css/app.css?time=1513">
 
-    <script src="js/minichat.js?time=1513"></script>
-    <script src="skin/chat2/js/app.js?time=1513"></script>
+    <script src="skin/hk/js/minichat.js?time=1513"></script>
+    <script src="skin/hk/js/chat2-app.js"></script>
 	<style>
 	.whole .body .bodyRight .bodyRightCtx .itemCtn .itemHead{
 		font-size:11px;
@@ -52,7 +53,7 @@
                     </div>
                     <div class="sendCtn">
                         <span id="clearMsg" class="clearMsg"></span>
-                        <a id="power" target="_blank" href="http://www.faqrobot.org"><span class="power" id='copyright'>Powered By YunWen</span></a>
+                        <a id="power" target="_blank" href="http://www.faqrobot.org"><span class="power">Powered By YunWen</span></a>
                         <span id="sendBtn" class="sendBtn">Send</span>
                     </div>
                 </div>
@@ -61,10 +62,10 @@
                 <div class="bodyRightCtx">
                     <div class="itemBtnCtn">
                         <div class="commonQue itemCtn">
-                            <div class="itemHead1 itemHead itemHeadFocus" index="1">Top spotlight</div>
+                            <div class="itemHead1 itemHead itemHeadFocus" index="1">Top Issue</div>
                         </div>
                         <div class="quickLink itemCtn">
-                            <div class="itemHead2 itemHead" index="2"> clipper service </div>
+                            <div class="itemHead2 itemHead" index="2"> Shortcut </div>
                         </div>
                         <div class="feedBack itemCtn">
                             <div class="itemHead3 itemHead" index="3">Feedback</div>
@@ -72,6 +73,10 @@
                         <div class="artiSearch itemCtn artiSearchHide">
                             <div class="itemHead4 itemHead" index="4">Intelligent search</div>
                         </div>
+						<div class="thirdURL itemCtn thirdURLRecommend">
+                            <div class="itemHead5 itemHead" index="5">Referral Link</div>
+                        </div>
+
                     </div>
                     <div class="itemCtxCtn">
                         <div id="commonQue" class="itemCtx" index="1"></div>
@@ -97,10 +102,26 @@
                             </div>
                         </form>
                         <div id="artiSearch" class="itemCtx" index="4"></div>
+						<div id="thirdUrl" class="itemCtx" index="5">
+                        	<iframe frameborder="0" width="100%" height="100%" src="thirdUrlDemo.html"></iframe>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>  
+</body>
+<script type="text/javascript">
+(function(ji, a, x, i, n, j, s) {
+	ji[n] = ji[n] || function() {
+		(ji[n].n = ji[n].n || []).push(arguments);
+	};
+	j = a.createElement(x), s = a.getElementsByTagName(x)[0];
+	j.async = true;
+	j.charset = "UTF-8";
+	j.src = i + "?v=" + new Date().getUTCDate() + "&id=ath0ag9lmgyyeg&appName=test210&appChannel=20002";
+	s.parentNode.insertBefore(j, s);
+})(window, document, "script", "http://oversea-online.hikvision.com:7011/mcs.js", "_JIAXIN");_JIAXIN();
+</script>
 </html>

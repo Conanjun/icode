@@ -1,0 +1,76 @@
+@charset=utf-8;
+.qqchat a {
+	text-decoration:none;
+	color: #999;
+	font-size: 12px;
+	font-family:'微软雅黑';
+}
+.qqchat .showchat .content li a:hover{
+	color: #000;
+}
+.qqchat {
+	position: fixed;
+	right: 0;
+	top:40%;
+	width: 104px;
+	height: 134px;
+	font-family:'微软雅黑';
+	z-index:1000;
+	
+}
+.qqchat .showchat {
+	border: 1px solid #FBC9A6;
+	position: absolute;
+	padding: 10px 12px 15px 8px;
+	width: 200px;
+	top: -160px;
+	left: -175px;
+	border-radius: 5px;
+	background: #FFF3DB;
+	z-index:1000;
+
+}
+/*.qqchat .header{
+	height:40px;
+}*/
+.qqchat .header a{
+	margin-left:10px;
+}
+.qqchat .hidechat {
+	position: absolute;
+	z-index:1001;
+	cursor: pointer;
+}
+.qqchat .showchat h2 {
+	color: #444;
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 5px 0;
+    text-indent: 10px;
+	
+	
+}
+
+.qqchat .showchat .content {
+	margin-left: 20px;
+}
+.qqchat .showchat .content li {
+	 color: #999;
+    font-size: 12px;
+    list-style: inside none disc;
+    padding: 3px 0;
+    text-indent: -6px;
+}
+.qqchat .showchat .content li a {
+	line-height: 20px;
+}
+
+.qqchat .showchat .close {
+	color: #FBC9A6;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-weight: bold;
+	cursor:pointer;
+}

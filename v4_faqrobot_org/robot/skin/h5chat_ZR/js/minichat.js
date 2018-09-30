@@ -2343,7 +2343,6 @@ function uploadFile (options) {
 
   Faqrobot.prototype = {
     init: function () {
-      // this.setInputTop();
       this.getHrefInfo()//获取网址->网址有jid或sysNum，则相应配置参数失效
       this.initOffline()//关闭、刷新网页前请求下线->s=offline
       if (!this.options.jsonp) {//不跨域
@@ -3032,6 +3031,35 @@ function uploadFile (options) {
             if(username!=''&&username!='undefined'){
               helloWord='Hi，'+username+'，'+helloWord;
             }
+            //自如定制  增加快捷接入人工操作
+            /**
+             * 说明：startTime:开始时间，endTime:结束时间，nowTime:当前时间，channelInfo：提示接入客服通道的话术
+             *   servInsert:{
+             *     startTime:22:30,
+             *     endTime:9:00,
+             *     channelInfo:''
+             *   }
+            */
+            if(data.servInsert){
+              var startTime,
+                  endTime,
+                  time = new Date(),
+                  hour = time.getHours(),
+                  minute = time.getMinutes(),
+                  nowTime = hour + minute / 60;
+                  this.options.vipQuestion = data.servInsert.channelInfo;
+              if(data.servInsert.startTime){
+                startTime = data.servInsert.startTime;
+                startTime = startTime.split(':') ? (Number(startTime.split(':')[0]) + Number(startTime.split(':')[1] / 60)) : startTime
+              }
+              if(data.servInsert.endTime){
+                endTime = data.servInsert.endTime;
+                endTime = endTime.split(':') ? (Number(endTime.split(':')[0]) + Number(endTime.split(':')[1] / 60)) : endTime
+              }
+              if(nowTime > startTime || nowTime < endTime){
+                helloWord +='<div class="quickChannel"><span>· </span>'+data.servInsert.channelInfo+'<a class="showVipInsert" data-toggle="modal" data-target="#vipInsert">点我解决</a></div>'
+              } 
+            }
         }
         html = this.options.kfHtml[0].replace(/%aId%/g, aId).replace(/%cluid%/g, cluid).replace(/%kfPic%/g, this.robot.kfPic).replace(/%robotName%/g, this.robot.robotName).replace(/%helloWord%/g, helloWord).replace(/%formatDate%/g, this.getFormatDate())
       } else if (data.robotAnswer && data.robotAnswer.length > 0) {//机器人答案
@@ -3536,23 +3564,22 @@ function uploadFile (options) {
             This.options.getCallback(This.getCurrectWords(This.robotHtml(data)), data)//获取到答案后的回调
             This.recommendQue(data)//推荐问题
           } else {
-           
             This.request({
               params: {
                 s: 'aq',
                 question: This.replaceFace(question, true)
               },
               callback: function (data) {
-                //taskId=836 获取机器人状态更改头像
-                This.getFaqState(data);
+                  //taskId=836 获取机器人状态更改头像
+                  This.getFaqState(data);
 
-                /*taskid = 391 自如vip渠道修改转人工逻辑**/ 
-                if(This.options.sourceId==14 && This.options.changeVip){
-                  This.vipDirect();
-                  This.options.changeVip = false;
-                  return ;
-                }
-                
+                 /*taskid = 391 自如vip渠道修改转人工逻辑**/ 
+                  if(This.options.sourceId==14 && This.options.changeVip){
+                      This.vipDirect();
+                      This.options.changeVip = false;
+                      return ;
+                  }
+             
                 This.askQueBack(data)// 获取发送的回调
                  //taskId=408 自如定制 thirdUrl字段有值，则添加按钮，跳转原生页面
                  This.goMore(data);
@@ -4644,7 +4671,7 @@ function uploadFile (options) {
 
 
                                     if (data.nowState == 3 || data.nowState == 5) {// 人工聊天
-
+                                    $('.quickChannel .showVipInsert').attr('data-target','')
                                         defaults.evaluationType=1;//记录评价类型为人工会话满意度
                                         sessionStorage.setItem('evaluationType',defaults.evaluationType);//记录状态，是的app.js中可读此值
 
@@ -4661,6 +4688,7 @@ function uploadFile (options) {
                                         $('.sendPicCtn').show()
                                         This.kuaijie()
                                     } else {// 智能聊天
+                                      $('.quickChannel .showVipInsert').attr('data-target','#vipInsert')
                                         isArti = false
                                         if (This.options.intelTitleChange) {// 是否修改标题
                                             if (isArti != _isArti) {
@@ -5133,6 +5161,21 @@ function uploadFile (options) {
     //个位数前面加0
     addZero: function (num) {
       return num < 10 ? '0' + num : num
+    },
+    //用户确定授予vip身份，提前排队
+    pushChannel:function(){
+      var This = this,
+          vipQuestion = This.options.vipQuestion + '\n'+'紧急问题插队会话';
+      This.request({
+        params:{
+          s:'vipTurnPeople',
+          vipQuestion:vipQuestion
+        },
+        callback:function(data){
+          $('.'+This.options.vipInsert).modal('hide')
+          This.$obj.$chatCtnId.append(This.robotHtml(data))
+        }
+      })
     }
   }
 

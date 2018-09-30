@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>优惠卡查询</title>
+<link href="css/search.css" rel="stylesheet">
+</head>
+<body>
+	<div class="infiniyus_Con">
+    	<div class="con_title"><h3>优惠卡有效期查询</h3></div>
+    	<div class="kahao_search" style="padding:0 10px;">
+        	<span style="font-size:12px;">卡号:</span>
+        	<input type="text" id="kahao"><button type="button" onclick="qfcList();" style="margin-left:10px; width:40px;">查询</button>
+        </div>
+        <div class="striping"><div></div></div>
+        <div class="con_tab">
+        	<table class="table" id="qfcTable">
+            	<thead>
+                	<tr>
+                    	<th>优惠卡卡号</th>
+                        <th>姓名</th>
+                        <th>申请日期</th>
+                        <th>失效日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr><td colspan="4" style="text-align:center;">当前纪录为空！</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+function qfcList(){
+	$.ajax({
+	type:'post',
+	datatype:'json',
+	cache:false,
+	url:encodeURI('../../../wxj/WxjQuery/getUCardInfo'),
+	data:'dealerNo='+$('#kahao').val(),
+	success:
+	function(data){
+	  if(data.status==0){
+			var s = [];
+			if(data.dealerNo){
+				s.push('<tr>');
+				s.push('<td>'+data.dealerNo+'</td>');
+				s.push('<td>'+data.fullName+'</td>');
+				s.push('<td>'+data.appDate+'</td>');
+				if(!data.inactiveDate || data.inactiveDate==''){
+					s.push('<td>已失效</td>');
+				}else{
+					s.push('<td>'+data.inactiveDate+'</td>');
+				}
+				s.push('</tr>');
+				$('#qfcTable').find('tbody').html(s.join(''));
+			}else{
+				$('#qfcTable').find('tbody').html('<tr><td colspan="4" style="text-align:center;">当前纪录为空！</td></tr>');
+			}
+	  }else{
+		  
+	  }
+	}
+})
+}
+$('#kahao').keydown(function(event){
+	if(event.keyCode==13){
+		qfcList();
+	 	return false;
+	}
+})
+</script>
+</html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">  
-<head>  
+<html lang="en">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,12 @@
     <link href="skin/chat_midea/css/jquery.mloading.css" rel="stylesheet" >
     <link rel="stylesheet" href="skin/chat_midea/css/chat.css"/>
     <link rel="stylesheet" href="skin/chat_midea/css/minichat.css">
+
+    <!-- midea增加开始 -->
+    <link rel="stylesheet" href="skin/chat_midea/css/midea.css">
+    <link rel="stylesheet" href="skin/chat_midea/css/emoji.css">
+    <!-- midea增加结束 -->
+
     <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
@@ -24,7 +30,7 @@
             src: url(skin/chat_midea/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(skin/chat_midea/fonts/glyphicons-halflings-regular.woff) format('woff'), url(skin/chat_midea/fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(skin/chat_midea/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
         }
     </style>
-</head>  
+</head>
 <body>
     <div class="headerMidea">
         <div class="headerLogo">
@@ -43,31 +49,62 @@
                 <li id="chatTab" role="presentation" class="active"  style="margin-left:15px;"><a href="#client" aria-controls="client" role="tab" data-toggle="tab">在线服务</a></li>
                 <li id="serveTab" role="presentation" ><a href="#accounting" aria-controls="accounting" role="tab" data-toggle="tab">自助报障</a></li>
             </ul>
-        
+
             <div class="tab-content">
                 <!-- 聊天 内容-->
                 <div role="tabpanel" class="tab-pane active chatCtn" id="client">
                     <div class="radius">
                         <div class="scoll-reference">
                             <div id='chat-client' class="scrollbar-macosx">
-                            </div>                            
+                            </div>
                         </div>
                     </div>
-            
+
 
                     <div class="chat-operation chatBodyCtn">
-                        <i class="fa fa-smile-o  moodBtn hide" aria-hidden="true" id="faceBtn"></i>
+                        <!-- midea注释开始 -->
+                        <!-- <i class="fa fa-smile-o  moodBtn hide" aria-hidden="true" id="faceBtn"></i>
                         <i class="fa fa-scissors screenBtn hide" aria-hidden="true"></i>
-                        <i class="fa fa-folder-o hide" aria-hidden="true"></i> 
+                        <i class="fa fa-folder-o hide" aria-hidden="true"></i>  -->
+                        <!-- midea注释结束 -->
+
+                        <!-- midea修改开始 -->
+                        <i class="fa fa-smile-o moodBtn hide" aria-hidden="true" id="faceBtn"></i>
+                        <i class="fa fa-image hide" aria-hidden="true" id="imageBtn"></i>
+                        <i class="fa fa-folder-o hide" aria-hidden="true" id="folderBtn"></i>
+                        <i class="fa fa-assist hide" aria-hidden="true" id="assistBtn">
+                            <img class="assist-img" src="skin/chat_midea/img/server.png">
+                        </i>
+                        <!-- <i class="fa fa-commenting-o hide" aria-hidden="true" id="lmBtn"></i> -->
+                        <span class="tips-word hide" data-toggle="tooltip" title="请使用第三方截图工具截好图后粘贴在输入框中">
+                            <i class="fa fa-question-circle" aria-hidden="true"></i>怎么发截图?
+                        </span>
+                        <!-- midea修改结束 -->
                     </div>
 
+                    <!-- midea增加开始 -->
+                    <div class="upload-hiden">
+                        <input type="file"  class="dialog-file-picture">
+                        <input type="file"  class="dialog-file-doc">
+                    </div>
+                    <!-- midea增加结束 -->
+
                     <div class="client-bootom inputCtn radius">
-                        <textarea id="replyContent" class="chatArea input" placeholder="你可以尝试输入类似'美信登陆不成功'、'mip显示异常' 等问题。"></textarea>
+                        <!-- midea增加开始 -->
+                        <div id="change_dom">
+                            <textarea id="replyContent" contenteditable="true" class="chatArea input" placeholder="你可以尝试输入类似'美信登陆不成功'、'mip显示异常' 等问题。"></textarea>
+                        </div>
+                        <!-- midea增加结束 -->
+                        <!-- midea注释开始 -->
+                        <!-- <textarea id="replyContent" class="chatArea input" placeholder="你可以尝试输入类似'美信登陆不成功'、'mip显示异常' 等问题。"></textarea> -->
+                        <!-- midea注释结束 -->
                         <button class="bootom-btn pull-right btn-send" id="itSend">发送</button>
                         <button class="bootom-btn pull-right btn-out hide outWork">退出人工服务</button>
                     </div>
-                    
-                    <!-- <div class="chat-hint"><div class="hint">机器人无法解决？<a id="switchHuman">转人工服务</a></div></div> -->
+
+                    <!-- midea注释打开 -->
+                    <div class="chat-hint"><div class="hint">机器人无法解决？<a class="switchHuman">转人工服务</a></div></div>
+                    <!-- midea注释打开结束 -->
                 </div>
 
                 <!-- 自助报账 -->
@@ -81,12 +118,12 @@
                         </div>
                         <div class="form-group">
                           <label  class="not-Weight control-label" style="display: inline-block;float:left;margin-left: 10px;"><span class="required-ico">*</span>系统名称</label>
-                          <div class="col-md-8 col-lg-8">   
+                          <div class="col-md-8 col-lg-8">
                                 <select class="form-control sysSelect" name="dept_tier">
                                 </select>
                           </div>
                           <label  class="not-Weight col-md-4 col-lg-4  control-label"><span class="required-ico">*</span>联系方式</label>
-                          <div class="col-md-8 col-lg-8">   
+                          <div class="col-md-8 col-lg-8">
                                 <input type="text" class="form-control" name="telphone">
                           </div>
                         </div>
@@ -99,10 +136,10 @@
 
                         <div class="form-group">
                             <label class="not-Weight control-label" style="display: inline-block;float:left;margin-left: 16px;width: 47px;text-align: left;">附件</label>
-                            
+
                             <div class="col-md-20 col-lg-20">
                                 <div id="hasUp">
-                                    
+
                                 </div>
                                 <div id="fileOne" class="divFile">
                                     <a class="a-upload">
@@ -122,28 +159,28 @@
                                     </a>
                                     <span style="margin-left:10px; position: relative; top: -12px;line-height: 26px;" class="state">文件不得超过5M，支持以下格式：office、txt、bmp、jpg、gif、rar、zip</span>
                                 </div>
-                               
+
                             </div>
                         </div>
-                       
+
                         <div class="form-group">
                             <label  class=" col-xs-20 col-sm-20 col-md-20 col-lg-20 control-label" style="text-align:left;">报障人资料</label>
                         </div>
                         <div class="form-group">
                             <label  class="not-Weight  control-label" style="display: inline-block;float:left;margin-left: 10px;"><span class="required-ico">*</span>所属部门</label>
-                            <div class="col-md-8 col-lg-8">   
+                            <div class="col-md-8 col-lg-8">
                                 <select class="form-control deptSelect" name="bussinessId">
                                 </select>
                             </div>
                             <label  class="not-Weight control-label col-md-4 col-lg-4"><span class="required-ico">*</span>所属区域</label>
-                            <div class="col-md-8 col-lg-8">   
+                            <div class="col-md-8 col-lg-8">
                                 <select class="form-control areaSelect" name="area_tier2">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group" style="margin-top:50px;">
                             <label  class="not-Weight col-md-2 col-lg-2 control-label">&nbsp;</label>
-                             <div class="col-md-8 col-lg-8">   
+                             <div class="col-md-8 col-lg-8">
                                 <a id='subUpdate' class="btn btn-default evaluate-color" onclick="selfHelp()">提交报障</a>
                                 <!-- $('#selfHelpForm')[0]);return false; -->
                             </div>
@@ -168,7 +205,7 @@
         <!-- 自助保障 -->
 
         <div id="chat-menu pull-right" class="pull-right col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            
+
         <!-- <div id="chat-menu pull-right" class="pull-right col-xs-4 col-sm-4 col-md-4 col-lg-4" style="overflow: auto; height: 100%;"> -->
             <!-- 最近服务单 -->
             <div class="serviceOrder">
@@ -183,7 +220,7 @@
                 </div>
 
                 <div id="orderSerivceTemplate">
-                    <div class="serviceO-Context radius"style="max-height: 133px;">
+                    <div class="serviceO-Context radius" style="max-height: 133px;">
                         <div class="serviceOC-titl">
                             <div>现在还没有服务单哦～</div>
                         </div>
@@ -196,13 +233,13 @@
                         <div class="serviceOC-context"  data-toggle="modal" data-target="#chatModal">
                             账户：123你好！ 我们部长的账号登陆不理哦啊手机没响，换手机也没用换手机也没用换手机也没用
                         </div>
-    
+
                         <div class="serviceOC-foot">
                             <div class="item state">2017-10-25</div>
                             <div class="pull-right gray" data-toggle="modal" data-target="#evaluateModal">评价</div>
                         </div>
                     </div> -->
-<!--     
+<!--
                     <div class="serviceO-Context radius" style="max-height:133px">
                         <div class="serviceOC-titl">
                             <div>单号:<b>123456789</b></div>
@@ -211,7 +248,7 @@
                         <div class="serviceOC-context">
                             换手机也没用换手机也没用换手机也没用
                         </div>
-    
+
                         <div class="serviceOC-foot">
                             <div class="item state">2017-10-25</div>
                             <div class="pull-right gray expediteOrder"><span class="expediteOrderSpan">催单</span>
@@ -227,7 +264,7 @@
                             </div>
                         </div>
                     </div> -->
-                    
+
                 </div>
             </div>
 
@@ -258,7 +295,7 @@
             </div>
 
         </div>
-    </div> 
+    </div>
 
     <div id="result"></div>
 
@@ -266,7 +303,7 @@
     <div class="modal fade bs-example-modal-lg" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" id="chat-modal">
-                
+
         </div>
       </div>
     </div>
@@ -290,22 +327,22 @@
 
                     <div class="form-group ">
                         <label  class="not-Weight col-xs-4 col-sm-6 col-md-6 col-lg-4 control-label colorA4">工程师:</label>
-                        <div class="col-sm-6 col-md-6  col-xs-6 detail">  
+                        <div class="col-sm-6 col-md-6  col-xs-6 detail">
                             <div id='evaluateDetail'>
-                                    
+
                             </div>
                         </div>
                     </div>
 
-      
+
                     <div class="form-group">
                         <label class="not-Weight col-xs-4 col-sm-6 col-md-6 col-lg-4 control-label colorA4">单号:</label>
                         <div class="col-lg-16 col-md-16 col-xs-16">
-                                <label class="control-label not-Weight" id="danhao"></label> 
+                                <label class="control-label not-Weight" id="danhao"></label>
                         </div>
                     </div>
 
-                
+
                     <div class="form-group">
                             <div class="page-header col-lg-offset-1 col-lg-10"></div>
                     </div>
@@ -314,11 +351,11 @@
                         <label class="not-Weight col-xs-4 col-sm-6 col-md-6 col-lg-4 control-label colorA4">满意度评价:</label>
                         <div class="col-lg-16 col-md-14">
                             <a type="button" class="btn isSatisfaction-btn Satisfaction-color"><i class="fa fa-smile-o" aria-hidden="true"></i><span>满意</span></a>
-                            <a type="button" class="btn yawp-btn"><i class="fa fa-frown-o" aria-hidden="true"></i><span>不满意</span></a> 
+                            <a type="button" class="btn yawp-btn"><i class="fa fa-frown-o" aria-hidden="true"></i><span>不满意</span></a>
                              <a type="button" class="btn unsolved-btn"><i class="fa fa-frown-o" aria-hidden="true"></i><span>工单未解决</span></a>
                         </div>
                     </div>
-                    
+
                     <div class="form-group goodDiv" style='position:relative;'>
                         <label class="not-Weight col-xs-4 col-sm-6 col-md-6 col-lg-4 control-label colorA4">送礼物:</label>
                         <div class="col-lg-12 col-md-16 col-xs-16">
@@ -354,15 +391,29 @@
       </div>
     </div>
     <!-- 评价详情Modal END-->
-</body>  
+     <!-- 身份认证失败Modal -->
+     <div class="modal fade msg-modal" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+                <p class= "authMsg">认证失败</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- 身份认证失败Modal END -->
+    <script src="skin/chat_midea/js/jquery/jquery-1.11.3.min.js"></script>
+    <script src="mideacloud/dist/bundle.js"></script>
+    <script src="skin/chat_midea/js/polyfills.js"></script>
+    <!-- 更改引用路径 -->
+    <!-- midea增加开始 -->
+    <script src="skin/chat_midea/js/minichat.js"></script>
+    <!-- midea增加结束 -->
+    <script src="skin/chat_midea/js/babel-polyfill.js"></script>
+    <script src="skin/chat_midea/js/niuniucapture.js"></script>
+    <script src="skin/chat_midea/js/jquery.mloading.js"></script>
+    <script src="skin/chat_midea/bootstrap/js/bootstrap.min.js"></script>
+    <script src="skin/chat_midea/js/customMethod.js"></script>
+    <script src="skin/chat_midea/js/appChat.js"></script>
+</body>
 </html>
-<script src="skin/chat_midea/js/jquery/jquery-1.11.3.min.js"></script>
-<script src="skin/chat_midea/js/polyfills.js"></script>
-<!-- 更改引用路径 -->
-<script src="skin/chat_midea/js/minichat.js"></script>
-<script src="skin/chat_midea/js/babel-polyfill.js"></script>
-<script src="skin/chat_midea/js/niuniucapture.js"></script>
-<script src="skin/chat_midea/js/jquery.mloading.js"></script>
-<script src="skin/chat_midea/bootstrap/js/bootstrap.min.js"></script>
-<script src="skin/chat_midea/js/customMethod.js"></script>
-<script src="skin/chat_midea/js/appChat.js"></script>

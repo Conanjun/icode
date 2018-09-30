@@ -1,0 +1,71 @@
+@charset=utf-8;
+*{margin:0;padding:0;}
+html,body{width:100%; height:100%;}
+
+a {
+	text-decoration:none;
+	color: #7EB2D4;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#qqchat {
+	position: fixed;
+	right: 0;
+	top:50%;
+	width: 104px;
+	height: 134px;
+	
+}
+#qqchat .showchat {
+	border: 1px solid #FBC9A6;
+	position: absolute;
+	padding: 15px 12px 15px 8px;
+	width: 200px;
+	top: -160px;
+	left: -150px;
+	border-radius: 5px;
+	background: #FFF3DB;
+	/*display:none;*/
+
+}
+.header a{
+	margin-left:10px;
+}
+#qqchat .hidechat {
+	position: absolute;
+
+}
+#qqchat .showchat .header {
+	padding-bottom: 6px;
+}
+#qqchat .showchat h2 {
+	  color: #14171e;
+    display: inline-block;
+    font-size: 22px;
+    text-indent: 10px;
+}
+
+#qqchat .showchat .content {
+	margin-left: 20px;
+}
+#qqchat .showchat .content li {
+	 color: #7eb2d4;
+    font-size: 12px;
+    list-style: inside none disc;
+    padding: 5px 0;
+    text-indent: -6px;
+}
+#qqchat .showchat .content li a {
+	
+	line-height: 20px;
+}
+
+#qqchat .showchat .close {
+	color: #FBC9A6;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-weight: bold;
+	cursor:pointer;
+}

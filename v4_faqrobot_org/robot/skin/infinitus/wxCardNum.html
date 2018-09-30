@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>卡号查询</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+html,body{
+	font-size:16px;
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-12">
+            <h4 style="text-align:center;">
+                卡号查询
+            </h4>
+            <form>
+              <div class="form-group">
+                <label>证件号码</label>
+                <input type="text" class="form-control certificateCode" placeholder="请输入证件号码">
+              </div>
+              <button type="button" class="btn btn-default" onClick="searchcardNum();">查询</button>
+            </form>
+            <div class="col-lg-12" style="height:10px;"></div>
+            <label id="labelResult" style="display:none;">查询结果</label>
+            <div id="cardDiv">
+            	 
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery-1.8.3.min.js"></script> 
+<script>
+function searchcardNum(){
+	if($('.certificateCode').val()==''){
+		return;	
+	}
+	$.ajax({
+		type:'post',
+		datatype:'json',
+		cache:false,
+		url:encodeURI('../../../wxj/WxjQuery/getCardInactiveDate'),
+		data:'certificateCode='+$('.certificateCode').val()+'&fullName='+123123+'&certificateType='+123123,
+		success:
+		function(data){
+		  if(data.status==0){
+			  var tmpHtml=[];
+			  tmpHtml.push('<p style="border-bottom:1px solid #ccc; margin:5px 0;"></p>'); 
+			  if(data.dealerNo){
+				  tmpHtml.push('<p><strong>优惠卡卡号：</strong>'+data.dealerNo+'</p>');
+				  tmpHtml.push('<p><strong>姓名：</strong>'+data.fullName+'</p>');
+				  tmpHtml.push('<p><strong>优惠卡失效日期：</strong>'+data.inactiveDate+'</p>');
+			  }else{
+				  tmpHtml.push('<p style="text-align:center;">当前记录为空。</p>'); 
+			  }
+			  $('#labelResult').show();
+			  $('#cardDiv').html(tmpHtml.join(''));
+		  }else{
+			  alert(data.message);
+		  }
+		}
+	})
+} 
+
+$('.certificateCode').keydown(function(event){
+	if(event.keyCode==13){
+		searchcardNum();
+	 	return false;
+	}
+})
+</script>
+</html>

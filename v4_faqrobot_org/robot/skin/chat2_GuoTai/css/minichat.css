@@ -1363,3 +1363,9 @@ img {
 .guessYOu .MN_gusList .MN_guideQue{
 	margin-left:10px;
 }
+.MN_docSearchCtn {
+    padding:15px 20px;
+}
+span.MN_docSearch {
+    color:#008CEE
+}

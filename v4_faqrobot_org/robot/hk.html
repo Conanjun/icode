@@ -1,0 +1,120 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="images/send.png" type="/image/x-icon">  
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>  
+    <title>h5chat</title>
+
+    <link rel="stylesheet" href="skin/hk/css/minichat.css?dev=1">
+	<link rel="stylesheet" href="skin/hk/css/app.css?dev=1">
+    <script src="skin/hk/js/minichat.js?time=1513"></script>
+    <script src="skin/hk/js/app.js?dev=1"></script>
+</head>  
+<body>  
+    <div class="view">
+    	<!-- 常见问题开始 -->
+    	<div class="commonQueLayer" id="commonQueLayer"></div>
+    	<!-- 常见问题结束 -->
+
+    	<!-- 意见反馈开始 -->
+		<div class="feedbackLayer">
+			<form id="feedbackForm">
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="1" checked> 满意</label>
+				<label class="MN_marginCtn MN_marginCtnRadio">
+				<input type="radio" name="level" value="0"> 不满意</label>
+				<div class="noSatiCtn">
+					<p class="MN_marginCtn">您不满意的原因?</p>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+					<label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+				</div>
+				<div class="MN_commentTipCtn">
+					<textarea class="MN_commentCtn" id="commentCtn" name="content"></textarea>
+				</div>
+				<div class="MN_commentBtn" id="commentBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 意见反馈结束 -->
+
+    	<!-- 留言开始 -->
+		<div class="leaveMsgLayer">
+			<form class="leaveMsgForm" id="leaveMsgForm">
+				<textarea class="MN_commentCtn" id="leaveMsgCtn" name="content"></textarea>
+				<input type="text" name="name" placeholder="姓名">
+				<input type="text" name="telNum" placeholder="手机号码">
+				<input type="text" name="qq" placeholder="QQ">
+				<input type="text" name="webSite" placeholder="网址">
+				<div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn">提交</div>
+			</form>
+		</div>
+    	<!-- 留言结束 -->
+
+    	<div class="back">
+    		<img class="logo" id="logo">
+    		<p>网页由云问前端开发人员提供</p>
+    	</div>
+    	<div class="front">
+    		<div class="chatScroll">
+    			<div class="chatCtn" id="chatCtn">
+    				
+    			</div>
+    		</div>
+    		<div class="editCtn">
+    			<div class="editShow">
+    				<div class="cosInput cosSome">
+    					<div class="textareaCtn">
+    						<textarea class="textarea" id="textarea"></textarea>
+    						<div class="faceBtn"></div>
+    					</div>
+						<div class="inputBtn">按住 说话</div>
+    				</div>
+    				<div class="cosBtn cosSome">
+    					<div class="addbtn"></div>
+    					<div class="sendBtn" id="sendBtn">发送</div>
+    				</div>
+    			</div>
+    			<div class="editHide">
+    				<div class="takePhotoCtn editCtn_com">
+    					<span class="takePhoto"></span>
+    					<p>拍照发送</p>
+    				</div>
+    				<div class="sendPicCtn editCtn_com">
+    					<span id="sendPic" class="sendPic"></span>
+    					<p>发送图片</p>
+    				</div>
+    				<div class="commonQueCtn editCtn_com">
+    					<span class="commonQue"></span>
+    					<p>常见问题</p>
+    				</div>
+    				<div class="feedbackCtn editCtn_com">
+    					<span class="feedback"></span>
+    					<p>意见反馈</p>
+    				</div>
+    				<div class="leaveMsgCtn editCtn_com">
+    					<span class="leaveMsg"></span>
+    					<p>留言</p>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+	
+  
+
+</body>
+<script type="text/javascript">
+	(function(ji, a, x, i, n, j, s) {
+		ji[n] = ji[n] || function() {
+			(ji[n].n = ji[n].n || []).push(arguments);
+		};
+		j = a.createElement(x), s = a.getElementsByTagName(x)[0];
+		j.async = true;
+		j.charset = "UTF-8";
+		j.src = i + "?v=" + new Date().getUTCDate() + "&id=ath0ag9lmgyyeg&appName=test210&appChannel=20002";
+		s.parentNode.insertBefore(j, s);
+	})(window, document, "script", "http://oversea-online.hikvision.com:7011/mcs.js", "_JIAXIN");_JIAXIN();
+	</script>  
+</html>
