@@ -2,103 +2,60 @@
 body, html {
     width: 100%;
     height: 100%;
-    overflow:hidden;
 }
-.hide{
-    display:none !important;
+a:hover, a:focus{
+    text-decoration: none;
+    color:#008CEE;
 }
-.iconfont {
+.iconfont{
     vertical-align: middle;
     color: #6e7378;
     margin-left: -3px;
     font-size: 0.08rem;
- }
- .action-btn .iconfont{
-    font-size: 0.07rem;
- }
- .action-btn .faceBtn{
-    font-size: 0.08rem;
- }
-/*客服结构以及客户结构*/
+}
+/*机器人头像位置*/
 .MN_kfImg {
-    left: -57px;
+    left: -60px;
 }
 .MN_khImg {
     right: -57px;
 }
+/*TaskId:  408 自如页面定制
+*原因：对话框样式修改
+*修改：padding 
+*/
 .MN_answer, .MN_ask {
-    padding: 5px 60px;
-    max-width: 90%
-}
-.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
-    width: 42px;
-    height: 42px;
-}
-.MN_kfCtn, .MN_khCtn {
-    border: 1px solid #D9D9DB;
     max-width: 90%;
-    padding: 10px;
 }
-.MN_kfCtn{
-    margin-left: 35px; 
-}
-.MN_khCtn{
-    /* margin-right: 35px; */
-}
-.MN_kfCtn p{
-    margin-bottom: 0px;
-}
-
-/*客服对话框显示*/
-.MN_answer{
+.MN_answer {
     padding: 5px 35px 5px 35px;
 }
-.MN_kfTriangle1{
-    border-top: 8px solid transparent;
-    border-right: 8px solid #D9D9DB;
-    border-bottom: 8px solid transparent;
-    bottom: -1px;
+.MN_ask {
+    padding: 5px 30 5px 35px;
 }
-.MN_kfTriangle2{
-    border-top: 8px solid transparent;
-    border-right: 8px solid #fff;
-    border-bottom: 8px solid transparent;
-    bottom: -1px;
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg {
+    width: 30px;
+    height: 30px;
 }
-.MN_kfTriangle2, .MN_kfTriangle1{
-    top: 10px;
-    left: -8px;
+.MN_kfCtn{
+    margin-left: 35px;
 }
-.MN_kfTriangle1{
-    left: -9px;
+.MN_khCtn {
+    background: #008CEE;
+    text-align: left;
+    color: #fff;
+    margin-right: 10px;
 }
-/*客户对话框显示*/
-.MN_ask{
-    padding: 5px 30px 5px 35px; 
+.MN_khName{
+    margin-right: -31px;
 }
-.MN_khTriangle1, .MN_khTriangle2{
-    top: 12px;
-    right: -8px;
+.MN_kfName{
+    margin-left: -15px;
 }
-.MN_khTriangle1{
-    right: -9px;
-}
-.MN_khTriangle1{
-    border-top: 8px solid transparent;
-    border-left: 8px solid #D9D9DB;
-    border-bottom: 8px solid transparent;
-    bottom: -1px;
-}
-.MN_khTriangle2{
-    border-top: 8px solid transparent;
-    border-left: 8px solid #1890FF;
-    border-bottom: 8px solid transparent;
-    bottom: -1px;
-}
-
-/**/
 .view {
+    /* width: 1rem; */
     width: 100%;
+    /* height: 98.5%; */
     height: 100%;
     margin: 0 auto;
     position: relative;
@@ -120,11 +77,13 @@ body, html {
     max-height: 80px;
 }
 
-/**/
+/*TaskId:  408 自如页面定制
+*修改：聊天页面背景色
+*/
 .front {
     height: 100%;
     position: relative;
-    background:#ebebeb;
+    background:#F9F9F9;
 }
 .front .chatScroll {
     position: relative;
@@ -174,55 +133,89 @@ ul li {
     text-align: left;
     padding-left: 0.12rem;
 }
+
+/*TaskId:  408 自如页面定制
+*修改：修改背景色
+*/
 .front .chatScroll .chatCtn {
     padding: 0.04rem 0 10px 0;
     position: absolute;
     top: 0;
     left: 0;    
-    background: #ebebeb;;
+    background: #ebebeb;
     width: 100%;
     min-height: 100%;
     box-sizing: border-box;
 }
-/*头部*/
+/*头部样式定义*/
+
+/*TaskId: 1549 上汽对话框样式修改
+*原因：对话框样式修改
+*/
+.header-container{
+    height:44px;
+    line-height:44px;
+    overflow-y:visible; 
+
+}
 .front .header{
-    height:0.14rem;
-    line-height: 0.15rem;
+    height:44px;
+    line-height: 44px;
     text-align: center;
-    background:#fff;
+    background: #fff;
     font-size: 15px;
     font-weight: bold;
+    position: relative;
 }
 .front .header .backQuit{
     position: absolute;
-    left: 0;
-    top: 0px;
+    left: 10px;
+    top: -2px;
+    font-size: 29px;
+    width: 40px;
 }
-.front .header img{
+.header-container>.header>.logo{
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+}
+.front .header .link{
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    font-size: 25px;
+    color: #fff;
+}
+
+/*头部样式定义结束*/
+
+/* .front .header img{
     width: 20px;
     height: 20px;
     margin-left: 10px;
-}
-.front .header .headName{
+} */
+
+ /* .front .header .headName{
     color: #666;
     display: inline-block;
     width: 70%;
     overflow: hidden;/*超出部分隐藏*/
-    white-space: nowrap;/*不换行*/
-    text-overflow:ellipsis;/*超出部分文字以...显示*/
+    /*white-space: nowrap;/*不换行*/
+    /*text-overflow:ellipsis;/*超出部分文字以...显示*/
+/* }   */
+
+.editCtn {
+    background: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    z-index:100;
 }
-/**
- * taskId=370;赵永平
- * 原因：在ios上键盘会遮住input输入框
- * 修改：采用fixed定位到底部，bottom为0
- */
- .editCtn {
-  background: #fff;
-  position: fixed;
-  left: 0px;
-  bottom: 0;
-  width: 100%;
-}
+
+/*TaskId:  408 自如页面定制
+*原因：聊天输入框样式更改
+*/
 .editCtn .editShow {
     position: relative;
     height: 0.136rem;
@@ -235,6 +228,11 @@ ul li {
     display: block;
     clear: both;
 }
+
+/*TaskId:  408 自如页面定制
+*原因：表情 输入框 展开功能按钮在同一行显示
+*修改：改为绝对定位
+*/
 .editCtn .editShow .cosSome {
     display: inline-block;
     box-sizing: border-box;
@@ -266,17 +264,17 @@ ul li {
     width: 100%;
     margin-top: 0.021rem;
     padding-right: 85px;
-}
-@media screen and (min-width: 768px) {
-    .editCtn .editShow .cosInput {
-       padding-right: 150px;
-    }
+    
 }
 .editCtn .editShow .cosInput .textareaCtn {
     height: auto;
     overflow: hidden;
     box-sizing: border-box;
 }
+ /*TaskId:  408 自如页面定制
+    *原因：修改聊天输入框的样式
+    *修改：输入框的背景、外框形状
+*/
 .editCtn .editShow .cosInput .textareaCtn .textarea {
     -webkit-appearance: none;
     width: 100%;
@@ -291,6 +289,9 @@ ul li {
     border-radius: 3px;
     background: #fff;
     float: left;
+}
+.editCtn .editShow .cosInput .textareaCtn .textarea::placeholder{
+    color:#DDDDDD;
 }
 /*点击发送*/
 .editCtn .editShow .cosBtn .sendMsg{
@@ -321,7 +322,7 @@ ul li {
 .editCtn .editShow .cosInput .inputBtn {
     padding-left: 0.02rem;
     height: 0.09rem;
-    line-height:0.09rem;
+    line-height: 0.09rem;
     overflow: hidden;
     box-sizing: border-box;
     border-radius: 3px;
@@ -332,17 +333,38 @@ ul li {
     width: 15%;
     margin-top: 0.012rem;
 }
-.editCtn .editShow .cosBtn .addBtn {
+/* .editCtn .editShow .cosBtn .addbtn {
     display: inline-block;
     width: 0.09rem;
     height: 0.09rem;
     background: url(../images/add@2x.png) no-repeat center;
     background-size: contain;
+} */
+
+/*TaskId:  408 自如页面定制
+*修改：发送按钮样式
+*/
+.editCtn .editShow .cosInput .sendBtnNew {
+    /* width: 0.09rem;
+    height: 0.09rem;
+    line-height: 0.09rem; */
+    width: 60px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: -10px;
+    color: #FFA40B;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: center;
+    border-radius:5px;
+    font-size: 14px;
+    display: none;
 }
-.editCtn .editShow .cosBtn .sendBtn {
-    background: #1b96ff;
-    color: #fff;
-}
+
+/*TaskId:  408 自如页面定制
+*说明：设置工具栏的高度，以及功能图标样式
+*/
 .editCtn .editHide {
     display: none;
     position: relative;
@@ -351,6 +373,9 @@ ul li {
     box-sizing: border-box;
     background: #F5F5F7;
 }
+/*TaskId:  708 自如页面优化 提高拍照和相册的点击灵敏度
+*说明：配合 扩大input type=file的覆盖范围
+*/
 .editCtn .editHide .editCtn_com {
     float: left;
     text-align: center;
@@ -360,35 +385,46 @@ ul li {
     padding: 15px;
     margin-top: 8px;
 }
-.editCtn .editHide .editCtn_com .icon-ctn::before{
-    content: '';
-    height: 100%;
-    display: inline-block;
-    vertical-align: middle;
-    visibility: hidden;
-}
-.editCtn .editHide .takePhotoCtn,.editCtn .editHide .defaultHideBtn{
+
+.editCtn .editHide .takePhotoCtn{
     display: none;
+}
+
+.editCtn .editHide .editCtn_com .btn-outer{
+    width: 0.1rem;
+    height: 0.1rem;
+    line-height: 0.11rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.02rem;
+    /* border: 1px solid #9B9B9B; */
+    /* border-radius: 50%; */
+    display: inline-block;
 }
 .editCtn .editHide .editCtn_com span {
     display: inline-block;
-    width: 0.06rem;
-    height: 0.06rem;
-    line-height: 0.06rem;
-   /* margin: 0.16rem 0 0.05rem 0; */
-    text-align: center;
-    background: #fff;
-    font-size: 2em;
+    width: 0.09rem;
+    height: 0.09rem;
+    /* margin: 0.16rem 0 0.05rem 0; */
+    font-size:20px;
 }
 .editCtn .editHide .editCtn_com p {
     white-space: nowrap;
     font-size: 12px;
-    margin-bottom: 5px;
-    position: relative;
+    color: #000;
 }
+.icon-ctn{
+    height: 100%;
+    width: 100%;
+    border: 1px solid #e0e0e2;
+    background: #fff;
+    border-radius: 10px;
+}
+/*TaskId:  408 自如页面定制 说明：设置工具栏的高度，以及功能图标样式定义结束*/
+
+
 /*点击之前图标颜色*/
 .editCtn .editHide .editCtn_com .sendPic {
-    background: url(../images/sendPic@2x.png) no-repeat center;
+    background: url(../images/icon/sendPic.png) no-repeat center;
     background-size: contain;
     overflow: hidden;
 }
@@ -398,7 +434,7 @@ ul li {
     overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .commonQue {
-    background: url(../images/promble.png) no-repeat center;
+    background: url('../images/icon/promble.png') no-repeat center;
     background-size: contain;
     overflow: hidden;
 }
@@ -408,7 +444,7 @@ ul li {
     overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .leaveMsg {
-    background: url(../images/message.png) no-repeat center;
+    background: url(../images/icon/message.png) no-repeat center;
     background-size: contain;
     overflow: hidden;
 }
@@ -417,6 +453,7 @@ ul li {
     background-size: contain;
     overflow: hidden;
 }
+
 .editCtn .editHide .editCtn_com .sendCamera {
     background: url(../images/camera@2x.png) no-repeat center;
     background-size: contain;
@@ -431,6 +468,50 @@ ul li {
     background: url(../images/face@2x.png) no-repeat center;
     background-size: contain;
     overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendLocation {
+    background: url(../images/map.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+/*TaskId:  408 自如页面定制
+*说明:设置发送表情图标
+*/
+.sendFaceBtn{
+    position: absolute;
+    left: 12px;
+    top: 0.03rem;
+    display: inline-block;
+    width: 25px;
+    height:25px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 25px;
+    color:#9E9E9E;
+}
+/* 自如发送表情不显示对话框 */
+.face-Ctn{
+    background: transparent !important;
+    border: 1px solid transparent !important;
+}
+.face-Ctn .MN_khTriangle1,.face-Ctn .MN_khTriangle2{
+    border-left-color:transparent !important;
+}
+
+/*TaskId:  408 自如页面定制
+*说明:设置显示更多操作工具栏图标
+*/
+.addbtn{
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 35px;
+    height:35px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 39px;
+    color:#9E9E9E;
+    /* display: none; */
 }
 /*点击之后图标颜色变蓝*/
 .editCtn .editHide .editCtn_com .sendPicClick {
@@ -469,60 +550,6 @@ ul li {
     background: url(../images/faceClick@2x.png) no-repeat center;
     background-size: contain;
 }
-/*功能操作按钮*/
-.action-btn{
-    position: absolute;
-    top: 0;
-    right: 15px;
-    height: 100%;
-}
-.action-btn::before{
-    content: '.';
-    height: 100%;
-    display: inline-block;
-    vertical-align: middle;
-    visibility: hidden;
-}
-.sendFaceCtn,.addBtn,.action-btn .sendBtn,.action-btn .keyboardCtn{
-    display: inline-block;
-    vertical-align: middle;
-    height:40px;
-}
-.action-btn .keyboardCtn .icon-jianpan1{
-    font-size: 0.07rem;
-    margin-right: 10px; 
-}
-.sendFaceCtn{
-    margin-right: 5px; 
-    margin-top: -2px;
-}
-
-#sendFileBtn,#camera{
-    position: relative;
-}
-/* 发送按钮 */
-.action-btn .sendBtn{
-    padding: 5px 7px;
-    font-size: 12px;
-    line-height: 1.6;
-    border-radius: 3px;
-    background: #008CEE;
-    color: #fff;
-    margin-left: -7px;
-    margin-right: -3px;
-    height: 28px;
-}
-/*功能按钮展示样式*/
-.icon-ctn{
-    height: 100%;
-    width: 100%;
-    border: 1px solid #e0e0e2;
-    background: #fff;
-    border-radius: 10px;
-}
-.icon-ctn.active{
-    background: rgba(0,0,0,0.1);
-}
 
 .layui-layer-ico {
     background: url(../images/icon.png) no-repeat;
@@ -548,8 +575,19 @@ ul li {
     padding: 0 0.032rem;
 }
 .leaveMsgLayer {
-    display: none;
+    /* display: none; */
     padding: 0.024rem 0 0.048rem 0;
+}
+.leaveMsgLayer div{
+    position: relative;    
+}
+.leaveMsgLayer img{
+    width:0.04rem;
+    position: absolute;
+    left: 8px;
+    top: 22px;
+    font-size: 26px;
+    color: #888C95;
 }
 .leaveMsgLayer input {
     width: 100%;
@@ -557,24 +595,24 @@ ul li {
     box-sizing: border-box;
     outline: none;
     border: none;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
     margin: 0.024rem 0;
-    padding: 0 0.032rem;
+    padding: 0 0.08rem;
+    background: #F6F6F6;
 }
 .leaveMsgLayer textarea, .feedbackLayer textarea {
     margin: 0.024rem 0;
     border: none;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
     padding: 0.02rem 0.032rem;
     height: 0.213rem;
     box-sizing: border-box;
+    background: #F6F6F6;
 }
 .MN_commentBtn {
-    width: 0.936rem;
-    height: 0.12rem;
-    line-height: 0.12rem;
+    width: 0.8rem;
+    height: 0.085rem;
+    line-height: 0.085rem;
     margin: 0.024rem auto;
 }
 .layui-layer-title {
@@ -604,39 +642,317 @@ ul li {
     margin:0 auto;
 }
 /*聊天背景*/
+/*TaskId: 1549 上汽对话框样式修改
+*原因：对话框样式修改
+*/
 .MN_kfCtn, .MN_khCtn{
+    display: inline-block;
     border-radius: 5px;
+    border: 1px solid #D9D9DB;
+    max-width: 90%;
+    padding: 10px;
 }
+.MN_kfCtn p{
+    margin:0;
+}
+
 /*聊天头像*/
+/*TaskId:  408 自如页面定制
+*原因：聊天头像不显示
+*修改：隐藏聊天头像
+*/
 .MN_answer .MN_kfImg, .MN_ask .MN_khImg{
     top:-2px;
 }
-
+/*TaskId:  408 自如页面定制
+*原因：对话框样式定制
+*修改：定位值
+*/
+.MN_kfTriangle2,.MN_kfTriangle1{
+    top:10px;
+    left:-8px;
+}
+.MN_kfTriangle1{
+    left:-9px;
+}
+.MN_khTriangle1,.MN_khTriangle2{
+    top:10px;
+    right:-8px;
+}
+.MN_khTriangle1{
+    right:-9px;
+}
 
 .MN_kfCtn audio,.MN_kfCtn video{
     max-width:100%;
 }
-
-
-.clearfix::before, .clearfix::after {
-    display: block;
-    content: '';
-    visibility: hidden;
-    height: 100%;
-    clear: both;
+/*TaskId:  408 自如页面定制
+*说明：增加满意度评价对话框样式
+*/
+.MN_fkCtn{
+    padding: 10px;
+    border-radius: 5px;
+    border:1px solid #D9D9DB;
+    background: #fff;
+    max-width: 95%
 }
-.my-gallery figure{
+.help-title{
+    height: 20px;
+    line-height: 20px;
+}
+.helpfull-contanier{
+    padding: 0.02rem 0.01rem;
+}
+.helpfull-close{
+    float: right;
+    font-size: 20px;
+    display: inline-block;
+    width:23px;
+}
+.helpGrade{
+    font-size: 26px;
+    display: inline-block;
+    width: 17%;
+    color: #9F9F9F;
+}
+/* 自如优化，超出部分显示滚动条 */
+.help-content{
     width: 100%;
-    height: 100%;
-    margin: 0;
+    height: 80px;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    overflow-y: auto;
 }
-/* 
-    taskid=959，黄世鹏
-    修改：富文本为表格时排版问题
- */
-.MN_kfCtn table{
-    width: 100%!important
+.help-content::placeholder{
+    font-size:12px;
+    color:#E0E0E0;
 }
+.help-content::-moz-placeholder{
+    font-size:12px;
+    color:#E0E0E0;
+}
+.header-container::-webkit-input-placeholder{
+    font-size:12px;
+    color:#E0E0E0;
+}
+.helpfull-commit{
+    text-align: center;
+    margin-top:6px;
+}
+.helpfull-commit span{
+    display: inline-block;
+    background: #FFA000;
+    color:#fff;
+    width: 44%;
+    height:25px;
+    line-height:25px;
+    border-radius: 5px; 
+}
+.helpfull-commit-disable span{
+    background: #CCCCCC;
+}
+/**taskIdId=780自如定制，人工邀请五星评价内容 Amend By zhaoyuxing 
+* 说明：修改满意度评价样式，增加显示等级文案以及原因
+*/
+.staWord {
+    text-align: center;
+    color: #FFB53D;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: none;
+}
+.staReasonList{
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+.staReasonList .staReasonItem{
+    float: left;
+    display: inline-block;
+    width: 45%;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #CCCCCC;
+    color: #9E9E9E;
+    border-radius: 5px;
+    font-size: 12px;
+
+}
+.staReasonList .staReasonItem-selected{
+    background: #FFA000;
+    color:#fff;
+    border-color: transparent;
+}
+/*TaskId:  708 自如页面优化 评价框超出范围可滚动
+*说明：使用iframe嵌入输入框，设置iframe的样式
+*/
+/* .helpCtn iframe{
+    width: 100%;
+    height: 106px;
+    outline: none;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+} */
+ input,textarea {
+    -webkit-user-select: auto!important;
+    -khtml-user-select: auto!important;
+    -moz-user-select: auto!important;
+    -ms-user-select: auto!important;
+    -o-user-select: auto!important;
+    user-select: auto!important;
+}
+/* 增加满意度评价对话框样式结束 */
+
+
+/* TaskId:  408 自如页面定制
+*说明：订单显示样式  含图片
+* */
+.order-contanier{
+    border: 2px solid #F2F2F3;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom:10px;
+    color: #ADADAD;
+}
+.order-title{
+    border-bottom: 1px solid #F2F2F3;
+    padding-bottom: 5px;
+}
+.order-state{
+    color: #FFB53D;
+    float:right;
+}
+/* 显示更多按钮 */
+.orderMore{
+    text-align: center;
+}
+.orderMore .J_toHtList{
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #FFB53D;
+    color:#FFB53D;
+    border-radius: 5px;
+    padding: 0px 15px;
+}
+.goMore{
+    margin-top:20px;
+}
+/* 订单详情样式 */
+.order-detail-contanier{
+   margin-top: 5px;
+   min-height:75px;
+   position: relative;/*配合日期以及图片的定位*/
+}
+.order-detail p{
+    color: #ADADAD;
+}
+.address{
+    font-size:14px;
+}
+.order-tips{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size:12px;
+}
+.order-date{
+    font-size:12px;
+    position: absolute;
+    bottom: 5px; /*相对于.order-detail-contanier定位*/
+}
+/*管家信息*/
+.ste-detail-contanier{
+    border-top: 1px solid #F2F2F3;
+    padding-top: 5px;
+}
+.ste-detail-contanier p{
+    color: #ADADAD;
+    margin-bottom: 3px;
+}
+/* 订单样式2 不含图片 */
+.order-detail-contanier2{
+    margin-top: 5px;
+}
+.order-detail-contanier2 p{
+    color: #ADADAD;
+}
+
+/* TaskId:  408 自如页面定制 订单显示样式 定义结束*/
+
+/*TaskId:  408 自如页面定制 报修对话框样式 */
+/* 立即报修按钮 */
+.fixCtn .fixBtnCtn{
+    height:30px;
+    text-align: center;
+    margin-top: 10px;
+}
+.fixCtn .fix-btn{
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #FFB53D;
+    color:#FFB53D;
+    border-radius: 5px;
+    padding: 0px 15px;
+}
+/* 分割线样式 */
+.line{
+    height: 1px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+.line span{
+    position: relative;
+    top: -11px;
+    background: #fff;
+    padding: 0 10px;
+    color: #ddd;
+    font-size: 10px;
+}
+
+/*TaskId:  408 自如页面定制 报修对话框样式结束 */
+
+/*taskId:406 自如页面定制 app闪退显示聊天记录*/
+.flashOutDeal{
+    color: #9E9E9E;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* 自如增加弹出框样式 */
+.S_upModel * {margin: 0;padding: 0;}
+.S_upModel li {list-style: none}
+.S_upModel a {-webkit-touch-callout: none;text-decoration: none;outline: 0;cursor: pointer;}
+.S_upModel{width: 100%;height: 100%;background: rgba(0,0,0,0.8);position: fixed; top: 0;left: 0;z-index: 999;}
+.S_upModel_main{width: 80%;background: #fff;border-radius: 8px;position: absolute;top: 40%;left: 50%;margin-left: -40%;margin-top: 8px;text-align: center;font-size: 14px;color: #444;}
+.S_upModel_main p{line-height: 40px;padding: 15px;}
+.S_upModel_main .S_upModel_btn{height: 0}
+.S_upModel_main .S_upModel_btn li{width: 50%;height: 44px;float: left;}
+.S_upModel_main .S_upModel_btn li:first-child{border-right: 1px solid #eee;box-sizing: border-box;}
+.S_upModel_main .S_upModel_btn li:first-child a{color: #999;}
+.S_upModel_main a{display: block;border-top: 1px solid #eee;color: #ffa000;line-height: 44px;text-align: center;}
+
+
+.sendFace{
+    background: url(../images/icon/face.png) no-repeat center;
+    display: block;
+    height: 25px;
+    background-size: cover;
+}
+
 /* taskid=402 顾荣 任务：留言面板 修改之前的留言框 2017.12.20 */
 /* 样式开始 */
 #leaveMsgForm .form-group{
@@ -655,7 +971,6 @@ ul li {
     border:1px solid lightgray; 
     padding-left:0.1rem; 
     height:0.107rem;
-    box-shadow:none;
 }
 #leaveMsgCtn{
     border:1px solid lightgray;
@@ -718,16 +1033,147 @@ ul li {
     -webkit-overflow-scrolling: touch; 
 }
 #leaveMsgHeader{
-    padding: 0 3% 0;
-    border-bottom: 1px solid #ccc;
+    padding:0 0.03rem;
+    color:gray;
 }
 #leaveMsgBox hr{
     margin:0 0 0.04rem;
 }
 .btnClass{
-  color: #3DA5FE;
+    color: #3DA5FE;
 }
-/* 表情 */
+/* taskid = 1023 上汽页面定制优化 题库满意度评价文字靠左显示 ，按钮靠右 amend by zhaoyuxing */
+.MN_helpful{
+    overflow: hidden;
+}
+.MN_reasonSend{
+    float: right;
+}
+
+/* 答案结构 */
+.MN_khTriangle1 {
+    border-top: 8px solid transparent;
+    border-left: 8px solid #D9D9DB;
+    border-bottom: 8px solid transparent;
+    bottom: -1px;
+}
+.MN_khTriangle2 {
+    border-top: 8px solid transparent;
+    border-left: 8px solid #1890FF;
+    border-bottom: 8px solid transparent;
+    /* right: -5px; */
+    bottom: -1px;
+}
+.MN_kfTriangle1 {
+    border-top: 8px solid transparent;
+    border-right: 8px solid #D9D9DB;
+    border-bottom: 8px solid transparent;
+    /* left: -10px; */
+    bottom: -1px;
+}
+.MN_kfTriangle2 {
+    border-top: 8px solid transparent;
+    border-right: 8px solid #fff;
+    border-bottom: 8px solid transparent;
+    /* left: -6px; */
+    bottom: -1px;
+}
+
+.MN_khTriangle1, .MN_khTriangle2{
+    top: 7px;
+    right: -8px;
+}
+.MN_kfTriangle2, .MN_kfTriangle1 {
+    top: 10px;
+    left: -8px;
+}
+.MN_khTriangle1 {
+    right: -9px;
+}
+.MN_kfTriangle1 {
+    left: -9px;
+}
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg{
+    width: 42px;
+    height: 42px;
+    border: 1px solid transparent;
+}
+
+/* 图文样式 */
+.msg-t{
+    margin: 0 14px 6px;
+    text-decoration: none;
+}
+.msg-text{
+    margin: 10px 14px;
+    text-decoration: none;
+}
+.appmsgItem .i-img:first-child{
+    min-width: 50px;
+}
+.sub-msg-item .msg-t{
+    line-height: 44px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.msg-item-wrapper .sub-msg-item .msg-t{
+    width: 77%;
+}
+.voiceBtn{
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    float: left;
+    display: inline-block;
+    margin: 0 8px;
+}
+.voiceBtn i{
+    font-size: 0.08rem;
+    color: #999;
+}
+.action-btn{
+    position: absolute;
+    top: 0;
+    right: 15px;
+    height: 100%;
+}
+.sendFaceCtn, .addBtn, .action-btn .sendBtn, .action-btn .keyboardCtn{
+    display: inline-block;
+    vertical-align: middle;
+    height: 40px;  
+}
+.sendFaceCtn{
+    margin-right: 5px;
+    margin-top:-2px;
+}
+
+.action-btn .faceBtn{
+    font-size: 0.08rem;
+}
+.action-btn .sendBtn{
+    
+    padding: 5px 7px;
+    font-size: 12px;
+    line-height: 1.6;
+    border-radius: 3px;
+    background: #008CEE;
+    color: #fff;
+    margin-left: -7px;
+    margin-right: -3px;
+    height: 28px;
+}
+.action-btn .iconfont{
+    font-size: 0.07rem;
+}
+.action-btn .iconfont.expendBtn{
+    font-size: 0.065rem;
+}
+.action-btn .keyboardCtn .icon-jianpan1{
+    font-size: 0.07rem;
+    margin-right: 10px;
+}
 .FA_backCtn{
     height: 0.5rem;
     box-sizing: border-box;
@@ -736,11 +1182,26 @@ ul li {
     box-shadow: none;
 }
 .FA_moodCtn{
-    background: #F5F5F7; 
+    background: #F5F5F7;
 }
-
-.MN_khCtn .FA_upFileCtn a,.MN_khCtn p a{
-    color: #fff;
+.commonQueModal, .feedbackModal{
+    display: none;
+    z-index: 19891015;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    -webkit-background-clip: content;
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+    border-radius: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
 }
 /* ============地理位置 start ==============*/
 .sendLocation{
@@ -913,231 +1374,23 @@ ul li {
     font-size: 26px;
 }
 /* ==========常见问题，意见反馈,留言功能模态框 end ===========*/
-/**===== 初始化加载框 start =====*/
-.loadMask{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #f3f3f3;
-    z-index: 9999;
-}
-#dots {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 10px;
-    width: 60px;
-    margin: -25px 0 0 -25px;
-}
-
-#dots span {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 50%;
-    -webkit-animation: dots 1.5s infinite ease-out;
-    animation: dots 1.5s infinite ease-out;
-}
-
-#dots span:nth-child(1) {
-    left: 0px;
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-}
-
-#dots span:nth-child(2) {
-    left: 15px;
-    -webkit-animation-delay: 0.4s;
-    animation-delay: 0.4s;
-}
-
-#dots span:nth-child(3) {
-    left: 30px;
-    -webkit-animation-delay: 0.6s;
-    animation-delay: 0.6s;
-}
-
-#dots span:nth-child(4) {
-    left: 45px;
-    -webkit-animation-delay: 0.8s;
-    animation-delay: 0.8s;
-}
-
-@keyframes dots {
-    0% {
-        background: #000000;
-        -webkit-transform: scale(0.1);
-        transform: scale(0.1);
-    }
-    50% {
-        background: rgba(0, 0, 0, 0.25);
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-    }
-    100% {
-        background: #000000;
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-}
-@-webkit-keyframes dots {
-    0% {
-        background: #000000;
-        -webkit-transform: scale(0.1);
-    }
-    50% {
-        background: rgba(0, 0, 0, 0.25);
-        -webkit-transform: scale(0.5);
-    }
-    100% {
-        background: #000000;
-        -webkit-transform: scale(1);
-    }
-}
-/** 初始化加载框 end */
-/* 语音 */
-.editCtn .inputBtn{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-.voiceBtn{
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
-    text-align: center;
-    float: left;
-    display: inline-block;
-    margin: 0 8px;
-}
-.voiceBtn i{
-    font-size:0.08rem;
-    color:#999;
-}
-.record-shade{
-    position: absolute;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-    left: 0;
-    top: 0;
-}
-.record-shade .icon-wrapper{
+#sendFileBtn,#camera{
     position: relative;
-    width:100px;
-    height:auto;
-    margin: 0 auto;
-    text-align: center;
-    top:40%;
 }
-.icon-wrapper .la-line-scale-pulse-out{
-    margin: 0 auto 20px;
-}
-.icon-wrapper .fa-microphone{
-    color: #fff;
-    font-size:80px;
-}
-.record-shade .move-cancel{
-    position: relative;
-    width:100px;
-    height:auto;
-    text-align: center;
-    margin: 0 auto;
-    top: 40%;
-    color:#fff;
-}
-.record-shade .move-cancel p{
-    color:#fff;
-    margin-top:20px;
-    background: rgba(244, 32, 35, 0.6);
-    padding: 5px;
-    border-radius: 5px;
-}
-.record-shade .move-cancel i{
-    font-size:80px;
-}
-.record-shade .record-tip{
-    color: #fff;
-    position: relative;
-    width:150px;
-    height:140px;
-    font-size:18px; 
-    padding-top:20px;
-    border-radius: 5px;
-    top: 40%;
-    text-align: center;
-    margin: 0 auto;
-    background: rgba(0,0,0,0.5);
-}
-.record-shade .record-tip p{
-    color: #fff;
-    line-height: 30px;
-}
-.record-shade .record-tip i{
-    font-size:80px;
-}
-/* 抖屏 */
-.shakeScreenModal{
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
-    display: none;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
-    outline: 0;
-    animation: 0.5s ease-in-out shakeScreen;
-    -webkit-animation: 0.5s ease-in-out shakeScreen;
-    -moz-animation: 0.5s ease-in-out shakeScreen;
-    -o-animation: 0.5s ease-in-out shakeScreen;
-    -ms-animation: 0.5s ease-in-out shakeScreen;
-  }
-  .shakeCenter{
-    width: 200px;
-    margin: 300px auto 0;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    line-height: 40px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  @keyframes shakeScreen{
-    0%{ transform: translateX(-20px)}
-    17%{transform: translateX(20px)}
-    34%{transform: translateX(-20px)}
-    51%{transform: translateX(20px)}
-    68%{transform: translateX(-20px)}
-    85%{transform: translateX(20px)}
-  }
-  /* 我要下单模态框 */
-  .orderBox{
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background-color:white;
-    z-index:1000;
-    display:none;
-    overflow-y:scroll;
-    -webkit-overflow-scrolling: touch; 
-}
-.orderDiv{
-    min-height: 100%;
-}
-.orderDiv h4{
-    padding: 10px;
-    border-bottom: 1px solid #999;
-    margin: 0;
-}
-.orderBox .showMyOrder{
-    min-height: 100%;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,12 +18,13 @@ body, html {
     height: 40px;
 }
 .MN_kfCtn, .MN_khCtn {
-    margin: 2px 0;
+    margin: 10px 0 0;
 }
 /**/
 .view {
     width: 1rem;
-    height: 100%;
+    height: 98.5%;
+    /* height: 100%; */
     margin: 0 auto;
     position: relative;
 }
@@ -34,7 +35,7 @@ body, html {
     left: 0;
     width: 100%;
     min-height: 100%;
-    background: #D6D6D6;
+    /* background: #D6D6D6; */
 }
 .back p {
     color: #eee;
@@ -46,25 +47,16 @@ body, html {
 
 /**/
 .front {
-    height: 100%;
+    /*height: 100%;*/
     position: relative;
-    
+    background:#f5f5f5;
 }
 .front .chatScroll {
     position: relative;
     overflow: hidden;
-    
+
 }
 .lunbo{
-    height: 0.08rem;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    background: #ff5d1a;
-    width: 100%;
-    z-index: 1;
-}
-.top{
     height: 0.05rem;
     overflow: hidden;
     position: absolute;
@@ -75,7 +67,7 @@ body, html {
 }
 .sound{
     display: inline-block;
-    line-height: 0.08rem;
+    line-height: 0.05rem;
     margin-left: 0.04rem;
     float: left;
 }
@@ -90,7 +82,7 @@ body, html {
     display: inline-block;
     width: 0.04rem;
     height: 0.04rem;
-    line-height: 0.08rem;
+    line-height: 0.04rem;
     margin-right: 6px;
     float: right;
 }
@@ -100,9 +92,9 @@ body, html {
 }
 ul li {
     width: 100%;
-    height: 0.08rem;
-    line-height: 0.08rem;
-    font-size: 0.05rem;
+    height: 0.05rem;
+    line-height: 0.05rem;
+    font-size: 0.04rem;
     color: #fff;
     text-align: left;
     padding-left: 0.12rem;
@@ -112,25 +104,56 @@ ul li {
     position: absolute;
     top: 0;
     left: 0;    
-    background: #EBEBEB;
+    background: #f5f5f5;
     width: 100%;
     min-height: 100%;
     box-sizing: border-box;
 }
-
-/**/
-.editCtn {
-    background: #fff;
+/*头部*/
+.front .header{
+    height:0.14rem;
+    line-height: 0.15rem;
+    text-align: center;
+    background:#fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+.front .header .backQuit{
     position: absolute;
     left: 0;
-    bottom: 0;
-    width: 100%;
+    top: 0px;
+}
+.front .header img{
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+.front .header .headName{
+    color: #666;
+    display: inline-block;
+    width: 70%;
+    overflow: hidden;/*超出部分隐藏*/
+    white-space: nowrap;/*不换行*/
+    text-overflow:ellipsis;/*超出部分文字以...显示*/
+}
+/**
+ * taskId=370;赵永平
+ * 原因：在ios上键盘会遮住input输入框
+ * 修改：采用fixed定位到底部，bottom为0
+ */
+ .editCtn {
+  background: #fff;
+  position: absolute;
+  left: 0px;
+  /* bottom: 0px; */
+  /* top: 300px; */
+  width: 100%;
 }
 .editCtn .editShow {
     position: relative;
-    height: 0.133rem;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
+    height: 0.136rem;
+    /* border-top: 1px solid #e6e6e6; */
+    /* border-bottom: 1px solid #e6e6e6; */
 }
 .editCtn .editShow:after {
     content: '';
@@ -170,33 +193,48 @@ ul li {
     
 }
 .editCtn .editShow .cosInput .textareaCtn {
-    margin-left: 0.03rem;
+    margin-left: 0.02rem;
+    height:auto;
+    overflow: hidden;
 }
 .editCtn .editShow .cosInput .textareaCtn .textarea {
-    width: 100%;
+    width: 96%;
     height: 0.09rem;
     resize: none;
     outline: none;
     box-sizing: border-box;
-    padding: 0.013rem 0.027rem;
-    padding-right: 0.087rem;
-    overflow: auto;
+    padding: 0.02rem 0.027rem;
+    overflow: hidden;
     border: none;
-    border-bottom: 1px solid #1b96ff;
-    border-radius: 0;
+    text-indent:10px;
+    border-radius: 0.4rem;
+    background: #f5f5f5;
+    float: left;
+}
+/*点击发送*/
+.editCtn .editShow .cosBtn .sendMsg{
+    float: right;
+    width:100%;
+    height: 0.09rem;
+    line-height: 0.09rem;
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 5px;
+    margin:0.01rem 0.02rem 0 0;
+    font-size:0.03rem;
 }
 .editCtn .editShow .cosInput .textareaCtn .faceBtn {
     position: absolute;
-    top: 0;
+    top: 5px;
     right: 0;
     display: inline-block;
     width: 0.09rem;
     height: 0.09rem;
-    background: url(../images/smile.png) no-repeat center;
+    background: url(../images/expression@2x.png) no-repeat center;
     background-size: contain;
 }
 .editCtn .editShow .cosInput .textareaCtn .faceBtn_focus {
-    background: url(../images/smile2.png) no-repeat center;
+    background: url(../images/expression_click@2x.png) no-repeat center;
     background-size: contain;
 }
 .editCtn .editShow .cosInput .inputBtn {
@@ -209,31 +247,25 @@ ul li {
     border: 1px solid #e6e6e6;
     border-radius: 3px;
 }
-
 .editCtn .editShow .cosBtn {
     width: 15%;
-    margin-top: 0.02rem;
+    margin-top: 0.012rem;
 }
 .editCtn .editShow .cosBtn .addbtn {
     display: inline-block;
     width: 0.09rem;
     height: 0.09rem;
-    background: url(../images/plusred.png) no-repeat center;
+    background: url(../images/add@2x.png) no-repeat center;
     background-size: contain;
 }
 .editCtn .editShow .cosBtn .sendBtn {
-    display: inline-block;
-    display: none;
-    width: 100%;
-    height: 0.09rem;
-    line-height: 0.09rem;
-    background: #ff5d1a;
+    background: #1b96ff;
     color: #fff;
 }
 .editCtn .editHide {
-    display: none;
+    /*display: none;*/
     position: relative;
-    height: 0.573rem;
+    height: 0.1rem;
     padding: 0 0.05rem;
     box-sizing: border-box;
 }
@@ -243,38 +275,100 @@ ul li {
     width: 20%;
     height: 100%;
 }
-/*.editCtn .editHide .takePhotoCtn,.editCtn .editHide .sendPicCtn  {
+.editCtn .editHide .takePhotoCtn,.editCtn .editHide .sendPicCtn  {
     display: none;
-}*/
+}
 .editCtn .editHide .editCtn_com span {
     display: inline-block;
-    width: 0.12rem;
-    height: 0.12rem;
-    margin: 0.16rem 0 0.05rem 0;
+    width: 0.06rem;
+    height: 0.06rem;
+    /*margin: 0.16rem 0 0.05rem 0;*/
 }
 .editCtn .editHide .editCtn_com p {
     white-space: nowrap;
     font-size: 12px;
 }
+/*点击之前图标颜色*/
 .editCtn .editHide .editCtn_com .sendPic {
-    background: url(../images/picture@2x.png) no-repeat center;
+    background: url(../images/sendPic@2x.png) no-repeat center;
     background-size: contain;
     overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .takePhoto {
     background: url(../images/camera@2x.png) no-repeat center;
     background-size: contain;
+    overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .commonQue {
-    background: url(../images/problems@2x.png) no-repeat center;
+    background: url(../images/promble.png) no-repeat center;
     background-size: contain;
+    overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .feedback {
-    background: url(../images/advice@2x.png) no-repeat center;
+    background: url(../images/messageBack.png) no-repeat center;
     background-size: contain;
+    overflow: hidden;
 }
 .editCtn .editHide .editCtn_com .leaveMsg {
-    background: url(../images/message@2x.png) no-repeat center;
+    background: url(../images/message.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendVoice {
+    background: url(../images/voice1@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendCamera {
+    background: url(../images/camera@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendFile {
+    background: url(../images/file@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+.editCtn .editHide .editCtn_com .sendFace {
+    background: url(../images/face@2x.png) no-repeat center;
+    background-size: contain;
+    overflow: hidden;
+}
+/*点击之后图标颜色变蓝*/
+.editCtn .editHide .editCtn_com .sendPicClick {
+    background: url(../images/sendPicClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .takePhotoClick {
+    background: url(../images/cameraClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .commonQueClick {
+    background: url(../images/prombleClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .feedbackClick {
+    background: url(../images/messagebackClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .leaveMsgClick {
+    background: url(../images/messageClick.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendVoiceClick {
+    background: url(../images/voice1Click@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendCameraClick {
+    background: url(../images/cameraClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendFileClick {
+    background: url(../images/fileClick@2x.png) no-repeat center;
+    background-size: contain;
+}
+.editCtn .editHide .editCtn_com .sendFaceClick {
+    background: url(../images/faceClick@2x.png) no-repeat center;
     background-size: contain;
 }
 
@@ -354,10 +448,32 @@ ul li {
 .upFile {
     display: none;
 }
+/*body中时间设置*/
+.MN_kftime,.MN_khtime{
+    background: none;
+    color: #666;
+    margin:0 auto;
+}
+/*聊天背景*/
+.MN_kfCtn, .MN_khCtn{
+    border-radius: 14px;
+}
+/*聊天头像*/
+.MN_answer .MN_kfImg, .MN_ask .MN_khImg{
+    top:0;
+}
+.MN_kfTriangle2,.MN_kfTriangle1{
+    top:5px;
+    left:-13px;
+}
+.MN_khTriangle1,.MN_khTriangle2{
+    top:5px;
+    right:-13px;
+}
 
-
-
-
+.MN_kfCtn audio,.MN_kfCtn video{
+    max-width:100%;
+}
 
 
 

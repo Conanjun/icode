@@ -2487,7 +2487,7 @@ function uploadFile (options) {
         if((!this.options.setInputTop) && (this.options.sourceId == 3)){
 
         }else{
-          if(this.options.isSQ||this.options.isH5WKXT){
+          if(this.options.isSQ||this.options.isH5WKXT || this.options.isSelfSetInputTop){
              this.options.setInputTop();//taskid=941 上汽聊天页面定制 上汽原型图与标准产品不一致：修改移动端键盘遮挡输入框问题方法 add by zhaoyuxing
           }else{
             this.setInputTop();//移动端键盘遮挡输入框问题
@@ -6064,7 +6064,7 @@ function uploadFile (options) {
                                         if(This.options.preventHide){
                                           $('.sendPicCtn,.defaultHideBtn').show()
                                         }else{
-                                          $('.sendPicCtn,.defaultHideBtn').hide()
+                                          // $('.sendPicCtn,.defaultHideBtn').hide()
                                         }
 
                                         if(This.options.isSQPc){ //taskid=1527 上汽PC端始终显示发送图片按钮
