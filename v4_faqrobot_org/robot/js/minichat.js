@@ -136,7 +136,9 @@ this._howMany=0,this._unwrap=!1,this._initialized=!1}function o(t,e){if((0|e)!==
       var obj = '',
         dot = ',',
         arr = data.match(/[^?^#^&]+=[^?^#^&]*/g)
-
+      if(!arr){
+        return
+      }
       for (var i = 0; i < arr.length; i++) {
         var str = arr[i].match(/([^=]+)=([^=]*)/)
         if (i == arr.length - 1) {
@@ -6524,7 +6526,9 @@ function uploadFile (options) {
       var obj = '',
         dot = ',',
         arr = data.match(/[^?^#^&]+=[^?^#^&]*/g)
-
+        if(!arr){
+          return
+        }
       for (var i = 0; i < arr.length; i++) {
         var str = arr[i].match(/([^=]+)=([^=]*)/)
         if (i == arr.length - 1) {

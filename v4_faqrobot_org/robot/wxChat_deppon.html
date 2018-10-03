@@ -298,6 +298,49 @@
             </div>
         </div>
     </div>
+    <!-- 抖屏模态框 -->
+    <div class="shakeScreenModal" id="shakeScreenModal" aria-hidden="true" data-backdrop="static">
+        <div class="shakeCenter">您给客服发送了一个抖屏</div>
+    </div>
+
+        
+    <!-- 我要下单模态框start -->
+    <div id="orderBox" class="orderBox">
+        <div id="orderDiv" class="orderDiv">
+            <h4 class="header">
+                <span>我要下单</span>
+                <span class="pull-right closePage" id="closeOrderBox"></span>
+            </h4>
+            <div class="showMyOrder" id="showMyOrder">
+                <!-- <iframe width="100%" style="border:none;" height="600px" src="https://www.deppon.com/cms/console/sites/10000101/page/preview/mail/order"></iframe> -->
+            </div>
+        </div>
+    </div>
+    <!-- 我要下单模态框end -->
+
+    <!-- 遮罩 -->
+    <div class="record-shade hide">
+        <!-- 语音图标 -->
+        <div class="icon-wrapper hide">
+            <!-- 竖条 -->
+            <div class="la-line-scale-pulse-out">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <!-- 话筒 -->
+            <i class="fa fa-microphone"></i>
+        </div>
+        <!-- 箭头 -->
+        <div class="move-cancel hide">
+            <i class="fa fa-mail-reply fa-rotate-270"></i>
+            <p>上划取消</p>
+        </div>
+        <div class="record-tip hide"><i class="fa fa-exclamation"></i><p>录音时间太短</p></div>
+    </div>
+    
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">

@@ -1133,6 +1133,69 @@ ul li {
     font-size: 0.08rem;
     color: #999;
 }
+.record-shade{
+    position: absolute;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    left: 0;
+    top: 0;
+}
+.record-shade .icon-wrapper{
+    position: relative;
+    width:100px;
+    height:auto;
+    margin: 0 auto;
+    text-align: center;
+    top:40%;
+}
+.icon-wrapper .la-line-scale-pulse-out{
+    margin: 0 auto 20px;
+}
+.icon-wrapper .fa-microphone{
+    color: #fff;
+    font-size:80px;
+}
+.record-shade .move-cancel{
+    position: relative;
+    width:100px;
+    height:auto;
+    text-align: center;
+    margin: 0 auto;
+    top: 40%;
+    color:#fff;
+}
+.record-shade .move-cancel p{
+    color:#fff;
+    margin-top:20px;
+    background: rgba(244, 32, 35, 0.6);
+    padding: 5px;
+    border-radius: 5px;
+}
+.record-shade .move-cancel i{
+    font-size:80px;
+}
+.record-shade .record-tip{
+    color: #fff;
+    position: relative;
+    width:150px;
+    height:140px;
+    font-size:18px; 
+    padding-top:20px;
+    border-radius: 5px;
+    top: 40%;
+    text-align: center;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.5);
+}
+.record-shade .record-tip p{
+    color: #fff;
+    line-height: 30px;
+}
+.record-shade .record-tip i{
+    font-size:80px;
+}
 .action-btn{
     position: absolute;
     top: 0;
@@ -1378,6 +1441,65 @@ ul li {
     position: relative;
 }
 
+/* 抖屏 */
+.shakeScreenModal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    animation: 0.5s ease-in-out shakeScreen;
+    -webkit-animation: 0.5s ease-in-out shakeScreen;
+    -moz-animation: 0.5s ease-in-out shakeScreen;
+    -o-animation: 0.5s ease-in-out shakeScreen;
+    -ms-animation: 0.5s ease-in-out shakeScreen;
+  }
+  .shakeCenter{
+    width: 200px;
+    margin: 300px auto 0;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    line-height: 40px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  @keyframes shakeScreen{
+    0%{ transform: translateX(-20px)}
+    17%{transform: translateX(20px)}
+    34%{transform: translateX(-20px)}
+    51%{transform: translateX(20px)}
+    68%{transform: translateX(-20px)}
+    85%{transform: translateX(20px)}
+  }
+  /* 我要下单模态框 */
+  .orderBox{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:white;
+    z-index:1000;
+    display:none;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch; 
+}
+.orderDiv{
+    min-height: 100%;
+}
+.orderDiv h4{
+    padding: 10px;
+    border-bottom: 1px solid #999;
+    margin: 0;
+}
+.orderBox .showMyOrder{
+    min-height: 100%;
+}
 
 
 

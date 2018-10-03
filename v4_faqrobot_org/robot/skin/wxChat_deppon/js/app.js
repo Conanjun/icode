@@ -20,7 +20,7 @@
      * 调用自动补全插件 
      * */
     $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig',//[string]
+        url: 'servlet/appChat?s=ig&sysNum=' + FAQ.options.sysNum,//[string]
         targetEl: $('.editShow'),//参照物(用于appendTo和定位)
         posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
         itemNum: 5,//[int] 默认全部显示
@@ -121,6 +121,17 @@
         $('#sendFace').removeClass('hide');
         $('.editHide').hide();
     })
+
+    /**
+     * 功能按钮切换背景
+     */
+    $('body').on('click', '.editCtn_com', function (e) {
+        var that = this;
+        $(that).find('.icon-ctn').addClass('active');
+        setTimeout(function () {
+            $(that).find('.icon-ctn').removeClass('active');
+        }, 1000);
+    });
 
     /**
      * 滑动事件
@@ -286,20 +297,18 @@
             chatCtnId: 'chatCtn',//聊天展示Id y   --------------
             inputCtnId: 'textarea',//输入框Id y   --------
             sendBtnId: 'sendBtn',//发送按钮Id y   ------
+            shakeScreenModal:'shakeScreenModal',//抖屏模态框
+            thirdUrlId: 'orderBox',
+            showMyOrder:'showMyOrder',//展示下单页面
+            preventHide: false,// true:机器人聊天时 仍然显示发送文件、图片功能,地理位置
             upFileModule: {//上传文件模块
                 open: true,//是否启用功能
                 maxNum: 0,//最大上传数量，0为不限制
                 triggerId: 'sendPic',//触发上传按钮
                 startcall: function () {//上传文件前的回调
                     set_chatScroll_height();
-                    // $('.textarea').blur();
-                    // $('.chatScroll').removeClass('chatHeight');
-                    // $('.front').height($(document).height());
                 },
                 callback: function () {//上传文件后的回调
-                    // $('.textarea').blur();
-                    // $('.chatScroll').removeClass('chatHeight');
-                    // $('.front').height($(document).height());
                     var timerDowm=setTimeout(function(){
                         FAQ.scrollbar.update()
                         FAQ.scrollbar.scrollTo('bottom', true);
@@ -363,6 +372,14 @@
             },
             leaveMsgCallback: function () {//留言后的回调
                 layer.close(layerCtn);
+            },
+            thirdUrlCallBack: function(data, index){//推荐链接的回调
+                if (!index) index = 0;
+                if (data.robotAnswer[index].thirdUrl && data.robotAnswer[index].thirdUrl.url) {
+                    $('#'+FAQ.options.thirdUrlId).show()
+                    $('#' + FAQ.options.showMyOrder).html('<iframe width="100%" style="border:none;" height="100%" src="'+data.robotAnswer[index].thirdUrl.url+'"></iframe>');
+                    $('#' + FAQ.options.showMyOrder +' iframe').height($('#'+FAQ.options.thirdUrlId).height()-45)
+                }
             },
             // 设置输入框top值的高度：解决键盘遮挡输入框bug
             setInputTop: function () {
@@ -636,24 +653,191 @@
     })
 
     /**
-     * 点击发送地理位置
-    */
-    $('#location').on('click',function(){
-		window.getLocation(function (data) {
-			// var _data = JSON.stringify(data);
-			var content = data.address,
-				latitude = data.latitude,//维度
-				longitude = data.longitude;//经度
-			var imgHtml = '<a href="http://api.map.baidu.com/marker?location='+latitude+','+longitude+'&title=我的位置&content='+content+'&output=html"  target="_blank"><span style="color:#333;margin-bottom:5px;display:block;">'+content+'</span><img width="100%" height="100%" src="http://api.map.baidu.com/staticimage/v2?ak=BaEzOp4PU6aGZvO6zR5U1Q1Woek1Uun6&width=280&height=140&zoom=18&center='+longitude+','+latitude+'&markers='+longitude+','+latitude+'&markerStyles=-1,http://v4.faqrobot.net/upload/web/1508807900261839/20180718/11201531895972318.png,-1,23,25"/></a>'
-			FAQ.askQue(imgHtml)
-		});
+     * 结束人工
+     */
+    $('#sendEndCustom').on('click',function(){
+        FAQ.sendEndCustom()
     })
-});
+    
+    /**
+     * 关闭下单模态框
+     * */
+    $('#closeOrderBox').on('click',function(){
+        $('#orderBox').hide()
+    })
+    
+    /**
+     * 语音功能
+    */
+    $('.voiceBtn').on('click',function(){
+        if($('.textareaCtn').hasClass('hide')){
+            $(this).find('i').attr('class','iconfont icon-yuyin');
+            $('.textareaCtn').removeClass('hide');
+            $('#a').addClass('hide');
+        }else{
+            $(this).find('i').attr('class','iconfont icon-jianpan1');
+            $('.textareaCtn').addClass('hide');
+            $('#a').removeClass('hide'); 
+        }
+    })
+    $('#a').on('touchstart',function(e){
+        e.preventDefault();
+        startRecord(e)
+    })
+        .on('touchend',function(e){
+            e.preventDefault();
+            stopRecord(e)
+        })
+        .on('touchmove',function(e){
+            e.preventDefault();
+            touchMove(e)
+        })
+
+    
+    function ready(){
+        wx.ready(function() {
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            wx.startRecord({
+                success: function() {
+                    setTimeout(() => {
+                        wx.stopRecord({
+                            success: res => {},
+                            fail: function(res) {}
+                        });
+                    }, 300);
+                },
+                cancel: () => {
+                    alert("用户拒绝授权录音");
+                }
+            });
+        });
+    }
+
+    function getWXdata(){
+        $.ajax({
+            url:'/weixin/getWeiXinSignature?appId=wxb625c16e447e061b&appSecret=da042fd1542773107e0743b7ae96f3a2&url='+encodeURIComponent(location.href.split('#')[0]),
+            type:'post',
+            success:function(data){
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature, // 必填，签名
+                    jsApiList: [
+                      "startRecord",
+                      "stopRecord",
+                      "onVoiceRecordEnd",
+                      "playVoice",
+                      "translateVoice"
+                    ] // 必填，需要使用的JS接口列表
+                });
+                ready();
+            }
+        })
+    }
 
 
+   var  START = '',END = '',
+        posStart = 0,posEnd = 0,
+        posMov = 0,
+        recordTimer = null ;
 
+    /**
+     * @function startRecord 开始录音
+     * */ 
+    function startRecord(event){
+        START = new Date().getTime();
+        posStart = event.originalEvent.targetTouches[0].pageY;
+        recordTimer = setTimeout(() => {
+            if($('.record-shade').hasClass('hide')){
+                $('.record-shade,.icon-wrapper').removeClass('hide');
+                $('.move-cancel').addClass('hide');
+            }
+        wx.startRecord({
+            success: function() {},
+            cancel: () => {
+                $('.record-shade,.icon-wrapper').addClass('hide');
+                alert("用户拒绝授权录音");
+            }
+        });
+        }, 300);
+    }
 
+    /**
+     * 停止录音
+     */ 
+    function stopRecord(event){
+        END = new Date().getTime();
+        posEnd = event.originalEvent.changedTouches[0].pageY;
+        // 上划150像素，取消录音
+        if (posStart - posEnd > 100) {
+            $('.record-shade, .move-cancel').addClass('hide')
+            wx.stopRecord();
+            return;
+        }
 
+        if (END - START < 300) {
+            initShow();
+            // 点击提示“录音时间太短”
+            $('.record-shade, .record-tip').removeClass('hide');
+            setTimeout(() => {
+                initShow();
+            }, 1000);
 
+            END = 0;
+            START = 0;
+            //小于300ms，不录音
+            clearTimeout(recordTimer);
+        } else {
+            $('.record-shade, .icon-wrapper').addClass('hide')
+            wx.stopRecord({
+                success: res => {
+                    $('.record-shade, .icon-wrapper').addClass('hide')
+                    localId = res.localId;
+                    translateVoice();
+                },
+                fail: function(res) {
+                    // alert(JSON.stringify(res));
+                }
+            });
+        }
+    }
 
-
+    function initShow(){
+        $('.record-shade, .icon-wrapper, .move-cancel, .record-tip').addClass('hide')
+    }
+     // 播放语音
+    function playVoice() {
+        wx.playVoice({
+            localId: localId, // 需要播放的音频的本地ID，由stopRecord接口获得
+            success: function() {},
+            fail: function(res) {
+                alert(resizeTo);
+            }
+        });
+    }
+    // 语音转文字
+    function translateVoice() {
+        wx.translateVoice({
+            localId: localId, // 需要识别的音频的本地Id，由录音相关接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: res => {
+                FAQ.askQue(res.translateResult)// 语音识别的结果
+            }
+        });
+    }
+    // 上划动作
+    function touchMove(event) {
+        posMove = 0;
+        posMove = event.originalEvent.targetTouches[0].pageY;
+        if (posStart - posMove > 100) {
+            $('.icon-wrapper').addClass('hide')
+            $('.move-cancel').removeClass('hide')
+        } else {
+            $('.move-cancel').addClass('hide')
+            $('.icon-wrapper').removeClass('hide')
+        }
+    }
+    getWXdata()
+}) 
