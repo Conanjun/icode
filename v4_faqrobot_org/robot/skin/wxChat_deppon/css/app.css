@@ -1214,9 +1214,10 @@ ul li {
     float: left;
     display: inline-block;
     margin: 0 8px;
+    margin-top: -0.005rem;
 }
 .voiceBtn i{
-    font-size: 0.08rem;
+    font-size: 0.07rem;
     color: #999;
 }
 .record-shade{

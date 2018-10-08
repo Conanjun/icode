@@ -11,7 +11,23 @@
 
         $('.chatScroll').height(winH - $('.editCtn').outerHeight());
     }
+    /**
+     * 微信/app共用页面，app中打开隐藏语音功能
+    */
+    function isWechat(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.indexOf('micromessenger')!=-1){
+           return true 
+        }else{
+            return false
+        }
+    }
 
+    if(!isWechat()){
+        $('.voiceBtn').hide();
+        $('.editShow').css('padding-left','13px')
+    }
+        
     $(window).on('resize', function () {
         set_chatScroll_height();
     });
@@ -119,7 +135,7 @@
         if ($('.textareaCtn').hasClass('hide')) {
             $('.voiceBtn').find('i').attr('class', 'iconfont icon-yuyin');
             $('.textareaCtn').removeClass('hide');
-            $('.longTapBtn').addClass('hide');
+            $('#a').addClass('hide');
         }
     })
 
@@ -449,21 +465,6 @@
                                 },200)
                             }
                         });
-                    } else {
-                        var frontHeight = $('.' +this.frontId).height();
-                        var textareaHeight = $('.' + this.editCtn).height();
-                        var editCtnTop = frontHeight-textareaHeight;
-                        var self = this;
-                        $('#' + this.editCtn).on('focus', function (e) {
-                            if($(e.target).is($('#' + this.inputCtnId))){
-                                var timerDowm=setTimeout(function(){
-                                    FAQ.scrollbar.update()
-                                    FAQ.scrollbar.scrollTo('bottom')
-                                    $('document').scrollTop(1000000,200)
-                                    clearTimeout(timerDowm)
-                                },200)
-                            }
-                        });
                     }
                 }
             }
@@ -575,7 +576,7 @@
             type:'post',
             success:function(data){
                 wx.config({
-                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: data.appId, // 必填，公众号的唯一标识
                     timestamp: data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: data.nonceStr, // 必填，生成签名的随机串
