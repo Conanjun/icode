@@ -20,7 +20,7 @@
      * 调用自动补全插件 
      * */
     $('.textarea').autocomplete({
-        url: 'servlet/appChat?s=ig&sysNum=' + FAQ.options.sysNum,//[string]
+        url: 'servlet/appChat?s=ig',//[string]
         targetEl: $('.editShow'),//参照物(用于appendTo和定位)
         posAttr: ['0rem', '0.133rem'],//外边框的定位[left bottom]
         itemNum: 5,//[int] 默认全部显示
@@ -31,6 +31,17 @@
         }
     });
 
+    /**处理输入引导接口延时问题
+     * 点击发送按钮后，延时检测输入框是否有文字，如果没有则隐藏输入引导
+     * */ 
+    var delay = null;
+    function clearAU (){
+        delay=setInterval(function(){
+            if(!$('.textarea').val()){
+                $('.AU_outerCtn').hide();
+            }
+        },100)
+    }
 
 
     /**
@@ -356,6 +367,7 @@
                 window.uselessReasonItems = data.uselessReasonItems;
             },
             sendCallback: function () {//点击发送按钮的回调
+                clearAU();
                 $('.addBtn').removeClass('hide');
                 $('#sendFace').removeClass('hide');
 
@@ -453,163 +465,7 @@
                             }
                         });
                     }
-                } else {
-                    function get_android_version() {
-                        var ua = navigator.userAgent.toLowerCase();
-                        var version = null;
-                        if (ua.indexOf("android") > 0) {
-                            var reg = /android [\d._]+/gi;
-                            var v_info = ua.match(reg);
-                            version = (v_info + "").replace(/[^0-9|_.]/ig, "").replace(/_/ig, "."); //得到版本号4.2.2
-                            // version = parseInt(version.split('.')[0]);// 得到版本号第一位
-                        }
-            
-                        return version;
-                    }
-                    // var version = get_android_version() ;
-                    // alert(version);
-                    var self = this;
-                    $('.' + this.editCtn).css('position', 'fixed');
-                    var timer1;
-                    $('.' + this.editCtn).on('focus', function () {
-                        timer1 = setTimeout(function () {
-                            self.scrollIntoView(false);
-                        }, 100)
-                    });
-
-                    $('.' +this.editCtn).on('blur', function () {
-                        if (timer1) {
-                            clearInterval(timer1);
-                        }
-                    });
                 }
-            },
-            servLeaveMsg: function () {
-                var validator1=$('#leaveMsgForm').validate({
-                    rules:{
-                        name:{
-                            minlength:2,
-                            maxlength:10,
-                        },
-                        telNum:{
-                            telFlag:true,
-                            required:true
-                        },
-                        email:{
-                            emailFlag:true,
-                        },
-                        content:{
-                            required:true,
-                        }
-                    },
-                    messages:{
-                        name:{
-                            minlength:"请输入2~10个字符！",
-                            maxlength:"请输入2~10个字符！"
-                        },
-                        telNum:{
-                        required:'手机号不能为空！'
-                        },
-                        content:{
-                            required:"留言不能为空！",
-                        }
-                    },
-                    submitHandler: msgSubmit
-                });
-                $.validator.addMethod("emailFlag",function(value,element,params){  
-                    var emailreg=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)$/  
-                    if(emailreg.test(value.trim())||value.trim()==""){
-                        return true;
-                    }else{
-                        return false;
-                    } 
-                },"请输入正确格式的邮箱！");
-                /**
-                 * taskId=494;顾荣 2017.12.27
-                * 修改：优化手机号码正则
-                */
-                $.validator.addMethod("telFlag",function(value,element,params){
-                    var telNumReg=/^1[0-9]{10}$/  
-                    if(telNumReg.test(value.trim())||value.trim()==""){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                },"请输入正确格式的手机号码！")
-        
-                function msgSubmit(){
-                    var messageName=$("#leaveMsgForm input[name=name]").val().trim()//姓名
-                    var messagePhone=$("#leaveMsgForm input[name=telNum]").val().trim()//电话号码
-                    var messageEmail=$("#leaveMsgForm input[name=email]").val().trim()//电子邮箱
-                    var messageTxt=$("#leaveMsgForm #leaveMsgCtn").val().trim()//留言内容
-        
-                    // 收集来源的关键词
-                    var entranceWords = ''
-                    for (var i = 0; i < FAQ.options.entranceWords.length; i++) {
-                        entranceWords += (MN_Base.getParam(FAQ.options.entranceWords[i], document.referrer) || '') + ','
-                    }
-                    $.ajax({
-                        type:'post',
-                        datatype:'json',
-                        cache:false,//不从缓存中去数据,
-                        url:encodeURI('../servlet/appChat'),
-                        data:{
-                            s: 'leavemsg',
-                            sourceId:FAQ.options.sourceId,
-                            sysNum:FAQ.options.sysNum,
-                            entrance:document.referrer,
-                            entranceWords:entranceWords,
-                            name:messageName,
-                            telNum:messagePhone,
-                            email:messageEmail,
-                            content:messageTxt,
-                        },
-                        success:function(data){
-                            if(data.status==0){
-                                $("#successMessage").css("display","block")
-                            }else{
-                                FAQ.showMsg(data.message)  
-                            }
-                        }
-                    })
-                }
-                //给留言板中的按钮绑定事件
-                $("#messageAgain").click(function(){//点击继续留言返回留言板
-                    $("#leaveMsgForm").find("input").val('');
-                    $("#leaveMsgCtn").val("");
-                    $("#successMessage").css("display","none");
-                    $("#imgsDiv").html("")
-                    validator1.resetForm()
-                    $('.text-error').removeClass("text-error helper-font-small")
-                });
-                $("#backMessage").click(function(){//点击返回聊天关闭留言板返回聊天
-                    $("#leaveMsgForm").find("input").val('');
-                    $("#leaveMsgCtn").val("")
-                    $("#successMessage").css("display","none");
-                    $("#leaveMsgBox").css("display","none")
-                    $("#imgsDiv").html("")
-                    validator1.resetForm()
-                    $('.text-error').removeClass("text-error helper-font-small")
-                })
-                $("#closeLeaveMsgBox").click(function(){//点击‘x’关闭留言板返回聊天
-                    $("#leaveMsgForm").find("input").val('');
-                    $("#leaveMsgCtn").val("")
-                    $("#leaveMsgBox").css("display","none")
-                    $("#imgsDiv").html("")
-                    validator1.resetForm()
-                    $('.text-error').removeClass("text-error helper-font-small")
-                })
-            },
-            /**
-             * taskid = 1023 上汽页面定制优化 amend by zhaoyuxing
-             * 说明：在kl中判断当前聊天的状态，用于区分与机器人聊天/ 人工客服聊天
-             * */ 
-            klCallback:function (data) {
-               if(data.nowState === 3 || data.nowState === 5){
-                    isCustomerChat = true ; 
-               }else{
-                    isCustomerChat = false ; 
-               }
             }
     });
     
@@ -648,7 +504,7 @@
         FAQ.sendShakeScreen()
         setTimeout(function(){
             $('.shakeScreenCtn').removeClass('clicked')
-            $('#sendShakeScreen').hide()
+            $('#shakeScreenModal').hide()
         },2000)
     })
 
@@ -719,7 +575,7 @@
             type:'post',
             success:function(data){
                 wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: data.appId, // 必填，公众号的唯一标识
                     timestamp: data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: data.nonceStr, // 必填，生成签名的随机串

@@ -14,9 +14,10 @@
     <link rel="stylesheet" href="css/minichat.css?dev=2">
     <link href="./css/bootstrap.min.css" rel="stylesheet" />
     <link href="./fonts/iconfont/iconfont.css" rel="stylesheet" />
-    <link rel="stylesheet prefetch" href="skin/h5chat/css/photoswipe.css">
-    <link rel="stylesheet prefetch" href="skin/h5chat/css/default-skin.css">
     <link href="./fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet prefetch" href="skin/wxChat_deppon/css/photoswipe.css">
+    <link rel="stylesheet prefetch" href="skin/wxChat_deppon/css/default-skin.css">
+    
     <link href="./css/commonCSS.css" rel="stylesheet">
     <link rel="stylesheet" href="skin/wxChat_deppon/css/app.css?dev=1">
 
@@ -64,15 +65,16 @@
             padding: 10px 0px 10px 70px;
         }
     </style>
-    <!--上汽提供 点击显示更多，跳转自如 -->
     <script src="skin/wxChat_deppon/js/babel-polyfill.js"></script>
     <script src="js/minichat.js?time=1513"></script>
     <script src="./js/webuploader.min.js"></script>
     <script src="./js/jquery.validate.js"></script>
-    <script src="skin/wxChat_deppon/js/app.js?dev=2"></script>
+    <script src="skin/wxChat_deppon/js/jweixin.js"></script>
     <script src="skin/h5chat/js/photoswipe.js"></script>
     <script src="skin/h5chat/js/photoswipe-ui-default.min.js"></script>
     <script src="./js/jquery.validate.js"></script>
+    <script src="skin/wxChat_deppon/js/app.js?dev=2"></script>
+    
 </head>
 
 <body>
@@ -376,7 +378,15 @@
             </div>
         </div>
     </div>
-    <script src="https://oss.ebanma.com/oss/download/assets/jsbridge/jssdk.js"></script>
+    <!-- 初始加载框 -->
+    <div id="loadMask" class="loadMask">
+        <div id="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
     <script>
         var tmpsourceId = 3;
         var initPhotoSwipeFromDOM = function (gallerySelector) {
@@ -544,29 +554,6 @@
         };
 
         initPhotoSwipeFromDOM('.my-gallery');
-
-        var timer1;
-        $('#textarea').on('focus', function () {
-            var self = this;
-            timer1 = setTimeout(function () {
-                self.scrollIntoView(false);
-            }, 100)
-        });
-
-        $('#textarea').on('blur', function () {
-            if (timer1) {
-                clearInterval(timer1);
-            }
-        });
-
-
-        $('#sendBtnNew').on('click.FA', function () {
-            $(this).hide();
-            $('.addbtn').show();
-            setTimeout(function () {
-                $('#textarea').focus()
-            }, 50)
-        })
     </script>
 </body>
 
