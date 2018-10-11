@@ -566,9 +566,12 @@ $(function () {
             var This = this
             var p = new Promise(function (resolve, reject) {
                 var i = 0;
-                clearInterval(This.timer);
-                This.timer = setInterval(function () {
-                    This.set_chatScroll_height();
+                clearInterval(This.timer);               
+                This.timer = setInterval(function () {                                     
+                    if(i == 3){// 搜狗键盘遮挡，会闪烁
+                        $('body').scrollTop($('body').prop('scrollHeight'),200);    
+                    }     
+                    This.set_chatScroll_height();                   
                     if (i >= 5) {
                         resolve();
                         clearInterval(This.timer);
@@ -892,30 +895,5 @@ $(function () {
         }
     });
     FAQWX.autoComplete();
-
-    /***
-     * 自动滚动到底部，不能去除，防止键盘遮挡
-     * */ 
-    var timerInput =null;
-    alert('15')
-    $('.textarea').on('focus', function (e) {
-        var timerInput=setTimeout(function(){
-            FAQ.scrollbar.update()
-            FAQ.scrollbar.scrollTo('bottom')
-            $('body').scrollTop(1000000)
-            clearTimeout(timerInput)
-        },200);
-        // var j = 0;
-        // clearInterval(timerDown);
-        // timerDown = setInterval(function () {
-        //     $('body').scrollTop(1000000);
-        //     // FAQ.scrollbar.scrollTo('bottom', true);
-        //     if (j >= 5) {
-        //         clearInterval(timerDown);
-        //     }
-        //     j++;
-        // }, 500);
-    });
-
 
 });
